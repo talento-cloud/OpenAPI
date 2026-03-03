@@ -12,7 +12,11 @@
       "variables": {}
     },
     {
-      "url": "http://example.com",
+      "url": "https://clientex.talento-dev.cloud/api",
+      "variables": {}
+    },
+    {
+      "url": "https://clientex.talento-dev.cloud/api",
       "variables": {}
     }
   ],
@@ -66,7 +70,7 @@
     }
   ],
   "paths": {
-    "/token/autenticacion.json": {
+    "/html/token/autenticacion.json": {
       "post": {
         "tags": [
           "Transversal"
@@ -249,7 +253,7 @@
         "security": [],
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api",
             "variables": {}
           }
         ]
@@ -349,7 +353,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "http://base.local:8889/html/gral/recuperarClave",
+            "url": "https://clientex.talento-dev.cloud/api/html/gral/recuperarClave",
             "variables": {}
           }
         ]
@@ -401,7 +405,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -498,7 +502,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -544,7 +548,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -578,7 +582,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -612,7 +616,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -655,7 +659,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -689,7 +693,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -750,7 +754,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -809,7 +813,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -984,7 +988,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -1036,7 +1040,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -1078,7 +1082,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -1156,7 +1160,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -1213,7 +1217,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -1246,7 +1250,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -1280,7 +1284,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -1304,7 +1308,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -1338,7 +1342,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -1372,7 +1376,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -1406,7 +1410,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -1458,7 +1462,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -1510,7 +1514,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -1589,7 +1593,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -1655,7 +1659,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -1730,7 +1734,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -1792,7 +1796,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -2048,7 +2052,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -2198,7 +2202,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -2367,7 +2371,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -2556,7 +2560,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -2726,7 +2730,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -2899,7 +2903,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -3074,7 +3078,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -3169,7 +3173,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -3193,7 +3197,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -3239,7 +3243,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -3273,7 +3277,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -3324,7 +3328,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -3409,7 +3413,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -3506,7 +3510,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -3540,7 +3544,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -3598,7 +3602,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -3684,7 +3688,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -3718,7 +3722,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -3779,7 +3783,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -3813,7 +3817,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -3864,7 +3868,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -3922,7 +3926,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -3984,7 +3988,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -4035,7 +4039,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -4133,7 +4137,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -5115,7 +5119,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -5449,7 +5453,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -5492,7 +5496,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -5526,7 +5530,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -5560,7 +5564,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -5603,7 +5607,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -5637,7 +5641,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -5671,7 +5675,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -5714,7 +5718,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -5757,7 +5761,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -5791,7 +5795,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -6011,7 +6015,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -6056,7 +6060,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -6143,7 +6147,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -6198,7 +6202,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -6371,7 +6375,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -6446,7 +6450,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -6469,7 +6473,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -6531,7 +6535,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -6554,7 +6558,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "http://example.com",
+            "url": "https://clientex.talento-dev.cloud/api",
             "variables": {}
           }
         ]
@@ -6577,7 +6581,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "http://example.com",
+            "url": "https://clientex.talento-dev.cloud/api",
             "variables": {}
           }
         ]
@@ -6842,7 +6846,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "http://example.com",
+            "url": "https://clientex.talento-dev.cloud/api",
             "variables": {}
           }
         ]
@@ -7107,7 +7111,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "http://example.com",
+            "url": "https://clientex.talento-dev.cloud/api",
             "variables": {}
           }
         ]
@@ -7130,7 +7134,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "http://example.com",
+            "url": "https://clientex.talento-dev.cloud/api",
             "variables": {}
           }
         ]
@@ -7420,7 +7424,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "http://example.com",
+            "url": "https://clientex.talento-dev.cloud/api",
             "variables": {}
           }
         ]
@@ -7472,7 +7476,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "http://example.com",
+            "url": "https://clientex.talento-dev.cloud/api",
             "variables": {}
           }
         ]
@@ -7495,7 +7499,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "http://example.com",
+            "url": "https://clientex.talento-dev.cloud/api",
             "variables": {}
           }
         ]
@@ -7530,7 +7534,7 @@
         "security": [],
         "servers": [
           {
-            "url": "http://example.com",
+            "url": "https://clientex.talento-dev.cloud/api",
             "variables": {}
           }
         ]
@@ -7565,7 +7569,7 @@
         "security": [],
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -7721,7 +7725,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "http://example.com",
+            "url": "https://clientex.talento-dev.cloud/api",
             "variables": {}
           }
         ]
@@ -7925,7 +7929,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "http://example.com",
+            "url": "https://clientex.talento-dev.cloud/api",
             "variables": {}
           }
         ]
@@ -8081,7 +8085,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "http://example.com",
+            "url": "https://clientex.talento-dev.cloud/api",
             "variables": {}
           }
         ]
@@ -8163,7 +8167,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "http://example.com",
+            "url": "https://clientex.talento-dev.cloud/api",
             "variables": {}
           }
         ]
@@ -8279,7 +8283,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "http://example.com",
+            "url": "https://clientex.talento-dev.cloud/api",
             "variables": {}
           }
         ]
@@ -8394,7 +8398,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "http://example.com",
+            "url": "https://clientex.talento-dev.cloud/api",
             "variables": {}
           }
         ]
@@ -8448,7 +8452,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "http://example.com",
+            "url": "https://clientex.talento-dev.cloud/api",
             "variables": {}
           }
         ]
@@ -8536,7 +8540,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "http://example.com",
+            "url": "https://clientex.talento-dev.cloud/api",
             "variables": {}
           }
         ]
@@ -8666,7 +8670,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "http://example.com",
+            "url": "https://clientex.talento-dev.cloud/api",
             "variables": {}
           }
         ]
@@ -8836,7 +8840,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://ag/ausentismos",
+            "url": "https://clientex.talento-dev.cloud/api/ag/ausentismos",
             "variables": {}
           }
         ]
@@ -8991,7 +8995,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://ag/ausentismos",
+            "url": "https://clientex.talento-dev.cloud/api/ag/ausentismos",
             "variables": {}
           }
         ]
@@ -9193,7 +9197,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://ag/ausentismos",
+            "url": "https://clientex.talento-dev.cloud/api/ag/ausentismos",
             "variables": {}
           }
         ]
@@ -9302,7 +9306,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://ag/ausentismos",
+            "url": "https://clientex.talento-dev.cloud/api/ag/ausentismos",
             "variables": {}
           }
         ]
@@ -9625,7 +9629,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://ag/ausentismos",
+            "url": "https://clientex.talento-dev.cloud/api/ag/ausentismos",
             "variables": {}
           }
         ]
@@ -9681,7 +9685,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://ag/ausentismos",
+            "url": "https://clientex.talento-dev.cloud/api/ag/ausentismos",
             "variables": {}
           }
         ]
@@ -9948,7 +9952,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://ag/ausentismos",
+            "url": "https://clientex.talento-dev.cloud/api/ag/ausentismos",
             "variables": {}
           }
         ]
@@ -10103,7 +10107,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://ag/ausentismos",
+            "url": "https://clientex.talento-dev.cloud/api/ag/ausentismos",
             "variables": {}
           }
         ]
@@ -10234,7 +10238,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://ag/ausentismos",
+            "url": "https://clientex.talento-dev.cloud/api/ag/ausentismos",
             "variables": {}
           }
         ]
@@ -10362,7 +10366,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://ag/ausentismos",
+            "url": "https://clientex.talento-dev.cloud/api/ag/ausentismos",
             "variables": {}
           }
         ]
@@ -10505,7 +10509,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://ag/ausentismos",
+            "url": "https://clientex.talento-dev.cloud/api/ag/ausentismos",
             "variables": {}
           }
         ]
@@ -10648,7 +10652,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://ag/ausentismos",
+            "url": "https://clientex.talento-dev.cloud/api/ag/ausentismos",
             "variables": {}
           }
         ]
@@ -10941,7 +10945,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -10991,7 +10995,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -11014,7 +11018,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -11047,7 +11051,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -11097,7 +11101,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -11147,7 +11151,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -11170,7 +11174,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -11218,7 +11222,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -11266,7 +11270,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -11314,7 +11318,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -11362,7 +11366,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -11410,7 +11414,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -11433,7 +11437,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -11481,7 +11485,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -11514,7 +11518,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -11567,7 +11571,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]
@@ -11590,7 +11594,7 @@
         "deprecated": false,
         "servers": [
           {
-            "url": "https://html",
+            "url": "https://clientex.talento-dev.cloud/api/html",
             "variables": {}
           }
         ]

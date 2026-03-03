@@ -101,7 +101,7 @@
     "deprecated": false,
     "servers": [
       {
-        "url": "https://ag/ausentismos",
+        "url": "https://clientex.talento-dev.cloud/api/ag/ausentismos",
         "variables": {}
       }
     ]

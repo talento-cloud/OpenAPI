@@ -27,7 +27,7 @@
     "security": [],
     "servers": [
       {
-        "url": "http://example.com",
+        "url": "https://clientex.talento-dev.cloud/api",
         "variables": {}
       }
     ]

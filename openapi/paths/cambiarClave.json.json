@@ -41,7 +41,7 @@
     "deprecated": false,
     "servers": [
       {
-        "url": "http://base.local:8889/html/gral/recuperarClave",
+        "url": "https://clientex.talento-dev.cloud/api/html/gral/recuperarClave",
         "variables": {}
       }
     ]

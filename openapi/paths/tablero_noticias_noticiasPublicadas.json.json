@@ -42,7 +42,7 @@
     "deprecated": false,
     "servers": [
       {
-        "url": "https://html",
+        "url": "https://clientex.talento-dev.cloud/api/html",
         "variables": {}
       }
     ]

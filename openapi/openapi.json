@@ -12,13 +12,17 @@
       "variables": {}
     },
     {
-      "url": "http://example.com",
+      "url": "https://clientex.talento-dev.cloud/api",
+      "variables": {}
+    },
+    {
+      "url": "https://clientex.talento-dev.cloud/api",
       "variables": {}
     }
   ],
   "paths": {
-    "/token/autenticacion.json": {
-      "$ref": "paths/token_autenticacion.json.json"
+    "/html/token/autenticacion.json": {
+      "$ref": "paths/html_token_autenticacion.json.json"
     },
     "/solicitarLlave.json": {
       "$ref": "paths/solicitarLlave.json.json"
