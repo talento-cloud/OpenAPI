@@ -11,6 +11,7 @@ O con plantilla:
 
 ```bash
 npx @redocly/cli build-docs TalentoPublicoOpenApi3Json.json -t custom-template.hbs -o index.html
+npx @redocly/cli build-docs dist/openapi.json -t custom-template.hbs -o index.html
 ```
 
 
@@ -35,6 +36,9 @@ Para validar un archivo openai
 redocly lint --extends=minimal .\TalentoPublicoOpenApi3Json.json
 redocly lint --extends=minimal .\dist\openapi.json
 ```
+
+#### Extras
+Para migrar de postman a redoc primero hay que exportar el archivo de postman en formato json y luego convertirlo a formato openapi lo cual se puede lograr con https://www.apimatic.io/transformer 
 
 #### Bibliografía
 - https://redocly.com/docs/cli/commands/build-docs#use-a-custom-template
