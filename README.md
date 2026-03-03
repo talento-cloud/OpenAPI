@@ -7,3 +7,9 @@ Ejemplo de generación:
 ```bash
 npx @redocly/cli build-docs TalentoPublicoOpenApi3Json.json -o index.html
 ```
+
+Tambien se puede instalar con npm usando:
+
+```bash
+npm install -g @redocly/cli
+```
