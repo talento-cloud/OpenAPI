@@ -30,6 +30,12 @@ Para volver a unir divididos:
 redocly bundle openapi/openapi.json --output dist/openapi.json
 ```
 
+Para validar un archivo openai
+```bash
+redocly lint --extends=minimal .\TalentoPublicoOpenApi3Json.json
+redocly lint --extends=minimal .\dist\openapi.json
+```
+
 #### Bibliografía
 - https://redocly.com/docs/cli/commands/build-docs#use-a-custom-template
 - https://github.com/Redocly/redoc
