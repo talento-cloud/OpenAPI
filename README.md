@@ -1,6 +1,5 @@
 ### Documentación de la API de talento cloud generado con redoc
 
-https://github.com/Redocly/redoc
 
 Ejemplo de generación:
 
@@ -20,3 +19,7 @@ Tambien se puede instalar con npm usando:
 ```bash
 npm install -g @redocly/cli
 ```
+
+#### Bibliografía
+- https://redocly.com/docs/cli/commands/build-docs#use-a-custom-template
+- https://github.com/Redocly/redoc

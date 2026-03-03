@@ -8,43 +8,7 @@
   },
   "servers": [
     {
-      "url": "http://base.local:8889/html/gral/recuperarClave",
-      "variables": {}
-    },
-    {
-      "url": "https://html",
-      "variables": {}
-    },
-    {
-      "url": "https://talento-archivos-desarrollo.s3.amazonaws.com/archivos/talento_demo/beneficios/171",
-      "variables": {}
-    },
-    {
-      "url": "https://juliantestboos.s3.us-east-2.amazonaws.com/archivos/talento_demo/transversal/plan_desarrollo/archivos",
-      "variables": {}
-    },
-    {
-      "url": "http://example.com",
-      "variables": {}
-    },
-    {
-      "url": "http://localhost:8081/api/pendientes/empresas",
-      "variables": {}
-    },
-    {
-      "url": "https://y34jih16v7.execute-api.us-east-1.amazonaws.com/v1/autogestion/file",
-      "variables": {}
-    },
-    {
-      "url": "https://ag/ausentismos",
-      "variables": {}
-    },
-    {
-      "url": "http://179.50.90.174:8080/talento.sistel/html",
-      "variables": {}
-    },
-    {
-      "url": "https://balanceador-graficos.talento.cloud",
+      "url": "https://test.talento-dev.cloud/",
       "variables": {}
     }
   ],
@@ -16156,7 +16120,7 @@
     },
     {
       "name": "Ausentismos",
-      "description": "Ese submódulo maneja todo lo relacionado con Ausentismos en el módulo de Autogestión, tanto administración como solicitud y aprobación.\n\n# **Documentación en Swagger**\n\n[https://bzkqkqxa8j.execute-api.us-east-1.amazonaws.com/ag/ausentismos/ro/swaggerui/#/](https://bzkqkqxa8j.execute-api.us-east-1.amazonaws.com/ag/ausentismos/ro/swaggerui/#/)\n\n[https://dvilf0owyf.execute-api.us-east-1.amazonaws.com/ag/ausentismos/wr/swaggerui/#/](https://dvilf0owyf.execute-api.us-east-1.amazonaws.com/ag/ausentismos/wr/swaggerui/#/)\n\n## Manejo de errores\n\nLos errores habituales pueden incluir:\n\n- `400 Bad Request`: Parámetros requeridos faltantes o con formato inválido.\n    \n- `401 Unauthorized`: Token JWT inválido, expirado o ausente.\n    \n- `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.\n    \n- `404 Not Found`: El recurso solicitado no existe.\n    \n- `500 Internal Server Error`: Error inesperado en el servidor.\n    \n\nCuando sea posible, cada endpoint detallará sus códigos de error específicos y estructura de respuesta en su propia descripción."
+      "description": "Ese submódulo maneja todo lo relacionado con Ausentismos en el módulo de Autogestión, tanto administración como solicitud y aprobación.\n\n# *Documentación en Swagger*\n\n[https://bzkqkqxa8j.execute-api.us-east-1.amazonaws.com/ag/ausentismos/ro/swaggerui/#/](https://bzkqkqxa8j.execute-api.us-east-1.amazonaws.com/ag/ausentismos/ro/swaggerui/#/)\n\n[https://dvilf0owyf.execute-api.us-east-1.amazonaws.com/ag/ausentismos/wr/swaggerui/#/](https://dvilf0owyf.execute-api.us-east-1.amazonaws.com/ag/ausentismos/wr/swaggerui/#/)\n\n## Manejo de errores\n\nLos errores habituales pueden incluir:\n\n- `400 Bad Request`: Parámetros requeridos faltantes o con formato inválido.\n    \n- `401 Unauthorized`: Token JWT inválido, expirado o ausente.\n    \n- `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.\n    \n- `404 Not Found`: El recurso solicitado no existe.\n    \n- `500 Internal Server Error`: Error inesperado en el servidor.\n    \n\nCuando sea posible, cada endpoint detallará sus códigos de error específicos y estructura de respuesta en su propia descripción."
     },
     {
       "name": "Resumen"
