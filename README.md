@@ -8,6 +8,13 @@ Ejemplo de generación:
 npx @redocly/cli build-docs TalentoPublicoOpenApi3Json.json -o index.html
 ```
 
+O con plantilla:
+
+```bash
+npx @redocly/cli build-docs TalentoPublicoOpenApi3Json.json -t custom-template.hbs -o index.html
+```
+
+
 Tambien se puede instalar con npm usando:
 
 ```bash
