@@ -1,0 +1,34 @@
+{
+  "get": {
+    "tags": [
+      "Competencias360"
+    ],
+    "summary": "PersonasAEvaluar",
+    "description": "Para listar los usuarios que el usuario en sesión debe evaluar de un proceso elegido. (Usado en el  \nformulario estandar)  \nNecesitamos una sesión activa previa, accedemos al servicio REST tipo GET en la url end point  \n{urlBaseTalento}/html/valoracion360/personasAEvaluar/{{codEvaluacion}}.json\n\n**Parámetros tipo query**:\n\n- **query** Para filtrar por nombre si se desea NO\n    \n- **estado** Para filtrar por estados si se desea, ej: PENDIENTE, ENCURSO,FINALIZADA, ECHAZADA. NO es obligatorio\n    \n\nLa foto del usuario se toma a partir de su código con la url: ../html/foto/descargaralt/\\[cod_usuario\\]/2  \nestadoCalificacion nos indica la bandera de si el usuario a calificar esta: pendiente(0), en progreso (3),  \nrechazado(2) o finalizado (1)  \nEl codAsignacion es importante más adelante",
+    "operationId": "PersonasAEvaluar",
+    "parameters": [
+      {
+        "name": "codEvaluacion",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

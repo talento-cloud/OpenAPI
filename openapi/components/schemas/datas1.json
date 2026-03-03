@@ -1,0 +1,50 @@
+{
+  "title": "datas1",
+  "required": [
+    "codigoOperador",
+    "rol",
+    "observacion",
+    "calificacion",
+    "evaluacion",
+    "competencia",
+    "pregunta"
+  ],
+  "type": "object",
+  "properties": {
+    "codigoOperador": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "rol": {
+      "type": "string"
+    },
+    "observacion": {
+      "type": "string"
+    },
+    "calificacion": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "evaluacion": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "competencia": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "pregunta": {
+      "type": "integer",
+      "format": "int32"
+    }
+  },
+  "example": {
+    "codigoOperador": 72,
+    "rol": "j",
+    "observacion": "",
+    "calificacion": 60,
+    "evaluacion": 237,
+    "competencia": 2503,
+    "pregunta": 7501
+  }
+}

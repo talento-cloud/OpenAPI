@@ -1,0 +1,23 @@
+{
+  "get": {
+    "tags": [
+      "CertificadoLaboral"
+    ],
+    "summary": "previewPlantilla",
+    "operationId": "previewPlantilla",
+    "parameters": [],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "http://example.com",
+        "variables": {}
+      }
+    ]
+  }
+}

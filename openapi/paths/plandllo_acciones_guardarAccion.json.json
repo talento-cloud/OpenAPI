@@ -1,0 +1,220 @@
+{
+  "post": {
+    "tags": [
+      "PlanDesarrollo"
+    ],
+    "summary": "guardarAccion",
+    "description": "Para guardar una acción de plan de desarrollo de un usuario",
+    "operationId": "guardarAccion",
+    "parameters": [
+      {
+        "name": "codigoAccion",
+        "in": "query",
+        "description": "Si es una acción nueva esto iría vacio",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "example": 354
+        }
+      },
+      {
+        "name": "planDllo",
+        "in": "query",
+        "description": "Código del plan de desarrollo al que se asociará la acción",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "example": 69
+        }
+      },
+      {
+        "name": "usuario",
+        "in": "query",
+        "description": "Código del usuario al que se asocia la acción",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "example": 1
+        }
+      },
+      {
+        "name": "seguimientosProgramados",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "example": []
+        }
+      },
+      {
+        "name": "tipo",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "example": 2
+        }
+      },
+      {
+        "name": "fuente",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "allOf": [
+            {
+              "$ref": "../components/schemas/fuente.json"
+            },
+            {
+              "example": {
+                "tipoPar": 3,
+                "necesidad": "NoObjNoCompetency",
+                "descripcion": "Una cosa que no es ni competencia ni objetivo",
+                "codigoPar": -1,
+                "codigoplanDllo": 69,
+                "usuario": 1,
+                "text": "NoObjNoCompetency"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "txtAccion",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "Lso cosa nostraa sdf asdf sd"
+        }
+      },
+      {
+        "name": "txtResultadoEsperado",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "recursos",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "evidenciaAccion",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "socioAccion",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "fechaCierre",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "29/05/2024"
+        }
+      },
+      {
+        "name": "ejecutado",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "on"
+        }
+      },
+      {
+        "name": "jefe",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "objetivo",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

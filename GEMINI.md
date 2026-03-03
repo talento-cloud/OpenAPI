@@ -19,3 +19,27 @@ This directory contains the API documentation for the "Talento Publico" API. It 
     ```bash
     npx @redocly/cli build-docs TalentoPublicoOpenApi3Json.json  -o index.html
     ```
+
+## Otros comandos utiles:
+Generación con plantilla personalizada:
+
+```bash
+npx @redocly/cli build-docs TalentoPublicoOpenApi3Json.json -t custom-template.hbs -o index.html
+```
+
+
+Tambien se puede instalar con npm usando:
+
+```bash
+npm install -g @redocly/cli
+```
+
+Para dividir archivo openapi:
+```bash
+redocly split .\TalentoPublicoOpenApi3Json.json --outDir=openapi
+```
+
+Para volver a unir divididos:
+```bash
+redocly bundle openapi/openapi.json --output dist/openapi.json
+```

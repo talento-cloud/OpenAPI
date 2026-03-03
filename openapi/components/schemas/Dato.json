@@ -1,0 +1,187 @@
+{
+  "title": "Dato",
+  "required": [
+    "descripcion",
+    "cod_beneficio",
+    "fecha_consumo",
+    "periodicidad",
+    "estado",
+    "fecha_vencimiento",
+    "promedio_calificaciones",
+    "titulo",
+    "dos",
+    "porcentaje_unos",
+    "algun_consumido",
+    "unos",
+    "cod_asignacion",
+    "enviar_notificacion",
+    "cincos",
+    "fila",
+    "tres",
+    "orden",
+    "porcentaje_tres",
+    "fecha_solicitud",
+    "porcentaje_cuatros",
+    "requiere_archivo",
+    "porcentaje_dos",
+    "satisfaccion_calificable",
+    "cantidad_calificaciones",
+    "puntos",
+    "cuatros",
+    "porcentaje_cincos",
+    "banner_nombre",
+    "condiciones",
+    "categoria_beneficio"
+  ],
+  "type": "object",
+  "properties": {
+    "descripcion": {
+      "type": "string"
+    },
+    "cod_beneficio": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "fecha_consumo": {
+      "type": "string",
+      "nullable": true
+    },
+    "periodicidad": {
+      "type": "string"
+    },
+    "estado": {
+      "type": "string",
+      "nullable": true
+    },
+    "fecha_vencimiento": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "promedio_calificaciones": {
+      "type": "string",
+      "nullable": true
+    },
+    "titulo": {
+      "type": "string"
+    },
+    "dos": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "porcentaje_unos": {
+      "type": "string",
+      "nullable": true
+    },
+    "algun_consumido": {
+      "type": "boolean"
+    },
+    "unos": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "cod_asignacion": {
+      "type": "string",
+      "nullable": true
+    },
+    "enviar_notificacion": {
+      "type": "boolean"
+    },
+    "cincos": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "fila": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "tres": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "orden": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "porcentaje_tres": {
+      "type": "string",
+      "nullable": true
+    },
+    "fecha_solicitud": {
+      "type": "string",
+      "nullable": true
+    },
+    "porcentaje_cuatros": {
+      "type": "string",
+      "nullable": true
+    },
+    "requiere_archivo": {
+      "type": "boolean"
+    },
+    "porcentaje_dos": {
+      "type": "string",
+      "nullable": true
+    },
+    "satisfaccion_calificable": {
+      "type": "boolean"
+    },
+    "cantidad_calificaciones": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "puntos": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "cuatros": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "porcentaje_cincos": {
+      "type": "string",
+      "nullable": true
+    },
+    "banner_nombre": {
+      "type": "string",
+      "nullable": true
+    },
+    "condiciones": {
+      "type": "string"
+    },
+    "categoria_beneficio": {
+      "type": "string"
+    }
+  },
+  "example": {
+    "descripcion": "Es un beneficio cualquiera para  probar beneficios que tienen formularios dinámicos y adicionalmente pedimos un archivo",
+    "cod_beneficio": 171,
+    "fecha_consumo": null,
+    "periodicidad": "MENSUAL",
+    "estado": null,
+    "fecha_vencimiento": 1754024399999,
+    "promedio_calificaciones": null,
+    "titulo": "Beneficio con formulario",
+    "dos": 0,
+    "porcentaje_unos": null,
+    "algun_consumido": false,
+    "unos": 0,
+    "cod_asignacion": null,
+    "enviar_notificacion": false,
+    "cincos": 0,
+    "fila": 1,
+    "tres": 0,
+    "orden": 2,
+    "porcentaje_tres": null,
+    "fecha_solicitud": null,
+    "porcentaje_cuatros": null,
+    "requiere_archivo": true,
+    "porcentaje_dos": null,
+    "satisfaccion_calificable": false,
+    "cantidad_calificaciones": 0,
+    "puntos": 0,
+    "cuatros": 0,
+    "porcentaje_cincos": null,
+    "banner_nombre": null,
+    "condiciones": "Este es un beneficio que pide un archivo para su solicitud y tambien tiene campos dinámicos​",
+    "categoria_beneficio": "General"
+  }
+}

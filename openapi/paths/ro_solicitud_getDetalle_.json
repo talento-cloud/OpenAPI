@@ -1,0 +1,128 @@
+{
+  "get": {
+    "tags": [
+      "Ausentismos"
+    ],
+    "summary": "getDetalleSolicitud",
+    "description": "## Descripción\n\nRecupera toda la información correspondiente a la solicitud de ausentismos y la entrega, contiene info básica de la solicitud así como documentos asociados y flujo de aprobación.\n\n/ag/ausentismos/ro/solicitud/getDetalle/{codSolicitud}  \n  \n\n## Manejo de errores\n\nLos errores habituales pueden incluir:\n\n- `400 Bad Request`: Parámetros requeridos faltantes o con formato inválido.\n    \n- `401 Unauthorized`: Token JWT inválido, expirado o ausente.\n    \n- `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.\n    \n- `404 Not Found`: El recurso solicitado no existe.\n    \n- `500 Internal Server Error`: Error inesperado en el servidor.\n    \n\nCuando sea posible, cada endpoint detallará sus códigos de error específicos y estructura de respuesta en su propia descripción.",
+    "operationId": "getDetalleSolicitud",
+    "parameters": [],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "headers": {
+          "content-length": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "1223"
+              }
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "../components/schemas/getDetalleSolicitud.json"
+                },
+                {
+                  "example": {
+                    "usuario": 1,
+                    "tipoAusentismo": 1,
+                    "fechaInicio": 1768453200000,
+                    "fechaFin": 1768539600000,
+                    "horaInicial": "13:00:00",
+                    "horaFinal": "17:30:00",
+                    "observaciones": "Mi primera solicitud de ausentismo por familiar enfermo",
+                    "codigo": 6,
+                    "nombreUsuario": "Juan Fernando Osorio OspinaTest",
+                    "estado": "PENDIENTE",
+                    "documentos": [
+                      {
+                        "codigo": 5,
+                        "nombreOriginalArchivo": "fotografia",
+                        "urlPresigned": "https://talento-archivos-desarrollo.s3.amazonaws.com/archivos/talento_test/ausentismos/cesantias_6_9f367fdb-4407-453f-abd4-61c2402200cd_1772115313289U_1_N_6_fotografia.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20260226T145646Z&X-Amz-SignedHeaders=host&X-Amz-Credential=AKIAUEA3SQNBJOBO5WOX%2F20260226%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Expires=1800&X-Amz-Signature=a7f03caea2d0a02c7ff452cda2a1a462f8777358a139dcd821c68995a23066cf",
+                        "extensionArchivo": "jpg"
+                      }
+                    ],
+                    "nombreTipoAusentismo": "Familia enferma",
+                    "nivelesAprobadores": 2,
+                    "aprobadores": [
+                      {
+                        "tipoAprobador": "LIDER",
+                        "aprobadorRealCodigo": 72,
+                        "codigo": 9,
+                        "estado": "APROBADO",
+                        "aprobadorRealCargo": "Presidente",
+                        "fechaAprobacion": 1772116650771,
+                        "observaciones": "Le damos el permiso",
+                        "aprobadorRealNombre": "Diego Uribe Garcia"
+                      },
+                      {
+                        "tipoAprobador": "PERSONA",
+                        "codigo": 10,
+                        "estado": "PENDIENTE"
+                      }
+                    ],
+                    "codAprobador": 10
+                  }
+                }
+              ]
+            },
+            "example": {
+              "usuario": 1,
+              "tipoAusentismo": 1,
+              "fechaInicio": 1768453200000,
+              "fechaFin": 1768539600000,
+              "horaInicial": "13:00:00",
+              "horaFinal": "17:30:00",
+              "observaciones": "Mi primera solicitud de ausentismo por familiar enfermo",
+              "codigo": 6,
+              "nombreUsuario": "Juan Fernando Osorio OspinaTest",
+              "estado": "PENDIENTE",
+              "documentos": [
+                {
+                  "codigo": 5,
+                  "nombreOriginalArchivo": "fotografia",
+                  "urlPresigned": "https://talento-archivos-desarrollo.s3.amazonaws.com/archivos/talento_test/ausentismos/cesantias_6_9f367fdb-4407-453f-abd4-61c2402200cd_1772115313289U_1_N_6_fotografia.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20260226T145646Z&X-Amz-SignedHeaders=host&X-Amz-Credential=AKIAUEA3SQNBJOBO5WOX%2F20260226%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Expires=1800&X-Amz-Signature=a7f03caea2d0a02c7ff452cda2a1a462f8777358a139dcd821c68995a23066cf",
+                  "extensionArchivo": "jpg"
+                }
+              ],
+              "nombreTipoAusentismo": "Familia enferma",
+              "nivelesAprobadores": 2,
+              "aprobadores": [
+                {
+                  "tipoAprobador": "LIDER",
+                  "aprobadorRealCodigo": 72,
+                  "codigo": 9,
+                  "estado": "APROBADO",
+                  "aprobadorRealCargo": "Presidente",
+                  "fechaAprobacion": 1772116650771,
+                  "observaciones": "Le damos el permiso",
+                  "aprobadorRealNombre": "Diego Uribe Garcia"
+                },
+                {
+                  "tipoAprobador": "PERSONA",
+                  "codigo": 10,
+                  "estado": "PENDIENTE"
+                }
+              ],
+              "codAprobador": 10
+            }
+          }
+        }
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://ag/ausentismos",
+        "variables": {}
+      }
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "post": {
+    "tags": [
+      "Resumen"
+    ],
+    "summary": "noticias/imagen/cargar/{{cod}}.json",
+    "operationId": "noticias/imagen/cargar/{{cod}}.json",
+    "parameters": [
+      {
+        "name": "cod",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "multipart/form-data": {
+          "encoding": {},
+          "schema": {
+            "required": [
+              "archivo"
+            ],
+            "type": "object",
+            "properties": {
+              "archivo": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        }
+      },
+      "required": false
+    },
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

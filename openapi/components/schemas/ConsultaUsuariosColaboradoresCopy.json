@@ -1,0 +1,452 @@
+{
+  "title": "ConsultaUsuariosColaboradoresCopy",
+  "required": [
+    "datos",
+    "success",
+    "cantidad"
+  ],
+  "type": "object",
+  "properties": {
+    "datos": {
+      "type": "array",
+      "items": {
+        "$ref": "./Dato3.json"
+      },
+      "description": ""
+    },
+    "success": {
+      "type": "boolean"
+    },
+    "cantidad": {
+      "type": "integer",
+      "format": "int32"
+    }
+  },
+  "example": {
+    "datos": [
+      {
+        "codigo": 1,
+        "tipo": "Yo",
+        "jefe": 72,
+        "cargo": "Director de Operaciones",
+        "nombre": "Yo"
+      },
+      {
+        "codigo": 238,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 119,
+        "cargo": "Analista de nómina.",
+        "nombre": "Ana Mariax Gomez Ramirez",
+        "url": "../html/foto/descargaralt/238/2"
+      },
+      {
+        "codigo": 119,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 130,
+        "cargo": "Jefe de Nomina",
+        "nombre": "Blanca Ruiz Suarez",
+        "url": "../html/foto/descargaralt/119/2"
+      },
+      {
+        "codigo": 178,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 1,
+        "cargo": "Analista de nómina",
+        "nombre": "Carlos Mario Sierra Casas",
+        "url": "../html/foto/descargaralt/178/2"
+      },
+      {
+        "codigo": 68,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 1,
+        "cargo": "Analista de compras v2",
+        "nombre": "Catalina Fernandez Gómez",
+        "url": "../html/foto/descargaralt/68/2"
+      },
+      {
+        "codigo": 143,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 119,
+        "cargo": "Analista de nómina",
+        "nombre": "Diana Lopera",
+        "url": "../html/foto/descargaralt/143/2"
+      },
+      {
+        "codigo": 72,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 72,
+        "cargo": "Presidente",
+        "nombre": "Diego Uribe Garcia",
+        "url": "../html/foto/descargaralt/72/2"
+      },
+      {
+        "codigo": 131,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 78,
+        "cargo": "Ejecutivo de cuentas",
+        "nombre": "Edith Figueroa Villa",
+        "url": "../html/foto/descargaralt/131/2"
+      },
+      {
+        "codigo": 64,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 1,
+        "cargo": "Coordinador de Calidad",
+        "nombre": "Eliana Arias Escobar",
+        "url": "../html/foto/descargaralt/64/2"
+      },
+      {
+        "codigo": 73,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 1,
+        "cargo": "Director de Tecnología",
+        "nombre": "Elizabeth Taborda Alzate",
+        "url": "../html/foto/descargaralt/73/2"
+      },
+      {
+        "codigo": 124,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 69,
+        "cargo": "Analista Desarrollador vx",
+        "nombre": "Emanuel Arias Cardoso",
+        "url": "../html/foto/descargaralt/124/2"
+      },
+      {
+        "codigo": 149,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 122,
+        "cargo": "Jefe de Negociación v2.",
+        "nombre": "Ernesto Torres Jiménez",
+        "url": "../html/foto/descargaralt/149/2"
+      },
+      {
+        "codigo": 101,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 73,
+        "cargo": "Analista Desarrollador vx",
+        "nombre": "Felipe Hurtado Alvarez",
+        "url": "../html/foto/descargaralt/101/2"
+      },
+      {
+        "codigo": 125,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 1,
+        "cargo": "Asistente de Mantenimiento",
+        "nombre": "Fernando Andres Vásquez Salazar",
+        "url": "../html/foto/descargaralt/125/2"
+      },
+      {
+        "codigo": 118,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 78,
+        "cargo": "Jefe de Gestión Humana",
+        "nombre": "Guillermo Rios Ochoa",
+        "url": "../html/foto/descargaralt/118/2"
+      },
+      {
+        "codigo": 106,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 1,
+        "cargo": "Auxiliar de Operaciones",
+        "nombre": "Gustavo Garrido Lopez",
+        "url": "../html/foto/descargaralt/106/2"
+      },
+      {
+        "codigo": 122,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 69,
+        "cargo": "Analista Desarrollador vx",
+        "nombre": "Ignacio Mora",
+        "url": "../html/foto/descargaralt/122/2"
+      },
+      {
+        "codigo": 132,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 78,
+        "cargo": "Gerente de Producto",
+        "nombre": "Javier Hurtado Jaramillo",
+        "url": "../html/foto/descargaralt/132/2"
+      },
+      {
+        "codigo": 77,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 78,
+        "cargo": "Auxiliar de servicio al cliente",
+        "nombre": "Jorge Alexander Anaya Ruiz",
+        "url": "../html/foto/descargaralt/77/2"
+      },
+      {
+        "codigo": 130,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 72,
+        "cargo": "Director Financiero",
+        "nombre": "José Fernando Angel Sanchez",
+        "url": "../html/foto/descargaralt/130/2"
+      },
+      {
+        "codigo": 127,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 78,
+        "cargo": "Comercial",
+        "nombre": "José Miguel Narvaez Nuñez",
+        "url": "../html/foto/descargaralt/127/2"
+      },
+      {
+        "codigo": 25,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 72,
+        "cargo": "Director de Gestión Humana",
+        "nombre": "Juan Carlos Velez Sepúlveda",
+        "url": "../html/foto/descargaralt/25/2"
+      },
+      {
+        "codigo": 104,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 117,
+        "cargo": "Auxiliar de Operaciones",
+        "nombre": "Juan Daniel Diaz Boos",
+        "url": "../html/foto/descargaralt/104/2"
+      },
+      {
+        "codigo": 126,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 78,
+        "cargo": "Comercial",
+        "nombre": "Juan Diego Jimenez",
+        "url": "../html/foto/descargaralt/126/2"
+      },
+      {
+        "codigo": 117,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 1,
+        "cargo": "Jefe de Producción",
+        "nombre": "Juan Diego Rios Pedraza",
+        "url": "../html/foto/descargaralt/117/2"
+      },
+      {
+        "codigo": 83,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 78,
+        "cargo": "Director Servicios",
+        "nombre": "Juan Diego Sanchez",
+        "url": "../html/foto/descargaralt/83/2"
+      },
+      {
+        "codigo": 78,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 72,
+        "cargo": "Director Comercial",
+        "nombre": "Juan Guillermo Jimenez Pérez",
+        "url": "../html/foto/descargaralt/78/2"
+      },
+      {
+        "codigo": 103,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 1,
+        "cargo": "Auxiliar de Operaciones",
+        "nombre": "Juan Sebastian Alvarez Perez",
+        "url": "../html/foto/descargaralt/103/2"
+      },
+      {
+        "codigo": 69,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 72,
+        "cargo": "Director de Tecnologia y desarrollo",
+        "nombre": "Julian Andres Osorio Restrepo",
+        "url": "../html/foto/descargaralt/69/2"
+      },
+      {
+        "codigo": 91,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 77,
+        "cargo": "Auxiliar de servicio al cliente",
+        "nombre": "Kelly Johana Nuñez Montes",
+        "url": "../html/foto/descargaralt/91/2"
+      },
+      {
+        "codigo": 111,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 69,
+        "cargo": "Arquitecto TI",
+        "nombre": "Laura Catalina Ardila Gomez",
+        "url": "../html/foto/descargaralt/111/2"
+      },
+      {
+        "codigo": 74,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 130,
+        "cargo": "Auxiliar de tesorería",
+        "nombre": "Luis Miguel Baldovino Cataño",
+        "url": "../html/foto/descargaralt/74/2"
+      },
+      {
+        "codigo": 128,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 1,
+        "cargo": "Coordinador de Abastecimiento",
+        "nombre": "Maria Elsi Noriega Barranquero",
+        "url": "../html/foto/descargaralt/128/2"
+      },
+      {
+        "codigo": 120,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 130,
+        "cargo": "Jefe de Negociación v2",
+        "nombre": "Maria Fernanda Tuberquia",
+        "url": "../html/foto/descargaralt/120/2"
+      },
+      {
+        "codigo": 123,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 69,
+        "cargo": "Analista Desarrollador vx",
+        "nombre": "Maria Teresa Berrio Bustos",
+        "url": "../html/foto/descargaralt/123/2"
+      },
+      {
+        "codigo": 84,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 116,
+        "cargo": "Auxiliar de Selección",
+        "nombre": "Marta Lucía Posada Osorio",
+        "url": "../html/foto/descargaralt/84/2"
+      },
+      {
+        "codigo": 19,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 111,
+        "cargo": "Asistente de tecnología",
+        "nombre": "Milena Montiel Sierra",
+        "url": "../html/foto/descargaralt/19/2"
+      },
+      {
+        "codigo": 121,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 69,
+        "cargo": "Analista Desarrollador vx",
+        "nombre": "Nadia Amariles Serna",
+        "url": "../html/foto/descargaralt/121/2"
+      },
+      {
+        "codigo": 146,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 143,
+        "cargo": "Asistente de Gestión Humana",
+        "nombre": "Omar Quintero Perez",
+        "url": "../html/foto/descargaralt/146/2"
+      },
+      {
+        "codigo": 99,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 116,
+        "cargo": "Asistente de Selección v3",
+        "nombre": "Ricardo Urrego Higuita",
+        "url": "../html/foto/descargaralt/99/2"
+      },
+      {
+        "codigo": 116,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 25,
+        "cargo": "Jefe de selección",
+        "nombre": "Roberto Amaris Celis",
+        "url": "../html/foto/descargaralt/116/2"
+      },
+      {
+        "codigo": 129,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 69,
+        "cargo": "Desarrollador Senior",
+        "nombre": "Salomón De Jesús López Arrebalo",
+        "url": "../html/foto/descargaralt/129/2"
+      },
+      {
+        "codigo": 23,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 78,
+        "cargo": "Comercial",
+        "nombre": "Santiago Blandon Castro",
+        "url": "../html/foto/descargaralt/23/2"
+      },
+      {
+        "codigo": 24,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 132,
+        "cargo": "Jefe Contable",
+        "nombre": "Sara Ruiz Suarez",
+        "url": "../html/foto/descargaralt/24/2"
+      },
+      {
+        "codigo": 98,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 25,
+        "cargo": "Jefe de SST",
+        "nombre": "Yolanda Torres Velez",
+        "url": "../html/foto/descargaralt/98/2"
+      },
+      {
+        "codigo": 12,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 1,
+        "cargo": "Asistente de Mantenimiento.",
+        "nombre": "ZFerney Gutierrez Carmona",
+        "url": "../html/foto/descargaralt/12/2"
+      },
+      {
+        "codigo": 150,
+        "tipo": "Colaborador",
+        "codigoGrupo": null,
+        "jefe": 106,
+        "cargo": "Director Calidad.",
+        "nombre": "Zuly Perez Gomez",
+        "url": "../html/foto/descargaralt/150/2"
+      }
+    ],
+    "success": true,
+    "cantidad": 47
+  }
+}

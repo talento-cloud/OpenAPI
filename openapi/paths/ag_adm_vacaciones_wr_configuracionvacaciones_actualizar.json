@@ -1,0 +1,88 @@
+{
+  "post": {
+    "tags": [
+      "Vacaciones"
+    ],
+    "summary": "actualizarConfiguracionVacaciones",
+    "operationId": "actualizarConfiguracionVacaciones",
+    "parameters": [],
+    "requestBody": {
+      "description": "",
+      "content": {
+        "application/json": {
+          "schema": {
+            "allOf": [
+              {
+                "$ref": "../components/schemas/actualizarConfiguracionVacacionesRequest.json"
+              },
+              {
+                "example": {
+                  "minimoDiasSolicitar": 1,
+                  "minimoDiasAviso": 4,
+                  "nivelesAprobadores": 3,
+                  "mensajeParametrizado": "Las vacaciones tienen restricciones para poderse aprobar"
+                }
+              }
+            ]
+          },
+          "example": {
+            "minimoDiasSolicitar": 1,
+            "minimoDiasAviso": 4,
+            "nivelesAprobadores": 3,
+            "mensajeParametrizado": "Las vacaciones tienen restricciones para poderse aprobar"
+          }
+        }
+      },
+      "required": true
+    },
+    "responses": {
+      "200": {
+        "description": "OK",
+        "headers": {
+          "content-length": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "156"
+              }
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "../components/schemas/solicitarVacacionesCopy.json"
+                },
+                {
+                  "example": {
+                    "minimo-dias-solicitar": 1,
+                    "minimo-dias-aviso": 4,
+                    "mensaje-parametrizado": "Las vacaciones tienen restricciones para poderse aprobar",
+                    "niveles-aprobadores": 3
+                  }
+                }
+              ]
+            },
+            "example": {
+              "minimo-dias-solicitar": 1,
+              "minimo-dias-aviso": 4,
+              "mensaje-parametrizado": "Las vacaciones tienen restricciones para poderse aprobar",
+              "niveles-aprobadores": 3
+            }
+          }
+        }
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "http://example.com",
+        "variables": {}
+      }
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "post": {
+    "tags": [
+      "Acordeon"
+    ],
+    "summary": "terminarEvaluacion",
+    "description": "Cuando el evaluador ya terminó de calificar todas las preguntas debe terminar la evaluación indicando unas observaciones generales.  \nNecesitamos un JWT, accedemos al servicio REST tipo POST en la url endpoint  \n{urlBaseTalento}/html/valoracion360/acordeon/terminar-evaluacion/{{codAsignacion2}}.json",
+    "operationId": "terminarEvaluacion",
+    "parameters": [
+      {
+        "name": "observaciones",
+        "in": "query",
+        "description": "Puede ser obligatorio según configuraciones",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "Eres una excelente persona y como parte del equipo siento que eres una parte fundamental de élOrganizado, capaz y con amplias actitudes de Líder.Me encantaría verte mas fuerte con competencias de liderazgo y gestion de equipos, creo que tienes oportunidades en ese sentido"
+        }
+      },
+      {
+        "name": "codAsignacion2",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

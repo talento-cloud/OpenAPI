@@ -1,0 +1,61 @@
+{
+  "post": {
+    "tags": [
+      "OKR"
+    ],
+    "summary": "cargarEvidenciaKR",
+    "description": "Para cargar evidencias a un KR",
+    "operationId": "cargarEvidenciaKR",
+    "parameters": [
+      {
+        "name": "codKR",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "multipart/form-data": {
+          "encoding": {},
+          "schema": {
+            "required": [
+              "archivo",
+              "tipoUsuario"
+            ],
+            "type": "object",
+            "properties": {
+              "archivo": {
+                "type": "string",
+                "description": "Binarios del archivo",
+                "format": "binary"
+              },
+              "tipoUsuario": {
+                "type": "string",
+                "description": "o LIDER",
+                "example": "COLABORADOR"
+              }
+            }
+          }
+        }
+      },
+      "required": false
+    },
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

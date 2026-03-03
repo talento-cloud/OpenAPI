@@ -1,0 +1,73 @@
+{
+  "title": "Dato9",
+  "required": [
+    "estado",
+    "creado",
+    "fecha_final",
+    "cod_solicitud",
+    "nombrecompleto",
+    "fecha_inicial",
+    "usuario",
+    "jefe",
+    "orden",
+    "cargo",
+    "nivel_aprobador_codigo"
+  ],
+  "type": "object",
+  "properties": {
+    "estado": {
+      "type": "string"
+    },
+    "creado": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "fecha_final": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "cod_solicitud": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "nombrecompleto": {
+      "type": "string"
+    },
+    "fecha_inicial": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "usuario": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "jefe": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "orden": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "cargo": {
+      "type": "string"
+    },
+    "nivel_aprobador_codigo": {
+      "type": "integer",
+      "format": "int32"
+    }
+  },
+  "example": {
+    "estado": "PENDIENTE",
+    "creado": 1772115313272,
+    "fecha_final": 1768539600000,
+    "cod_solicitud": 6,
+    "nombrecompleto": "Juan Fernando Osorio OspinaTest",
+    "fecha_inicial": 1768453200000,
+    "usuario": 1,
+    "jefe": 72,
+    "orden": 0,
+    "cargo": "Director de Operaciones",
+    "nivel_aprobador_codigo": 9
+  }
+}

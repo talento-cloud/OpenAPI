@@ -1,0 +1,65 @@
+{
+  "title": "Datum2",
+  "required": [
+    "codigo",
+    "creado",
+    "modificado",
+    "nombre",
+    "categoria",
+    "requiereSoporte",
+    "esRemunerado",
+    "gestionadoPor",
+    "nivelesAprobadores"
+  ],
+  "type": "object",
+  "properties": {
+    "codigo": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "creado": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "modificado": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "nombre": {
+      "type": "string"
+    },
+    "categoria": {
+      "$ref": "./Categoria.json"
+    },
+    "requiereSoporte": {
+      "type": "boolean"
+    },
+    "esRemunerado": {
+      "type": "boolean"
+    },
+    "gestionadoPor": {
+      "type": "string"
+    },
+    "nivelesAprobadores": {
+      "type": "integer",
+      "format": "int32"
+    }
+  },
+  "example": {
+    "codigo": 15,
+    "creado": 1771862983307,
+    "modificado": 1771862983307,
+    "nombre": "Ausentismo 624b28e1-cd63-40e7-b546-8e482f575697",
+    "categoria": {
+      "codigo": 2071,
+      "activo": "s",
+      "nombre": "Otro",
+      "descripcion": "Categoria de tipos de ausentismo",
+      "tipo": "CATEGORIA_TIPO_AUSENTISMO"
+    },
+    "requiereSoporte": false,
+    "esRemunerado": false,
+    "gestionadoPor": "DIAS_Y_HORAS",
+    "nivelesAprobadores": 0
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "title": "guardarFlujoAprobacionRequest",
+  "required": [
+    "codigo",
+    "tipo",
+    "nivel"
+  ],
+  "type": "object",
+  "properties": {
+    "codigo": {
+      "type": "string",
+      "nullable": true
+    },
+    "tipo": {
+      "type": "string"
+    },
+    "nivel": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "codigos": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "format": "int32"
+      },
+      "description": ""
+    }
+  },
+  "example": {
+    "codigo": null,
+    "tipo": "LIDER",
+    "nivel": 1
+  }
+}

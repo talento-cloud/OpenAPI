@@ -1,0 +1,27 @@
+{
+  "title": "rechazarSolicitudRequest",
+  "required": [
+    "codSolicitud",
+    "observaciones",
+    "codigoAprobador"
+  ],
+  "type": "object",
+  "properties": {
+    "codSolicitud": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "observaciones": {
+      "type": "string"
+    },
+    "codigoAprobador": {
+      "type": "integer",
+      "format": "int32"
+    }
+  },
+  "example": {
+    "codSolicitud": 6,
+    "observaciones": "NO le damos el permiso",
+    "codigoAprobador": 10
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "get": {
+    "tags": [
+      "OKR"
+    ],
+    "summary": "listarResultadosClave",
+    "description": "Para listar los resultados clave de un OKR dado",
+    "operationId": "listarResultadosClave",
+    "parameters": [
+      {
+        "name": "cargarAcciones",
+        "in": "query",
+        "description": "Si se desea tener de una vez la lista de acciones asociadas al resultado clave",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "boolean",
+          "example": true
+        }
+      },
+      {
+        "name": "verEvidencias",
+        "in": "query",
+        "description": "Si false solo ve las evidencias que le pertenece en caso contrario ve todas",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "boolean",
+          "example": true
+        }
+      },
+      {
+        "name": "codOKR",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

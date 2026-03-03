@@ -1,0 +1,34 @@
+{
+  "get": {
+    "tags": [
+      "Competencias360"
+    ],
+    "summary": "CargarPregunta",
+    "description": "En el formulario estándar (tipo wizard) existe un endpoint que te da los detalles de preguntas una a la  \nvez según se va respondiendo y avanzando cuando se le da al botón siguiente.  \nNecesitamos una sesión activa previa, accedemos al servicio REST tipo GET en la url endpoint  \n{urlBaseTalento}/html/valoracion360/cargar-informacion-pregunta/{{codAsignacion}}/-1.json\n\n**Parámetros tipo query:**\n\n- **primer_pregunta**: Si se quiere devolver a la primera pregunta se manda con true y dirección ATRAS. No es obligatorio\n    \n\nEl -1 es si es la primera vez que entramos, se puede cambiar por SIGUIENTE o ATRAS para movernos  \nentre preguntas. El servicio siempre tratará de entregarnos la ultima pregunta/comportamiento sin  \nresponder.\n\nEl resultado es la pregunta con su competencia asociada, además tiene la escala  \ncon que se puede calificar y si ya estaba respondida la pregunta indicará cual fue la  \nopción seleccionada previamente.",
+    "operationId": "CargarPregunta",
+    "parameters": [
+      {
+        "name": "codAsignacion",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

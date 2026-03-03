@@ -1,0 +1,87 @@
+{
+  "post": {
+    "tags": [
+      "PlanDesarrollo"
+    ],
+    "summary": "actualizarPlanDllo",
+    "description": "Para actualizar las expectativas, fortalezas u objetivos del plan de desarrollo del usuario.",
+    "operationId": "actualizarPlanDllo",
+    "parameters": [
+      {
+        "name": "codigo",
+        "in": "query",
+        "description": "Código del plan de desarrollo del usuario",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "example": 69
+        }
+      },
+      {
+        "name": "txtObjetivos",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "Incorporar programas de apoyo y seguimiento en el área de calidad para obtener un producto con estándares de eficiencia y eficacia muy altos."
+        }
+      },
+      {
+        "name": "txtMisFortalezas",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "Experiencia en el área de calidad o otras fortalezas"
+        }
+      },
+      {
+        "name": "txtMisExpectativas",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "Obtener resultados en calidad por encima de lo esperado y tener un crecimiento personal y profesional dentro de la compañía."
+        }
+      },
+      {
+        "name": "usuario",
+        "in": "query",
+        "description": "Usuario duenio",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "example": 1
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

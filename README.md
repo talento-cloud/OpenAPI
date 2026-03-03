@@ -20,6 +20,16 @@ Tambien se puede instalar con npm usando:
 npm install -g @redocly/cli
 ```
 
+Para dividir archivo openapi:
+```bash
+redocly split .\TalentoPublicoOpenApi3Json.json --outDir=openapi
+```
+
+Para volver a unir divididos:
+```bash
+redocly bundle openapi/openapi.json --output dist/openapi.json
+```
+
 #### Bibliografía
 - https://redocly.com/docs/cli/commands/build-docs#use-a-custom-template
 - https://github.com/Redocly/redoc

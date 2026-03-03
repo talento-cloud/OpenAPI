@@ -1,0 +1,130 @@
+{
+  "put": {
+    "tags": [
+      "PlanDesarrollo"
+    ],
+    "summary": "archivoPrueba/cargarS3",
+    "description": "Put en AWS S3",
+    "operationId": "archivoPrueba/cargarS3",
+    "parameters": [
+      {
+        "name": "x-amz-acl",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "bucket-owner-full-control"
+        }
+      },
+      {
+        "name": "X-Amz-Algorithm",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "AWS4-HMAC-SHA256"
+        }
+      },
+      {
+        "name": "X-Amz-Date",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "20241016T211400Z"
+        }
+      },
+      {
+        "name": "X-Amz-SignedHeaders",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "host"
+        }
+      },
+      {
+        "name": "X-Amz-Expires",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "example": 1799
+        }
+      },
+      {
+        "name": "X-Amz-Credential",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "AKIAUEA3SQNBLKX5YU54/20241016/us-east-2/s3/aws4_request"
+        }
+      },
+      {
+        "name": "X-Amz-Signature",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "f31c62ed86b731abcca6b9cc7d391f7fad2c55eacb7df46182ad60268777982c"
+        }
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "multipart/form-data": {
+          "encoding": {},
+          "schema": {
+            "required": [
+              "File"
+            ],
+            "type": "object",
+            "properties": {
+              "File": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        }
+      },
+      "required": false
+    },
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://juliantestboos.s3.us-east-2.amazonaws.com/archivos/talento_demo/transversal/plan_desarrollo/archivos",
+        "variables": {}
+      }
+    ]
+  }
+}

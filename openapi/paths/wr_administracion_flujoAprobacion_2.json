@@ -1,0 +1,323 @@
+{
+  "post": {
+    "tags": [
+      "Ausentismos"
+    ],
+    "summary": "guardarFlujoAprobacion",
+    "description": "## Descripción\n\nPara actualizar el flujo de aprobación de un tipo de ausentismo, se recibe un array json con los pasos del flujo de aprobación, si alguno viene con código es indicativo de que lo quiere modificar, en caso contrario es nuevo; pasos que no lleguen en el flujo y estén en la BD será inactivados.\n\n/ag/ausentismos/wr/administracion/flujoAprobacion/{codTipoAusentismo}  \n  \n\n## Manejo de errores\n\nLos errores habituales pueden incluir:\n\n- `400 Bad Request`: Parámetros requeridos faltantes o con formato inválido.\n    \n- `401 Unauthorized`: Token JWT inválido, expirado o ausente.\n    \n- `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.\n    \n- `404 Not Found`: El recurso solicitado no existe.\n    \n- `500 Internal Server Error`: Error inesperado en el servidor.\n    \n\nCuando sea posible, cada endpoint detallará sus códigos de error específicos y estructura de respuesta en su propia descripción.",
+    "operationId": "guardarFlujoAprobacion",
+    "parameters": [],
+    "requestBody": {
+      "description": "",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "../components/schemas/guardarFlujoAprobacionRequest.json"
+            },
+            "description": "",
+            "example": [
+              {
+                "codigo": null,
+                "tipo": "LIDER",
+                "nivel": 1
+              },
+              {
+                "codigo": null,
+                "tipo": "PERSONA",
+                "nivel": 2,
+                "codigos": [
+                  104,
+                  1
+                ]
+              },
+              {
+                "codigo": null,
+                "tipo": "ROL",
+                "nivel": 3,
+                "codigos": [
+                  7,
+                  4
+                ]
+              }
+            ]
+          },
+          "example": [
+            {
+              "codigo": null,
+              "tipo": "LIDER",
+              "nivel": 1
+            },
+            {
+              "codigo": null,
+              "tipo": "PERSONA",
+              "nivel": 2,
+              "codigos": [
+                104,
+                1
+              ]
+            },
+            {
+              "codigo": null,
+              "tipo": "ROL",
+              "nivel": 3,
+              "codigos": [
+                7,
+                4
+              ]
+            }
+          ]
+        }
+      },
+      "required": true
+    },
+    "responses": {
+      "200": {
+        "description": "OK",
+        "headers": {
+          "content-length": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "1704"
+              }
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "../components/schemas/guardarFlujoAprobacion.json"
+                },
+                {
+                  "example": {
+                    "data": [
+                      {
+                        "codigo": 1,
+                        "creado": 1771860150726,
+                        "modificado": 1771862635838,
+                        "tipoAusentismo": {
+                          "codigo": 2,
+                          "creado": 1771858460223,
+                          "modificado": 1771858460223,
+                          "nombre": "Ausentismo de21a677-ea68-46dc-8751-275c01815529",
+                          "categoria": {
+                            "codigo": 2071,
+                            "activo": "s",
+                            "nombre": "Otro",
+                            "descripcion": "Categoria de tipos de ausentismo",
+                            "tipo": "CATEGORIA_TIPO_AUSENTISMO"
+                          },
+                          "requiereSoporte": true,
+                          "esRemunerado": false,
+                          "gestionadoPor": "DIAS_Y_HORAS",
+                          "nivelesAprobadores": 3
+                        },
+                        "tipo": "LIDER",
+                        "nivel": 1
+                      },
+                      {
+                        "codigo": 3,
+                        "creado": 1771862635887,
+                        "modificado": 1771862635887,
+                        "tipoAusentismo": {
+                          "codigo": 2,
+                          "creado": 1771858460223,
+                          "modificado": 1771858460223,
+                          "nombre": "Ausentismo de21a677-ea68-46dc-8751-275c01815529",
+                          "categoria": {
+                            "codigo": 2071,
+                            "activo": "s",
+                            "nombre": "Otro",
+                            "descripcion": "Categoria de tipos de ausentismo",
+                            "tipo": "CATEGORIA_TIPO_AUSENTISMO"
+                          },
+                          "requiereSoporte": true,
+                          "esRemunerado": false,
+                          "gestionadoPor": "DIAS_Y_HORAS",
+                          "nivelesAprobadores": 3
+                        },
+                        "tipo": "PERSONA",
+                        "codigos": [
+                          104,
+                          1
+                        ],
+                        "nivel": 2,
+                        "codigosNombres": [
+                          {
+                            "codigo": 1,
+                            "nombre": "Juan Fernando Osorio OspinaTest"
+                          },
+                          {
+                            "codigo": 104,
+                            "nombre": "plantilla Juan Daniel Diaz Boos"
+                          }
+                        ]
+                      },
+                      {
+                        "codigo": 4,
+                        "creado": 1771862635983,
+                        "modificado": 1771862635983,
+                        "tipoAusentismo": {
+                          "codigo": 2,
+                          "creado": 1771858460223,
+                          "modificado": 1771858460223,
+                          "nombre": "Ausentismo de21a677-ea68-46dc-8751-275c01815529",
+                          "categoria": {
+                            "codigo": 2071,
+                            "activo": "s",
+                            "nombre": "Otro",
+                            "descripcion": "Categoria de tipos de ausentismo",
+                            "tipo": "CATEGORIA_TIPO_AUSENTISMO"
+                          },
+                          "requiereSoporte": true,
+                          "esRemunerado": false,
+                          "gestionadoPor": "DIAS_Y_HORAS",
+                          "nivelesAprobadores": 3
+                        },
+                        "tipo": "ROL",
+                        "codigos": [
+                          7,
+                          4
+                        ],
+                        "nivel": 3,
+                        "codigosNombres": [
+                          {
+                            "codigo": 4,
+                            "nombre": "Administrador Sistema"
+                          },
+                          {
+                            "codigo": 7,
+                            "nombre": "Administrador Selección"
+                          }
+                        ]
+                      }
+                    ],
+                    "success": true
+                  }
+                }
+              ]
+            },
+            "example": {
+              "data": [
+                {
+                  "codigo": 1,
+                  "creado": 1771860150726,
+                  "modificado": 1771862635838,
+                  "tipoAusentismo": {
+                    "codigo": 2,
+                    "creado": 1771858460223,
+                    "modificado": 1771858460223,
+                    "nombre": "Ausentismo de21a677-ea68-46dc-8751-275c01815529",
+                    "categoria": {
+                      "codigo": 2071,
+                      "activo": "s",
+                      "nombre": "Otro",
+                      "descripcion": "Categoria de tipos de ausentismo",
+                      "tipo": "CATEGORIA_TIPO_AUSENTISMO"
+                    },
+                    "requiereSoporte": true,
+                    "esRemunerado": false,
+                    "gestionadoPor": "DIAS_Y_HORAS",
+                    "nivelesAprobadores": 3
+                  },
+                  "tipo": "LIDER",
+                  "nivel": 1
+                },
+                {
+                  "codigo": 3,
+                  "creado": 1771862635887,
+                  "modificado": 1771862635887,
+                  "tipoAusentismo": {
+                    "codigo": 2,
+                    "creado": 1771858460223,
+                    "modificado": 1771858460223,
+                    "nombre": "Ausentismo de21a677-ea68-46dc-8751-275c01815529",
+                    "categoria": {
+                      "codigo": 2071,
+                      "activo": "s",
+                      "nombre": "Otro",
+                      "descripcion": "Categoria de tipos de ausentismo",
+                      "tipo": "CATEGORIA_TIPO_AUSENTISMO"
+                    },
+                    "requiereSoporte": true,
+                    "esRemunerado": false,
+                    "gestionadoPor": "DIAS_Y_HORAS",
+                    "nivelesAprobadores": 3
+                  },
+                  "tipo": "PERSONA",
+                  "codigos": [
+                    104,
+                    1
+                  ],
+                  "nivel": 2,
+                  "codigosNombres": [
+                    {
+                      "codigo": 1,
+                      "nombre": "Juan Fernando Osorio OspinaTest"
+                    },
+                    {
+                      "codigo": 104,
+                      "nombre": "plantilla Juan Daniel Diaz Boos"
+                    }
+                  ]
+                },
+                {
+                  "codigo": 4,
+                  "creado": 1771862635983,
+                  "modificado": 1771862635983,
+                  "tipoAusentismo": {
+                    "codigo": 2,
+                    "creado": 1771858460223,
+                    "modificado": 1771858460223,
+                    "nombre": "Ausentismo de21a677-ea68-46dc-8751-275c01815529",
+                    "categoria": {
+                      "codigo": 2071,
+                      "activo": "s",
+                      "nombre": "Otro",
+                      "descripcion": "Categoria de tipos de ausentismo",
+                      "tipo": "CATEGORIA_TIPO_AUSENTISMO"
+                    },
+                    "requiereSoporte": true,
+                    "esRemunerado": false,
+                    "gestionadoPor": "DIAS_Y_HORAS",
+                    "nivelesAprobadores": 3
+                  },
+                  "tipo": "ROL",
+                  "codigos": [
+                    7,
+                    4
+                  ],
+                  "nivel": 3,
+                  "codigosNombres": [
+                    {
+                      "codigo": 4,
+                      "nombre": "Administrador Sistema"
+                    },
+                    {
+                      "codigo": 7,
+                      "nombre": "Administrador Selección"
+                    }
+                  ]
+                }
+              ],
+              "success": true
+            }
+          }
+        }
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://ag/ausentismos",
+        "variables": {}
+      }
+    ]
+  }
+}

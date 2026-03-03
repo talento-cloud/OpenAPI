@@ -1,0 +1,48 @@
+{
+  "get": {
+    "tags": [
+      "Resumen"
+    ],
+    "summary": "resumenAdmin/graficaCompetenciaUsuario",
+    "operationId": "resumenAdmin/graficaCompetenciaUsuario",
+    "parameters": [
+      {
+        "name": "mostrarTitulo",
+        "in": "query",
+        "description": "True solo si se quiere que el titulo este dentro de la gráfica",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "boolean",
+          "example": false
+        }
+      },
+      {
+        "name": "mobile",
+        "in": "query",
+        "description": "Para que el alto de las barras de la grafica no sea muy grande",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "boolean",
+          "example": true
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

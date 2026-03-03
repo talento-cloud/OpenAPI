@@ -1,0 +1,24 @@
+{
+  "get": {
+    "tags": [
+      "OKR"
+    ],
+    "summary": "listarAniosOKR",
+    "description": "Lista los años activos registrados de OKR en talento cloud. El cliente web podria elegir el primer año que encuentre en la lista pues viene ordenada de la más reciente a la más antigua.",
+    "operationId": "listarAniosOKR",
+    "parameters": [],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

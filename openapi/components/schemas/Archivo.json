@@ -1,0 +1,54 @@
+{
+  "title": "Archivo",
+  "required": [
+    "codigo",
+    "creado",
+    "modificado",
+    "nombreArchivo",
+    "extensionArchivo",
+    "nombreOriginalArchivo",
+    "contentTypeArchivo",
+    "sizeArchivo"
+  ],
+  "type": "object",
+  "properties": {
+    "codigo": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "creado": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "modificado": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "nombreArchivo": {
+      "type": "string"
+    },
+    "extensionArchivo": {
+      "type": "string"
+    },
+    "nombreOriginalArchivo": {
+      "type": "string"
+    },
+    "contentTypeArchivo": {
+      "type": "string"
+    },
+    "sizeArchivo": {
+      "type": "integer",
+      "format": "int32"
+    }
+  },
+  "example": {
+    "codigo": 1,
+    "creado": 1772206648393,
+    "modificado": 1772206648393,
+    "nombreArchivo": "cesantias_1_1a3279e3-577e-43b7-a7df-806a8844aeac_1772206648270U_1_N_1_fotografia.jpg",
+    "extensionArchivo": "jpg",
+    "nombreOriginalArchivo": "fotografia",
+    "contentTypeArchivo": "image/jpeg",
+    "sizeArchivo": 6913
+  }
+}

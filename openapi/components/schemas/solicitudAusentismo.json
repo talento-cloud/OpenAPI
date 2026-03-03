@@ -1,0 +1,117 @@
+{
+  "title": "solicitudAusentismo",
+  "required": [
+    "codigo",
+    "creado",
+    "modificado",
+    "tipoAusentismo",
+    "fechaInicial",
+    "fechaFinal",
+    "horaInicial",
+    "horaFinal",
+    "observaciones",
+    "estado",
+    "archivos"
+  ],
+  "type": "object",
+  "properties": {
+    "codigo": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "creado": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "modificado": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "tipoAusentismo": {
+      "$ref": "./TipoAusentismo.json"
+    },
+    "fechaInicial": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "fechaFinal": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "horaInicial": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "format": "int32"
+      },
+      "description": ""
+    },
+    "horaFinal": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "format": "int32"
+      },
+      "description": ""
+    },
+    "observaciones": {
+      "type": "string"
+    },
+    "estado": {
+      "type": "string"
+    },
+    "archivos": {
+      "type": "array",
+      "items": {
+        "$ref": "./Archivo.json"
+      },
+      "description": ""
+    }
+  },
+  "example": {
+    "codigo": 1,
+    "creado": 1772206648258,
+    "modificado": 1772206648258,
+    "tipoAusentismo": {
+      "codigo": 1,
+      "creado": 1771846148280,
+      "modificado": 1771846148280,
+      "nombre": "Familia enferma",
+      "categoria": {
+        "codigo": 2074,
+        "activo": "s",
+        "nombre": "Personal",
+        "descripcion": "Categoria de tipos de ausentismo",
+        "tipo": "CATEGORIA_TIPO_AUSENTISMO"
+      },
+      "requiereSoporte": false,
+      "esRemunerado": false,
+      "gestionadoPor": "DIAS_Y_HORAS",
+      "nivelesAprobadores": 2
+    },
+    "fechaInicial": 1768435200000,
+    "fechaFinal": 1768435200000,
+    "horaInicial": [
+      13,
+      0
+    ],
+    "horaFinal": [
+      15,
+      30
+    ],
+    "observaciones": "Mi primera solicitud de ausentismo por familiar enfermo",
+    "estado": "PENDIENTE",
+    "archivos": [
+      {
+        "codigo": 1,
+        "creado": 1772206648393,
+        "modificado": 1772206648393,
+        "nombreArchivo": "cesantias_1_1a3279e3-577e-43b7-a7df-806a8844aeac_1772206648270U_1_N_1_fotografia.jpg",
+        "extensionArchivo": "jpg",
+        "nombreOriginalArchivo": "fotografia",
+        "contentTypeArchivo": "image/jpeg",
+        "sizeArchivo": 6913
+      }
+    ]
+  }
+}

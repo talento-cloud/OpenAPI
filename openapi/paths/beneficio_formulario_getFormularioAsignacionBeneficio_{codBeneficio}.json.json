@@ -1,0 +1,189 @@
+{
+  "get": {
+    "tags": [
+      "Bienestar"
+    ],
+    "summary": "getFormularioAsignacionBeneficio",
+    "operationId": "getFormularioAsignacionBeneficio",
+    "parameters": [
+      {
+        "name": "codBeneficio",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "headers": {
+          "Vary": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Origin"
+              }
+            }
+          },
+          "Content-Language": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "es-CO"
+              }
+            }
+          },
+          "Cache-Control": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "no-store"
+              }
+            }
+          },
+          "X-XSS-Protection": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "1; mode=block"
+              }
+            }
+          },
+          "X-Frame-Options": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "DENY"
+              }
+            }
+          },
+          "X-Content-Type-Options": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "nosniff"
+              }
+            }
+          },
+          "Content-Security-Policy": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "frame-ancestors *"
+              }
+            }
+          },
+          "Transfer-Encoding": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "chunked"
+              }
+            }
+          },
+          "Server": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Jetty(8.y.z-SNAPSHOT)"
+              }
+            }
+          }
+        },
+        "content": {
+          "application/json;charset=UTF-8": {
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "../components/schemas/tieneFormulario.json"
+                },
+                {
+                  "example": {
+                    "codBeneficio": 171,
+                    "total": 2,
+                    "datos": [
+                      {
+                        "codigo": 134,
+                        "texto_blanco": "Cuando vas a gastar el beneficio",
+                        "extra": "FECHA_CONSUMO",
+                        "tipo_pregunta": "FECHA",
+                        "orden": 1,
+                        "obligatorio": true,
+                        "pregunta": "Fecha a consumir"
+                      },
+                      {
+                        "codigo": 133,
+                        "texto_blanco": "",
+                        "extra": "",
+                        "tipo_pregunta": "NUMERICA",
+                        "orden": 2,
+                        "obligatorio": false,
+                        "pregunta": "Invitados"
+                      }
+                    ],
+                    "message": "OK",
+                    "success": true
+                  }
+                }
+              ]
+            },
+            "example": {
+              "codBeneficio": 171,
+              "total": 2,
+              "datos": [
+                {
+                  "codigo": 134,
+                  "texto_blanco": "Cuando vas a gastar el beneficio",
+                  "extra": "FECHA_CONSUMO",
+                  "tipo_pregunta": "FECHA",
+                  "orden": 1,
+                  "obligatorio": true,
+                  "pregunta": "Fecha a consumir"
+                },
+                {
+                  "codigo": 133,
+                  "texto_blanco": "",
+                  "extra": "",
+                  "tipo_pregunta": "NUMERICA",
+                  "orden": 2,
+                  "obligatorio": false,
+                  "pregunta": "Invitados"
+                }
+              ],
+              "message": "OK",
+              "success": true
+            }
+          }
+        }
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

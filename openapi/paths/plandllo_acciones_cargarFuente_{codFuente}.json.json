@@ -1,0 +1,34 @@
+{
+  "get": {
+    "tags": [
+      "PlanDesarrollo"
+    ],
+    "summary": "cargarInfoFuente",
+    "description": "Para consultar el texto descriptivo de la fuente de desarrollo solamente",
+    "operationId": "cargarInfoFuente",
+    "parameters": [
+      {
+        "name": "codFuente",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

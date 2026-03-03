@@ -1,0 +1,34 @@
+{
+  "title": "getConfiguracionGral",
+  "required": [
+    "minimo-dias-solicitar",
+    "minimo-dias-aviso",
+    "mensaje-parametrizado",
+    "niveles-aprobadores"
+  ],
+  "type": "object",
+  "properties": {
+    "minimo-dias-solicitar": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "minimo-dias-aviso": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "mensaje-parametrizado": {
+      "type": "string",
+      "nullable": true
+    },
+    "niveles-aprobadores": {
+      "type": "integer",
+      "format": "int32"
+    }
+  },
+  "example": {
+    "minimo-dias-solicitar": 3,
+    "minimo-dias-aviso": 3,
+    "mensaje-parametrizado": null,
+    "niveles-aprobadores": 1
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "get": {
+    "tags": [
+      "Competencias360"
+    ],
+    "summary": "TotalEvaluacion",
+    "description": "Total de evaluaciones a realizar",
+    "operationId": "TotalEvaluacion",
+    "parameters": [
+      {
+        "name": "codAsignacion",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

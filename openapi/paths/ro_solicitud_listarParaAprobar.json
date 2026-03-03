@@ -1,0 +1,131 @@
+{
+  "get": {
+    "tags": [
+      "Ausentismos"
+    ],
+    "summary": "listaParaAprobar",
+    "description": "## Descripción\n\nObtiene la lista de solicitudes de ausentismos pendientes para aprobar por parte del usuario en sesión.\n\n## Manejo de errores\n\nLos errores habituales pueden incluir:\n\n- `400 Bad Request`: Parámetros requeridos faltantes o con formato inválido.\n    \n- `401 Unauthorized`: Token JWT inválido, expirado o ausente.\n    \n- `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.\n    \n- `404 Not Found`: El recurso solicitado no existe.\n    \n- `500 Internal Server Error`: Error inesperado en el servidor.\n    \n\nCuando sea posible, cada endpoint detallará sus códigos de error específicos y estructura de respuesta en su propia descripción.",
+    "operationId": "listaParaAprobar",
+    "parameters": [
+      {
+        "name": "start",
+        "in": "query",
+        "description": "Paginador, por defecto 0",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "example": 0
+        }
+      },
+      {
+        "name": "limit",
+        "in": "query",
+        "description": "Paginador, por defecto 50",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "example": 10
+        }
+      },
+      {
+        "name": "query",
+        "in": "query",
+        "description": "Si deseo filtrar resultados, opcional",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "Fernando"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "headers": {
+          "content-length": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "358"
+              }
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "../components/schemas/listaParaAprobar.json"
+                },
+                {
+                  "example": {
+                    "message": "Solicitudes obtenidas exitosamente",
+                    "data": {
+                      "total": 1,
+                      "datos": [
+                        {
+                          "estado": "PENDIENTE",
+                          "creado": 1772115313272,
+                          "fecha_final": 1768539600000,
+                          "cod_solicitud": 6,
+                          "nombrecompleto": "Juan Fernando Osorio OspinaTest",
+                          "fecha_inicial": 1768453200000,
+                          "usuario": 1,
+                          "jefe": 72,
+                          "orden": 0,
+                          "cargo": "Director de Operaciones",
+                          "nivel_aprobador_codigo": 9
+                        }
+                      ]
+                    },
+                    "success": true
+                  }
+                }
+              ]
+            },
+            "example": {
+              "message": "Solicitudes obtenidas exitosamente",
+              "data": {
+                "total": 1,
+                "datos": [
+                  {
+                    "estado": "PENDIENTE",
+                    "creado": 1772115313272,
+                    "fecha_final": 1768539600000,
+                    "cod_solicitud": 6,
+                    "nombrecompleto": "Juan Fernando Osorio OspinaTest",
+                    "fecha_inicial": 1768453200000,
+                    "usuario": 1,
+                    "jefe": 72,
+                    "orden": 0,
+                    "cargo": "Director de Operaciones",
+                    "nivel_aprobador_codigo": 9
+                  }
+                ]
+              },
+              "success": true
+            }
+          }
+        }
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://ag/ausentismos",
+        "variables": {}
+      }
+    ]
+  }
+}

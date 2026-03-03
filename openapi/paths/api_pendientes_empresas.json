@@ -1,0 +1,23 @@
+{
+  "get": {
+    "tags": [
+      "Pendientes"
+    ],
+    "summary": "http://localhost:8081/api/pendientes/empresas",
+    "operationId": "http://localhost:8081/api/pendientes/empresas",
+    "parameters": [],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "http://example.com",
+        "variables": {}
+      }
+    ]
+  }
+}

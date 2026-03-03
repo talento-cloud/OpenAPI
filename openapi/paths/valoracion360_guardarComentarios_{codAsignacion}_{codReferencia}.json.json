@@ -1,0 +1,79 @@
+{
+  "post": {
+    "tags": [
+      "Competencias360"
+    ],
+    "summary": "guardarComentarios",
+    "description": "Para guardar las fortalezas, oportunidades u observaciones de una pregunta/comportamiento  \nindicado. Esos campos son configurables de si se ven, o son obligatorios o tienen límite de caracteres.  \nNecesitamos una sesión activa previa, accedemos al servicio REST tipo POST en la url end point  \n{urlBaseTalento}/html/valoracion360/guardarComentarios/{{codAsignacion}}/{{codReferencia}}.json\n\n**Query params:**\n\n- observacion Texto\n    \n- fortalezas Texto\n    \n- oprortunidad Texto\n    \n\nDonde codAsignacion la tomamos de la lista de evaluados y codReferencia es el codigo en pregunta  \nque no es codPregunta.  \nSi codReferencia es igual a -1 se debe mandar un parametro adicional llamado copiaPregunta. Esto  \npuede pasar en el acordeón.",
+    "operationId": "guardarComentarios",
+    "parameters": [
+      {
+        "name": "observacion",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "Lo que escriba el evaluador"
+        }
+      },
+      {
+        "name": "fortalezas",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "Lo que escriba el evaluador"
+        }
+      },
+      {
+        "name": "oprortunidad",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "Lo que escriba el evaluador"
+        }
+      },
+      {
+        "name": "codAsignacion",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "codReferencia",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "delete": {
+    "tags": [
+      "OKR"
+    ],
+    "summary": "borrarKR",
+    "description": "Para eliminar un KR, inactiva por que es eliminado lógico",
+    "operationId": "borrarKR",
+    "parameters": [
+      {
+        "name": "codKR1",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

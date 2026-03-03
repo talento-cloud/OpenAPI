@@ -16,6 +16,55 @@
       "variables": {}
     }
   ],
+  "security": [
+    {
+      "bearer": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Transversal",
+      "description": "Operaciones transversales a la plataforma"
+    },
+    {
+      "name": "Acordeon"
+    },
+    {
+      "name": "Calibracion"
+    },
+    {
+      "name": "Competencias360",
+      "description": "En esta sección se describen los servicios usados en el módulo de valoración de competencias 360"
+    },
+    {
+      "name": "Bienestar"
+    },
+    {
+      "name": "OKR"
+    },
+    {
+      "name": "PlanDesarrollo"
+    },
+    {
+      "name": "CertificadoLaboral"
+    },
+    {
+      "name": "Pendientes"
+    },
+    {
+      "name": "AutogestionVarios"
+    },
+    {
+      "name": "Vacaciones"
+    },
+    {
+      "name": "Ausentismos",
+      "description": "Ese submódulo maneja todo lo relacionado con Ausentismos en el módulo de Autogestión, tanto administración como solicitud y aprobación.\n\n# *Documentación en Swagger*\n\n[https://bzkqkqxa8j.execute-api.us-east-1.amazonaws.com/ag/ausentismos/ro/swaggerui/#/](https://bzkqkqxa8j.execute-api.us-east-1.amazonaws.com/ag/ausentismos/ro/swaggerui/#/)\n\n[https://dvilf0owyf.execute-api.us-east-1.amazonaws.com/ag/ausentismos/wr/swaggerui/#/](https://dvilf0owyf.execute-api.us-east-1.amazonaws.com/ag/ausentismos/wr/swaggerui/#/)\n\n## Manejo de errores\n\nLos errores habituales pueden incluir:\n\n- `400 Bad Request`: Parámetros requeridos faltantes o con formato inválido.\n    \n- `401 Unauthorized`: Token JWT inválido, expirado o ausente.\n    \n- `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.\n    \n- `404 Not Found`: El recurso solicitado no existe.\n    \n- `500 Internal Server Error`: Error inesperado en el servidor.\n    \n\nCuando sea posible, cada endpoint detallará sus códigos de error específicos y estructura de respuesta en su propia descripción."
+    },
+    {
+      "name": "Resumen"
+    }
+  ],
   "paths": {
     "/token/autenticacion.json": {
       "post": {
@@ -11549,6 +11598,12 @@
     }
   },
   "components": {
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
     "schemas": {
       "autenticacion.json": {
         "title": "autenticacion.json",
@@ -11700,70 +11755,6 @@
         },
         "example": {
           "observacion": "Esta es la observaciones final del evaluados que  es la retroalimentación tambien."
-        }
-      },
-      "beneficiosDisponibles": {
-        "title": "beneficiosDisponibles",
-        "required": [
-          "datos",
-          "success",
-          "cantidad"
-        ],
-        "type": "object",
-        "properties": {
-          "datos": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Dato"
-            },
-            "description": ""
-          },
-          "success": {
-            "type": "boolean"
-          },
-          "cantidad": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "example": {
-          "datos": [
-            {
-              "descripcion": "Es un beneficio cualquiera para  probar beneficios que tienen formularios dinámicos y adicionalmente pedimos un archivo",
-              "cod_beneficio": 171,
-              "fecha_consumo": null,
-              "periodicidad": "MENSUAL",
-              "estado": null,
-              "fecha_vencimiento": 1754024399999,
-              "promedio_calificaciones": null,
-              "titulo": "Beneficio con formulario",
-              "dos": 0,
-              "porcentaje_unos": null,
-              "algun_consumido": false,
-              "unos": 0,
-              "cod_asignacion": null,
-              "enviar_notificacion": false,
-              "cincos": 0,
-              "fila": 1,
-              "tres": 0,
-              "orden": 2,
-              "porcentaje_tres": null,
-              "fecha_solicitud": null,
-              "porcentaje_cuatros": null,
-              "requiere_archivo": true,
-              "porcentaje_dos": null,
-              "satisfaccion_calificable": false,
-              "cantidad_calificaciones": 0,
-              "puntos": 0,
-              "cuatros": 0,
-              "porcentaje_cincos": null,
-              "banner_nombre": null,
-              "condiciones": "Este es un beneficio que pide un archivo para su solicitud y tambien tiene campos dinámicos​",
-              "categoria_beneficio": "General"
-            }
-          ],
-          "success": true,
-          "cantidad": 1
         }
       },
       "Dato": {
@@ -11953,6 +11944,70 @@
           "categoria_beneficio": "General"
         }
       },
+      "beneficiosDisponibles": {
+        "title": "beneficiosDisponibles",
+        "required": [
+          "datos",
+          "success",
+          "cantidad"
+        ],
+        "type": "object",
+        "properties": {
+          "datos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Dato"
+            },
+            "description": ""
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "cantidad": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "example": {
+          "datos": [
+            {
+              "descripcion": "Es un beneficio cualquiera para  probar beneficios que tienen formularios dinámicos y adicionalmente pedimos un archivo",
+              "cod_beneficio": 171,
+              "fecha_consumo": null,
+              "periodicidad": "MENSUAL",
+              "estado": null,
+              "fecha_vencimiento": 1754024399999,
+              "promedio_calificaciones": null,
+              "titulo": "Beneficio con formulario",
+              "dos": 0,
+              "porcentaje_unos": null,
+              "algun_consumido": false,
+              "unos": 0,
+              "cod_asignacion": null,
+              "enviar_notificacion": false,
+              "cincos": 0,
+              "fila": 1,
+              "tres": 0,
+              "orden": 2,
+              "porcentaje_tres": null,
+              "fecha_solicitud": null,
+              "porcentaje_cuatros": null,
+              "requiere_archivo": true,
+              "porcentaje_dos": null,
+              "satisfaccion_calificable": false,
+              "cantidad_calificaciones": 0,
+              "puntos": 0,
+              "cuatros": 0,
+              "porcentaje_cincos": null,
+              "banner_nombre": null,
+              "condiciones": "Este es un beneficio que pide un archivo para su solicitud y tambien tiene campos dinámicos​",
+              "categoria_beneficio": "General"
+            }
+          ],
+          "success": true,
+          "cantidad": 1
+        }
+      },
       "Puntos": {
         "title": "Puntos",
         "required": [
@@ -11978,42 +12033,6 @@
           "datos": 0,
           "success": true,
           "puntosDisponibles": 10
-        }
-      },
-      "historial": {
-        "title": "historial",
-        "required": [
-          "datos",
-          "success"
-        ],
-        "type": "object",
-        "properties": {
-          "datos": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Dato1"
-            },
-            "description": ""
-          },
-          "success": {
-            "type": "boolean"
-          }
-        },
-        "example": {
-          "datos": [
-            {
-              "descripcion": "Solicitado",
-              "archivoAprobador": null,
-              "fecha": "2025-07-08",
-              "codigo": 270,
-              "archivoOriginal": "20250130_talento_JulianOsorio_ObjetivosSMART",
-              "archivo": "bne_solicitud_270_1a08ae4dac27c92c5234fff7d545e50c6c48b42a_20250130_talento_JulianOsorio_ObjetivosSMART.pdf",
-              "archivoOriginalAprobador": null,
-              "extensionArchivoAprobador": null,
-              "extensionArchivo": "pdf"
-            }
-          ],
-          "success": true
         }
       },
       "Dato1": {
@@ -12075,6 +12094,89 @@
           "extensionArchivo": "pdf"
         }
       },
+      "historial": {
+        "title": "historial",
+        "required": [
+          "datos",
+          "success"
+        ],
+        "type": "object",
+        "properties": {
+          "datos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Dato1"
+            },
+            "description": ""
+          },
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "example": {
+          "datos": [
+            {
+              "descripcion": "Solicitado",
+              "archivoAprobador": null,
+              "fecha": "2025-07-08",
+              "codigo": 270,
+              "archivoOriginal": "20250130_talento_JulianOsorio_ObjetivosSMART",
+              "archivo": "bne_solicitud_270_1a08ae4dac27c92c5234fff7d545e50c6c48b42a_20250130_talento_JulianOsorio_ObjetivosSMART.pdf",
+              "archivoOriginalAprobador": null,
+              "extensionArchivoAprobador": null,
+              "extensionArchivo": "pdf"
+            }
+          ],
+          "success": true
+        }
+      },
+      "Dato2": {
+        "title": "Dato2",
+        "required": [
+          "codigo",
+          "texto_blanco",
+          "extra",
+          "tipo_pregunta",
+          "orden",
+          "obligatorio",
+          "pregunta"
+        ],
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "texto_blanco": {
+            "type": "string"
+          },
+          "extra": {
+            "type": "string"
+          },
+          "tipo_pregunta": {
+            "type": "string"
+          },
+          "orden": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "obligatorio": {
+            "type": "boolean"
+          },
+          "pregunta": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "codigo": 134,
+          "texto_blanco": "Cuando vas a gastar el beneficio",
+          "extra": "FECHA_CONSUMO",
+          "tipo_pregunta": "FECHA",
+          "orden": 1,
+          "obligatorio": true,
+          "pregunta": "Fecha a consumir"
+        }
+      },
       "tieneFormulario": {
         "title": "tieneFormulario",
         "required": [
@@ -12133,53 +12235,6 @@
           ],
           "message": "OK",
           "success": true
-        }
-      },
-      "Dato2": {
-        "title": "Dato2",
-        "required": [
-          "codigo",
-          "texto_blanco",
-          "extra",
-          "tipo_pregunta",
-          "orden",
-          "obligatorio",
-          "pregunta"
-        ],
-        "type": "object",
-        "properties": {
-          "codigo": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "texto_blanco": {
-            "type": "string"
-          },
-          "extra": {
-            "type": "string"
-          },
-          "tipo_pregunta": {
-            "type": "string"
-          },
-          "orden": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "obligatorio": {
-            "type": "boolean"
-          },
-          "pregunta": {
-            "type": "string"
-          }
-        },
-        "example": {
-          "codigo": 134,
-          "texto_blanco": "Cuando vas a gastar el beneficio",
-          "extra": "FECHA_CONSUMO",
-          "tipo_pregunta": "FECHA",
-          "orden": 1,
-          "obligatorio": true,
-          "pregunta": "Fecha a consumir"
         }
       },
       "solicitar1": {
@@ -12310,6 +12365,50 @@
             "type": "string",
             "nullable": true
           }
+        }
+      },
+      "Dato3": {
+        "title": "Dato3",
+        "required": [
+          "codigo",
+          "tipo",
+          "jefe",
+          "cargo",
+          "nombre"
+        ],
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tipo": {
+            "type": "string"
+          },
+          "jefe": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "cargo": {
+            "type": "string"
+          },
+          "nombre": {
+            "type": "string"
+          },
+          "codigoGrupo": {
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "codigo": 1,
+          "tipo": "Yo",
+          "jefe": 72,
+          "cargo": "Director de Operaciones",
+          "nombre": "Yo"
         }
       },
       "ConsultaUsuariosColaboradoresCopy": {
@@ -12764,244 +12863,6 @@
           "cantidad": 47
         }
       },
-      "Dato3": {
-        "title": "Dato3",
-        "required": [
-          "codigo",
-          "tipo",
-          "jefe",
-          "cargo",
-          "nombre"
-        ],
-        "type": "object",
-        "properties": {
-          "codigo": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "tipo": {
-            "type": "string"
-          },
-          "jefe": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "cargo": {
-            "type": "string"
-          },
-          "nombre": {
-            "type": "string"
-          },
-          "codigoGrupo": {
-            "type": "string",
-            "nullable": true
-          },
-          "url": {
-            "type": "string"
-          }
-        },
-        "example": {
-          "codigo": 1,
-          "tipo": "Yo",
-          "jefe": 72,
-          "cargo": "Director de Operaciones",
-          "nombre": "Yo"
-        }
-      },
-      "listaPlanes": {
-        "title": "listaPlanes",
-        "required": [
-          "datos",
-          "success",
-          "cantidad"
-        ],
-        "type": "object",
-        "properties": {
-          "datos": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Dato4"
-            },
-            "description": ""
-          },
-          "success": {
-            "type": "boolean"
-          },
-          "cantidad": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "example": {
-          "datos": [
-            {
-              "fecha": "11 de diciembre de 2023",
-              "codigo": 69,
-              "configuracion": {
-                "activo": "s",
-                "codigo": 69,
-                "accionFormParaQue": null,
-                "accionQue": null,
-                "accionQueNecesito": "NO",
-                "agregarCompetencias": "SI",
-                "agregarComportamientos": "SI",
-                "agregarObjetivos": "SI",
-                "agregarOtros": "SI",
-                "formExpectativas": "SI",
-                "formFortalezas": "SI",
-                "formObjetivos": "SI",
-                "formMentor": "NO",
-                "resultadoEsperado": "NO",
-                "tipoCompetencia": "NO",
-                "fuentesAcciones": "SI",
-                "valorObtenido": "NO",
-                "tipo": "SI",
-                "evidencia": "NO",
-                "resultadoEsperadoAccion": "NO",
-                "btnSugerenciasParaElDesarrollo": "SI",
-                "permisoJefe": "SI",
-                "todasCompetencias": "NO",
-                "numeroCompetencias": 5,
-                "cantidadMaxima": 4,
-                "fuentesPredeterminadas": "NO",
-                "obligatorioTipo": "SI",
-                "obligatorioFuente": "NO",
-                "obligatorioAccion": "SI",
-                "obligatorioResultadoEsperado": "NO",
-                "obligatorioRecursos": "NO",
-                "obligatorioEvidencia": "NO",
-                "obligatorioMentorInterno": "NO",
-                "obligatorioFechaCierre": "NO",
-                "obligatorioObservacionesJefe": "SI",
-                "seguimientoPorPersona": false,
-                "habilitarCierrePorAccion": false,
-                "label": "69",
-                "cantidadMaximaAcciones": 4
-              },
-              "nombre": "Plan de desarrollo (En curso) tot2"
-            },
-            {
-              "fecha": "17 de junio de 2022",
-              "codigo": 3,
-              "configuracion": {
-                "activo": "s",
-                "codigo": 3,
-                "accionFormParaQue": null,
-                "accionQue": null,
-                "accionQueNecesito": "SI",
-                "agregarCompetencias": "SI",
-                "agregarComportamientos": "SI",
-                "agregarObjetivos": "SI",
-                "agregarOtros": "SI",
-                "formExpectativas": "SI",
-                "formFortalezas": "SI",
-                "formObjetivos": "SI",
-                "formMentor": "SI",
-                "resultadoEsperado": "SI",
-                "tipoCompetencia": "SI",
-                "fuentesAcciones": "SI",
-                "valorObtenido": "SI",
-                "tipo": "SI",
-                "evidencia": "SI",
-                "resultadoEsperadoAccion": "SI",
-                "btnSugerenciasParaElDesarrollo": "SI",
-                "permisoJefe": "SI",
-                "todasCompetencias": "NO",
-                "numeroCompetencias": 5,
-                "cantidadMaxima": 7,
-                "fuentesPredeterminadas": "SI",
-                "obligatorioTipo": "NO",
-                "obligatorioFuente": "NO",
-                "obligatorioAccion": "NO",
-                "obligatorioResultadoEsperado": "NO",
-                "obligatorioRecursos": "NO",
-                "obligatorioEvidencia": "NO",
-                "obligatorioMentorInterno": "NO",
-                "obligatorioFechaCierre": "NO",
-                "obligatorioObservacionesJefe": "NO",
-                "seguimientoPorPersona": false,
-                "habilitarCierrePorAccion": false,
-                "label": "3",
-                "cantidadMaximaAcciones": 7
-              },
-              "nombre": "Plan de desarrollo  (Finalizado)"
-            }
-          ],
-          "success": true,
-          "cantidad": 2
-        }
-      },
-      "Dato4": {
-        "title": "Dato4",
-        "required": [
-          "fecha",
-          "codigo",
-          "configuracion",
-          "nombre"
-        ],
-        "type": "object",
-        "properties": {
-          "fecha": {
-            "type": "string"
-          },
-          "codigo": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "configuracion": {
-            "$ref": "#/components/schemas/Configuracion"
-          },
-          "nombre": {
-            "type": "string"
-          }
-        },
-        "example": {
-          "fecha": "11 de diciembre de 2023",
-          "codigo": 69,
-          "configuracion": {
-            "activo": "s",
-            "codigo": 69,
-            "accionFormParaQue": null,
-            "accionQue": null,
-            "accionQueNecesito": "NO",
-            "agregarCompetencias": "SI",
-            "agregarComportamientos": "SI",
-            "agregarObjetivos": "SI",
-            "agregarOtros": "SI",
-            "formExpectativas": "SI",
-            "formFortalezas": "SI",
-            "formObjetivos": "SI",
-            "formMentor": "NO",
-            "resultadoEsperado": "NO",
-            "tipoCompetencia": "NO",
-            "fuentesAcciones": "SI",
-            "valorObtenido": "NO",
-            "tipo": "SI",
-            "evidencia": "NO",
-            "resultadoEsperadoAccion": "NO",
-            "btnSugerenciasParaElDesarrollo": "SI",
-            "permisoJefe": "SI",
-            "todasCompetencias": "NO",
-            "numeroCompetencias": 5,
-            "cantidadMaxima": 4,
-            "fuentesPredeterminadas": "NO",
-            "obligatorioTipo": "SI",
-            "obligatorioFuente": "NO",
-            "obligatorioAccion": "SI",
-            "obligatorioResultadoEsperado": "NO",
-            "obligatorioRecursos": "NO",
-            "obligatorioEvidencia": "NO",
-            "obligatorioMentorInterno": "NO",
-            "obligatorioFechaCierre": "NO",
-            "obligatorioObservacionesJefe": "SI",
-            "seguimientoPorPersona": false,
-            "habilitarCierrePorAccion": false,
-            "label": "69",
-            "cantidadMaximaAcciones": 4
-          },
-          "nombre": "Plan de desarrollo (En curso) tot2"
-        }
-      },
       "Configuracion": {
         "title": "Configuracion",
         "required": [
@@ -13213,6 +13074,200 @@
           "cantidadMaximaAcciones": 4
         }
       },
+      "Dato4": {
+        "title": "Dato4",
+        "required": [
+          "fecha",
+          "codigo",
+          "configuracion",
+          "nombre"
+        ],
+        "type": "object",
+        "properties": {
+          "fecha": {
+            "type": "string"
+          },
+          "codigo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "configuracion": {
+            "$ref": "#/components/schemas/Configuracion"
+          },
+          "nombre": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "fecha": "11 de diciembre de 2023",
+          "codigo": 69,
+          "configuracion": {
+            "activo": "s",
+            "codigo": 69,
+            "accionFormParaQue": null,
+            "accionQue": null,
+            "accionQueNecesito": "NO",
+            "agregarCompetencias": "SI",
+            "agregarComportamientos": "SI",
+            "agregarObjetivos": "SI",
+            "agregarOtros": "SI",
+            "formExpectativas": "SI",
+            "formFortalezas": "SI",
+            "formObjetivos": "SI",
+            "formMentor": "NO",
+            "resultadoEsperado": "NO",
+            "tipoCompetencia": "NO",
+            "fuentesAcciones": "SI",
+            "valorObtenido": "NO",
+            "tipo": "SI",
+            "evidencia": "NO",
+            "resultadoEsperadoAccion": "NO",
+            "btnSugerenciasParaElDesarrollo": "SI",
+            "permisoJefe": "SI",
+            "todasCompetencias": "NO",
+            "numeroCompetencias": 5,
+            "cantidadMaxima": 4,
+            "fuentesPredeterminadas": "NO",
+            "obligatorioTipo": "SI",
+            "obligatorioFuente": "NO",
+            "obligatorioAccion": "SI",
+            "obligatorioResultadoEsperado": "NO",
+            "obligatorioRecursos": "NO",
+            "obligatorioEvidencia": "NO",
+            "obligatorioMentorInterno": "NO",
+            "obligatorioFechaCierre": "NO",
+            "obligatorioObservacionesJefe": "SI",
+            "seguimientoPorPersona": false,
+            "habilitarCierrePorAccion": false,
+            "label": "69",
+            "cantidadMaximaAcciones": 4
+          },
+          "nombre": "Plan de desarrollo (En curso) tot2"
+        }
+      },
+      "listaPlanes": {
+        "title": "listaPlanes",
+        "required": [
+          "datos",
+          "success",
+          "cantidad"
+        ],
+        "type": "object",
+        "properties": {
+          "datos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Dato4"
+            },
+            "description": ""
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "cantidad": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "example": {
+          "datos": [
+            {
+              "fecha": "11 de diciembre de 2023",
+              "codigo": 69,
+              "configuracion": {
+                "activo": "s",
+                "codigo": 69,
+                "accionFormParaQue": null,
+                "accionQue": null,
+                "accionQueNecesito": "NO",
+                "agregarCompetencias": "SI",
+                "agregarComportamientos": "SI",
+                "agregarObjetivos": "SI",
+                "agregarOtros": "SI",
+                "formExpectativas": "SI",
+                "formFortalezas": "SI",
+                "formObjetivos": "SI",
+                "formMentor": "NO",
+                "resultadoEsperado": "NO",
+                "tipoCompetencia": "NO",
+                "fuentesAcciones": "SI",
+                "valorObtenido": "NO",
+                "tipo": "SI",
+                "evidencia": "NO",
+                "resultadoEsperadoAccion": "NO",
+                "btnSugerenciasParaElDesarrollo": "SI",
+                "permisoJefe": "SI",
+                "todasCompetencias": "NO",
+                "numeroCompetencias": 5,
+                "cantidadMaxima": 4,
+                "fuentesPredeterminadas": "NO",
+                "obligatorioTipo": "SI",
+                "obligatorioFuente": "NO",
+                "obligatorioAccion": "SI",
+                "obligatorioResultadoEsperado": "NO",
+                "obligatorioRecursos": "NO",
+                "obligatorioEvidencia": "NO",
+                "obligatorioMentorInterno": "NO",
+                "obligatorioFechaCierre": "NO",
+                "obligatorioObservacionesJefe": "SI",
+                "seguimientoPorPersona": false,
+                "habilitarCierrePorAccion": false,
+                "label": "69",
+                "cantidadMaximaAcciones": 4
+              },
+              "nombre": "Plan de desarrollo (En curso) tot2"
+            },
+            {
+              "fecha": "17 de junio de 2022",
+              "codigo": 3,
+              "configuracion": {
+                "activo": "s",
+                "codigo": 3,
+                "accionFormParaQue": null,
+                "accionQue": null,
+                "accionQueNecesito": "SI",
+                "agregarCompetencias": "SI",
+                "agregarComportamientos": "SI",
+                "agregarObjetivos": "SI",
+                "agregarOtros": "SI",
+                "formExpectativas": "SI",
+                "formFortalezas": "SI",
+                "formObjetivos": "SI",
+                "formMentor": "SI",
+                "resultadoEsperado": "SI",
+                "tipoCompetencia": "SI",
+                "fuentesAcciones": "SI",
+                "valorObtenido": "SI",
+                "tipo": "SI",
+                "evidencia": "SI",
+                "resultadoEsperadoAccion": "SI",
+                "btnSugerenciasParaElDesarrollo": "SI",
+                "permisoJefe": "SI",
+                "todasCompetencias": "NO",
+                "numeroCompetencias": 5,
+                "cantidadMaxima": 7,
+                "fuentesPredeterminadas": "SI",
+                "obligatorioTipo": "NO",
+                "obligatorioFuente": "NO",
+                "obligatorioAccion": "NO",
+                "obligatorioResultadoEsperado": "NO",
+                "obligatorioRecursos": "NO",
+                "obligatorioEvidencia": "NO",
+                "obligatorioMentorInterno": "NO",
+                "obligatorioFechaCierre": "NO",
+                "obligatorioObservacionesJefe": "NO",
+                "seguimientoPorPersona": false,
+                "habilitarCierrePorAccion": false,
+                "label": "3",
+                "cantidadMaximaAcciones": 7
+              },
+              "nombre": "Plan de desarrollo  (Finalizado)"
+            }
+          ],
+          "success": true,
+          "cantidad": 2
+        }
+      },
       "fuente": {
         "title": "fuente",
         "required": [
@@ -13282,6 +13337,31 @@
         "example": {
           "plan": null,
           "codigo": 355
+        }
+      },
+      "Comodine": {
+        "title": "Comodine",
+        "required": [
+          "nombre",
+          "campo_bd",
+          "descripcion"
+        ],
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string"
+          },
+          "campo_bd": {
+            "type": "string"
+          },
+          "descripcion": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "nombre": "[empresa.nombre]",
+          "campo_bd": "empresas.nombre",
+          "descripcion": "Nombre de la empresa a la que pertenece el usuario"
         }
       },
       "findPlantillaByEmpresaAndTipo": {
@@ -13382,31 +13462,6 @@
           "tipo": "CON_SALARIO"
         }
       },
-      "Comodine": {
-        "title": "Comodine",
-        "required": [
-          "nombre",
-          "campo_bd",
-          "descripcion"
-        ],
-        "type": "object",
-        "properties": {
-          "nombre": {
-            "type": "string"
-          },
-          "campo_bd": {
-            "type": "string"
-          },
-          "descripcion": {
-            "type": "string"
-          }
-        },
-        "example": {
-          "nombre": "[empresa.nombre]",
-          "campo_bd": "empresas.nombre",
-          "descripcion": "Nombre de la empresa a la que pertenece el usuario"
-        }
-      },
       "guardarPlantillaRequest": {
         "title": "guardarPlantillaRequest",
         "required": [
@@ -13437,6 +13492,22 @@
           "tipo": "SIN_SALARIO",
           "empresa": 1,
           "firmante": null
+        }
+      },
+      "Firmante": {
+        "title": "Firmante",
+        "required": [
+          "codigo"
+        ],
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "example": {
+          "codigo": 5
         }
       },
       "guardarPlantilla": {
@@ -13539,22 +13610,6 @@
           }
         }
       },
-      "Firmante": {
-        "title": "Firmante",
-        "required": [
-          "codigo"
-        ],
-        "type": "object",
-        "properties": {
-          "codigo": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "example": {
-          "codigo": 5
-        }
-      },
       "cargarImagenRequest": {
         "title": "cargarImagenRequest",
         "required": [
@@ -13584,6 +13639,169 @@
           "base64Image": "/9j/4AAQSkZJRgABAQEAlgCWAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wgARCAHXAuADASIAAhEBAxEB/8QAGwABAAMBAQEBAAAAAAAAAAAAAAUGBwQDAgH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIQAxAAAAHVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADjOz8z+vGjx8Tyl97sX2gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFdLFG5X8Gly2e1g3GFzbtPXk0GbKzZf0KnbMkOLaKFfQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACn0K20M0yLo9tK3O6F0HNKgABCZX330nfYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPit2ccXa+DhkY6RAAFQsmUkvpXl6gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH7uckgACnlcvdevIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIg5rBx9gAPE4c+59SOsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHzXPOzH2ABmE/5EvPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAjJKnErOgAipDPD60b5+gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfJ9OLrPoAAAAjiEsUHZgAVQ4Llw10tdJqV1Kvd/L9LgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABz1/Oi1U+63Uxz527Oy99MPMAB8U8ufHkv0aJVoa2ls6c8+jQXz4kfCREIdnpYLqcnR90M5tF5eoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHyfuccXQRenyH0AMo0Cpmg/QISPoh8T10lyN5O6JOyZBHyAqED4QZ76L7zoKoecxzz4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzSwUok9N+foAFNILR67ahV/ejjU/v7HN90c7Ll+foAi5TIyE1aFvYKQdXX9TB0M8spPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAePtQyna9T7+ADkOSn82mH3H9+RHlrkbMjx+c0OvQvHsAB5FaqfNdyUkeXPTrtXT0nhkX7wHbtEVNAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH5ium0w0noARx75396KfPQ+SoRlc2A9+Pwy06dJ8pgAAUiz52WqK+fE5dJ9/0ZNZM+PHVPSyA8T2ZXfCYAAAAAAAAAAAAAAAAAAAAAAAAAAAABQJGrzJYpqOp5PVqRvB8fYKpa8rJawQVLPvUvqYAAHl9Z0SVA89nKNo1Vtx+8Ffzs6tYj7CCpk1lftaDPt1yLYQ8KQXqo5/ZSO4tP+itX3G5A1Zz9AAAcvCTCtcZcVC4zSWaepozPPo0H4ofsXDzrfQTDh9jr6OP2OwAAAAAAAAAAAAGO6lmWkkXPdQAEUSeGyMedWs9XsACCJ2uUbzOezzdmMxlLrmB4+N0spUs/3THjYIrIpw+5G3yh5w06MJsl65zLrHpPqRkmAHlQNEGGfe4cpkH5qvqY/wDm2epj0ppoosjaRDyPuAAAAAAAAAAAAAAAAAAAKPGaTmJqDGpQ1HgyyPLVVrfeSvVLV/AplspEMaPAV6bKx66VKFd6u7yO8Hxn8nJE8AD4+wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4I2wiIlv0AAAACPOaZ5eoFaKdq1FvQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAhPftPcDIL9TTSOsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABFHhOc/QCvFB0DNtoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAED2+h2gY9fMxNBuXn6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8CHn4eYH5+1Ao9po23HSAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABX7BXiwg88UudFLpoXP0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEZ6xVjHH2ZmVO90vbD1AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIci7ZATxE41N+ZdLj+foAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAApV1zkvVS4KWNhrt9AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFStoxO9XIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf/EAC8QAAICAgAGAQMDBAIDAAAAAAMEAgUAAQYQExQgYBESFVAhIyQiMDRAFiUxcID/2gAIAQEAAQUC/wDqXe9a0a0TFn31TFWwtR9WZaCtFu/3moPWUl+H9/FrTxVXqi7DYeoGeVDmrdHAmEbWN2ayuN3hy4tWNuSUplgZrXxrOJDfQjVD6tj6dY2oVMcsWWsWr2mMjR/RDc+3ZYs22NJ0zB8TrFlfG9Z7h7hlb416bxA9NeCKs3GIDrazTd/LeGMZkidOYs00F1PK3b7RNJeTbIRxCL03igEvnW96yOtyklRmLiqS6cVv6teVw53jdIj2i/p04xnGVInuS6oVtYzvqT8uIXeiHh5Dqk9SnLUIp63vXi2eCy64i2lgIcRD9SZ/kMeVy5t1qrS0kt6kyaK4EQyGLxv3+iPh5D6I+p/5j/jYuRSXqlJ2LnqdkxIIkwRWX8DEiEZpmt7BUEFgepSlqMa7W22PG7e22eoQ0kD1OynttmEdQj4X9h0B0Nd0o+p2LUU1qlWQA+Fk5FJanRk2b1Pf6Yv/ANnY+BZxEMUJ3T8Y6jH1O4PMs1gwXB4PknaOLhguFloK0Gr+W8laOy3RWE29ehy3qOu7XyMtS1/ZsGoprUysoR8Ll2UcrlIIrWV3qGRid06VDHWW4k00OHFNhB6CcwwQdvpbwhTMz0g18LsGSMsXRweRmQByVwlHJOAdswnEbXO0dikvWA0sK0tCN7ragjOLLiWHOWoQDGVzY+g2VuNXCEYeOlQ4AAgRzimMNEp47jWc5yjCLl6KGMWLTGArGz5quJt7/j4cLQEhi1kykaO9SiwaAAilpo77pXz1NPoXOxPOxaVBBYH5/e9R1a3GyZXVpXdpJBThzsZbsLiOtRjysbESUW22HiJURCYqkurq0c2sOrS0mHk8rBsHD5ZRFZN/cGDEI6aprIJx5Wzs5ErUoJA/Py3qOriz23KnqdsZGOox52rPapcMq/M+Vxa6VxNQ9gZCvCnHHmoKArFZ7J4WxZCsY6kaVXXwSHytbHcJVVfpMfoF9Y9adJWdffjZGlZ2K4YgDlzZaUhV103piHAI8YNBcSQp2LPhZNaTV/rKWor9JC5WlluM6qu0pH0C+e7YNQj3rEdajHw4gf6I6FDtg5b2GkhVaM7A8IxhDDFgEYtEumta1rXhdOd23w2pH6eVjZzKSqrYpQOYa42r+XzTMGaU/OmJEIizI86itFRbwsnIpL0qcmz481BNdcRrR4AoAFhiwCPcjXbYRwCPwv3e3WrF+mtWB6CE5RhFx81iWtrxpDdaGoF5wrhUFZOMihEQ/wA7xM18R4aU8W2BqhXEW5dhHUI7/TVq3J9urT0kthzQAIxj3Lai41QeBSRELWiW1nYwjjbQlBTI1dHRTEmJg0Fw2Dk3DwhIk6pHSS/53e/jTE5PPriiAHNlgawdRYu21wwALOInOkDhtP6pY0yNURzMW7denBIHjeNft8PqdBR6wiC1VUYtjACNcWXT/dmjrcpU1ZpSP567N0a3hsHUd5uuCTEETF0wEUAjyctQiSU7KxAKIQvuiSEUrFm3WowSD4tT3n9D9pZXWVFV3Gta1rWcQvdMYAkOSqq4J65FJAI7C4MYtRMpa/8ANcUkzhwehV4mpty1+mrO1GpiKBrIsIRhDlxGx0kuGVss7IaUf37BqsQgkLxKSIh2h9rJgGQs2K2KaYoaGPHWYKLhEaxcRTEmLk64JMb7xniChspRw0MfIhIDi3fBhjFu4bIPtw2he/rGWpR/0dyjrNnFrNtr6zvVc75XNOLbyJRy/wBviOf1WTv7VbtlVcLtwRiVZS/TvwvybPZNWEK9YAjOsVqI0heMpahG1t/rLKUikSTEmPe+7vt/pp+7EHGWCsko1O2T5WdxBfFlmbRizVEhUUkfqtMMUYYO32FKZsqdEYmAqkw41WKsQsECpTprLtJhMM0fGTAYZKzTjk7tKOSv19ZLiHWb4hNvNWtiXOrdEztrmefarGeaoSyzXD0Mjw+tkaJPWap0dZqsS1mkFNZpVfWf+P8AavN/NnsAmFI0aepAXEvHwlvUYmLsjCCJXSJKCTF4v2wFcbcYeJXUfznESvSOO+h2tfZdmMjDtkSvpICz51NnWN2CyuO2zDm6+j3vBwiKF0vJlABZgMS9blHeztlUojkxNECkeZRwLB6ilrZAGBKLbEc+4N59wbzbjMs0Ng2DqXJ4OgY3kOHoZCjTjkKxOGQEOH4e/h9NpWF6yHi8+FONhYmd2tGEmRDgEfg5aLK49bMM4nWGYjTJQBDCjgWFokEbwaJWGwiGGGWqU1WNHNuKVOwxiSIE482a1ViQ6dKGxjgOP9ia4Z59uTyKS0ciOEfx3Eyu5D4ffiCXNlsC2nr2c8EIzZqyogtl8ntdusuodOLi0tEskx4xfj1jVm0zidSyziVQutjP8g/KctQhS625Z+GoRj6FKOpRs6cgJLWTS2vvzXwa1cLgQGZknQ73gADXhhxQONqgnre6d3B0jksBw/rFUFluTJtACmHYhcuJGemrSL9vX+kHTXPn2ZHB1qY961rWv7X+S9zlv7pderOm2EKodAByv2u3S4YX+IerA/ku87ZjbtgoHS63qtgWUBAFEAeV412yXDq3Vd9WW/kuc7prunaRbt0PVbEshgXFEAeV232qVWt3TvqwP5NjzuG+7d4aW6a3qtgfa6qYNLLcr5vt1FQ7YYHDQx+qy/k2vLe/jVo13jnDKvqzBYgDVClBXlxE30VwjkYqwYgB6rZ/vG5EnEY3WJNM8NKfMvVq/wDfb5cSufGgCkcy4YgB6rZn7dJEHbqY4eKy5iSMXhpT9PVnv3rDlxG51TpgkyyIcRD9WqN9y7lo3pNTe973w6n0gerW5uhX0QulWb/TVu53jVUp3jetfGvVuKSfCqWvhPiF/wCmOtfO6hPs1fV+Kd/vavNwRlvcpUNbvW/WOIEpsiEi0WVbSxDv/wB7f//EABQRAQAAAAAAAAAAAAAAAAAAAKD/2gAIAQMBAT8BLJ//xAAUEQEAAAAAAAAAAAAAAAAAAACg/9oACAECAQE/ASyf/8QARBAAAgECAQYKBwUHBQADAAAAAQIDABEhBBIiMUFREBMgIzJCUmBhcTNigZGhwdEUQ4KSogUkNFBy4fAwQFOxsmNwgP/aAAgBAQAGPwL/APUtzqrGZSfVxr738tXgcNv8O695pAtWyWP8T/Sr85KN56NfvE1vBBRmhdiBrDVCy7WzT5HujaSdAd169OPcavFIrjwPBZ3zn7K4mrQjiV95rPYFQevJQLjjX9bV7qw4OL2yNUC+tf3dzyo5yXsjZ51pyWTsrgK5qFrbzgKz8rylI18KY5LK1lOi++sxpDbcmF6vJzKeOv3VdUzn7TYnksF6EeiPnT5Sw16K/PucsMJs74k7hQiQ22kmtNlaXedJqtkseb6z1eV2kbZS8dzS2v41zSaXaOJ5TMPSNorSxJt1ncKWNBZVFh3OinHRtmnwrA2qygknYKzsoPFJu21zSAHax10ZT19Xls5ZzfRrorWc4559fh4dzyrgFTrBq+a48A1WhjVeBYB1sW/p5fERnnJNfgK+0yjQXo+J7plmNlGJNNM4s8uNtw2DlPLJqX40c7rYudwpUQWVRYDumuTDoDTl8tg5Yhg0kU2FusaC/eHFz3TaR9Q+NFpfTSHOfz3cr7PEecfX4CvtUo0j0BuG/upb7jJj+Z/7coyNi2pV3mmmnxQG7Hed3dQJFjPKc2MfOkiXZrO88lpJDZVxJoBcB1R2RSxR6h3TLMbAU+XSDR6MI3Lv5QyeDGNTbDrNWl6Zukfl3UXIIjgdKY7l3UFUWAwHJ4iI84wxPZFDKZhzh6I3Duo0hxOpRvNGSbHKJdJzyS5xbUo3mjlmVYre4v1j3Uxrjz/CwGyesd/JZ3NlXEmjJJdcmTD+1BVFgNQ7qJkGTekk6Z3LSRR9FeT9jyc8ynpHpY4hZRWdM4X51bJY7DtP9Kv9oYeVqeObGRMb7x3EuxsK9PF+cVdSCPD/AEmlb2DeabKcoxyibE+A5IyTJccokww2UEHS1s2+jHkdmbt7Kwz5ZTQbK2uewtMBBHnNorhjRnfpSavLuFnzOFXxorki2Hbb6VzjPI3vq/2aW39NXjJRhrU/Oo5V1ML8vnZUXzNemv5KaD5TJmZNF0AetXNSI/keRna3OCiny/LmtK+N22CiiXSDdv8AOg8t44fiazIUCiizmyjEmjK4/dY9Q+XcIpFaSb4ChnZ0kh1Cg2WN+BfrWbDGqDw4IGHTIN6ycHs35BZyAo2ms3Jl4w9o4CrPKQD1Vwq6wkDe+FDJVZWfrFdS16aT4VnZPOC3jhQh/aKtm9o6/wC9Aqbg00khsq0/7Qy7DJ48EXf4UNeb1EFCXKxnSbE2DhGRZKdAekalijGiO4FybAUYskNk2vtNXGhFtc1aFcdrHWeRxa6s7ix86CjUMOHHSl2IK0yT2UXVQbKTxa9ka65mMA9rbQSHSyiTBF+daWlM+LtwmOT2HcamyaXpQNWaHzckixZt/wDmykjiTRGjHGNlZ72ac7d3lw/YsixmbBiNlZoxc9Jt/cAljYCjHEbQD9VCbKRaLYvaoBRYDYOQ7jp6l86bKW2aK/PhMUFjP/5okX9aRq0Bd9rnXwGST2DeaOWZX6d9Q7A5OVxwm3G5oakggBOOred9dqY9JuH7NkmllLYYdWs5tKduk3cE5PCebHSPaNCecc0OiO1ykgg6Cmw+ZpIo+iotwcXEbzn9NcZISIb4ttagkahVGwcDSSmyivtmUi0S+ij+fJaQ9LUo3mtrSOfeau2MzdI7vDh+y5Hp5QcMOrWfJpZQ2tt3cHiozzsnwFaXoV6X0oBRYDk/Z4jzj9LwFcbIOdf4DgsuMzdEbvGjJMTxd9Ju0aCoLKNQ4GkkbNUazWfICuRxnBd9WGA5NkxjTBfGnyhxpg5q+HD9l/Z+lIcC4+VZzaU51tRkmYKoq2TRgDtPXGT26WFhrH8+aRzZVFzV7XkkOApYk2azvPJLnFzgq7zRyzKsRe4v1jwNK/sG80c44nFm3CljjFlXgaSRs1RrNZq3TJU/z30scYsq6hyeKQ85J8BUuXyjRjHNje1Qodebc+dFnICjWTX2bIQcw6zv/tWGlIek1GSU+Q31nynDYuwUsS6usdwpUQWVRYfz5MmU69JqbKnHqp8+SZZTYD40ZZsIV/ywoKosowArGrR3KDRQb6C/eHFz48BklbNUUI49GIbN3iaEUQwHx5LSObKoua3Z36VrI8ijFlZ8R6q1nzNYbBvrMTQgHuHn41mRDzbaaaSU2VaMj4DqruoIguxwAq2uRsWP8+uaYrrkay/KkiTUotyDJK1lFXOhk6/D+9LHELKOAQIdOTX5UcqkGAwT68BkmNh/3QRRh1V2L41mJr6zb+UQOgDYes30H/dcaw5yXH2VK9s9o04tB47a47KGIi7XyFCOJc1RwZkZ5lNXj40AouTsrjJcZz+n+fy21toD20ZDqjHx5GfKfJdprjJtDJ1/zChHEuao2cBZsAMTWGuRrDwFJGnRUWrOkOOxdpoDWx6KjUtWGMh6Tb+UIYzaR9vZG+lQYZLF/wCR9aMWRav+T6UMoyo3Q4he151YCw4Ps0Z036XgKEcSlmNZ72effu8uEvIwVRrJr93ZoohqtrNRPObudv8AO4IvNqaVsM9ib+Ar91FoRrlbb5DgKJpzbt3nX2nLSeL/APX9qCoAFGoDh4sdKU29lPlLf0r86t0pjqX61tklarDSkPSblM76hT5x/eso2dla4qEFi2wUoaz5VOwQerSoupRbgaR/YN5o7Xc3Y7qzIh5ttPDnSnHYu01dsEGpBspI11sbUqLqUW4c6Rgq7zVsnUynfqFek4sbkwq65RJ7WvQTLB+NfnQZTcHaP9liRWMqfmr08X5xX8RF+YV/ERfmrDKIvzitF1Pkf92R2VAr9n5OzZkUluMPhQ52NUAwsa4n9nq2PWtjQly3SbXmfXk8WuOZZB50mSZLZpVFi2wVmpd5GxJPzqy4uek2/lFmIAG00q5LiqY5xG2ruxZm2ms2IY7W2mgPu8mX9VY0VybnX39UVnzOWNKSOck0m4THBaSX4LRYkntSNsp0iGk5CljrNQeZPw4M+Vwq7zRXJE/G30ocYzyOdQrOyhuKXdrNYQhjvfGrGJUPaQWrT0ozqcVxcpPEH9NXidXHgeVpSxjzascoT2Y1g7N5LWjHKfdWjkx9rVowx++9c3F+WMmsFcfhArGYr+P6Vp5X+tq5zK/ga0soc/hrF5T7q1OfxV6C/mxr+Hjr+Gh/LWEEQ/CP93lH+bKWOVQyWFXzXPhnVaGNUHhySWNgKeW+JYtVoxZR0nOoVmRDzO08oqvOS9kUA5J3ItCTLNX/ABj50kqLaMrm4bCK01bjwPYTUpEfGTSG5YnCszSb1F1UHyq0j9nYKvJqZ8ffwc5JpdlcTXFwgoh6q9I0HyzAf8Y+dBI1CqNgp1TFxpAb6WSPB1qyiNPECseMmf31eciJd2s1zSY7WOvkFJFDKdYNFskOcOw2uucjdD5Vo5RKPx1/Ey++v4mX81Y5RKfxmsFmf2E16DN/qNq05I1+Nc5lDHyWseMbzasMnT241oRqvkP5PL61j8Kgf1bcrnW0tijWas2jHsQVGs1whazUEiUKo2DkkFs9+ytEA8VHuX61xj81CMS7UZQpu/RztYXgKSKGU7DUWT5LnZ76xe9qu5eTzNZsSKi7hwPonimN1asxZZM3shjWdJzUe9tfurml0trHXyM6SIZ28YVfis7+o3q0aqo3Af6OnFG3mtfw0X5awyeL8orRRR5D+XJlC9TBvKjBMbIxup3HkXmkC+G2iuSrmDtHXVkDSSHXQkmtJN8FoyAc1Lj7aEeWGzDr76uJ4vzCtLKE9mNcxGzne2AqzSZq9lMKvm8WnaegxHGydpqXJh0Bpy/IcLM2CgXNTZW+zV/nlycFA7hFWFwaL5MC8W7atZqSaI6rY10YvdWMxUerhXNI8h31nZW9vUX61mQoFXw4DHKucp2VfJpAR2Xr0P6hWKonm1c/MT4IK5qIZ3aOJ4GkONtQ3ndXOYyuc5z48IhB0pNflSX6T6Z7k87CjHfavQ/qNaOTp7casBYf6f8A8WT/ABf+3IH/AB3/AEjuvoYyuc1B40sYxtrO87+Eqp05dEfOpMoO3RXuu8/3cXNx+e0/LkER4gHMSo4l6ot3WCRemlOYn1pI06Ki3Cc085JorXGHoxY+3uvJlH3cfNx/M8hrHm00VpL9N9I91syL00pzE+tJEnRUW4TmnnJNFajj6utvLuvJL93Bzaf1bTyGI9GuitNO3Sk1eXdZmX0h0UHidVRxDYMTvPDmKeckwHltqOJdbG1Ki4KosO6wX7vJhnH+s8NzTSdTUvlT5Sw9Vfn3WeR+iovWfJ6WU8Y/t4eIQ6cmvypI06TGwpIk6Ki3dbJ8kHXbPf8ApHCzubKouaeVtuobhTZSw1aKfPuvlOVbL8UnkP78IyVDrxf6UkadJjakiToqLd1pXHStZfOoouyMeB5X1KPfTSObsxuabKnGvRTuvkmTbAeOb2auEZOh0I+l50kSdb4UqILKosO6+WZXsJ4tPLgZ+ucFHjVziTXHuNOTV5d15mGu2aPbUPraVY0SvolwX60EPoxi/lVh3Xij7TX91QD1B/1X2WI6R6Z3DdVhroKfSNi/diAeqaSONOeC5ucdVFmNydZNDKZxj1FP/fdlHhGc6bN4rNWCT2i1CTKbPJsXYP8A73//xAAtEAEAAQIDBwUBAAMBAQEAAAABEQAhMUFRYXGBkcHR8BAgYKGx4TBQ8UBwgP/aAAgBAQABPyH/APUrJQGK0qhrLt1fiN7/ALptFMGDvHxfYTYt3cUyY3lanGAEDpSgyPJL2pGLltg2kSl0QDaWPiKnEQeRSGIN5dK4r0vSaCHmZVNmXMu8cqx5nUZeGLU4xZ1AAABgHoRytCNhd6U4RgXuu6fD+KtPsypRmbyM+NQDI+c00Q+P9NXlBgsig4ytF+FR5y5m/wAa1Ewv+Zp7ZkTxZzc/yn6FPN04fDncnQ47DfRMEjkRm7aCIX+AZVJkG8eVAkXA35FD19IN47suNCSOu+8fdNH9HXhUskueYNWZSHw5RSjm0nWkZZajFCMIwStQfMR8MqbIAza41IZC5Dl5Tx9ywS0imtt11ePasmTOyy+HhYpAJGofDrYrbVqF3jj6do1GPPDn78lheeN+9QFx2vM4fvxMLwVGRT9kXPMi+9fcqVrDVkUyNui8o/CgDxgyPibxNBxH2pyPfN9C+4z0q1F3pdNx8TnGhwMVkG1aiYZntfgIOHuy8155y1GWbe8E/nxSba95p4ufuioSkIizu8nagAgsfE+a6k6DGrrMbmOY8/aNE0ihDUsmGetG7B45rmvxMkApVyKQgKW8TefdNXUlYAbulsbPiiTCwfBNBaHAZHtkY9teMtWwxv8AO3vxT+JaQq8YZ2O7h7YI1pk3Nqc1uPiiAqgM2pMcwFw8X57RDmkZFDEnA2dTnRYBQGAfFEI8y8y30aEBG/b7RENpDCfPvdUcXwd6iTcjPcKcS74eSpy2AA/KjtAAkbz4JCAGaxV2L9AdCzU/4rtKW5QVrXC5Hmz2tTLlmL1fynIHiTtS2QS8G7X8pLHFXH/hQiOswcXOhNN+ms42oTYMg5ZefwJeDZqkdhzfh3VeK8mfpSYuI1NJGWHYKs8Djp75SX0Ea60zpR+Lobdq1LjNm+xW43tvYqJENQ3V/lfeivllWvtYcvTfQjPGMXaudHsLIyKUkLCZnU4tABBY+A2piyTzXpUjLIOW4yKKLrq/vZW5QGPQDABWoRHWsRX9r+y6BRSAp18WOrT+4Q/rGr8F5ZvQM1eZtZq1afd2UnHFyM+ZSpmQrNs5KFIKRMEqBcpWlTmS7yyGvepMBKLqO7QxmIl97q+t7NSOFuh9tQ6h4rq/AHJgSrgU+5hjbc6FYVFsPzWrEq1G8fZKOYo9DF+0bsFA2escvi4vvdChZMtlZuM6528PoVvw1dcaIbB67RDLiO6eo+Xxz9amliBfIv1GgVluPttXAUo42b++rQiFL5dnu9TUmzh03/lG47jWdvgAlBSrgFLGd/27NlSEYuE/zRZjQBAeyf0LnvJpC9sTm5unP1AUou4m/t2UvqFnCHd2VibzUux6L9hYcdIot5Ppvnf2gIASOy53qfO2DnPLFT9gP8TZ6lz30/6/KbKbTcDy/wABW4/BcjcVjT13Pru/aCCD2rnMzyX8fM6LiIT0cmHyau3Sn91DYmYd6MccHoR1fftRaer2G97YbnoBQujmpqszF2D1jzJk3bm/8p+5ttuHfP4DhuLE59PYJdetBCCgDI9uU0uPOWsDZ4PK9Lcx7hqp/kyZvoFGtLAYB6AyHKVxTCHvrphRIQCAMva03LtZs2iXPZtGL09bx29B7qsQLuthWeRZpT3si8CnhzUODwZ/305pkp9hHp6HCr+mLnD7YYfAjKpauvTuPMPS8TFs/KKkbl02y/ChLmgPQCQ5Sr5tl2bXa+qEmaA9uEI4txXpQ34cm4ng02FvErv7RvVlEBUT21gp1dKROI7pjsNCtiwHF6FYDDCwfM6mhMXNmhLCBof77tBfI68Km2h1HTn7dEws1oVP46GMA/bVobxYGAUhFQGbQmQ4f241bq70aNx6Fqxa0HyuRYH9KjUYzmtX2zakTZV4SHLsvObTiMaDK49KQc4C0CoGyZT7dWxQO4bti7ajiqXtVjhtkGmFvgZtBnHFPQ2H++BEgLrV+qOaGH0rDUw9n3Louhtq8tsbDoaqg6ngPS1MOHL++9aKDOufR6RUXAzWhUZqeLY1d6CX3dMX7jXsPaePjk0rBlBdllOtWr3ycrpr974NHrRisEFLBLhT44uL4tShFQAlWojgeTQ2/wC/nig/BumoDY83rH1PsY3LhYuypTKoIwNmp1aJwOAeiGQ1NCkrPzPsKLOBCrhzw8XzOovYbAHmdW93uu7e6Xeh+/t21EIni7Yxl3v2pxEYGHjjWq4XfaVExAQBgemXIlnJ4/lZDNjy1EJwbuz3epjjmgmNiBtHtSmCrLFJt9f7vBnV/DrUQEhVsjo0juaBcudvaEBK7Wg4GnbeWVXKbAbI0NKEtWAQHrBvHIV3ocaw553dKiOCY+G3QUpegh0CrPOLdhs9zNQctKRFhDfS4Ft61nZ3nRrspA9COWMd6w3oeHo4ZYxL5QUXDdLgdaA3LjYu31x72F9NMJbnCjV71ggc8WgAgg3HqjLsVgqR1p/9WkOVf1jX1gx90qTBysNztRYjSJI/+LBFvawY7xWJHQlXf8fWIGj631/9ekHXOtRalE9gX9+qwNeA4bAq5rshd3GW+gjUsJyD+mixb2ZZwBmr9SnZzXlz3s1doEthtVbVWS/8e6/DZSAqShogcqGz93VNIV3lax6WN9tQ/dS73n1SEUAYrVoXjJzpBlnOAbDKgttCaaHrodK/tq7KuzzQbB2K3nNWZ6YURnLkF6KxbNis0tj+d1PCpqciiTYj/wASiDiY0gyBAio+JFpZ2OjTSJx5amyhmtE3tUCWvrtCv226K+wLr77wda80fqmrXeqYN0h4x+2j7lEppPiViA7k/WvxgCh/uDpWJ7/21lDeHWsM4xNYTyNMyxsqAEBB/wCrcND6UotWnK2JVnBqcVupgx9p5BSq2KK6DiZXrysQNXZRnGXfF2+6eEWbY3tBgFt7cs6bAcQmO90po64QgynL8qejRSCdZOVG4WUXditRqi5MHf8A2pZguHyaLXE3SDdUIIwo1CaxgX6XeL2qfGeLd3u1HYKAIChTkmzMuU0qU2ST6amQtSv21fxO9HaoHzg6FRK91T4+wDRwCzW1zpA3OfGt9jKPurfsgVA0XM9IDCd1aF/INQp9G80JG4CP2awz42VY393qr6cs/wBPcmAH6dKITGK3ln890nkZmqJ6X7u3HVqI4sFkJq2Mc9pbFdu8cirqjnXd9LcDQOWoUfx+YNy4+lh06EjR+iGSCTbq0M2KgPqhRhkx6P0jAFocnbRVnAQHKnAJsi7d3VCL7VPj7G85xdTyrGS2tNwq0f4fr8GrnQVgVq+vkP8AXAnLzbB5/tXjtHDQd/snbssS4Vzdve4ypu8ZSzxWn2AudDbtq8OIOmc61MYWCMg26NSByrHS6Of1R6eYLOplS7J3agrvsORjVrIybG4rNiPcdV+jb6v3JJoFF/a/YWwcPYQSG5TEtbCPgRIBQjglKNd437xU07kMDqU20brPvRaaQP8A3S2U4gnm08QGrfj2UVBshjv19BsYtU13Jicc6O4XadyloK88KOjuwfbUKh8AvoXLkOLYDe02UQmzeW4wN3rj3PAcagJj7nD6j4S/OsF3OlGZeW2plN1PVRoQZH+MxsWjZD0PN2eqwS4UpMXE8s+tFj4tbkE1z6GPCk1YLmOYt762BOEGbzWo23fCMfv8+L3hebaePgfZgcZmd8eLWDke85vxZ2+QFx4CWiLiE9YfBwLV5Vau1zMOvxe97ybf+1uHsnE3FNXnVqY+3wOUfFjCWGyXoJaEmBD1iMHANXlUyEl4TyPi+qZNsv5HP2TDnkubxagBdjc/34sR8wai1RiJf2B5+s/Cl2WZ5rWrmmhm8qKGADYfFtd7wYHIvx9QRAC6tKE2W9jvjVrHv7unP4sh0LfCgY3W8ycCD1jYGWyz88OdCXIqsBRDbt+LLKX3P9sesyAE0KtvT/AKwjuYzdOfxe/r9d3j6sRqEWmXVRRzCd6JGITbt+LJoutXYoCcRNpz+/TNeEasirspio7glJpm9Pi7DrqHZ3PXEAJ2v5rFWV3Rm1EeQNnxecMLuHh6GGONv4xpkqiVc2pu0ceX99vi8uofEWUFhcL4vaKQioDNp3GT668VOEcW/HGgAACwHxeCM3kf2gIwD+lS9m2vBP5SACpgDOhMmNbdOHxhnLS/ZSHQywEWk1pQCpRdajX4sptdPjLXUsnFNOVXC21BxabsVw8l/wDu/wD/2gAMAwEAAgADAAAAEPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPOKOHPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPKKMPHKPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPOOGHPOIPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPNPPIPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPLPPODPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPNPPDHPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPDPPMHPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPOPPOFPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPOPPPPOPPPDNDPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPMADNPOPIEPPHLJPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPCFPJHJNMHLPPPHPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPLPPLNNNNPPFPEOPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPLBPOPKLLFPONJEDNPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPHPGOLOHPPLJJHJPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPKNMHOAHPPLPHMFOINPHGDPPOOOMMNOJJBNPPPPPPPPPPPPHHPPDLPPPLPLPIDHKDHPLIBNHHPPPPPPPPPPPPPPPPPPPPLPMBGCADHPFPLHPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPHLPPPPPFKJPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPMPOPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPOHPDPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPNPIPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPOFPBPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPKPANPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPFPNPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPHAPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPLFHPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP/EABQRAQAAAAAAAAAAAAAAAAAAAKD/2gAIAQMBAT8QLJ//xAAUEQEAAAAAAAAAAAAAAAAAAACg/9oACAECAQE/ECyf/8QALRABAAEDAwMEAgIDAQEBAQAAAREAITFBUWFxgZEQIGChscHR8FDh8TBAcID/2gAIAQEAAT8Q/wD6lEikogDlrNXIl/RPutuOx+31QWWOWVuXPi8DemU6Zd7FGx3EcvUH8vapuGP4VmD2JomupOj+2lCi6FTIQAwpZKGSPmGCHfI9Q+Iux7IJ9ZGoW5g3lpG0spx6xjv6d4kg5i3clY6oGO6EdhPNSMRYx3F+g5rNikRB4w8zRZWgEAcHoN7N8ubyDvU3o4nc/gd6PhyVl2thf0Rd4oHbLOibMM9xoTIoLuTCe00qMMxzHFsns1I8AtZbKajskO1A5adz85PSY4qMy4ug40dxUN2wgfp2B7RjFTjYGfwOyoykWQyGQ6odz4cghA4CxdoqSdAdauucMjSxlSltV70CNbwo8Mnida0SSRdcLB3XpSiPhDfsdjoFP1JEAlA2yWDKza1H1IR9sMdCD3CMlt1mX7Evjess6O8WX+3UNaI8VtANedX4cntzBlcvDI6xvVsypKUOblPvKEUcBdq9xXkBvp3X4q+RwoRlXg4IKCiEzBWHi43fuBEACVdKmauK8Zsm6xwUCGBJ85h6ZeXg+HsMUQA6I5pyiswHTeUO9X48iW6yu7vpIfBjcoh3x0uyggA90XFTIvje9wcUvCwzWP8AHR/D4nhYJABKvQKNsA5RL2yJXuUICSBulh5WCg2nRg7HYgO+9B6BgAx8TxtKjELrvE3d/c2rXms09w3NHd1rBxSbOHgO7r8Tm+SzMLbpAHWpsxEuAEDhD/L3TMK992/GA2JdqssQAZMw3Fj+XxR3oPA2OQs9XHuyWEG8VjoZXbtWAd5Brh4iJDADUomIBABAHxMgTgo8rhu7UoCZMpXflS+1LTcAB+9I1ad2DeAvdau7AaVZitLK7hW/xNPT3oAJV7UcQRuBw7v17mQMQvZoI3Bsbsu1WuYBvwTZ9su3xQhRGlyJLezybtC0aFYCAO3tzCMy6fjAbEu1aeY+7GZoHg5X4oJh1U/0avA0jLoIFudpxuvHtyDCW7FjoZXbqVMy0bhcjeIDCkYL/ExKClSAN2iukjtCsPD47+1YWULBmr+yBjeDtK0INqJ14mAEAG3pJ8SxteDGZnaSV4RoqNuYXKyrlZXr7UhF3xB+wZA1uxKgWQRlXVOqt1qbe52W2C72rBIhfORIO69KlosnhoomZBeUxYWkdsz8EW5uGB3aQnDbc/NYg5ED3P8AygUFPYW+jV2BqVlMhu1yOk2U0gae2w8iLu2gTfSTtSlIaezdnQFjjq1FobPL8dfP2owuAjIN1beArIzcgeMvZHeii+iGDPGXmdjWlAxTQjdPKZ6R8CzHGiS7BleC9GExXD5wHWXSp8uWZOxsdipE8JwfWatVyA7lP8SZKMtGFmRc7Mnb32V7PhiZpaCbg/NlYxAFSlgGJSWdANWrQylmTqFz2XJ6W6eXyPjWi8pPcDHSsXCBrSrhYug90aeG81c+ICwHi4cuw0XB3gldxdctLtqjABKtHsxaL0n/AABBtRMQCACAPgLprMbviy8L7xU/fosh2K3J5anAcrUONbp5UdhWEFPVy930AwYsqudFh1aNpGIOyR9J7AY5Cgbq4pVJ2kReP9BzTdNQX3iLu5ajL7pAPOp4olvgyLcYlBO6Gacc7lDxQJYCLPwzfsU8dWkDmLFt9yc4o5mn5QSI7UGffc7Aaq2DdrbiaTZHsbu/AYizF9yNixl37FqsQZGbF0fSct/Wctnk5Xl1b6DSrQKpeqTVW78AYVReAMquCruP9sGvky8GRxsBKDuHV9GrpUBg4/1mcEHHsOQVG4G/LPoFGCLFoCA8HrL+5Xxy/Zl0GjNkKkmgN1yy0Umt7QuX+V6UMBRce+d/EFTldAQLaRsaTl4GhCUSGV7wdiXqq6+p5RCM4A/ZqWqaMBllZHQQcJSXiit0RNR3C4mB/wDZI3V1WV/FWUiQSLn9mTwW9ZQnm8xcOkLro5bW03iw7BsMB3yvwBOGH4ASq6FX60HCjwbe50DVE4nlOp93gugloIAYAMHsgvDE9MexPZSm01tT+EiXPqucEdk6jXZ3OzLASqo5lzwPoo/iAw7ofgO8+knYuS4x/NoS1k2NlmwTRTwcvtR17iIBZtJ+k70P1kJDHDtAWJtyLNkGrH/MeXLoHo2RA3WfVt72F2htPKtkszN4m65V3SPgGYYzsDi6t5eC+vkB4HLi+XBcAAAIA09iwS1MvwN9QcAg4KQMc3XdeVleX0sRZRcf/kd22RrJJZdy6znR1xHTY0Aft5y+g85JZV0BqrYKYc0XsB71yZ1TYJ9lkAT9XDoZeBoEyzBLEx3ajuehuDMuxq6vb1JKhvuOjR+uTRBEVnJdZu3zkuPgKjLEmvieK3Du6VDEELbiXd12J3KPJg+ACADQ9szAmrumnGDpO5SLGe1fOcVsvY09DLvJbmCDY0NXgakE39Mutvu6FtoFBgmAYA9JiVpsH7XAatSDfGY43dGWhhdWhOiCgBYA0PYsFK2qHcOwO8sBwG9OoQ44gC5VZbDu+iwXqMDC8w6pi2uJpuTT3khbs943crnardkF8ugGVdi9DvliXkDAd1opaB9ABYl2J4/z3T/Cgac6FFtAkbFt0Rl4WoTkLGFsvVxsAe2/2CG8X4ZXblKu+MQxOjigMSBj0OBKyMIwft0BaekWTs7QPo/3RCin/K6q3XV9JsVhsH7djWjcReNpoJTBgTzJuW4gP26rq+3JViq+LiXDqulQIIGWAhHZAOZ2oyrRHLlu6pWTCADVaezyu8Sp/ve8VFgIQjwNHbXLVroeEofvQu0xiIj+iN3fJ+qlMVoYXyaHKUc1C6BB/nkuZCB0N7qj2KNYi7PD+HtQG3ALowWq/wC8VAX4Vuxt2eSdii5xBgBABQhBKpAG7R96tRLFu6iOI5pxkKXYwewd3X0P5U6h0A1XQKzF8RgsedAdjVqEQJXLy2q/6we00bS6AnzTZcxC5ouoW55KOmv0aierQq2ML+cn8axUtp6FS0TxeEXawF667hfgwUAycMrsDVWwUiLIOzseVyurwFEY2PKmCrVVD10eAN7uv+eLwJRgDLQ5prtVA7QXvRERz1BdeVl7+woQ+uiDVbUhtSRdXYFlwdIGFm4Zd1dVbr6PKiKVzYfK3QoM6uiWce1hyu3oT23C+kDVf+2pb8iPkV1Yz2HI3WhEbl2DAaHf3GGUMuZBNQu6KGqjKEFhf91MuptSpeAAvNaBYgu45pvOUKIgeEHh1aIL/KdVcq6rQIgAlXSpjZ5HGNXGnC+tHv8ATosAatAo94yPrarV7Fs/55mUZDdQ/ko5zwy1/wAEvj2Zs0XOwH5cFSf7DE1ny6uPBUPjy2OeV1W76BXVHAEr4KLEABvBieBV5moEevg1eXLy0gvONOAbG6sfVSINUk1vQMqu+CrTwEEOwbDQ75fcuN1I0Ym5JCWUaDUj2IYHZc9xdk1aSjHWxBcdXY1qcp8xNzmQ7Zddk11gwAwAYPRrXmtdvo/s3KxiyPBuuAbtqTiBMLbmT7yeC3rPbYUAft4y0+ZIkOW5OjGs1CNCES03lh/m87XQ9I/NRSRQMAIKulzvR/O01kZV+kbNTgkIkleWrfGt3kjHRd4zUB954mD9xnTegRMiANA9VuCSMn5mgcX9WY0sh3jsaf3GD2G/2Om4PKnAYF9f3St7SDFiFfQdDXL7nBvsErsBqrAGqhUe1zrAYOwjLVxQaJBhlSOiGZbFREEO5It6sWVvaKDyB3gAfj0u30W35CfBLUhIDm8uuCwHQoGlpCchfgwer6xnLbYbbrYq5mUwm8juu0UUE9RwP3UUpHsAH49cTo1Lu0mVbEhd08AdaZRdSfY3LzQFtGYROpIpgFARDls8+FAhoYA4RMn/ALyek19b6V9XZ/dfbZ/JS1/63NDY/v8ANfQl/JSYS39Af/rVNkcbSL/CkxiASAEuypaGCeLBAsIV7UtDyon9XlfpQAdcTJe9pjeaAAACwHsvxyzSxd5DtQYbA5NypYwTfalQOkSDXSH/AA2qHocYxNjYaHmX3FSaEA3VxRqfJkYamS9JtIYspAasghYlWjx4jLTdbbBYo1+aVmA8ih30OQpRAG60cYsjK50fUtzUIMMlGyCw6UMQUGQk9sfK+tudyZTkeB3TFElWGJbGrtaOKkkXILVS6EKy1CqJed0H3HpnEcEdDd4KIRNM4OuTvDpUMJl5zsdjsUSprxinP+x4qFh852bHYKOIyGH7EJwjRqwCM4z6PE0Pejop9DMtQ6mspnpMCHWMd/ST1QIAatqmLbn9s08jU3/wNINk/rkKnJHhfugBkbJn0Kog3oPfUUnezj8grVoHd/5Sl8zw/g1Ak5ZP4oVct2pVr/ZLVag+1fgVa81H4FE5G9Eyq6/5NfkI/wCShQphN+qMmAgAgP8A6XFIx/hq2UhFiQIQuPJUsyk/pEP3UtuzGPU5e77VD4HAGVXBSmvChkkh0giriysGHb9DvBeombC57hfgwae6Fe0hS+M6EvFQtluRdAN1yy9Kbm2rk6DHR3dKJ1ktAiBYmEdVQNYgIRBckLdEtzVgReAGJiUyXGaleSSNd9EcugoBMhc6vrbhoXEiMjwAAtaFttGIoyGLXHsY6sVI8t4m6Iv27lqd614BOOl3JUMPTgdKemGGVmOVQ5ir3sWSG4hsiiVZScPbCQPFC2yQB0QLDwU027ohjofYvSo9go8m6Dgg9l1pwgUfNb9qFsOx5afw/wDiJs9mjQMf8GaCt3ZU3B7inYQdP4GvMXH3ZocWn+lzP1QwlOROfQfdTjcvtKoqLpmUHsSkBaNVf2ajIo/qh6R/hVSEfNxC+1T+Crrg/wAy92aUI/ZaHLBSOAyQ6F/6tin9RZTEG+l896ODUNAfy8t3282eQnl+Rnii8OF4HmehBSkFsWtJbNSLywc1H2lUXeLbmGJDT0ErVnCmGBotwJuWElbBSAIcd+xH7rRggQ8sZeX0n7KwlJm0ExfJeo5qkKGwH6p9bJbD8neHeooYo8k6Dgg9mVS323VEvLQyxXI7wsfVHDjReI/8EEhJNqHbple+ylpXaMum836rQS/qB/jkegtaNPQElBzSwwuymhZfc5oRLer6Bpl7E3fFBJPJEA7h3S9KnBYIr6vBytaGYmW4ueTsFJDkkLNd9pZHV2oZnk4NYtvyYc2o+k3mL8tEMA/0ydYc8HJN4uvqsUywL8KPka3KiBmb5X0c0wjdAFN8Z1u808JCTDO/0pTdKFvQ0qS6CV8FKVnRf9NCdz2MhEsiSNNFLKa+vgSWvHyghE2qaAyOBtGeYvua0LsuOlpPgEpMH9RxVC/yceT9qJnG8DqtvLQy890uMB2PWuvXYN1lcvoPPoL4RyJolylX+4jxgidwVB3kmUBqGoMdi0Ic1ifufoqCfaP5RO0ekIsBkhHMQDrSFVYKBI4A4h6jE0qLdY+TB0mni1XcjGHYDz8JRv8Akh4ofurBBsQ0OMHCX92gYRAAB2P/ADutAt1c823V9RMgAlXBQGkgNC6v271AAABgNPi15yHxgrwSuFV1uWUmeYivX1vqBibw/gt1FWJZU9ZnWB8XfShmndwD+T1aYBGvA7EdXxFRCThP6Cq9/i0Ew/HLvBdg3p5gs+WMrysq7vrlokDeR9cu6VJSYaSzMHsS7Hxf64GQ2+oC7Pf2ZWnE2g/f9AqLauy4g8EHWfi0Vry2+jxBV7w7ywZeVleX1zBKJvI+v7JU1fDdtTux3UEABB8WUnZbGAl09UsEtZA3FhD+06BVlWQpcVDzJ6B8W5RFZ0HlnoNZglGUu/Kl9dDptvF+Fg5G1TVgYDm7AXtQ7wE0CA+vi20nPQKHz9Q9SwMoQAZWlEZ9o1nqp7uKi1AnNMh3js+LOqWIgmOrjvUQxqcl4/oI9bLBSS5/s8KRQFGgrl4MvBQdwtawyuVlevxaT0xgcIIeyoIILegjnFwBK1IXZs4Ldozyta01MZ0PQ+3xcsmQ2klrhHx64RBaxk3Vu4DeoTz7ZOVwErwVF8HchlcrK8vxbYfVlMZ3R7VmcY3bvun0u9Qk4VsHKoVIeDmOhwYOArYyCxK31SHR3+LuxqxECB6v69by0oGzmOxjqu1S5EUzDfsk94oOhS6Ag+LKAqwb0kyUDv263930ZRXVqlmNhK6c0h0j0qMq8rVs4gBc2Tyv0Pi5LgO6zRTpK9qAiHOKyfgoQgpUgDdpwrLohPkR4CrPgl2P2VukulFocAgAwHxdWmZ6L+zRtRSg9bMcmOrVt1UXtQUqWADdaSQhDfGxdhbrLr8YQcx7xJ/FLngMY0CyoJhgHen14mCLqu9Ivihry0tGMO+3xkG7ujieSIY1FoQrOF66QhSy9AZXdnFzY2c//u//2Q==",
           "extArchivo": "jpg",
           "codWorkCertificateSetup": 73
+        }
+      },
+      "Metadata": {
+        "title": "Metadata",
+        "required": [
+          "version",
+          "timestamp"
+        ],
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "example": {
+          "version": "1.0",
+          "timestamp": 1742916352739
+        }
+      },
+      "Parametros": {
+        "title": "Parametros",
+        "required": [
+          "ver",
+          "accion",
+          "codigo",
+          "categoria"
+        ],
+        "type": "object",
+        "properties": {
+          "ver": {
+            "type": "string"
+          },
+          "accion": {
+            "type": "string"
+          },
+          "codigo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "categoria": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "ver": "Beneficios",
+          "accion": "calificar",
+          "codigo": 167,
+          "categoria": "beneficio"
+        }
+      },
+      "Link": {
+        "title": "Link",
+        "required": [
+          "url",
+          "tipo",
+          "metadata",
+          "rutaBase",
+          "parametros"
+        ],
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "tipo": {
+            "type": "string"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/Metadata"
+          },
+          "rutaBase": {
+            "type": "string"
+          },
+          "parametros": {
+            "$ref": "#/components/schemas/Parametros"
+          }
+        },
+        "example": {
+          "url": "/sencha/beneficios/index.html#calificar/167/beneficio",
+          "tipo": "sencha",
+          "metadata": {
+            "version": "1.0",
+            "timestamp": 1742916352739
+          },
+          "rutaBase": "/sencha/beneficios/index.html",
+          "parametros": {
+            "ver": "Beneficios",
+            "accion": "calificar",
+            "codigo": 167,
+            "categoria": "beneficio"
+          }
+        }
+      },
+      "Dato5": {
+        "title": "Dato5",
+        "required": [
+          "codigo",
+          "creado",
+          "modificado",
+          "modulo",
+          "accion",
+          "idProceso",
+          "mensaje",
+          "link"
+        ],
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "creado": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "modificado": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "modulo": {
+            "type": "string"
+          },
+          "accion": {
+            "type": "string"
+          },
+          "idProceso": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mensaje": {
+            "type": "string"
+          },
+          "link": {
+            "$ref": "#/components/schemas/Link"
+          }
+        },
+        "example": {
+          "codigo": 5,
+          "creado": 1742916352739,
+          "modificado": 1742916352739,
+          "modulo": "BENEFICIOS",
+          "accion": "CALIFICAR_BENEFICIO",
+          "idProceso": 234,
+          "mensaje": "El beneficio \"Ilimitado aprboados\" ha sido recientemente aprobado. Si ya lo consumiste, recuerda que puedes calificar tu satisfacción <a href='http://base.local:8889/?ver=Beneficios&accion=calificar&codigo=167&categoria=beneficio' target='_black'>aquí</a>.",
+          "link": {
+            "url": "/sencha/beneficios/index.html#calificar/167/beneficio",
+            "tipo": "sencha",
+            "metadata": {
+              "version": "1.0",
+              "timestamp": 1742916352739
+            },
+            "rutaBase": "/sencha/beneficios/index.html",
+            "parametros": {
+              "ver": "Beneficios",
+              "accion": "calificar",
+              "codigo": 167,
+              "categoria": "beneficio"
+            }
+          }
         }
       },
       "PendientesUsuarioLogueado": {
@@ -13663,169 +13881,6 @@
           ],
           "success": true,
           "cantidad": 2
-        }
-      },
-      "Dato5": {
-        "title": "Dato5",
-        "required": [
-          "codigo",
-          "creado",
-          "modificado",
-          "modulo",
-          "accion",
-          "idProceso",
-          "mensaje",
-          "link"
-        ],
-        "type": "object",
-        "properties": {
-          "codigo": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "creado": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "modificado": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "modulo": {
-            "type": "string"
-          },
-          "accion": {
-            "type": "string"
-          },
-          "idProceso": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "mensaje": {
-            "type": "string"
-          },
-          "link": {
-            "$ref": "#/components/schemas/Link"
-          }
-        },
-        "example": {
-          "codigo": 5,
-          "creado": 1742916352739,
-          "modificado": 1742916352739,
-          "modulo": "BENEFICIOS",
-          "accion": "CALIFICAR_BENEFICIO",
-          "idProceso": 234,
-          "mensaje": "El beneficio \"Ilimitado aprboados\" ha sido recientemente aprobado. Si ya lo consumiste, recuerda que puedes calificar tu satisfacción <a href='http://base.local:8889/?ver=Beneficios&accion=calificar&codigo=167&categoria=beneficio' target='_black'>aquí</a>.",
-          "link": {
-            "url": "/sencha/beneficios/index.html#calificar/167/beneficio",
-            "tipo": "sencha",
-            "metadata": {
-              "version": "1.0",
-              "timestamp": 1742916352739
-            },
-            "rutaBase": "/sencha/beneficios/index.html",
-            "parametros": {
-              "ver": "Beneficios",
-              "accion": "calificar",
-              "codigo": 167,
-              "categoria": "beneficio"
-            }
-          }
-        }
-      },
-      "Link": {
-        "title": "Link",
-        "required": [
-          "url",
-          "tipo",
-          "metadata",
-          "rutaBase",
-          "parametros"
-        ],
-        "type": "object",
-        "properties": {
-          "url": {
-            "type": "string"
-          },
-          "tipo": {
-            "type": "string"
-          },
-          "metadata": {
-            "$ref": "#/components/schemas/Metadata"
-          },
-          "rutaBase": {
-            "type": "string"
-          },
-          "parametros": {
-            "$ref": "#/components/schemas/Parametros"
-          }
-        },
-        "example": {
-          "url": "/sencha/beneficios/index.html#calificar/167/beneficio",
-          "tipo": "sencha",
-          "metadata": {
-            "version": "1.0",
-            "timestamp": 1742916352739
-          },
-          "rutaBase": "/sencha/beneficios/index.html",
-          "parametros": {
-            "ver": "Beneficios",
-            "accion": "calificar",
-            "codigo": 167,
-            "categoria": "beneficio"
-          }
-        }
-      },
-      "Metadata": {
-        "title": "Metadata",
-        "required": [
-          "version",
-          "timestamp"
-        ],
-        "type": "object",
-        "properties": {
-          "version": {
-            "type": "string"
-          },
-          "timestamp": {
-            "type": "integer",
-            "format": "int64"
-          }
-        },
-        "example": {
-          "version": "1.0",
-          "timestamp": 1742916352739
-        }
-      },
-      "Parametros": {
-        "title": "Parametros",
-        "required": [
-          "ver",
-          "accion",
-          "codigo",
-          "categoria"
-        ],
-        "type": "object",
-        "properties": {
-          "ver": {
-            "type": "string"
-          },
-          "accion": {
-            "type": "string"
-          },
-          "codigo": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "categoria": {
-            "type": "string"
-          }
-        },
-        "example": {
-          "ver": "Beneficios",
-          "accion": "calificar",
-          "codigo": 167,
-          "categoria": "beneficio"
         }
       },
       "PendientesUsuarioID": {
@@ -13956,6 +14011,53 @@
           "niveles-aprobadores": 1
         }
       },
+      "Datum": {
+        "title": "Datum",
+        "required": [
+          "codigo",
+          "creado",
+          "modificado",
+          "tipo",
+          "nivel"
+        ],
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "creado": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "modificado": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "tipo": {
+            "type": "string"
+          },
+          "nivel": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "codigos": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": ""
+          }
+        },
+        "example": {
+          "codigo": 1,
+          "creado": 1750968132832,
+          "modificado": 1750968132832,
+          "tipo": "LIDER",
+          "nivel": 1
+        }
+      },
       "getFlujoAprobacion": {
         "title": "getFlujoAprobacion",
         "required": [
@@ -14009,53 +14111,6 @@
             }
           ],
           "nivelesAprobadores": 1
-        }
-      },
-      "Datum": {
-        "title": "Datum",
-        "required": [
-          "codigo",
-          "creado",
-          "modificado",
-          "tipo",
-          "nivel"
-        ],
-        "type": "object",
-        "properties": {
-          "codigo": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "creado": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "modificado": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "tipo": {
-            "type": "string"
-          },
-          "nivel": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "codigos": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "description": ""
-          }
-        },
-        "example": {
-          "codigo": 1,
-          "creado": 1750968132832,
-          "modificado": 1750968132832,
-          "tipo": "LIDER",
-          "nivel": 1
         }
       },
       "solicitarVacacionesRequest": {
@@ -14284,69 +14339,40 @@
           "nombre": "Compensatorio"
         }
       },
-      "listarTiposAusentismos": {
-        "title": "listarTiposAusentismos",
+      "Categoria": {
+        "title": "Categoria",
         "required": [
-          "success",
-          "data",
-          "total"
+          "codigo",
+          "activo",
+          "nombre",
+          "descripcion",
+          "tipo"
         ],
         "type": "object",
         "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Datum2"
-            },
-            "description": ""
-          },
-          "total": {
+          "codigo": {
             "type": "integer",
             "format": "int32"
+          },
+          "activo": {
+            "type": "string"
+          },
+          "nombre": {
+            "type": "string"
+          },
+          "descripcion": {
+            "type": "string"
+          },
+          "tipo": {
+            "type": "string"
           }
         },
         "example": {
-          "success": true,
-          "data": [
-            {
-              "codigo": 15,
-              "creado": 1771862983307,
-              "modificado": 1771862983307,
-              "nombre": "Ausentismo 624b28e1-cd63-40e7-b546-8e482f575697",
-              "categoria": {
-                "codigo": 2071,
-                "activo": "s",
-                "nombre": "Otro",
-                "descripcion": "Categoria de tipos de ausentismo",
-                "tipo": "CATEGORIA_TIPO_AUSENTISMO"
-              },
-              "requiereSoporte": false,
-              "esRemunerado": false,
-              "gestionadoPor": "DIAS_Y_HORAS",
-              "nivelesAprobadores": 0
-            },
-            {
-              "codigo": 14,
-              "creado": 1771862706860,
-              "modificado": 1771862706860,
-              "nombre": "Ausentismo Postmans",
-              "categoria": {
-                "codigo": 2071,
-                "activo": "s",
-                "nombre": "Otro",
-                "descripcion": "Categoria de tipos de ausentismo",
-                "tipo": "CATEGORIA_TIPO_AUSENTISMO"
-              },
-              "requiereSoporte": false,
-              "esRemunerado": false,
-              "gestionadoPor": "DIAS_Y_HORAS",
-              "nivelesAprobadores": 0
-            }
-          ],
-          "total": 13
+          "codigo": 2071,
+          "activo": "s",
+          "nombre": "Otro",
+          "descripcion": "Categoria de tipos de ausentismo",
+          "tipo": "CATEGORIA_TIPO_AUSENTISMO"
         }
       },
       "Datum2": {
@@ -14414,14 +14440,79 @@
           "nivelesAprobadores": 0
         }
       },
-      "Categoria": {
-        "title": "Categoria",
+      "listarTiposAusentismos": {
+        "title": "listarTiposAusentismos",
+        "required": [
+          "success",
+          "data",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Datum2"
+            },
+            "description": ""
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "example": {
+          "success": true,
+          "data": [
+            {
+              "codigo": 15,
+              "creado": 1771862983307,
+              "modificado": 1771862983307,
+              "nombre": "Ausentismo 624b28e1-cd63-40e7-b546-8e482f575697",
+              "categoria": {
+                "codigo": 2071,
+                "activo": "s",
+                "nombre": "Otro",
+                "descripcion": "Categoria de tipos de ausentismo",
+                "tipo": "CATEGORIA_TIPO_AUSENTISMO"
+              },
+              "requiereSoporte": false,
+              "esRemunerado": false,
+              "gestionadoPor": "DIAS_Y_HORAS",
+              "nivelesAprobadores": 0
+            },
+            {
+              "codigo": 14,
+              "creado": 1771862706860,
+              "modificado": 1771862706860,
+              "nombre": "Ausentismo Postmans",
+              "categoria": {
+                "codigo": 2071,
+                "activo": "s",
+                "nombre": "Otro",
+                "descripcion": "Categoria de tipos de ausentismo",
+                "tipo": "CATEGORIA_TIPO_AUSENTISMO"
+              },
+              "requiereSoporte": false,
+              "esRemunerado": false,
+              "gestionadoPor": "DIAS_Y_HORAS",
+              "nivelesAprobadores": 0
+            }
+          ],
+          "total": 13
+        }
+      },
+      "FlujoAprobacion": {
+        "title": "FlujoAprobacion",
         "required": [
           "codigo",
-          "activo",
-          "nombre",
-          "descripcion",
-          "tipo"
+          "creado",
+          "modificado",
+          "tipo",
+          "nivel"
         ],
         "type": "object",
         "properties": {
@@ -14429,25 +14520,36 @@
             "type": "integer",
             "format": "int32"
           },
-          "activo": {
-            "type": "string"
+          "creado": {
+            "type": "integer",
+            "format": "int64"
           },
-          "nombre": {
-            "type": "string"
-          },
-          "descripcion": {
-            "type": "string"
+          "modificado": {
+            "type": "integer",
+            "format": "int64"
           },
           "tipo": {
             "type": "string"
+          },
+          "nivel": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "codigos": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": ""
           }
         },
         "example": {
-          "codigo": 2071,
-          "activo": "s",
-          "nombre": "Otro",
-          "descripcion": "Categoria de tipos de ausentismo",
-          "tipo": "CATEGORIA_TIPO_AUSENTISMO"
+          "codigo": 2,
+          "creado": 1772124494189,
+          "modificado": 1772124494189,
+          "tipo": "LIDER",
+          "nivel": 1
         }
       },
       "getTipoAusentismo": {
@@ -14543,53 +14645,6 @@
           ]
         }
       },
-      "FlujoAprobacion": {
-        "title": "FlujoAprobacion",
-        "required": [
-          "codigo",
-          "creado",
-          "modificado",
-          "tipo",
-          "nivel"
-        ],
-        "type": "object",
-        "properties": {
-          "codigo": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "creado": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "modificado": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "tipo": {
-            "type": "string"
-          },
-          "nivel": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "codigos": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "description": ""
-          }
-        },
-        "example": {
-          "codigo": 2,
-          "creado": 1772124494189,
-          "modificado": 1772124494189,
-          "tipo": "LIDER",
-          "nivel": 1
-        }
-      },
       "guardarTipoAusentismoRequest": {
         "title": "guardarTipoAusentismoRequest",
         "required": [
@@ -14630,6 +14685,27 @@
           "gestionadoPor": "DIAS_Y_HORAS",
           "nivelesAprobadores": 0,
           "requeriereSoporte": false
+        }
+      },
+      "Categoria2": {
+        "title": "Categoria2",
+        "required": [
+          "codigo",
+          "activo"
+        ],
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "activo": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "codigo": 2071,
+          "activo": "s"
         }
       },
       "guardarTipoAusentismo": {
@@ -14694,27 +14770,6 @@
           "nivelesAprobadores": 0
         }
       },
-      "Categoria2": {
-        "title": "Categoria2",
-        "required": [
-          "codigo",
-          "activo"
-        ],
-        "type": "object",
-        "properties": {
-          "codigo": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "activo": {
-            "type": "string"
-          }
-        },
-        "example": {
-          "codigo": 2071,
-          "activo": "s"
-        }
-      },
       "guardarFlujoAprobacionRequest": {
         "title": "guardarFlujoAprobacionRequest",
         "required": [
@@ -14746,6 +14801,167 @@
         },
         "example": {
           "codigo": null,
+          "tipo": "LIDER",
+          "nivel": 1
+        }
+      },
+      "TipoAusentismo": {
+        "title": "TipoAusentismo",
+        "required": [
+          "codigo",
+          "creado",
+          "modificado",
+          "nombre",
+          "categoria",
+          "requiereSoporte",
+          "esRemunerado",
+          "gestionadoPor",
+          "nivelesAprobadores"
+        ],
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "creado": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "modificado": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nombre": {
+            "type": "string"
+          },
+          "categoria": {
+            "$ref": "#/components/schemas/Categoria"
+          },
+          "requiereSoporte": {
+            "type": "boolean"
+          },
+          "esRemunerado": {
+            "type": "boolean"
+          },
+          "gestionadoPor": {
+            "type": "string"
+          },
+          "nivelesAprobadores": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "example": {
+          "codigo": 2,
+          "creado": 1771858460223,
+          "modificado": 1771858460223,
+          "nombre": "Ausentismo de21a677-ea68-46dc-8751-275c01815529",
+          "categoria": {
+            "codigo": 2071,
+            "activo": "s",
+            "nombre": "Otro",
+            "descripcion": "Categoria de tipos de ausentismo",
+            "tipo": "CATEGORIA_TIPO_AUSENTISMO"
+          },
+          "requiereSoporte": true,
+          "esRemunerado": false,
+          "gestionadoPor": "DIAS_Y_HORAS",
+          "nivelesAprobadores": 3
+        }
+      },
+      "CodigosNombre": {
+        "title": "CodigosNombre",
+        "required": [
+          "codigo",
+          "nombre"
+        ],
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nombre": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "codigo": 1,
+          "nombre": "Juan Fernando Osorio OspinaTest"
+        }
+      },
+      "Datum3": {
+        "title": "Datum3",
+        "required": [
+          "codigo",
+          "creado",
+          "modificado",
+          "tipoAusentismo",
+          "tipo",
+          "nivel"
+        ],
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "creado": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "modificado": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "tipoAusentismo": {
+            "$ref": "#/components/schemas/TipoAusentismo"
+          },
+          "tipo": {
+            "type": "string"
+          },
+          "nivel": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "codigos": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": ""
+          },
+          "codigosNombres": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CodigosNombre"
+            },
+            "description": ""
+          }
+        },
+        "example": {
+          "codigo": 1,
+          "creado": 1771860150726,
+          "modificado": 1771862635838,
+          "tipoAusentismo": {
+            "codigo": 2,
+            "creado": 1771858460223,
+            "modificado": 1771858460223,
+            "nombre": "Ausentismo de21a677-ea68-46dc-8751-275c01815529",
+            "categoria": {
+              "codigo": 2071,
+              "activo": "s",
+              "nombre": "Otro",
+              "descripcion": "Categoria de tipos de ausentismo",
+              "tipo": "CATEGORIA_TIPO_AUSENTISMO"
+            },
+            "requiereSoporte": true,
+            "esRemunerado": false,
+            "gestionadoPor": "DIAS_Y_HORAS",
+            "nivelesAprobadores": 3
+          },
           "tipo": "LIDER",
           "nivel": 1
         }
@@ -14875,167 +15091,6 @@
           "success": true
         }
       },
-      "Datum3": {
-        "title": "Datum3",
-        "required": [
-          "codigo",
-          "creado",
-          "modificado",
-          "tipoAusentismo",
-          "tipo",
-          "nivel"
-        ],
-        "type": "object",
-        "properties": {
-          "codigo": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "creado": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "modificado": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "tipoAusentismo": {
-            "$ref": "#/components/schemas/TipoAusentismo"
-          },
-          "tipo": {
-            "type": "string"
-          },
-          "nivel": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "codigos": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "description": ""
-          },
-          "codigosNombres": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CodigosNombre"
-            },
-            "description": ""
-          }
-        },
-        "example": {
-          "codigo": 1,
-          "creado": 1771860150726,
-          "modificado": 1771862635838,
-          "tipoAusentismo": {
-            "codigo": 2,
-            "creado": 1771858460223,
-            "modificado": 1771858460223,
-            "nombre": "Ausentismo de21a677-ea68-46dc-8751-275c01815529",
-            "categoria": {
-              "codigo": 2071,
-              "activo": "s",
-              "nombre": "Otro",
-              "descripcion": "Categoria de tipos de ausentismo",
-              "tipo": "CATEGORIA_TIPO_AUSENTISMO"
-            },
-            "requiereSoporte": true,
-            "esRemunerado": false,
-            "gestionadoPor": "DIAS_Y_HORAS",
-            "nivelesAprobadores": 3
-          },
-          "tipo": "LIDER",
-          "nivel": 1
-        }
-      },
-      "TipoAusentismo": {
-        "title": "TipoAusentismo",
-        "required": [
-          "codigo",
-          "creado",
-          "modificado",
-          "nombre",
-          "categoria",
-          "requiereSoporte",
-          "esRemunerado",
-          "gestionadoPor",
-          "nivelesAprobadores"
-        ],
-        "type": "object",
-        "properties": {
-          "codigo": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "creado": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "modificado": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "nombre": {
-            "type": "string"
-          },
-          "categoria": {
-            "$ref": "#/components/schemas/Categoria"
-          },
-          "requiereSoporte": {
-            "type": "boolean"
-          },
-          "esRemunerado": {
-            "type": "boolean"
-          },
-          "gestionadoPor": {
-            "type": "string"
-          },
-          "nivelesAprobadores": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "example": {
-          "codigo": 2,
-          "creado": 1771858460223,
-          "modificado": 1771858460223,
-          "nombre": "Ausentismo de21a677-ea68-46dc-8751-275c01815529",
-          "categoria": {
-            "codigo": 2071,
-            "activo": "s",
-            "nombre": "Otro",
-            "descripcion": "Categoria de tipos de ausentismo",
-            "tipo": "CATEGORIA_TIPO_AUSENTISMO"
-          },
-          "requiereSoporte": true,
-          "esRemunerado": false,
-          "gestionadoPor": "DIAS_Y_HORAS",
-          "nivelesAprobadores": 3
-        }
-      },
-      "CodigosNombre": {
-        "title": "CodigosNombre",
-        "required": [
-          "codigo",
-          "nombre"
-        ],
-        "type": "object",
-        "properties": {
-          "codigo": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "nombre": {
-            "type": "string"
-          }
-        },
-        "example": {
-          "codigo": 1,
-          "nombre": "Juan Fernando Osorio OspinaTest"
-        }
-      },
       "inactivarTipoAusentismo": {
         "title": "inactivarTipoAusentismo",
         "required": [
@@ -15054,6 +15109,26 @@
         "example": {
           "message": "El tipo de ausentismo seleccionado ha sido inactivado correctamente",
           "success": true
+        }
+      },
+      "File": {
+        "title": "File",
+        "required": [
+          "fileName",
+          "contentBase64"
+        ],
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "contentBase64": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "fileName": "fotografia.jpg",
+          "contentBase64": "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"
         }
       },
       "solicitudAusentismoRequest": {
@@ -15117,24 +15192,58 @@
           ]
         }
       },
-      "File": {
-        "title": "File",
+      "Archivo": {
+        "title": "Archivo",
         "required": [
-          "fileName",
-          "contentBase64"
+          "codigo",
+          "creado",
+          "modificado",
+          "nombreArchivo",
+          "extensionArchivo",
+          "nombreOriginalArchivo",
+          "contentTypeArchivo",
+          "sizeArchivo"
         ],
         "type": "object",
         "properties": {
-          "fileName": {
+          "codigo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "creado": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "modificado": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nombreArchivo": {
             "type": "string"
           },
-          "contentBase64": {
+          "extensionArchivo": {
             "type": "string"
+          },
+          "nombreOriginalArchivo": {
+            "type": "string"
+          },
+          "contentTypeArchivo": {
+            "type": "string"
+          },
+          "sizeArchivo": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "example": {
-          "fileName": "fotografia.jpg",
-          "contentBase64": "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"
+          "codigo": 1,
+          "creado": 1772206648393,
+          "modificado": 1772206648393,
+          "nombreArchivo": "cesantias_1_1a3279e3-577e-43b7-a7df-806a8844aeac_1772206648270U_1_N_1_fotografia.jpg",
+          "extensionArchivo": "jpg",
+          "nombreOriginalArchivo": "fotografia",
+          "contentTypeArchivo": "image/jpeg",
+          "sizeArchivo": 6913
         }
       },
       "solicitudAusentismo": {
@@ -15254,124 +15363,6 @@
           ]
         }
       },
-      "Archivo": {
-        "title": "Archivo",
-        "required": [
-          "codigo",
-          "creado",
-          "modificado",
-          "nombreArchivo",
-          "extensionArchivo",
-          "nombreOriginalArchivo",
-          "contentTypeArchivo",
-          "sizeArchivo"
-        ],
-        "type": "object",
-        "properties": {
-          "codigo": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "creado": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "modificado": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "nombreArchivo": {
-            "type": "string"
-          },
-          "extensionArchivo": {
-            "type": "string"
-          },
-          "nombreOriginalArchivo": {
-            "type": "string"
-          },
-          "contentTypeArchivo": {
-            "type": "string"
-          },
-          "sizeArchivo": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "example": {
-          "codigo": 1,
-          "creado": 1772206648393,
-          "modificado": 1772206648393,
-          "nombreArchivo": "cesantias_1_1a3279e3-577e-43b7-a7df-806a8844aeac_1772206648270U_1_N_1_fotografia.jpg",
-          "extensionArchivo": "jpg",
-          "nombreOriginalArchivo": "fotografia",
-          "contentTypeArchivo": "image/jpeg",
-          "sizeArchivo": 6913
-        }
-      },
-      "listarMisSolicitudes": {
-        "title": "listarMisSolicitudes",
-        "required": [
-          "message",
-          "data",
-          "success"
-        ],
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string"
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Datum4"
-            },
-            "description": ""
-          },
-          "success": {
-            "type": "boolean"
-          }
-        },
-        "example": {
-          "message": "Solicitudes obtenidas exitosamente",
-          "data": [
-            {
-              "codigo": 4,
-              "creado": 1772049793889,
-              "modificado": 1772049793889,
-              "tipoAusentismo": {
-                "codigo": 1,
-                "creado": 1771858348284,
-                "modificado": 1771880112378,
-                "nombre": "Familia enferma",
-                "categoria": {
-                  "codigo": 2074,
-                  "activo": "s",
-                  "nombre": "Personal",
-                  "descripcion": "Categoria de tipos de ausentismo",
-                  "tipo": "CATEGORIA_TIPO_AUSENTISMO"
-                },
-                "requiereSoporte": false,
-                "esRemunerado": false,
-                "gestionadoPor": "DIAS_Y_HORAS",
-                "nivelesAprobadores": 2
-              },
-              "fechaInicial": 1768453200000,
-              "fechaFinal": 1768539600000,
-              "horaInicial": [
-                13,
-                0
-              ],
-              "horaFinal": [
-                17,
-                30
-              ],
-              "observaciones": "Mi primera solicitud de ausentismo por familiar enfermo",
-              "estado": "PENDIENTE"
-            }
-          ],
-          "success": true
-        }
-      },
       "Datum4": {
         "title": "Datum4",
         "required": [
@@ -15469,8 +15460,8 @@
           "estado": "PENDIENTE"
         }
       },
-      "listaParaAprobar": {
-        "title": "listaParaAprobar",
+      "listarMisSolicitudes": {
+        "title": "listarMisSolicitudes",
         "required": [
           "message",
           "data",
@@ -15482,7 +15473,11 @@
             "type": "string"
           },
           "data": {
-            "$ref": "#/components/schemas/Data"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Datum4"
+            },
+            "description": ""
           },
           "success": {
             "type": "boolean"
@@ -15490,64 +15485,43 @@
         },
         "example": {
           "message": "Solicitudes obtenidas exitosamente",
-          "data": {
-            "total": 1,
-            "datos": [
-              {
-                "estado": "PENDIENTE",
-                "creado": 1772115313272,
-                "fecha_final": 1768539600000,
-                "cod_solicitud": 6,
-                "nombrecompleto": "Juan Fernando Osorio OspinaTest",
-                "fecha_inicial": 1768453200000,
-                "usuario": 1,
-                "jefe": 72,
-                "orden": 0,
-                "cargo": "Director de Operaciones",
-                "nivel_aprobador_codigo": 9
-              }
-            ]
-          },
-          "success": true
-        }
-      },
-      "Data": {
-        "title": "Data",
-        "required": [
-          "total",
-          "datos"
-        ],
-        "type": "object",
-        "properties": {
-          "total": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "datos": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Dato9"
-            },
-            "description": ""
-          }
-        },
-        "example": {
-          "total": 1,
-          "datos": [
+          "data": [
             {
-              "estado": "PENDIENTE",
-              "creado": 1772115313272,
-              "fecha_final": 1768539600000,
-              "cod_solicitud": 6,
-              "nombrecompleto": "Juan Fernando Osorio OspinaTest",
-              "fecha_inicial": 1768453200000,
-              "usuario": 1,
-              "jefe": 72,
-              "orden": 0,
-              "cargo": "Director de Operaciones",
-              "nivel_aprobador_codigo": 9
+              "codigo": 4,
+              "creado": 1772049793889,
+              "modificado": 1772049793889,
+              "tipoAusentismo": {
+                "codigo": 1,
+                "creado": 1771858348284,
+                "modificado": 1771880112378,
+                "nombre": "Familia enferma",
+                "categoria": {
+                  "codigo": 2074,
+                  "activo": "s",
+                  "nombre": "Personal",
+                  "descripcion": "Categoria de tipos de ausentismo",
+                  "tipo": "CATEGORIA_TIPO_AUSENTISMO"
+                },
+                "requiereSoporte": false,
+                "esRemunerado": false,
+                "gestionadoPor": "DIAS_Y_HORAS",
+                "nivelesAprobadores": 2
+              },
+              "fechaInicial": 1768453200000,
+              "fechaFinal": 1768539600000,
+              "horaInicial": [
+                13,
+                0
+              ],
+              "horaFinal": [
+                17,
+                30
+              ],
+              "observaciones": "Mi primera solicitud de ausentismo por familiar enfermo",
+              "estado": "PENDIENTE"
             }
-          ]
+          ],
+          "success": true
         }
       },
       "Dato9": {
@@ -15621,6 +15595,166 @@
           "orden": 0,
           "cargo": "Director de Operaciones",
           "nivel_aprobador_codigo": 9
+        }
+      },
+      "Data": {
+        "title": "Data",
+        "required": [
+          "total",
+          "datos"
+        ],
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "datos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Dato9"
+            },
+            "description": ""
+          }
+        },
+        "example": {
+          "total": 1,
+          "datos": [
+            {
+              "estado": "PENDIENTE",
+              "creado": 1772115313272,
+              "fecha_final": 1768539600000,
+              "cod_solicitud": 6,
+              "nombrecompleto": "Juan Fernando Osorio OspinaTest",
+              "fecha_inicial": 1768453200000,
+              "usuario": 1,
+              "jefe": 72,
+              "orden": 0,
+              "cargo": "Director de Operaciones",
+              "nivel_aprobador_codigo": 9
+            }
+          ]
+        }
+      },
+      "listaParaAprobar": {
+        "title": "listaParaAprobar",
+        "required": [
+          "message",
+          "data",
+          "success"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Data"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "example": {
+          "message": "Solicitudes obtenidas exitosamente",
+          "data": {
+            "total": 1,
+            "datos": [
+              {
+                "estado": "PENDIENTE",
+                "creado": 1772115313272,
+                "fecha_final": 1768539600000,
+                "cod_solicitud": 6,
+                "nombrecompleto": "Juan Fernando Osorio OspinaTest",
+                "fecha_inicial": 1768453200000,
+                "usuario": 1,
+                "jefe": 72,
+                "orden": 0,
+                "cargo": "Director de Operaciones",
+                "nivel_aprobador_codigo": 9
+              }
+            ]
+          },
+          "success": true
+        }
+      },
+      "Documento": {
+        "title": "Documento",
+        "required": [
+          "codigo",
+          "nombreOriginalArchivo",
+          "urlPresigned",
+          "extensionArchivo"
+        ],
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nombreOriginalArchivo": {
+            "type": "string"
+          },
+          "urlPresigned": {
+            "type": "string"
+          },
+          "extensionArchivo": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "codigo": 5,
+          "nombreOriginalArchivo": "fotografia",
+          "urlPresigned": "https://talento-archivos-desarrollo.s3.amazonaws.com/archivos/talento_test/ausentismos/cesantias_6_9f367fdb-4407-453f-abd4-61c2402200cd_1772115313289U_1_N_6_fotografia.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20260226T145646Z&X-Amz-SignedHeaders=host&X-Amz-Credential=AKIAUEA3SQNBJOBO5WOX%2F20260226%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Expires=1800&X-Amz-Signature=a7f03caea2d0a02c7ff452cda2a1a462f8777358a139dcd821c68995a23066cf",
+          "extensionArchivo": "jpg"
+        }
+      },
+      "Aprobadore": {
+        "title": "Aprobadore",
+        "required": [
+          "tipoAprobador",
+          "codigo",
+          "estado"
+        ],
+        "type": "object",
+        "properties": {
+          "tipoAprobador": {
+            "type": "string"
+          },
+          "aprobadorRealCodigo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "codigo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "estado": {
+            "type": "string"
+          },
+          "aprobadorRealCargo": {
+            "type": "string"
+          },
+          "fechaAprobacion": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "observaciones": {
+            "type": "string"
+          },
+          "aprobadorRealNombre": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "tipoAprobador": "LIDER",
+          "aprobadorRealCodigo": 72,
+          "codigo": 9,
+          "estado": "APROBADO",
+          "aprobadorRealCargo": "Presidente",
+          "fechaAprobacion": 1772116650771,
+          "observaciones": "Le damos el permiso",
+          "aprobadorRealNombre": "Diego Uribe Garcia"
         }
       },
       "getDetalleSolicitud": {
@@ -15744,85 +15878,6 @@
             }
           ],
           "codAprobador": 10
-        }
-      },
-      "Documento": {
-        "title": "Documento",
-        "required": [
-          "codigo",
-          "nombreOriginalArchivo",
-          "urlPresigned",
-          "extensionArchivo"
-        ],
-        "type": "object",
-        "properties": {
-          "codigo": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "nombreOriginalArchivo": {
-            "type": "string"
-          },
-          "urlPresigned": {
-            "type": "string"
-          },
-          "extensionArchivo": {
-            "type": "string"
-          }
-        },
-        "example": {
-          "codigo": 5,
-          "nombreOriginalArchivo": "fotografia",
-          "urlPresigned": "https://talento-archivos-desarrollo.s3.amazonaws.com/archivos/talento_test/ausentismos/cesantias_6_9f367fdb-4407-453f-abd4-61c2402200cd_1772115313289U_1_N_6_fotografia.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20260226T145646Z&X-Amz-SignedHeaders=host&X-Amz-Credential=AKIAUEA3SQNBJOBO5WOX%2F20260226%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Expires=1800&X-Amz-Signature=a7f03caea2d0a02c7ff452cda2a1a462f8777358a139dcd821c68995a23066cf",
-          "extensionArchivo": "jpg"
-        }
-      },
-      "Aprobadore": {
-        "title": "Aprobadore",
-        "required": [
-          "tipoAprobador",
-          "codigo",
-          "estado"
-        ],
-        "type": "object",
-        "properties": {
-          "tipoAprobador": {
-            "type": "string"
-          },
-          "aprobadorRealCodigo": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "codigo": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "estado": {
-            "type": "string"
-          },
-          "aprobadorRealCargo": {
-            "type": "string"
-          },
-          "fechaAprobacion": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "observaciones": {
-            "type": "string"
-          },
-          "aprobadorRealNombre": {
-            "type": "string"
-          }
-        },
-        "example": {
-          "tipoAprobador": "LIDER",
-          "aprobadorRealCodigo": 72,
-          "codigo": 9,
-          "estado": "APROBADO",
-          "aprobadorRealCargo": "Presidente",
-          "fechaAprobacion": 1772116650771,
-          "observaciones": "Le damos el permiso",
-          "aprobadorRealNombre": "Diego Uribe Garcia"
         }
       },
       "aprobarSolicitudRequest": {
@@ -16073,61 +16128,6 @@
           "estado": "RECHAZADO"
         }
       }
-    },
-    "securitySchemes": {
-      "bearer": {
-        "type": "http",
-        "scheme": "bearer"
-      }
     }
-  },
-  "security": [
-    {
-      "bearer": []
-    }
-  ],
-  "tags": [
-    {
-      "name": "Transversal",
-      "description": "Operaciones transversales a la plataforma"
-    },
-    {
-      "name": "Acordeon"
-    },
-    {
-      "name": "Calibracion"
-    },
-    {
-      "name": "Competencias360",
-      "description": "En esta sección se describen los servicios usados en el módulo de valoración de competencias 360"
-    },
-    {
-      "name": "Bienestar"
-    },
-    {
-      "name": "OKR"
-    },
-    {
-      "name": "PlanDesarrollo"
-    },
-    {
-      "name": "CertificadoLaboral"
-    },
-    {
-      "name": "Pendientes"
-    },
-    {
-      "name": "AutogestionVarios"
-    },
-    {
-      "name": "Vacaciones"
-    },
-    {
-      "name": "Ausentismos",
-      "description": "Ese submódulo maneja todo lo relacionado con Ausentismos en el módulo de Autogestión, tanto administración como solicitud y aprobación.\n\n# *Documentación en Swagger*\n\n[https://bzkqkqxa8j.execute-api.us-east-1.amazonaws.com/ag/ausentismos/ro/swaggerui/#/](https://bzkqkqxa8j.execute-api.us-east-1.amazonaws.com/ag/ausentismos/ro/swaggerui/#/)\n\n[https://dvilf0owyf.execute-api.us-east-1.amazonaws.com/ag/ausentismos/wr/swaggerui/#/](https://dvilf0owyf.execute-api.us-east-1.amazonaws.com/ag/ausentismos/wr/swaggerui/#/)\n\n## Manejo de errores\n\nLos errores habituales pueden incluir:\n\n- `400 Bad Request`: Parámetros requeridos faltantes o con formato inválido.\n    \n- `401 Unauthorized`: Token JWT inválido, expirado o ausente.\n    \n- `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.\n    \n- `404 Not Found`: El recurso solicitado no existe.\n    \n- `500 Internal Server Error`: Error inesperado en el servidor.\n    \n\nCuando sea posible, cada endpoint detallará sus códigos de error específicos y estructura de respuesta en su propia descripción."
-    },
-    {
-      "name": "Resumen"
-    }
-  ]
+  }
 }

@@ -1,0 +1,66 @@
+{
+  "post": {
+    "tags": [
+      "Competencias360"
+    ],
+    "summary": "guardarRetroalimentacion",
+    "description": "Para guardar las observaciones finales sobre el usuario que se termina de calificar  \nNecesitamos una sesión activa previa, accedemos al servicio REST tipo POST en la url endpoint  \n{urlBaseTalento}/html/valoracion360/guardar-observaciones/{{codAsignacion}}.json\n\n**Query params:**\n\n- **datas**: Observaciones en formato json, ejem: {\"observacion\":\"Esta es la observaciones final del evaluados que es la retroalimentaci\\\\u00f3n tambien.\"}. Es obligatorio\n    \n- **finalizar:** Si true indica que esa evaluación se debe finalizar, por tanto no se podrá modificar después y ya puede hacer los cálculos de los resultados por debajo. No es obligatorio",
+    "operationId": "guardarRetroalimentacion",
+    "parameters": [
+      {
+        "name": "datas",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "allOf": [
+            {
+              "$ref": "../components/schemas/datas2.json"
+            },
+            {
+              "example": {
+                "observacion": "Esta es la observaciones final del evaluados que  es la retroalimentación tambien."
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "finalizar",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "boolean",
+          "example": true
+        }
+      },
+      {
+        "name": "codAsignacion",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "post": {
+    "tags": [
+      "Vacaciones"
+    ],
+    "summary": "actualizarFlujoAprobacion",
+    "operationId": "actualizarFlujoAprobacion",
+    "parameters": [],
+    "requestBody": {
+      "description": "",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "../components/schemas/actualizarFlujoAprobacionRequest.json"
+            },
+            "description": ""
+          }
+        }
+      },
+      "required": true
+    },
+    "responses": {
+      "200": {
+        "description": "OK",
+        "headers": {
+          "content-length": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "325"
+              }
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "../components/schemas/actualizarConfiguracionVacacionesCopy.json"
+                },
+                {
+                  "example": {
+                    "success": true,
+                    "data": [
+                      {
+                        "codigo": 1,
+                        "creado": 1750968132832,
+                        "modificado": 1751060136085,
+                        "tipo": "LIDER",
+                        "nivel": 1
+                      },
+                      {
+                        "codigo": 13,
+                        "creado": 1751060136096,
+                        "modificado": 1751060136096,
+                        "tipo": "PERSONA",
+                        "nivel": 2,
+                        "codigos": [
+                          104,
+                          1
+                        ]
+                      },
+                      {
+                        "codigo": 14,
+                        "creado": 1751060136098,
+                        "modificado": 1751060136098,
+                        "tipo": "ROL",
+                        "nivel": 3,
+                        "codigos": [
+                          7,
+                          4
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "example": {
+              "success": true,
+              "data": [
+                {
+                  "codigo": 1,
+                  "creado": 1750968132832,
+                  "modificado": 1751060136085,
+                  "tipo": "LIDER",
+                  "nivel": 1
+                },
+                {
+                  "codigo": 13,
+                  "creado": 1751060136096,
+                  "modificado": 1751060136096,
+                  "tipo": "PERSONA",
+                  "nivel": 2,
+                  "codigos": [
+                    104,
+                    1
+                  ]
+                },
+                {
+                  "codigo": 14,
+                  "creado": 1751060136098,
+                  "modificado": 1751060136098,
+                  "tipo": "ROL",
+                  "nivel": 3,
+                  "codigos": [
+                    7,
+                    4
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "http://example.com",
+        "variables": {}
+      }
+    ]
+  }
+}

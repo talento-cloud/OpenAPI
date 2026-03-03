@@ -1,0 +1,256 @@
+{
+  "get": {
+    "tags": [
+      "Bienestar"
+    ],
+    "summary": "beneficiosDisponibles",
+    "operationId": "beneficiosDisponibles",
+    "parameters": [
+      {
+        "name": "start",
+        "in": "query",
+        "description": "Default 0",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "example": 0
+        }
+      },
+      {
+        "name": "limit",
+        "in": "query",
+        "description": "Default 50",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "example": 10
+        }
+      },
+      {
+        "name": "categoria",
+        "in": "query",
+        "description": "Default BENEFICIO",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "BENEFICIO"
+        }
+      },
+      {
+        "name": "status",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "TODOS"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "headers": {
+          "Vary": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Origin"
+              }
+            }
+          },
+          "Content-Language": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "es-CO"
+              }
+            }
+          },
+          "Cache-Control": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "no-store"
+              }
+            }
+          },
+          "X-XSS-Protection": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "1; mode=block"
+              }
+            }
+          },
+          "X-Frame-Options": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "DENY"
+              }
+            }
+          },
+          "X-Content-Type-Options": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "nosniff"
+              }
+            }
+          },
+          "Content-Security-Policy": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "frame-ancestors *"
+              }
+            }
+          },
+          "Transfer-Encoding": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "chunked"
+              }
+            }
+          },
+          "Server": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Jetty(8.y.z-SNAPSHOT)"
+              }
+            }
+          }
+        },
+        "content": {
+          "application/json;charset=UTF-8": {
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "../components/schemas/beneficiosDisponibles.json"
+                },
+                {
+                  "example": {
+                    "datos": [
+                      {
+                        "descripcion": "Es un beneficio cualquiera para  probar beneficios que tienen formularios dinámicos y adicionalmente pedimos un archivo",
+                        "cod_beneficio": 171,
+                        "fecha_consumo": null,
+                        "periodicidad": "MENSUAL",
+                        "estado": null,
+                        "fecha_vencimiento": 1754024399999,
+                        "promedio_calificaciones": null,
+                        "titulo": "Beneficio con formulario",
+                        "dos": 0,
+                        "porcentaje_unos": null,
+                        "algun_consumido": false,
+                        "unos": 0,
+                        "cod_asignacion": null,
+                        "enviar_notificacion": false,
+                        "cincos": 0,
+                        "fila": 1,
+                        "tres": 0,
+                        "orden": 2,
+                        "porcentaje_tres": null,
+                        "fecha_solicitud": null,
+                        "porcentaje_cuatros": null,
+                        "requiere_archivo": true,
+                        "porcentaje_dos": null,
+                        "satisfaccion_calificable": false,
+                        "cantidad_calificaciones": 0,
+                        "puntos": 0,
+                        "cuatros": 0,
+                        "porcentaje_cincos": null,
+                        "banner_nombre": null,
+                        "condiciones": "Este es un beneficio que pide un archivo para su solicitud y tambien tiene campos dinámicos​",
+                        "categoria_beneficio": "General"
+                      }
+                    ],
+                    "success": true,
+                    "cantidad": 1
+                  }
+                }
+              ]
+            },
+            "example": {
+              "datos": [
+                {
+                  "descripcion": "Es un beneficio cualquiera para  probar beneficios que tienen formularios dinámicos y adicionalmente pedimos un archivo",
+                  "cod_beneficio": 171,
+                  "fecha_consumo": null,
+                  "periodicidad": "MENSUAL",
+                  "estado": null,
+                  "fecha_vencimiento": 1754024399999,
+                  "promedio_calificaciones": null,
+                  "titulo": "Beneficio con formulario",
+                  "dos": 0,
+                  "porcentaje_unos": null,
+                  "algun_consumido": false,
+                  "unos": 0,
+                  "cod_asignacion": null,
+                  "enviar_notificacion": false,
+                  "cincos": 0,
+                  "fila": 1,
+                  "tres": 0,
+                  "orden": 2,
+                  "porcentaje_tres": null,
+                  "fecha_solicitud": null,
+                  "porcentaje_cuatros": null,
+                  "requiere_archivo": true,
+                  "porcentaje_dos": null,
+                  "satisfaccion_calificable": false,
+                  "cantidad_calificaciones": 0,
+                  "puntos": 0,
+                  "cuatros": 0,
+                  "porcentaje_cincos": null,
+                  "banner_nombre": null,
+                  "condiciones": "Este es un beneficio que pide un archivo para su solicitud y tambien tiene campos dinámicos​",
+                  "categoria_beneficio": "General"
+                }
+              ],
+              "success": true,
+              "cantidad": 1
+            }
+          }
+        }
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

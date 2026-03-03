@@ -1,0 +1,27 @@
+{
+  "title": "Puntos",
+  "required": [
+    "datos",
+    "success",
+    "puntosDisponibles"
+  ],
+  "type": "object",
+  "properties": {
+    "datos": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "success": {
+      "type": "boolean"
+    },
+    "puntosDisponibles": {
+      "type": "integer",
+      "format": "int32"
+    }
+  },
+  "example": {
+    "datos": 0,
+    "success": true,
+    "puntosDisponibles": 10
+  }
+}

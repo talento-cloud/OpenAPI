@@ -1,0 +1,125 @@
+{
+  "title": "guardarFlujoAprobacion",
+  "required": [
+    "data",
+    "success"
+  ],
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "$ref": "./Datum3.json"
+      },
+      "description": ""
+    },
+    "success": {
+      "type": "boolean"
+    }
+  },
+  "example": {
+    "data": [
+      {
+        "codigo": 1,
+        "creado": 1771860150726,
+        "modificado": 1771862635838,
+        "tipoAusentismo": {
+          "codigo": 2,
+          "creado": 1771858460223,
+          "modificado": 1771858460223,
+          "nombre": "Ausentismo de21a677-ea68-46dc-8751-275c01815529",
+          "categoria": {
+            "codigo": 2071,
+            "activo": "s",
+            "nombre": "Otro",
+            "descripcion": "Categoria de tipos de ausentismo",
+            "tipo": "CATEGORIA_TIPO_AUSENTISMO"
+          },
+          "requiereSoporte": true,
+          "esRemunerado": false,
+          "gestionadoPor": "DIAS_Y_HORAS",
+          "nivelesAprobadores": 3
+        },
+        "tipo": "LIDER",
+        "nivel": 1
+      },
+      {
+        "codigo": 3,
+        "creado": 1771862635887,
+        "modificado": 1771862635887,
+        "tipoAusentismo": {
+          "codigo": 2,
+          "creado": 1771858460223,
+          "modificado": 1771858460223,
+          "nombre": "Ausentismo de21a677-ea68-46dc-8751-275c01815529",
+          "categoria": {
+            "codigo": 2071,
+            "activo": "s",
+            "nombre": "Otro",
+            "descripcion": "Categoria de tipos de ausentismo",
+            "tipo": "CATEGORIA_TIPO_AUSENTISMO"
+          },
+          "requiereSoporte": true,
+          "esRemunerado": false,
+          "gestionadoPor": "DIAS_Y_HORAS",
+          "nivelesAprobadores": 3
+        },
+        "tipo": "PERSONA",
+        "codigos": [
+          104,
+          1
+        ],
+        "nivel": 2,
+        "codigosNombres": [
+          {
+            "codigo": 1,
+            "nombre": "Juan Fernando Osorio OspinaTest"
+          },
+          {
+            "codigo": 104,
+            "nombre": "plantilla Juan Daniel Diaz Boos"
+          }
+        ]
+      },
+      {
+        "codigo": 4,
+        "creado": 1771862635983,
+        "modificado": 1771862635983,
+        "tipoAusentismo": {
+          "codigo": 2,
+          "creado": 1771858460223,
+          "modificado": 1771858460223,
+          "nombre": "Ausentismo de21a677-ea68-46dc-8751-275c01815529",
+          "categoria": {
+            "codigo": 2071,
+            "activo": "s",
+            "nombre": "Otro",
+            "descripcion": "Categoria de tipos de ausentismo",
+            "tipo": "CATEGORIA_TIPO_AUSENTISMO"
+          },
+          "requiereSoporte": true,
+          "esRemunerado": false,
+          "gestionadoPor": "DIAS_Y_HORAS",
+          "nivelesAprobadores": 3
+        },
+        "tipo": "ROL",
+        "codigos": [
+          7,
+          4
+        ],
+        "nivel": 3,
+        "codigosNombres": [
+          {
+            "codigo": 4,
+            "nombre": "Administrador Sistema"
+          },
+          {
+            "codigo": 7,
+            "nombre": "Administrador Selección"
+          }
+        ]
+      }
+    ],
+    "success": true
+  }
+}

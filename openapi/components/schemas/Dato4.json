@@ -1,0 +1,71 @@
+{
+  "title": "Dato4",
+  "required": [
+    "fecha",
+    "codigo",
+    "configuracion",
+    "nombre"
+  ],
+  "type": "object",
+  "properties": {
+    "fecha": {
+      "type": "string"
+    },
+    "codigo": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "configuracion": {
+      "$ref": "./Configuracion.json"
+    },
+    "nombre": {
+      "type": "string"
+    }
+  },
+  "example": {
+    "fecha": "11 de diciembre de 2023",
+    "codigo": 69,
+    "configuracion": {
+      "activo": "s",
+      "codigo": 69,
+      "accionFormParaQue": null,
+      "accionQue": null,
+      "accionQueNecesito": "NO",
+      "agregarCompetencias": "SI",
+      "agregarComportamientos": "SI",
+      "agregarObjetivos": "SI",
+      "agregarOtros": "SI",
+      "formExpectativas": "SI",
+      "formFortalezas": "SI",
+      "formObjetivos": "SI",
+      "formMentor": "NO",
+      "resultadoEsperado": "NO",
+      "tipoCompetencia": "NO",
+      "fuentesAcciones": "SI",
+      "valorObtenido": "NO",
+      "tipo": "SI",
+      "evidencia": "NO",
+      "resultadoEsperadoAccion": "NO",
+      "btnSugerenciasParaElDesarrollo": "SI",
+      "permisoJefe": "SI",
+      "todasCompetencias": "NO",
+      "numeroCompetencias": 5,
+      "cantidadMaxima": 4,
+      "fuentesPredeterminadas": "NO",
+      "obligatorioTipo": "SI",
+      "obligatorioFuente": "NO",
+      "obligatorioAccion": "SI",
+      "obligatorioResultadoEsperado": "NO",
+      "obligatorioRecursos": "NO",
+      "obligatorioEvidencia": "NO",
+      "obligatorioMentorInterno": "NO",
+      "obligatorioFechaCierre": "NO",
+      "obligatorioObservacionesJefe": "SI",
+      "seguimientoPorPersona": false,
+      "habilitarCierrePorAccion": false,
+      "label": "69",
+      "cantidadMaximaAcciones": 4
+    },
+    "nombre": "Plan de desarrollo (En curso) tot2"
+  }
+}

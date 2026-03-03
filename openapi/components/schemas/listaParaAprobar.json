@@ -1,0 +1,42 @@
+{
+  "title": "listaParaAprobar",
+  "required": [
+    "message",
+    "data",
+    "success"
+  ],
+  "type": "object",
+  "properties": {
+    "message": {
+      "type": "string"
+    },
+    "data": {
+      "$ref": "./Data.json"
+    },
+    "success": {
+      "type": "boolean"
+    }
+  },
+  "example": {
+    "message": "Solicitudes obtenidas exitosamente",
+    "data": {
+      "total": 1,
+      "datos": [
+        {
+          "estado": "PENDIENTE",
+          "creado": 1772115313272,
+          "fecha_final": 1768539600000,
+          "cod_solicitud": 6,
+          "nombrecompleto": "Juan Fernando Osorio OspinaTest",
+          "fecha_inicial": 1768453200000,
+          "usuario": 1,
+          "jefe": 72,
+          "orden": 0,
+          "cargo": "Director de Operaciones",
+          "nivel_aprobador_codigo": 9
+        }
+      ]
+    },
+    "success": true
+  }
+}

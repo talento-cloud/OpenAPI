@@ -1,0 +1,211 @@
+{
+  "title": "Configuracion",
+  "required": [
+    "activo",
+    "codigo",
+    "accionFormParaQue",
+    "accionQue",
+    "accionQueNecesito",
+    "agregarCompetencias",
+    "agregarComportamientos",
+    "agregarObjetivos",
+    "agregarOtros",
+    "formExpectativas",
+    "formFortalezas",
+    "formObjetivos",
+    "formMentor",
+    "resultadoEsperado",
+    "tipoCompetencia",
+    "fuentesAcciones",
+    "valorObtenido",
+    "tipo",
+    "evidencia",
+    "resultadoEsperadoAccion",
+    "btnSugerenciasParaElDesarrollo",
+    "permisoJefe",
+    "todasCompetencias",
+    "numeroCompetencias",
+    "cantidadMaxima",
+    "fuentesPredeterminadas",
+    "obligatorioTipo",
+    "obligatorioFuente",
+    "obligatorioAccion",
+    "obligatorioResultadoEsperado",
+    "obligatorioRecursos",
+    "obligatorioEvidencia",
+    "obligatorioMentorInterno",
+    "obligatorioFechaCierre",
+    "obligatorioObservacionesJefe",
+    "seguimientoPorPersona",
+    "habilitarCierrePorAccion",
+    "label",
+    "cantidadMaximaAcciones"
+  ],
+  "type": "object",
+  "properties": {
+    "activo": {
+      "type": "string"
+    },
+    "codigo": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "accionFormParaQue": {
+      "type": "string",
+      "nullable": true
+    },
+    "accionQue": {
+      "type": "string",
+      "nullable": true
+    },
+    "accionQueNecesito": {
+      "type": "string"
+    },
+    "agregarCompetencias": {
+      "type": "string"
+    },
+    "agregarComportamientos": {
+      "type": "string"
+    },
+    "agregarObjetivos": {
+      "type": "string"
+    },
+    "agregarOtros": {
+      "type": "string"
+    },
+    "formExpectativas": {
+      "type": "string"
+    },
+    "formFortalezas": {
+      "type": "string"
+    },
+    "formObjetivos": {
+      "type": "string"
+    },
+    "formMentor": {
+      "type": "string"
+    },
+    "resultadoEsperado": {
+      "type": "string"
+    },
+    "tipoCompetencia": {
+      "type": "string"
+    },
+    "fuentesAcciones": {
+      "type": "string"
+    },
+    "valorObtenido": {
+      "type": "string"
+    },
+    "tipo": {
+      "type": "string"
+    },
+    "evidencia": {
+      "type": "string"
+    },
+    "resultadoEsperadoAccion": {
+      "type": "string"
+    },
+    "btnSugerenciasParaElDesarrollo": {
+      "type": "string"
+    },
+    "permisoJefe": {
+      "type": "string"
+    },
+    "todasCompetencias": {
+      "type": "string"
+    },
+    "numeroCompetencias": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "cantidadMaxima": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "fuentesPredeterminadas": {
+      "type": "string"
+    },
+    "obligatorioTipo": {
+      "type": "string"
+    },
+    "obligatorioFuente": {
+      "type": "string"
+    },
+    "obligatorioAccion": {
+      "type": "string"
+    },
+    "obligatorioResultadoEsperado": {
+      "type": "string"
+    },
+    "obligatorioRecursos": {
+      "type": "string"
+    },
+    "obligatorioEvidencia": {
+      "type": "string"
+    },
+    "obligatorioMentorInterno": {
+      "type": "string"
+    },
+    "obligatorioFechaCierre": {
+      "type": "string"
+    },
+    "obligatorioObservacionesJefe": {
+      "type": "string"
+    },
+    "seguimientoPorPersona": {
+      "type": "boolean"
+    },
+    "habilitarCierrePorAccion": {
+      "type": "boolean"
+    },
+    "label": {
+      "type": "string"
+    },
+    "cantidadMaximaAcciones": {
+      "type": "integer",
+      "format": "int32"
+    }
+  },
+  "example": {
+    "activo": "s",
+    "codigo": 69,
+    "accionFormParaQue": null,
+    "accionQue": null,
+    "accionQueNecesito": "NO",
+    "agregarCompetencias": "SI",
+    "agregarComportamientos": "SI",
+    "agregarObjetivos": "SI",
+    "agregarOtros": "SI",
+    "formExpectativas": "SI",
+    "formFortalezas": "SI",
+    "formObjetivos": "SI",
+    "formMentor": "NO",
+    "resultadoEsperado": "NO",
+    "tipoCompetencia": "NO",
+    "fuentesAcciones": "SI",
+    "valorObtenido": "NO",
+    "tipo": "SI",
+    "evidencia": "NO",
+    "resultadoEsperadoAccion": "NO",
+    "btnSugerenciasParaElDesarrollo": "SI",
+    "permisoJefe": "SI",
+    "todasCompetencias": "NO",
+    "numeroCompetencias": 5,
+    "cantidadMaxima": 4,
+    "fuentesPredeterminadas": "NO",
+    "obligatorioTipo": "SI",
+    "obligatorioFuente": "NO",
+    "obligatorioAccion": "SI",
+    "obligatorioResultadoEsperado": "NO",
+    "obligatorioRecursos": "NO",
+    "obligatorioEvidencia": "NO",
+    "obligatorioMentorInterno": "NO",
+    "obligatorioFechaCierre": "NO",
+    "obligatorioObservacionesJefe": "SI",
+    "seguimientoPorPersona": false,
+    "habilitarCierrePorAccion": false,
+    "label": "69",
+    "cantidadMaximaAcciones": 4
+  }
+}

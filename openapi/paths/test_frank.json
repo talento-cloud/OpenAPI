@@ -1,0 +1,23 @@
+{
+  "get": {
+    "tags": [
+      "Pendientes"
+    ],
+    "summary": "http://localhost:8081/api/pendientes/empresas/test/frank",
+    "operationId": "http://localhost:8081/api/pendientes/empresas/test/frank",
+    "parameters": [],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "http://localhost:8081/api/pendientes/empresas",
+        "variables": {}
+      }
+    ]
+  }
+}

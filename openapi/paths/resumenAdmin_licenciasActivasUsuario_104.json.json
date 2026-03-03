@@ -1,0 +1,23 @@
+{
+  "get": {
+    "tags": [
+      "Resumen"
+    ],
+    "summary": "resumenAdmin/licenciasActivasUsuario",
+    "operationId": "resumenAdmin/licenciasActivasUsuario",
+    "parameters": [],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

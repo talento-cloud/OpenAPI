@@ -1,0 +1,98 @@
+{
+  "title": "findPlantillaByEmpresaAndTipo",
+  "required": [
+    "codigo",
+    "creado",
+    "modificado",
+    "plantillaHtml",
+    "comodines",
+    "tipo"
+  ],
+  "type": "object",
+  "properties": {
+    "codigo": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "creado": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "modificado": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "plantillaHtml": {
+      "type": "string"
+    },
+    "comodines": {
+      "type": "array",
+      "items": {
+        "$ref": "./Comodine.json"
+      },
+      "description": ""
+    },
+    "tipo": {
+      "type": "string"
+    }
+  },
+  "example": {
+    "codigo": 9,
+    "creado": 1748011292238,
+    "modificado": 1748011292238,
+    "plantillaHtml": "<div class=\"certificado\">\r\n<div style=\"text-align: center;\"><b>[empresa.nombre]</b></div><br/>\r\n<div style=\"text-align: center;\">NIT [empresa.nit]</div><br/><br/><br/>\r\nCERTIFICA QUE<br/><br/><br/>\r\nConforme a lo dispuesto en el numeral 7 del artículo 57 del Código Sustantivo del Trabajo, emitimos este documento para certificar que [usuario.nombre], identificado con número de identificación [usuario.ID], labora en esta compañía desde el [fecha.inicial.cargo] hasta la fecha, desempeñando el cargo de [cargo.nombre], con contrato [tipo.contrato], devengando un salario de [valor.salario], pagados conforme lo expuesto en el capítulo I del título V del código sustantivo del trabajo.\r\n<br/><br/><br/>\r\nPara constancia de lo anterior se firma el [fecha.generacion].\r\n<br/><br/><br/>\r\nCordialmente,\r\n<br/><br/><br/>\r\n[informacion.firmante]\r\n</div>",
+    "comodines": [
+      {
+        "nombre": "[empresa.nombre]",
+        "campo_bd": "empresas.nombre",
+        "descripcion": "Nombre de la empresa a la que pertenece el usuario"
+      },
+      {
+        "nombre": "[empresa.nit]",
+        "campo_bd": "empresas.nit",
+        "descripcion": "NIT de la empresa, si no se tiene se deja en blanco"
+      },
+      {
+        "nombre": "[usuario.nombre]",
+        "campo_bd": "usuarios.nombrecompleto",
+        "descripcion": "Nombre completo del colaborador"
+      },
+      {
+        "nombre": "[usuario.ID]",
+        "campo_bd": "usuarios.nrodocumento",
+        "descripcion": "Nro de identificación del colaborador, en la mayoría de casos es el número de cédula"
+      },
+      {
+        "nombre": "[fecha.inicial.cargo]",
+        "campo_bd": "usuarios.fechainiciocargo",
+        "descripcion": "Fecha en la que inició en el cargo el colaborador"
+      },
+      {
+        "nombre": "[cargo.nombre]",
+        "campo_bd": "cargo.nombre",
+        "descripcion": "Nombre del cargo que desempeña el colaborador en la empresa"
+      },
+      {
+        "nombre": "[tipo.contrato]",
+        "campo_bd": "hv_info_nomina.tipo_contrato_tipificadores",
+        "descripcion": "Tipo de contrato del colaborador"
+      },
+      {
+        "nombre": "[valor.salario]",
+        "campo_bd": "hv_info_nomina.salario",
+        "descripcion": "Salario en letras y números que devenga el colaborador"
+      },
+      {
+        "nombre": "[fecha.generacion]",
+        "campo_bd": "Fecha actual now()",
+        "descripcion": "Fecha en la que se genera o imprime el pdf"
+      },
+      {
+        "nombre": "[informacion.firmante]",
+        "campo_bd": "imagen de ag_work_certificate_setup.firma_s3_path",
+        "descripcion": "Se reemplaza por la imagen de la firma"
+      }
+    ],
+    "tipo": "CON_SALARIO"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "title": "Dato5",
+  "required": [
+    "codigo",
+    "creado",
+    "modificado",
+    "modulo",
+    "accion",
+    "idProceso",
+    "mensaje",
+    "link"
+  ],
+  "type": "object",
+  "properties": {
+    "codigo": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "creado": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "modificado": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "modulo": {
+      "type": "string"
+    },
+    "accion": {
+      "type": "string"
+    },
+    "idProceso": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "mensaje": {
+      "type": "string"
+    },
+    "link": {
+      "$ref": "./Link.json"
+    }
+  },
+  "example": {
+    "codigo": 5,
+    "creado": 1742916352739,
+    "modificado": 1742916352739,
+    "modulo": "BENEFICIOS",
+    "accion": "CALIFICAR_BENEFICIO",
+    "idProceso": 234,
+    "mensaje": "El beneficio \"Ilimitado aprboados\" ha sido recientemente aprobado. Si ya lo consumiste, recuerda que puedes calificar tu satisfacción <a href='http://base.local:8889/?ver=Beneficios&accion=calificar&codigo=167&categoria=beneficio' target='_black'>aquí</a>.",
+    "link": {
+      "url": "/sencha/beneficios/index.html#calificar/167/beneficio",
+      "tipo": "sencha",
+      "metadata": {
+        "version": "1.0",
+        "timestamp": 1742916352739
+      },
+      "rutaBase": "/sencha/beneficios/index.html",
+      "parametros": {
+        "ver": "Beneficios",
+        "accion": "calificar",
+        "codigo": 167,
+        "categoria": "beneficio"
+      }
+    }
+  }
+}

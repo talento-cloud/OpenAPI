@@ -1,0 +1,43 @@
+{
+  "get": {
+    "tags": [
+      "PlanDesarrollo"
+    ],
+    "summary": "acciones/listarAcciones",
+    "description": "Para listar las acciones creadas por un usuario en el plan de desarrollo",
+    "operationId": "acciones/listarAcciones",
+    "parameters": [
+      {
+        "name": "codPlan",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "codUsuario",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

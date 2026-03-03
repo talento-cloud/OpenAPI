@@ -1,0 +1,21 @@
+{
+  "title": "Metadata",
+  "required": [
+    "version",
+    "timestamp"
+  ],
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "integer",
+      "format": "int64"
+    }
+  },
+  "example": {
+    "version": "1.0",
+    "timestamp": 1742916352739
+  }
+}

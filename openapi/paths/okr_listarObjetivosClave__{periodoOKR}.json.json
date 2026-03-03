@@ -1,0 +1,34 @@
+{
+  "get": {
+    "tags": [
+      "OKR"
+    ],
+    "summary": "listarObjetivosClave",
+    "description": "Para listar los objetivos de resultado clave (OKR) de un usuario dado",
+    "operationId": "listarObjetivosClave",
+    "parameters": [
+      {
+        "name": "periodoOKR",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

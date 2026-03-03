@@ -1,0 +1,52 @@
+{
+  "get": {
+    "tags": [
+      "Competencias360"
+    ],
+    "summary": "TotalProceso",
+    "description": "Para consultar la cantidad de preguntas respondidas y totales de un evaluado por parte del evaluador  \nen sesión.  \nNecesitamos una sesión activa previa, accedemos al servicio REST tipo GET en la url end point  \n{urlBaseTalento}/html/valoracion360/totalPrceso/{{codEvaluacion}}/{{codEvaluado}}/  \n{{codAsignacion}}.json\n\nDonde codEvaluacion es el código del proceso, codEvaluado es el mismo codUsuario  \nque obtenemos al listar evaluados, de esa misma lista sacamos el codAsignacion",
+    "operationId": "TotalProceso",
+    "parameters": [
+      {
+        "name": "codEvaluacion",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "codEvaluado",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "codAsignacion",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

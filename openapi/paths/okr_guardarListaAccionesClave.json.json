@@ -1,0 +1,51 @@
+{
+  "post": {
+    "tags": [
+      "OKR"
+    ],
+    "summary": "guardarListaAccionesClave",
+    "description": "Guardar lista de acciones clave de un KR",
+    "operationId": "guardarListaAccionesClave",
+    "parameters": [
+      {
+        "name": "resultadoClave",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "{{codKR}}"
+        }
+      },
+      {
+        "name": "accionesJSON",
+        "in": "query",
+        "description": "Si alguna tiene codigo es que la queremos editar",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "array",
+          "items": {
+            "$ref": "../components/schemas/accionesJSON.json"
+          }
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

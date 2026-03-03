@@ -1,0 +1,43 @@
+{
+  "get": {
+    "tags": [
+      "PlanDesarrollo"
+    ],
+    "summary": "sugeridas/listarAccionesSugeridas",
+    "description": "Lista las acciones sugeridas que puedan estar asociadas a una competencia dada, pueden ser de tipo ACCION_70, ACCION_20 o ACCION_10",
+    "operationId": "sugeridas/listarAccionesSugeridas",
+    "parameters": [
+      {
+        "name": "tipoAS",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "competencia",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

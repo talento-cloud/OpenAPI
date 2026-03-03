@@ -1,0 +1,31 @@
+{
+  "title": "autenticacion.json",
+  "required": [
+    "coderror",
+    "message",
+    "tokenBearer",
+    "success"
+  ],
+  "type": "object",
+  "properties": {
+    "coderror": {
+      "type": "string",
+      "nullable": true
+    },
+    "message": {
+      "type": "string"
+    },
+    "tokenBearer": {
+      "type": "string"
+    },
+    "success": {
+      "type": "boolean"
+    }
+  },
+  "example": {
+    "coderror": null,
+    "message": "Ingreso exitoso",
+    "tokenBearer": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKdWFuIEZlcm5hbmRvIE9zb3JpbyBPc3BpbmEiLCJ1c2VySWQiOiIxIiwicm9sZSI6IkFETUlOSVNUUkFET1IiLCJleHBpcmUiOiIxNzcwOTQwNDM2OTU2IiwiZW1wcmVzYSI6InRhbGVudG9fZGVtbyIsImxuZyI6ImVzIiwianRpIjoiNGY2ZGExZjMtM2FkNi00OTgzLWJjMDEtNGE5ZjA0Yzk0MDQ2IiwiaWF0IjoxNzcwOTI5NjM2fQ.g4UHao3ELQIcTSxlzaKZd6uC3CrhepekaZuq3VcTeA5EKUmvEyEgLj137r1Gs7Q7y4wMxLar9x-AJ20-s08wXw",
+    "success": true
+  }
+}

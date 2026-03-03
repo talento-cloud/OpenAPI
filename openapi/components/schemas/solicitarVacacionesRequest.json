@@ -1,0 +1,38 @@
+{
+  "title": "solicitarVacacionesRequest",
+  "required": [
+    "usuario",
+    "fechaInicio",
+    "fechaFin",
+    "observacionesSolicitante",
+    "observacionesEstado"
+  ],
+  "type": "object",
+  "properties": {
+    "usuario": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "fechaInicio": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "fechaFin": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "observacionesSolicitante": {
+      "type": "string"
+    },
+    "observacionesEstado": {
+      "type": "string"
+    }
+  },
+  "example": {
+    "usuario": 1,
+    "fechaInicio": 1750370871516,
+    "fechaFin": 1784178000000,
+    "observacionesSolicitante": "Observaciones del solicitante x4",
+    "observacionesEstado": "Observaciones del estado t4"
+  }
+}

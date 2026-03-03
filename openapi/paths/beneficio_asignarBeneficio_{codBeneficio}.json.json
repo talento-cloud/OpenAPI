@@ -1,0 +1,170 @@
+{
+  "post": {
+    "tags": [
+      "Bienestar"
+    ],
+    "summary": "solicitarBeneficio",
+    "operationId": "solicitarBeneficio",
+    "parameters": [
+      {
+        "name": "item_134",
+        "in": "query",
+        "description": "Filtro",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "2025-07-09"
+        }
+      },
+      {
+        "name": "item_133",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "example": 2
+        }
+      },
+      {
+        "name": "codBeneficio",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "500": {
+        "description": "Server Error",
+        "headers": {
+          "Vary": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Origin"
+              }
+            }
+          },
+          "Content-Language": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "es-CO"
+              }
+            }
+          },
+          "Cache-Control": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "no-store"
+              }
+            }
+          },
+          "X-XSS-Protection": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "1; mode=block"
+              }
+            }
+          },
+          "X-Frame-Options": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "DENY"
+              }
+            }
+          },
+          "X-Content-Type-Options": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "nosniff"
+              }
+            }
+          },
+          "Content-Security-Policy": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "frame-ancestors *"
+              }
+            }
+          },
+          "Transfer-Encoding": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "chunked"
+              }
+            }
+          },
+          "Server": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Jetty(8.y.z-SNAPSHOT)"
+              }
+            }
+          }
+        },
+        "content": {
+          "application/json;charset=UTF-8": {
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "../components/schemas/solicitar1.json"
+                },
+                {
+                  "example": {
+                    "message": "No se puede asignar de nuevo este beneficio pues ya lo tenía para el periodo dado!",
+                    "success": false
+                  }
+                }
+              ]
+            },
+            "example": {
+              "message": "No se puede asignar de nuevo este beneficio pues ya lo tenía para el periodo dado!",
+              "success": false
+            }
+          }
+        }
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

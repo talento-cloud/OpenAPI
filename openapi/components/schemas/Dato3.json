@@ -1,0 +1,44 @@
+{
+  "title": "Dato3",
+  "required": [
+    "codigo",
+    "tipo",
+    "jefe",
+    "cargo",
+    "nombre"
+  ],
+  "type": "object",
+  "properties": {
+    "codigo": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "tipo": {
+      "type": "string"
+    },
+    "jefe": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "cargo": {
+      "type": "string"
+    },
+    "nombre": {
+      "type": "string"
+    },
+    "codigoGrupo": {
+      "type": "string",
+      "nullable": true
+    },
+    "url": {
+      "type": "string"
+    }
+  },
+  "example": {
+    "codigo": 1,
+    "tipo": "Yo",
+    "jefe": 72,
+    "cargo": "Director de Operaciones",
+    "nombre": "Yo"
+  }
+}

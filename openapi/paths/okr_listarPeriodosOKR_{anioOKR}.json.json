@@ -1,0 +1,46 @@
+{
+  "get": {
+    "tags": [
+      "OKR"
+    ],
+    "summary": "listarPeriodosOKR",
+    "description": "Lista los periodos OKR",
+    "operationId": "listarPeriodosOKR",
+    "parameters": [
+      {
+        "name": "usuario",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "{{idJefe}}"
+        }
+      },
+      {
+        "name": "anioOKR",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

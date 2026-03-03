@@ -1,0 +1,45 @@
+{
+  "post": {
+    "tags": [
+      "PlanDesarrollo"
+    ],
+    "summary": "eliminarAcciones",
+    "description": "Para eliminar una acción previamente creada",
+    "operationId": "eliminarAcciones",
+    "parameters": [
+      {
+        "name": "datas",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "array",
+          "items": {
+            "$ref": "../components/schemas/datas3.json"
+          },
+          "example": [
+            {
+              "plan": null,
+              "codigo": 355
+            }
+          ]
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

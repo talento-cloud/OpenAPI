@@ -1,0 +1,58 @@
+{
+  "post": {
+    "tags": [
+      "OKR"
+    ],
+    "summary": "aprobarRechazarOKR",
+    "description": "Guardar lista de acciones clave de un KR",
+    "operationId": "aprobarRechazarOKR",
+    "parameters": [
+      {
+        "name": "estado",
+        "in": "query",
+        "description": "o APROBADO",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "RECHAZADO"
+        }
+      },
+      {
+        "name": "comentario",
+        "in": "query",
+        "description": "opcional",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "Rechazamos por que le falta detalle"
+        }
+      },
+      {
+        "name": "codOKR3",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

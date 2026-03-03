@@ -1,0 +1,45 @@
+{
+  "post": {
+    "tags": [
+      "Bienestar"
+    ],
+    "summary": "restablecerBeneficio",
+    "operationId": "restablecerBeneficio",
+    "parameters": [
+      {
+        "name": "motivo",
+        "in": "query",
+        "description": "Motivo es obligatorio",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "Porque se equivocó y lo quiere volver a pedir"
+        }
+      },
+      {
+        "name": "codAsigBeneficio",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

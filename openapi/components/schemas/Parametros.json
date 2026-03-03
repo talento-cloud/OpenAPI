@@ -1,0 +1,31 @@
+{
+  "title": "Parametros",
+  "required": [
+    "ver",
+    "accion",
+    "codigo",
+    "categoria"
+  ],
+  "type": "object",
+  "properties": {
+    "ver": {
+      "type": "string"
+    },
+    "accion": {
+      "type": "string"
+    },
+    "codigo": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "categoria": {
+      "type": "string"
+    }
+  },
+  "example": {
+    "ver": "Beneficios",
+    "accion": "calificar",
+    "codigo": 167,
+    "categoria": "beneficio"
+  }
+}

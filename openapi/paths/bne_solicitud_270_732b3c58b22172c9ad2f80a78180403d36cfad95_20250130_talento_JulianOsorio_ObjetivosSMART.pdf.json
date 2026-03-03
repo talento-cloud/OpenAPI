@@ -1,0 +1,130 @@
+{
+  "put": {
+    "tags": [
+      "Bienestar"
+    ],
+    "summary": "putFile",
+    "operationId": "putFile",
+    "parameters": [
+      {
+        "name": "x-amz-acl",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "bucket-owner-full-control"
+        }
+      },
+      {
+        "name": "X-Amz-Algorithm",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "AWS4-HMAC-SHA256"
+        }
+      },
+      {
+        "name": "X-Amz-Date",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "20250708T153714Z"
+        }
+      },
+      {
+        "name": "X-Amz-SignedHeaders",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "host"
+        }
+      },
+      {
+        "name": "X-Amz-Expires",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "example": 1800
+        }
+      },
+      {
+        "name": "X-Amz-Credential",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "AKIAUEA3SQNBLKX5YU54/20250708/us-east-1/s3/aws4_request"
+        }
+      },
+      {
+        "name": "X-Amz-Signature",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "11fa65d20f632a2d00b8b8ddd5385edc8185486bf8c155b456b1648f7d266523"
+        }
+      }
+    ],
+    "requestBody": {
+      "content": {
+        "multipart/form-data": {
+          "encoding": {},
+          "schema": {
+            "required": [
+              "File"
+            ],
+            "type": "object",
+            "properties": {
+              "File": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        }
+      },
+      "required": false
+    },
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "security": [],
+    "servers": [
+      {
+        "url": "https://talento-archivos-desarrollo.s3.amazonaws.com/archivos/talento_demo/beneficios/171",
+        "variables": {}
+      }
+    ]
+  }
+}

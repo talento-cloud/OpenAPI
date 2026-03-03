@@ -1,0 +1,30 @@
+{
+  "title": "filtro",
+  "required": [
+    "value",
+    "field",
+    "comparison",
+    "type"
+  ],
+  "type": "object",
+  "properties": {
+    "value": {
+      "type": "string"
+    },
+    "field": {
+      "type": "string"
+    },
+    "comparison": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    }
+  },
+  "example": {
+    "value": "OKR_INDICADOR_ESTRETEGICO",
+    "field": "tipo",
+    "comparison": "eq",
+    "type": "enum"
+  }
+}

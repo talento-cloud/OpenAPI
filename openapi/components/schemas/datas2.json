@@ -1,0 +1,15 @@
+{
+  "title": "datas2",
+  "required": [
+    "observacion"
+  ],
+  "type": "object",
+  "properties": {
+    "observacion": {
+      "type": "string"
+    }
+  },
+  "example": {
+    "observacion": "Esta es la observaciones final del evaluados que  es la retroalimentación tambien."
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "title": "Dato2",
+  "required": [
+    "codigo",
+    "texto_blanco",
+    "extra",
+    "tipo_pregunta",
+    "orden",
+    "obligatorio",
+    "pregunta"
+  ],
+  "type": "object",
+  "properties": {
+    "codigo": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "texto_blanco": {
+      "type": "string"
+    },
+    "extra": {
+      "type": "string"
+    },
+    "tipo_pregunta": {
+      "type": "string"
+    },
+    "orden": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "obligatorio": {
+      "type": "boolean"
+    },
+    "pregunta": {
+      "type": "string"
+    }
+  },
+  "example": {
+    "codigo": 134,
+    "texto_blanco": "Cuando vas a gastar el beneficio",
+    "extra": "FECHA_CONSUMO",
+    "tipo_pregunta": "FECHA",
+    "orden": 1,
+    "obligatorio": true,
+    "pregunta": "Fecha a consumir"
+  }
+}

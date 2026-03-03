@@ -1,0 +1,115 @@
+{
+  "get": {
+    "tags": [
+      "Vacaciones"
+    ],
+    "summary": "getFlujoAprobacion",
+    "operationId": "getFlujoAprobacion",
+    "parameters": [],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "headers": {
+          "content-length": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "331"
+              }
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "../components/schemas/getFlujoAprobacion.json"
+                },
+                {
+                  "example": {
+                    "data": [
+                      {
+                        "codigo": 1,
+                        "creado": 1750968132832,
+                        "modificado": 1750968132832,
+                        "tipo": "LIDER",
+                        "nivel": 1
+                      },
+                      {
+                        "codigo": 2,
+                        "creado": 1750968215367,
+                        "modificado": 1750968215367,
+                        "tipo": "ROL",
+                        "nivel": 2,
+                        "codigos": [
+                          2,
+                          3
+                        ]
+                      },
+                      {
+                        "codigo": 3,
+                        "creado": 1750968215378,
+                        "modificado": 1750968215378,
+                        "tipo": "PERSONA",
+                        "nivel": 3,
+                        "codigos": [
+                          1,
+                          104
+                        ]
+                      }
+                    ],
+                    "nivelesAprobadores": 1
+                  }
+                }
+              ]
+            },
+            "example": {
+              "data": [
+                {
+                  "codigo": 1,
+                  "creado": 1750968132832,
+                  "modificado": 1750968132832,
+                  "tipo": "LIDER",
+                  "nivel": 1
+                },
+                {
+                  "codigo": 2,
+                  "creado": 1750968215367,
+                  "modificado": 1750968215367,
+                  "tipo": "ROL",
+                  "nivel": 2,
+                  "codigos": [
+                    2,
+                    3
+                  ]
+                },
+                {
+                  "codigo": 3,
+                  "creado": 1750968215378,
+                  "modificado": 1750968215378,
+                  "tipo": "PERSONA",
+                  "nivel": 3,
+                  "codigos": [
+                    1,
+                    104
+                  ]
+                }
+              ],
+              "nivelesAprobadores": 1
+            }
+          }
+        }
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "http://example.com",
+        "variables": {}
+      }
+    ]
+  }
+}

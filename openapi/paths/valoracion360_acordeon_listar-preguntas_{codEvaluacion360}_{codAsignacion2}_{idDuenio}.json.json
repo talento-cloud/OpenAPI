@@ -1,0 +1,52 @@
+{
+  "get": {
+    "tags": [
+      "Acordeon"
+    ],
+    "summary": "listarCuestionario",
+    "description": "A diferencia del estándar que solo carga una pregunta por vez para el acordeón cargaremos varias.\n\nAl elegir un colaborador a evaluar se listará las competencias y comportamientos asociados para que el frontend elija si mostrará por competencia o todo en una sola hoja.  \nNecesitamos un JWT, accedemos al servicio REST tipo GET en la url endpoint  \n{urlBaseTalento}/html/valoracion360/acordeon/listar-preguntas/{{codEvaluacion360}}/  \n{{codAsignacion2}}/{{idDuenio}}.json\n\nLo anterior listará las competencias a evaluar al usuario, donde por cada competencia también se  \ntendrá las preguntas/comportamientos asociados y por cada comportamiento los niveles de  \ncalificación que aplica, inclusive si ya estaba calificado el nivel elegido tendrá una marca sobre esto.  \nTambién nos dirá si el comportamiento ya tiene fortalezas, oportunidades u observaciones  \nregistradas.  \nEn la raíz del json de respuesta también nos dirá si debe usar selección múltiple normal o con estrellas  \ncon la propiedad “descriptorEstrellas”",
+    "operationId": "listarCuestionario",
+    "parameters": [
+      {
+        "name": "codEvaluacion360",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "codAsignacion2",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "idDuenio",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

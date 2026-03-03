@@ -1,0 +1,35 @@
+{
+  "get": {
+    "tags": [
+      "CertificadoLaboral"
+    ],
+    "summary": "refrescarJWT Monolito",
+    "operationId": "refrescarJWTMonolito",
+    "parameters": [
+      {
+        "name": "XTenantRefresh",
+        "in": "header",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "d2052db9-ce3a-4d5c-90c9-3d8d4bdbe05d"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "security": [],
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

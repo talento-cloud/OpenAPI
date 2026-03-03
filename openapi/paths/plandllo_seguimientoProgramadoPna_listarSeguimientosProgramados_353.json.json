@@ -1,0 +1,23 @@
+{
+  "get": {
+    "tags": [
+      "PlanDesarrollo"
+    ],
+    "summary": "listarSeguimientosProgramados",
+    "operationId": "listarSeguimientosProgramados",
+    "parameters": [],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

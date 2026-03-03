@@ -1,0 +1,32 @@
+{
+  "title": "guardarPlantillaRequest",
+  "required": [
+    "plantillaHtml",
+    "tipo",
+    "empresa",
+    "firmante"
+  ],
+  "type": "object",
+  "properties": {
+    "plantillaHtml": {
+      "type": "string"
+    },
+    "tipo": {
+      "type": "string"
+    },
+    "empresa": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "firmante": {
+      "type": "string",
+      "nullable": true
+    }
+  },
+  "example": {
+    "plantillaHtml": "<div class=\"certificado\">\r\n<div style=\"text-align: center;\"><b>[empresa.nombre]</b></div><br/>\r\n<div style=\"text-align: center;\">NIT [empresa.nit]</div><br/><br/><br/>\r\nCERTIFICA QUE<br/><br/><br/>\r\nConforme a lo dispuesto en el numeral 7 del artículo 57 del Código Sustantivo del Trabajo, emitimos este documento para certificar que [usuario.nombre], identificado con número de identificación [usuario.ID], labora en esta compañía desde el [fecha.inicial.cargo] hasta la fecha, desempeñando el cargo de [cargo.nombre], con contrato [tipo.contrato].\r\n<br/><br/><br/>\r\nPara constancia de lo anterior se firma el [fecha.generacion].\r\n<br/><br/><br/>\r\nCordialmente,\r\n<br/><br/><br/>\r\n[informacion.firmante]\r\n</div>",
+    "tipo": "SIN_SALARIO",
+    "empresa": 1,
+    "firmante": null
+  }
+}

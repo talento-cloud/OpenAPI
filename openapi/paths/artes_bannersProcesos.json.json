@@ -1,0 +1,23 @@
+{
+  "get": {
+    "tags": [
+      "Resumen"
+    ],
+    "summary": "bannersProcesos.json",
+    "operationId": "bannersProcesos.json",
+    "parameters": [],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

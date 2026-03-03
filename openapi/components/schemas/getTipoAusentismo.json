@@ -1,0 +1,93 @@
+{
+  "title": "getTipoAusentismo",
+  "required": [
+    "codigo",
+    "creado",
+    "modificado",
+    "nombre",
+    "categoria",
+    "requiereSoporte",
+    "esRemunerado",
+    "gestionadoPor",
+    "nivelesAprobadores",
+    "flujoAprobacion"
+  ],
+  "type": "object",
+  "properties": {
+    "codigo": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "creado": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "modificado": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "nombre": {
+      "type": "string"
+    },
+    "categoria": {
+      "$ref": "./Categoria.json"
+    },
+    "requiereSoporte": {
+      "type": "boolean"
+    },
+    "esRemunerado": {
+      "type": "boolean"
+    },
+    "gestionadoPor": {
+      "type": "string"
+    },
+    "nivelesAprobadores": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "flujoAprobacion": {
+      "type": "array",
+      "items": {
+        "$ref": "./FlujoAprobacion.json"
+      },
+      "description": ""
+    }
+  },
+  "example": {
+    "codigo": 1,
+    "creado": 1771846148280,
+    "modificado": 1771846148280,
+    "nombre": "Familia enferma",
+    "categoria": {
+      "codigo": 2074,
+      "activo": "s",
+      "nombre": "Personal",
+      "descripcion": "Categoria de tipos de ausentismo",
+      "tipo": "CATEGORIA_TIPO_AUSENTISMO"
+    },
+    "requiereSoporte": false,
+    "esRemunerado": false,
+    "gestionadoPor": "DIAS_Y_HORAS",
+    "nivelesAprobadores": 2,
+    "flujoAprobacion": [
+      {
+        "codigo": 2,
+        "creado": 1772124494189,
+        "modificado": 1772124494189,
+        "tipo": "LIDER",
+        "nivel": 1
+      },
+      {
+        "codigo": 3,
+        "creado": 1772124494213,
+        "modificado": 1772124494213,
+        "tipo": "PERSONA",
+        "codigos": [
+          104,
+          1
+        ],
+        "nivel": 2
+      }
+    ]
+  }
+}

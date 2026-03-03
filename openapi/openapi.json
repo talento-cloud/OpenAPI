@@ -1,0 +1,462 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Talento Publico",
+    "description": "Aqui describimos servicios generales del API REST de talento cloud",
+    "contact": {},
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://test.talento-dev.cloud/",
+      "variables": {}
+    },
+    {
+      "url": "http://example.com",
+      "variables": {}
+    }
+  ],
+  "paths": {
+    "/token/autenticacion.json": {
+      "$ref": "paths/token_autenticacion.json.json"
+    },
+    "/solicitarLlave.json": {
+      "$ref": "paths/solicitarLlave.json.json"
+    },
+    "/cambiarClave.json": {
+      "$ref": "paths/cambiarClave.json.json"
+    },
+    "/valoracion360/acordeon/listar-preguntas/{codEvaluacion360}/{codAsignacion2}/{idDuenio}.json": {
+      "$ref": "paths/valoracion360_acordeon_listar-preguntas_{codEvaluacion360}_{codAsignacion2}_{idDuenio}.json.json"
+    },
+    "/valoracion360/acordeon/guardar-cuestionario.json": {
+      "$ref": "paths/valoracion360_acordeon_guardar-cuestionario.json.json"
+    },
+    "/valoracion360/acordeon/terminar-evaluacion/{codAsignacion2}.json": {
+      "$ref": "paths/valoracion360_acordeon_terminar-evaluacion_{codAsignacion2}.json.json"
+    },
+    "/operativos/cantidadPreguntasEvaluacion/{codProceso360}.json": {
+      "$ref": "paths/operativos_cantidadPreguntasEvaluacion_{codProceso360}.json.json"
+    },
+    "/operativos/listarCompetenciasHVP/{codProceso360}.json": {
+      "$ref": "paths/operativos_listarCompetenciasHVP_{codProceso360}.json.json"
+    },
+    "/operativos/listarPreguntas/{codCompetencia}/{codProceso360}.json": {
+      "$ref": "paths/operativos_listarPreguntas_{codCompetencia}_{codProceso360}.json.json"
+    },
+    "/operativos/listarNivelescalificacion/{codProceso360}.json": {
+      "$ref": "paths/operativos_listarNivelescalificacion_{codProceso360}.json.json"
+    },
+    "/operativos/listarEvaluados/{codProceso360}/{codCompetencia}/{codPregunta}/{nivel}.json": {
+      "$ref": "paths/operativos_listarEvaluados_{codProceso360}_{codCompetencia}_{codPregunta}_{nivel}.json.json"
+    },
+    "/operativos/guardarActualizarEvaluacionesOperativos.json": {
+      "$ref": "paths/operativos_guardarActualizarEvaluacionesOperativos.json.json"
+    },
+    "/operativos/procesarObject.json": {
+      "$ref": "paths/operativos_procesarObject.json.json"
+    },
+    "/operativos/estadoPregunta/{codPregunta}/{codCompetencia}/{codProceso360}.json": {
+      "$ref": "paths/operativos_estadoPregunta_{codPregunta}_{codCompetencia}_{codProceso360}.json.json"
+    },
+    "/operativos/getObservacionesPregunta/{codPregunta}/{codAsignacion3}.json": {
+      "$ref": "paths/operativos_getObservacionesPregunta_{codPregunta}_{codAsignacion3}.json.json"
+    },
+    "/valoracion360/guardarComentariosCalibracion/{codAsignacion3}/{codPregunta}.json": {
+      "$ref": "paths/valoracion360_guardarComentariosCalibracion_{codAsignacion3}_{codPregunta}.json.json"
+    },
+    "/valoracion360/acordeon/terminar-evaluacion/{codAsignacion3}.json": {
+      "$ref": "paths/valoracion360_acordeon_terminar-evaluacion_{codAsignacion3}.json.json"
+    },
+    "/operativos/terminarEvaluaciones/{codProceso360}.json": {
+      "$ref": "paths/operativos_terminarEvaluaciones_{codProceso360}.json.json"
+    },
+    "/operativos/listarPreguntasAll/2503,2500,2497,2502/{codProceso360}.json": {
+      "$ref": "paths/operativos_listarPreguntasAll_2503,2500,2497,2502_{codProceso360}.json.json"
+    },
+    "/versionesevaluacionpublicadas.json": {
+      "$ref": "paths/versionesevaluacionpublicadas.json.json"
+    },
+    "/valoracion360/personasAEvaluar/{codEvaluacion}.json": {
+      "$ref": "paths/valoracion360_personasAEvaluar_{codEvaluacion}.json.json"
+    },
+    "/valoracion360/total-evaluacion/{codAsignacion}.json": {
+      "$ref": "paths/valoracion360_total-evaluacion_{codAsignacion}.json.json"
+    },
+    "/valoracion360/cargar-informacion-pregunta/{codAsignacion}/SIGUIENTE.json": {
+      "$ref": "paths/valoracion360_cargar-informacion-pregunta_{codAsignacion}_SIGUIENTE.json.json"
+    },
+    "/valoracion360/totalPrceso/{codEvaluacion}/{codEvaluado}/{codAsignacion}.json": {
+      "$ref": "paths/valoracion360_totalPrceso_{codEvaluacion}_{codEvaluado}_{codAsignacion}.json.json"
+    },
+    "/valoracion360/guardarCalificacionIndividual/{codAsignacion}/{codReferencia}/{calificacion}.json": {
+      "$ref": "paths/valoracion360_guardarCalificacionIndividual_{codAsignacion}_{codReferencia}_{calificacion}.json.json"
+    },
+    "/valoracion360/guardarComentarios/{codAsignacion}/{codReferencia}.json": {
+      "$ref": "paths/valoracion360_guardarComentarios_{codAsignacion}_{codReferencia}.json.json"
+    },
+    "/valoracion360/guardar-observaciones/{codAsignacion}.json": {
+      "$ref": "paths/valoracion360_guardar-observaciones_{codAsignacion}.json.json"
+    },
+    "/valoracion360/rechazarEvaluacion.json": {
+      "$ref": "paths/valoracion360_rechazarEvaluacion.json.json"
+    },
+    "/permisos/listarUsuarios/-9000.json": {
+      "$ref": "paths/permisos_listarUsuarios_-9000.json.json"
+    },
+    "/beneficio/listarAllBeneficios.json": {
+      "$ref": "paths/beneficio_listarAllBeneficios.json.json"
+    },
+    "/beneficio/consultarPuntos.json": {
+      "$ref": "paths/beneficio_consultarPuntos.json.json"
+    },
+    "/beneficio/historial/{codBeneficio}.json": {
+      "$ref": "paths/beneficio_historial_{codBeneficio}.json.json"
+    },
+    "/beneficio/formulario/getFormularioAsignacionBeneficio/{codBeneficio}.json": {
+      "$ref": "paths/beneficio_formulario_getFormularioAsignacionBeneficio_{codBeneficio}.json.json"
+    },
+    "/beneficio/asignarBeneficio/{codBeneficio}.json": {
+      "$ref": "paths/beneficio_asignarBeneficio_{codBeneficio}.json.json"
+    },
+    "/beneficio/archivo/checkCargaS3/{codAsignacionBeneficio}.json": {
+      "$ref": "paths/beneficio_archivo_checkCargaS3_{codAsignacionBeneficio}.json.json"
+    },
+    "/bne_solicitud_270_732b3c58b22172c9ad2f80a78180403d36cfad95_20250130_talento_JulianOsorio_ObjetivosSMART.pdf": {
+      "$ref": "paths/bne_solicitud_270_732b3c58b22172c9ad2f80a78180403d36cfad95_20250130_talento_JulianOsorio_ObjetivosSMART.pdf.json"
+    },
+    "/beneficio/restablecer/{codAsigBeneficio}.json": {
+      "$ref": "paths/beneficio_restablecer_{codAsigBeneficio}.json.json"
+    },
+    "/ConsultaUsuariosColaboradoresMios/{idJefe}.json": {
+      "$ref": "paths/ConsultaUsuariosColaboradoresMios_{idJefe}.json.json"
+    },
+    "/okr/listarAniosOKR.json": {
+      "$ref": "paths/okr_listarAniosOKR.json.json"
+    },
+    "/okr/listarPeriodosOKR/{anioOKR}.json": {
+      "$ref": "paths/okr_listarPeriodosOKR_{anioOKR}.json.json"
+    },
+    "/okr/listarObjetivosClave//{periodoOKR}.json": {
+      "$ref": "paths/okr_listarObjetivosClave__{periodoOKR}.json.json"
+    },
+    "/formacion/tipificadores/getByTipo/OKR_INDICADOR_ESTRETEGICO.json": {
+      "$ref": "paths/formacion_tipificadores_getByTipo_OKR_INDICADOR_ESTRETEGICO.json.json"
+    },
+    "/formacion/tipificadores/getPagin.json": {
+      "$ref": "paths/formacion_tipificadores_getPagin.json.json"
+    },
+    "/okr/guardar.json": {
+      "$ref": "paths/okr_guardar.json.json"
+    },
+    "/okr/delete/{codOKR2}.json": {
+      "$ref": "paths/okr_delete_{codOKR2}.json.json"
+    },
+    "/okr/listarResultadosClave/{codOKR}.json": {
+      "$ref": "paths/okr_listarResultadosClave_{codOKR}.json.json"
+    },
+    "/okr/guardarResultadoClave.json": {
+      "$ref": "paths/okr_guardarResultadoClave.json.json"
+    },
+    "/okr/eliminarResultadoClave/{codKR1}.json": {
+      "$ref": "paths/okr_eliminarResultadoClave_{codKR1}.json.json"
+    },
+    "/okr/kr/agregarArchivoEvidencia/{codKR}.json": {
+      "$ref": "paths/okr_kr_agregarArchivoEvidencia_{codKR}.json.json"
+    },
+    "/okr/kr/listarEvidencias/{codOKR}/COLABORADOR.json": {
+      "$ref": "paths/okr_kr_listarEvidencias_{codOKR}_COLABORADOR.json.json"
+    },
+    "/okr/guardarListaAccionesClave.json": {
+      "$ref": "paths/okr_guardarListaAccionesClave.json.json"
+    },
+    "/okr/cambiarEstadoObjetivo/{codOKR3}.json": {
+      "$ref": "paths/okr_cambiarEstadoObjetivo_{codOKR3}.json.json"
+    },
+    "/okr/guardarValorLogradoEnResultadoClave.json": {
+      "$ref": "paths/okr_guardarValorLogradoEnResultadoClave.json.json"
+    },
+    "/okr/notificacionParaAprobacion.json": {
+      "$ref": "paths/okr_notificacionParaAprobacion.json.json"
+    },
+    "/okr/permisoind/guardar.json": {
+      "$ref": "paths/okr_permisoind_guardar.json.json"
+    },
+    "/plandllo/listarUsuarios.json": {
+      "$ref": "paths/plandllo_listarUsuarios.json.json"
+    },
+    "/plandllo/listarPlanDesarrollo/{codUsuario}.json": {
+      "$ref": "paths/plandllo_listarPlanDesarrollo_{codUsuario}.json.json"
+    },
+    "/plandllo/detallePlan/{codPlan}/{codUsuario}.json": {
+      "$ref": "paths/plandllo_detallePlan_{codPlan}_{codUsuario}.json.json"
+    },
+    "/plandllo/temporadas/listarSeguimientos/{codPlan}/1.json": {
+      "$ref": "paths/plandllo_temporadas_listarSeguimientos_{codPlan}_1.json.json"
+    },
+    "/plandllo/listarTiposAccion/{codPlan}.json": {
+      "$ref": "paths/plandllo_listarTiposAccion_{codPlan}.json.json"
+    },
+    "/plandllo/acciones/listarAcciones/{codPlan}/{codUsuario}.json": {
+      "$ref": "paths/plandllo_acciones_listarAcciones_{codPlan}_{codUsuario}.json.json"
+    },
+    "/plandllo/acciones/cargarFuente/{codFuente}.json": {
+      "$ref": "paths/plandllo_acciones_cargarFuente_{codFuente}.json.json"
+    },
+    "/plandllo/listarCompetencias/{codUsuario}.json": {
+      "$ref": "paths/plandllo_listarCompetencias_{codUsuario}.json.json"
+    },
+    "/plandllo/acciones/listarAccionesSugeridas/{tipoAS}/{competencia}.json": {
+      "$ref": "paths/plandllo_acciones_listarAccionesSugeridas_{tipoAS}_{competencia}.json.json"
+    },
+    "/plandllo/listarArbolComportamientos/{codUsuario}/{totalComportamientos}.json": {
+      "$ref": "paths/plandllo_listarArbolComportamientos_{codUsuario}_{totalComportamientos}.json.json"
+    },
+    "/plandllo/listarObjetivos/{anioObjetivo}.json": {
+      "$ref": "paths/plandllo_listarObjetivos_{anioObjetivo}.json.json"
+    },
+    "/plandllo/acciones/guardarAccion.json": {
+      "$ref": "paths/plandllo_acciones_guardarAccion.json.json"
+    },
+    "/plandllo/eliminarAcciones.json": {
+      "$ref": "paths/plandllo_eliminarAcciones.json.json"
+    },
+    "/plandllo/actualizarPlanDllo.json": {
+      "$ref": "paths/plandllo_actualizarPlanDllo.json.json"
+    },
+    "/plandllo/checkCargaS3/{codPlan}/{codUsuario}.json": {
+      "$ref": "paths/plandllo_checkCargaS3_{codPlan}_{codUsuario}.json.json"
+    },
+    "/archivo_plan_dllo_35_b23dfcb68c39f410dc5f76580bdd7febb5c2425c_ReporteInformacionSucesion.xlsx": {
+      "$ref": "paths/archivo_plan_dllo_35_b23dfcb68c39f410dc5f76580bdd7febb5c2425c_ReporteInformacionSucesion.xlsx.json"
+    },
+    "/plandllo/acciones/loadSeguimeinto/{seguimiento}/{accion}.json": {
+      "$ref": "paths/plandllo_acciones_loadSeguimeinto_{seguimiento}_{accion}.json.json"
+    },
+    "/plandllo/acciones/guardarSeguimientoAccion.json": {
+      "$ref": "paths/plandllo_acciones_guardarSeguimientoAccion.json.json"
+    },
+    "/plandllo/seguimientoProgramadoPna/listarSeguimientosProgramados/353.json": {
+      "$ref": "paths/plandllo_seguimientoProgramadoPna_listarSeguimientosProgramados_353.json.json"
+    },
+    "/plandllo/seguimientoProgramadoPna/guardar.json": {
+      "$ref": "paths/plandllo_seguimientoProgramadoPna_guardar.json.json"
+    },
+    "/ag/adm/certificadolaboral/ro/empresas": {
+      "$ref": "paths/ag_adm_certificadolaboral_ro_empresas.json"
+    },
+    "/ag/adm/certificadolaboral/ro/workcertificatesetup/findByEmpresa/1": {
+      "$ref": "paths/ag_adm_certificadolaboral_ro_workcertificatesetup_findByEmpresa_1.json"
+    },
+    "/ag/adm/certificadolaboral/ro/workcertificatesetup/findByEmpresa/2/CON_SALARIO": {
+      "$ref": "paths/ag_adm_certificadolaboral_ro_workcertificatesetup_findByEmpresa_2_CON_SALARIO.json"
+    },
+    "/ag/adm/certificadolaboral/ro/workcertificatesetup/getComodines/SIN_SALARIO": {
+      "$ref": "paths/ag_adm_certificadolaboral_ro_workcertificatesetup_getComodines_SIN_SALARIO.json"
+    },
+    "/ag/adm/certificadolaboral/ro/workcertificatesetup/previewPlantilla/1/SIN_SALARIO": {
+      "$ref": "paths/ag_adm_certificadolaboral_ro_workcertificatesetup_previewPlantilla_1_SIN_SALARIO.json"
+    },
+    "/ag/adm/certificadolaboral/wr/workcertificatesetup": {
+      "$ref": "paths/ag_adm_certificadolaboral_wr_workcertificatesetup.json"
+    },
+    "/ag/adm/certificadolaboral/wr/workcertificatesetup/cargarImagen": {
+      "$ref": "paths/ag_adm_certificadolaboral_wr_workcertificatesetup_cargarImagen.json"
+    },
+    "/ag/user/certificadolaboral/ro/generar/CON_SALARIO": {
+      "$ref": "paths/ag_user_certificadolaboral_ro_generar_CON_SALARIO.json"
+    },
+    "/ag/user/certificadolaboral/ro/seg/reloadSemillas": {
+      "$ref": "paths/ag_user_certificadolaboral_ro_seg_reloadSemillas.json"
+    },
+    "/gral/reloadSemillas.json": {
+      "$ref": "paths/gral_reloadSemillas.json.json"
+    },
+    "/v1/ro/pendientes": {
+      "$ref": "paths/v1_ro_pendientes.json"
+    },
+    "/v1/ro/pendientes/{userId}": {
+      "$ref": "paths/v1_ro_pendientes_{userId}.json"
+    },
+    "/v1/ro/pendientes/getPendiente/132": {
+      "$ref": "paths/v1_ro_pendientes_getPendiente_132.json"
+    },
+    "/findByName/false": {
+      "$ref": "paths/findByName_false.json"
+    },
+    "/test/frank": {
+      "$ref": "paths/test_frank.json"
+    },
+    "/api/pendientes/empresas": {
+      "$ref": "paths/api_pendientes_empresas.json"
+    },
+    "/upload": {
+      "$ref": "paths/upload.json"
+    },
+    "/ag/adm/vacaciones/ro/configuracionvacaciones/getConfiguracionGral": {
+      "$ref": "paths/ag_adm_vacaciones_ro_configuracionvacaciones_getConfiguracionGral.json"
+    },
+    "/ag/adm/vacaciones/ro/configuracionvacaciones/getFlujoAprobacion": {
+      "$ref": "paths/ag_adm_vacaciones_ro_configuracionvacaciones_getFlujoAprobacion.json"
+    },
+    "/ag/vacaciones/wr/solicitudvacaciones": {
+      "$ref": "paths/ag_vacaciones_wr_solicitudvacaciones.json"
+    },
+    "/ag/adm/vacaciones/wr/configuracionvacaciones/actualizar": {
+      "$ref": "paths/ag_adm_vacaciones_wr_configuracionvacaciones_actualizar.json"
+    },
+    "/ag/adm/vacaciones/wr/configuracionvacaciones/flujoAprobacion": {
+      "$ref": "paths/ag_adm_vacaciones_wr_configuracionvacaciones_flujoAprobacion.json"
+    },
+    "/ro/categorias/listar": {
+      "$ref": "paths/ro_categorias_listar.json"
+    },
+    "/ro/administracion/listar": {
+      "$ref": "paths/ro_administracion_listar.json"
+    },
+    "/ro/administracion/getTipoAusentismo/1": {
+      "$ref": "paths/ro_administracion_getTipoAusentismo_1.json"
+    },
+    "/wr/administracion/guardar": {
+      "$ref": "paths/wr_administracion_guardar.json"
+    },
+    "/wr/administracion/flujoAprobacion/2": {
+      "$ref": "paths/wr_administracion_flujoAprobacion_2.json"
+    },
+    "/wr/administracion/inactivar/": {
+      "$ref": "paths/wr_administracion_inactivar_.json"
+    },
+    "/wr/solicitud": {
+      "$ref": "paths/wr_solicitud.json"
+    },
+    "/ro/solicitud/listar": {
+      "$ref": "paths/ro_solicitud_listar.json"
+    },
+    "/ro/solicitud/listarParaAprobar": {
+      "$ref": "paths/ro_solicitud_listarParaAprobar.json"
+    },
+    "/ro/solicitud/getDetalle/": {
+      "$ref": "paths/ro_solicitud_getDetalle_.json"
+    },
+    "/wr/solicitud/aprobacion": {
+      "$ref": "paths/wr_solicitud_aprobacion.json"
+    },
+    "/wr/solicitud/rechazo": {
+      "$ref": "paths/wr_solicitud_rechazo.json"
+    },
+    "/ConsultaUsuariosColaboradoresMiosPantallaResumen.json": {
+      "$ref": "paths/ConsultaUsuariosColaboradoresMiosPantallaResumen.json.json"
+    },
+    "/index.php": {
+      "$ref": "paths/index.php.json"
+    },
+    "/birthday/proximosCumpleanios.json": {
+      "$ref": "paths/birthday_proximosCumpleanios.json.json"
+    },
+    "/tablero/noticias/noticiasPublicadas.json": {
+      "$ref": "paths/tablero_noticias_noticiasPublicadas.json.json"
+    },
+    "/birthday/miCumpleanios.json": {
+      "$ref": "paths/birthday_miCumpleanios.json.json"
+    },
+    "/tablero/noticias/get/{codNoticia}.json": {
+      "$ref": "paths/tablero_noticias_get_{codNoticia}.json.json"
+    },
+    "/birthday/proximosAniversarios.json": {
+      "$ref": "paths/birthday_proximosAniversarios.json.json"
+    },
+    "/birthday/nuevosColaboradores.json": {
+      "$ref": "paths/birthday_nuevosColaboradores.json.json"
+    },
+    "/resumenAdmin/licenciasActivasUsuario/104.json": {
+      "$ref": "paths/resumenAdmin_licenciasActivasUsuario_104.json.json"
+    },
+    "/resumenAdmin/graficaCompetenciaUsuario/104/380/172.json": {
+      "$ref": "paths/resumenAdmin_graficaCompetenciaUsuario_104_380_172.json.json"
+    },
+    "/resumenAdmin/planDesarrollo/104/480/300.json": {
+      "$ref": "paths/resumenAdmin_planDesarrollo_104_480_300.json.json"
+    },
+    "/resumenAdmin/desempenioUsuario/1/380/172.json": {
+      "$ref": "paths/resumenAdmin_desempenioUsuario_1_380_172.json.json"
+    },
+    "/resumenAdmin/graficasGaugeConsolidado/380/172/1.json": {
+      "$ref": "paths/resumenAdmin_graficasGaugeConsolidado_380_172_1.json.json"
+    },
+    "/resumenAdmin/graficaBarrasObjetivos/1/380/172.json": {
+      "$ref": "paths/resumenAdmin_graficaBarrasObjetivos_1_380_172.json.json"
+    },
+    "/tablero/noticias/cantidadNoticiasPublicadas.json": {
+      "$ref": "paths/tablero_noticias_cantidadNoticiasPublicadas.json.json"
+    },
+    "/tablero/noticias/save.json": {
+      "$ref": "paths/tablero_noticias_save.json.json"
+    },
+    "/tablero/noticias/delete/{cod}.json": {
+      "$ref": "paths/tablero_noticias_delete_{cod}.json.json"
+    },
+    "/tablero/noticias/imagen/cargar/{cod}.json": {
+      "$ref": "paths/tablero_noticias_imagen_cargar_{cod}.json.json"
+    },
+    "/artes/bannersProcesos.json": {
+      "$ref": "paths/artes_bannersProcesos.json.json"
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearer": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Transversal",
+      "description": "Operaciones transversales a la plataforma"
+    },
+    {
+      "name": "Acordeon"
+    },
+    {
+      "name": "Calibracion"
+    },
+    {
+      "name": "Competencias360",
+      "description": "En esta sección se describen los servicios usados en el módulo de valoración de competencias 360"
+    },
+    {
+      "name": "Bienestar"
+    },
+    {
+      "name": "OKR"
+    },
+    {
+      "name": "PlanDesarrollo"
+    },
+    {
+      "name": "CertificadoLaboral"
+    },
+    {
+      "name": "Pendientes"
+    },
+    {
+      "name": "AutogestionVarios"
+    },
+    {
+      "name": "Vacaciones"
+    },
+    {
+      "name": "Ausentismos",
+      "description": "Ese submódulo maneja todo lo relacionado con Ausentismos en el módulo de Autogestión, tanto administración como solicitud y aprobación.\n\n# *Documentación en Swagger*\n\n[https://bzkqkqxa8j.execute-api.us-east-1.amazonaws.com/ag/ausentismos/ro/swaggerui/#/](https://bzkqkqxa8j.execute-api.us-east-1.amazonaws.com/ag/ausentismos/ro/swaggerui/#/)\n\n[https://dvilf0owyf.execute-api.us-east-1.amazonaws.com/ag/ausentismos/wr/swaggerui/#/](https://dvilf0owyf.execute-api.us-east-1.amazonaws.com/ag/ausentismos/wr/swaggerui/#/)\n\n## Manejo de errores\n\nLos errores habituales pueden incluir:\n\n- `400 Bad Request`: Parámetros requeridos faltantes o con formato inválido.\n    \n- `401 Unauthorized`: Token JWT inválido, expirado o ausente.\n    \n- `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.\n    \n- `404 Not Found`: El recurso solicitado no existe.\n    \n- `500 Internal Server Error`: Error inesperado en el servidor.\n    \n\nCuando sea posible, cada endpoint detallará sus códigos de error específicos y estructura de respuesta en su propia descripción."
+    },
+    {
+      "name": "Resumen"
+    }
+  ]
+}

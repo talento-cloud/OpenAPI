@@ -1,0 +1,22 @@
+{
+  "title": "datas3",
+  "required": [
+    "plan",
+    "codigo"
+  ],
+  "type": "object",
+  "properties": {
+    "plan": {
+      "type": "string",
+      "nullable": true
+    },
+    "codigo": {
+      "type": "integer",
+      "format": "int32"
+    }
+  },
+  "example": {
+    "plan": null,
+    "codigo": 355
+  }
+}

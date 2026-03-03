@@ -1,0 +1,150 @@
+{
+  "get": {
+    "tags": [
+      "Bienestar"
+    ],
+    "summary": "consultarPuntos",
+    "operationId": "consultarPuntos",
+    "parameters": [
+      {
+        "name": "categoria",
+        "in": "query",
+        "description": "Default BENEFICIO",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "BENEFICIO"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "headers": {
+          "Vary": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Origin"
+              }
+            }
+          },
+          "Content-Language": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "es-CO"
+              }
+            }
+          },
+          "Cache-Control": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "no-store"
+              }
+            }
+          },
+          "X-XSS-Protection": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "1; mode=block"
+              }
+            }
+          },
+          "X-Frame-Options": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "DENY"
+              }
+            }
+          },
+          "X-Content-Type-Options": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "nosniff"
+              }
+            }
+          },
+          "Content-Security-Policy": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "frame-ancestors *"
+              }
+            }
+          },
+          "Transfer-Encoding": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "chunked"
+              }
+            }
+          },
+          "Server": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Jetty(8.y.z-SNAPSHOT)"
+              }
+            }
+          }
+        },
+        "content": {
+          "application/json;charset=UTF-8": {
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "../components/schemas/Puntos.json"
+                },
+                {
+                  "example": {
+                    "datos": 0,
+                    "success": true,
+                    "puntosDisponibles": 10
+                  }
+                }
+              ]
+            },
+            "example": {
+              "datos": 0,
+              "success": true,
+              "puntosDisponibles": 10
+            }
+          }
+        }
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

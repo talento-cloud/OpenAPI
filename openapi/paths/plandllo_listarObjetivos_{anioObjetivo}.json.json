@@ -1,0 +1,34 @@
+{
+  "get": {
+    "tags": [
+      "PlanDesarrollo"
+    ],
+    "summary": "fuente/listarObjetivos",
+    "description": "Lista objetivos registrados de un usuario en un año específico",
+    "operationId": "fuente/listarObjetivos",
+    "parameters": [
+      {
+        "name": "anioObjetivo",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

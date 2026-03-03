@@ -1,0 +1,36 @@
+{
+  "title": "Categoria",
+  "required": [
+    "codigo",
+    "activo",
+    "nombre",
+    "descripcion",
+    "tipo"
+  ],
+  "type": "object",
+  "properties": {
+    "codigo": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "activo": {
+      "type": "string"
+    },
+    "nombre": {
+      "type": "string"
+    },
+    "descripcion": {
+      "type": "string"
+    },
+    "tipo": {
+      "type": "string"
+    }
+  },
+  "example": {
+    "codigo": 2071,
+    "activo": "s",
+    "nombre": "Otro",
+    "descripcion": "Categoria de tipos de ausentismo",
+    "tipo": "CATEGORIA_TIPO_AUSENTISMO"
+  }
+}

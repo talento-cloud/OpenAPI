@@ -1,0 +1,59 @@
+{
+  "get": {
+    "tags": [
+      "Vacaciones"
+    ],
+    "summary": "getConfiguracionGral",
+    "operationId": "getConfiguracionGral",
+    "parameters": [],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "headers": {
+          "content-length": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "102"
+              }
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "../components/schemas/getConfiguracionGral.json"
+                },
+                {
+                  "example": {
+                    "minimo-dias-solicitar": 3,
+                    "minimo-dias-aviso": 3,
+                    "mensaje-parametrizado": null,
+                    "niveles-aprobadores": 1
+                  }
+                }
+              ]
+            },
+            "example": {
+              "minimo-dias-solicitar": 3,
+              "minimo-dias-aviso": 3,
+              "mensaje-parametrizado": null,
+              "niveles-aprobadores": 1
+            }
+          }
+        }
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "http://example.com",
+        "variables": {}
+      }
+    ]
+  }
+}

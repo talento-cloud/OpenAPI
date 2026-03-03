@@ -1,0 +1,33 @@
+{
+  "delete": {
+    "tags": [
+      "Resumen"
+    ],
+    "summary": "noticias/delete",
+    "operationId": "noticias/delete",
+    "parameters": [
+      {
+        "name": "cod",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

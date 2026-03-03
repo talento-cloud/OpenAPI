@@ -1,0 +1,42 @@
+{
+  "get": {
+    "tags": [
+      "Calibracion"
+    ],
+    "summary": "getObservacionesPregunta",
+    "operationId": "getObservacionesPregunta",
+    "parameters": [
+      {
+        "name": "codPregunta",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "codAsignacion3",
+        "in": "path",
+        "description": "",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}

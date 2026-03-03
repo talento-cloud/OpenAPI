@@ -1,0 +1,62 @@
+{
+  "post": {
+    "tags": [
+      "PlanDesarrollo"
+    ],
+    "summary": "seguimientoProgramadoPna/guardar",
+    "operationId": "seguimientoProgramadoPna/guardar",
+    "parameters": [
+      {
+        "name": "codigo",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "example": 2
+        }
+      },
+      {
+        "name": "valorSeguimiento",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "example": 4
+        }
+      },
+      {
+        "name": "observaciones",
+        "in": "query",
+        "description": "",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "example": "Esto es un seguimiento creado por Diaz para esa fecha"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "",
+        "headers": {}
+      }
+    },
+    "deprecated": false,
+    "servers": [
+      {
+        "url": "https://html",
+        "variables": {}
+      }
+    ]
+  }
+}
