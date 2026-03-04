@@ -8,7 +8,7 @@
   },
   "servers": [
     {
-      "url": "https://test.talento-dev.cloud/",
+      "url": "https://test.talento-dev.cloud",
       "variables": {}
     },
     {
