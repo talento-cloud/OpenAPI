@@ -40,6 +40,8 @@ redocly lint --extends=minimal .\dist\openapi.json
 #### Extras
 Para migrar de postman a redoc primero hay que exportar el archivo de postman en formato json y luego convertirlo a formato openapi lo cual se puede lograr con https://www.apimatic.io/transformer 
 
+Plugin para VS Code: OpenAPI (Swagger) Editor (de 42Crunch)
+
 #### Bibliografía
 - https://redocly.com/docs/cli/commands/build-docs#use-a-custom-template
 - https://github.com/Redocly/redoc
