@@ -8119,7 +8119,13 @@ paths:
         Cuando sea posible, cada endpoint detallará sus códigos de error
         específicos y estructura de respuesta en su propia descripción.
       operationId: inactivarTipoAusentismo
-      parameters: []
+      parameters: 
+        - name: codTipoSolicitud
+          in: path
+          description: Código del tipo de ausentismo a inactivar
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: OK
