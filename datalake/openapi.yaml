@@ -5,25 +5,45 @@ info:
   version: 1.0.0
 servers:
   - url: https://clientex.talento.cloud/api/v1
-    description: Servidor de producción
-  - url: https://clientex.talento.cloud/oauth2
-    description: Servidor de autenticación
+    description: Servidor de producción  
 components:
   securitySchemes:
     oauth2:
       type: oauth2
       flows:
         clientCredentials:
-          tokenUrl: https://clientex.talento.cloud/oauth2/token
+          tokenUrl: https://clientex.talento.cloud/api/v1/oauth2/token
           scopes:
             talento.read: "Permiso para leer datos de talento"
 security:
   - oauth2:
       - talento.read
 paths:
-  /token:
+  /oauth2/token:
     post:
       summary: "OAuth2 - Obtener token"
+      description: >-
+        ## Ejemplo petición con curl:
+
+        ```bash
+
+        curl -X POST https://clientex.talento.cloud/api/v1/oauth2/token \
+          -H "Content-Type: application/x-www-form-urlencoded" \
+          -d "grant_type=client_credentials" \
+          -d "client_id=webhook-servicio" \
+          -d "client_secret=mi-secreto" \
+          -d "scope=talento.read"
+
+        ```
+
+        ## Ejemplo uso token generado:
+
+        ```bash
+
+        curl -X POST https://clientex.talento.cloud/api/v1/modulox/reportey  \
+          -H "Authorization: Bearer eyJhbGci..."
+
+        ```
       requestBody:
         content:
           application/x-www-form-urlencoded:
