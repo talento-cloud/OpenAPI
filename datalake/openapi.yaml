@@ -1,0 +1,414 @@
+openapi: 3.0.0
+info:
+  title: API publica de talento cloud
+  description: API REST para entregar info a datalake.
+  version: 1.0.0
+servers:
+  - url: https://clientex.talento.cloud/api/v1
+    description: Servidor de producción
+  - url: https://clientex.talento.cloud/oauth2
+    description: Servidor de autenticación
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://clientex.talento.cloud/oauth2/token
+          scopes:
+            talento.read: "Permiso para leer datos de talento"
+security:
+  - oauth2:
+      - talento.read
+paths:
+  /token:
+    post:
+      summary: "OAuth2 - Obtener token"
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                client_id:
+                  type: string
+                client_secret:
+                  type: string
+                scope:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                access_token: "eyJhbGci..."
+                token_type: "Bearer"
+                expires_in: 3600
+                scope: "talento.read"
+
+  /seleccion/reporteDetallado/{banderaIncluirInactivos}:
+    get:
+      summary: "Selección - Reporte de selección detallado"
+      parameters:
+        - name: banderaIncluirInactivos
+          in: path
+          required: true
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                codigo: 200
+                mensaje: "OK"
+                data:
+                  reporte:
+                    - nro_solicitud: 12345
+                      cargo: "Auxiliar"
+                      empresa: "x"
+                      ciudad: "x"
+                      solicitante: "x"
+                      personaCancela: "x"
+                      personaCierra: "x"
+                      fechaSolicitud: "2023-01-01"
+                      fechaRadicacion: "2023-01-02"
+                      fechaAsignacionResponsable: "2023-01-03"
+                      fechaCancelacion: "2023-01-04"
+                      fechaCierre: "2023-01-05"
+                      tipoConvocatoria: "x"
+                      motivo: "x"
+                      personasAReemplezar: ""
+                      tipoSolicitud: "x"
+                      responsables: ""
+                      porcentajeAvance: 50
+                      estadoProceso: "x"
+                      fechaUltimaEtapa: "2023-01-06"
+                      cantidadVacantesSolicitadas: 10
+                      cantidadVacantesPendientes: 5
+                      cantidadCandidatosConsiderados: 50
+                      cantidadCandidatosContratados: 1
+                      vicepresidencia: "x"
+                      regional: "x"
+                      sede: "x"
+                      lider: ""
+                      justificacion: "x"
+                      observaciones: ""
+                      observacionesCancelacion: ""
+                      cliente: "x"
+                      ans: 30
+                      diasTranscurridos: 10
+                      cumplimiento: "No cumple"
+                      diasTotales: 400
+                      fechaContratacion: "2023-01-07"
+                      candidatoElegido: "x"
+                      candidatoElegidoCedula: "x"
+                      cubrimiento: "Externo"
+                      criticidad: ""
+                      centroCosto: ""
+
+  /seleccion/seguimientoPorEtapa/{estado}:
+    get:
+      summary: "Selección - Seguimiento por etapas"
+      parameters:
+        - name: estado
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                codigo: 200
+                mensaje: "OK"
+                data:
+                  reporte:
+                    - proceso: "SEL-6"
+                      cargo: "Analista contable"
+                      empresa: "Talento cloud"
+                      fechaSolicitud: "2023-01-01"
+                      fechaAsignacionResponsables: "2023-01-02"
+                      fechaCancelacion: "2023-01-03"
+                      fechaCierre: "2023-01-04"
+                      tipoConvocatoria: "MIXTA"
+                      responsablesProceso: "x,y,z"
+                      porcentajeAvance: 90
+                      estadoRequisicion: "Publicada"
+                      fechaAprobacionFinal: "2023-01-05"
+                      preseleccionFechaPrimerCandidato: "2023-01-06"
+                      preseleccionFechaUltimoCandidato: "2023-01-07"
+                      filtroTelefonicoFechaPrimerCandidato: "2023-01-06"
+                      filtroTelefonicoFechaUltimoCandidato: "2023-01-07"
+                      entrevistaGrupalFechaPrimerCandidato: "2023-01-06"
+                      entrevistaGrupalFechaUltimoCandidato: "2023-01-07"
+                      pruebaPsicotecnicaFechaPrimerCandidato: "2023-01-06"
+                      pruebaPsicotecnicaFechaUltimoCandidato: "2023-01-07"
+                      xxxFechaPrimerCandidato: "2023-01-06"
+                      xxxFechaUltimoCandidato: "2023-01-07"
+
+  /formacion/avancePorTema/{incluirUsuarioInactivos}/{codTema}/{codAnio}/{fechaInicial}/{fechaFinal}:
+    get:
+      summary: "Formación - Avance por tema"
+      parameters:
+        - name: incluirUsuarioInactivos
+          in: path
+          required: true
+          schema:
+            type: boolean
+        - name: codTema
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: codAnio
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: fechaInicial
+          in: path
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: fechaFinal
+          in: path
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                codigo: 200
+                mensaje: "OK"
+                data:
+                  reporte:
+                    - {}
+
+  /bienestar/reporteDetallado:
+    get:
+      summary: "Bienestar - reporte detallado beneficios/reconocimientos"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                codigo: 200
+                mensaje: "OK"
+                data:
+                  reporte:
+                    - {}
+
+  /bienestar/transaccionesPuntos/{anio}:
+    get:
+      summary: "Bienestar - reporte transacciones puntos beneficios/reconocimientos"
+      parameters:
+        - name: anio
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                codigo: 200
+                mensaje: "OK"
+                data:
+                  reporte:
+                    - {}
+
+  /hojavida/datosBasicos:
+    get:
+      summary: "HojaVida - Reporte datos básicos usuario interno"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                codigo: 200
+                mensaje: "OK"
+                data:
+                  reporte:
+                    - {}
+
+  /hojavida/infoNomina:
+    get:
+      summary: "HojaVida - Información de nómina"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                codigo: 200
+                mensaje: "OK"
+                data:
+                  reporte:
+                    - {}
+
+  /objetivossmart/resultadosConsolidadosGestion/{anio}:
+    get:
+      summary: "Objetivos Smart - Resultados consolidados de gestión (Todo el grupo)"
+      parameters:
+        - name: anio
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                codigo: 200
+                mensaje: "OK"
+                data:
+                  reporte:
+                    - {}
+
+  /objetivossmart/modeloMapaDesempeno/{modeloMapaTalento}/{temporadaMT}:
+    get:
+      summary: "Objetivos Smart - Modelo mapa de desempeño"
+      parameters:
+        - name: modeloMapaTalento
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: temporadaMT
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                codigo: 200
+                mensaje: "OK"
+                data:
+                  reporte:
+                    - {}
+
+  /competencias/detalleValoracion/{codProceso}:
+    get:
+      summary: "Competencias - Detalle valoración de competencias (de todo el grupo)"
+      parameters:
+        - name: codProceso
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                codigo: 200
+                mensaje: "OK"
+                data:
+                  reporte:
+                    - {}
+
+  /operativosdec/reporte/{codMapaTalento}/{codTemporadaMT}:
+    get:
+      summary: "Operativos (Dec) - Reporte operativos"
+      parameters:
+        - name: codMapaTalento
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: codTemporadaMT
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                codigo: 200
+                mensaje: "OK"
+                data:
+                  reporte:
+                    - {}
+
+  /transversar/todosUsuarios/{tipo}:
+    get:
+      summary: "Transversal - Reporte de todos los usuarios del sistema"
+      parameters:
+        - name: tipo
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                codigo: 200
+                mensaje: "OK"
+                data:
+                  reporte:
+                    - {}
+
+  /transversar/usuariosActivos:
+    get:
+      summary: "Transversal - Reporte de los usuarios activos"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                codigo: 200
+                mensaje: "OK"
+                data:
+                  reporte:
+                    - {}
+
+  /transversar/novedades/{tipo}:
+    get:
+      summary: "Transversal - Novedades"
+      parameters:
+        - name: tipo
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                codigo: 200
+                mensaje: "OK"
+                data:
+                  reporte:
+                    - {}
