@@ -1,7 +1,27 @@
 openapi: 3.0.0
 info:
   title: API publica de talento cloud
-  description: API REST para entregar info a datalake.
+  description: >-
+    API REST para entregar info a datalake.
+    Maneja autenticación Oauth 2.0 y se podria consultar los siguientes informes en formato application/json:
+      - Selección - Reporte de selección detallado
+      - Selección - Seguimiento por etapas
+      - Formación - Avance por tema
+      - Bienestar - reporte detallado beneficios/reconocimientos
+      - Bienestar - reporte transacciones puntos beneficios/reconocimientos
+      - HojaVida - Reporte datos básicos usuario interno
+      - HojaVida - Información de nómina
+      - Objetivos Smart - Resultados consolidados de gestión (Todo el grupo)
+      - Objetivos Smart - Modelo mapa de desempeño
+      - Competencias - Detalle valoración de competencias (de todo el grupo)
+      - Operativos (Dec) - Reporte operativos
+      - Transversal - Reporte de todos los usuarios del sistema
+      - Transversal - Reporte de los usuarios activos
+      - Transversal - Novedades
+
+    ## NOTAS
+
+    Es una propuesta general según lo solicitado en el correo, puede cambiar y le faltan detalles, por ejemplo como indicarle codigos o años de los procesos a consultar, algunos ejemplos de respuesta etc
   version: 1.0.0
 servers:
   - url: https://clientex.talento.cloud/api/v1
