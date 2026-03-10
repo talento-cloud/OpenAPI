@@ -24,7 +24,7 @@ info:
     Es una propuesta general según lo solicitado en el correo, puede cambiar y le faltan detalles, por ejemplo como indicarle codigos o años de los procesos a consultar, algunos ejemplos de respuesta etc
   version: 1.0.0
 servers:
-  - url: https://clientex.talento.cloud/api/v1
+  - url: https://clientex.talento.cloud/api/v1/datalake
     description: Servidor de producción  
 components:
   securitySchemes:
@@ -32,7 +32,7 @@ components:
       type: oauth2
       flows:
         clientCredentials:
-          tokenUrl: https://clientex.talento.cloud/api/v1/oauth2/token
+          tokenUrl: https://clientex.talento.cloud/api/v1/datalake/oauth2/token
           scopes:
             talento.read: "Permiso para leer datos de talento"
 security:
@@ -47,7 +47,7 @@ paths:
 
         ```bash
 
-        curl -X POST https://clientex.talento.cloud/api/v1/oauth2/token \
+        curl -X POST https://clientex.talento.cloud/api/v1/datalake/oauth2/token \
           -H "Content-Type: application/x-www-form-urlencoded" \
           -d "grant_type=client_credentials" \
           -d "client_id=webhook-servicio" \
@@ -60,7 +60,7 @@ paths:
 
         ```bash
 
-        curl -X POST https://clientex.talento.cloud/api/v1/modulox/reportey  \
+        curl -X POST https://clientex.talento.cloud/api/v1/datalake/modulox/reportey  \
           -H "Authorization: Bearer eyJhbGci..."
 
         ```
