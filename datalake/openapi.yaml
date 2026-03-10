@@ -19,6 +19,27 @@ info:
       - Transversal - Reporte de los usuarios activos
       - Transversal - Novedades
 
+    ## Manejo de errores
+
+
+        Los errores habituales pueden incluir:
+
+
+        - `400 Bad Request`: Parámetros requeridos faltantes o con formato
+        inválido.
+            
+        - `401 Unauthorized`: Token JWT inválido, expirado o ausente.
+            
+        - `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.
+            
+        - `404 Not Found`: El recurso solicitado no existe.
+            
+        - `500 Internal Server Error`: Error inesperado en el servidor.
+            
+
+        Cuando sea posible, cada endpoint detallará sus códigos de error
+        específicos y estructura de respuesta en su propia descripción.  
+
     ## NOTAS
 
     Es una propuesta general según lo solicitado en el correo, puede cambiar y le faltan detalles, por ejemplo como indicarle codigos o años de los procesos a consultar, algunos ejemplos de respuesta etc
@@ -49,6 +70,7 @@ paths:
 
         curl -X POST https://clientex.talento.cloud/api/v1/datalake/oauth2/token \
           -H "Content-Type: application/x-www-form-urlencoded" \
+          -H "X-Tenant: alianza" \
           -d "grant_type=client_credentials" \
           -d "client_id=webhook-servicio" \
           -d "client_secret=mi-secreto" \
@@ -63,7 +85,14 @@ paths:
         curl -X POST https://clientex.talento.cloud/api/v1/datalake/modulox/reportey  \
           -H "Authorization: Bearer eyJhbGci..."
 
-        ```
+        ```      
+      parameters:
+        - name: X-Tenant
+          in: header
+          description: "Tenant al que se accede"
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/x-www-form-urlencoded:
