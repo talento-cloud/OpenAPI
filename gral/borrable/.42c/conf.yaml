@@ -1,0 +1,3 @@
+apis:
+  TalentoPublicoOpenApi3Json.json:
+    alias: talento-publico
