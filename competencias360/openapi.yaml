@@ -1,0 +1,1647 @@
+openapi: 3.0.0
+info:
+  title: API Competencias360
+  contact: {}
+  version: '1.0'
+  description: >-
+    Esta API permite acceder a la información de las competencias y comportamientos de los colaboradores de una empresa.
+
+    ## Manejo de errores
+
+
+        Los errores habituales pueden incluir:
+
+
+        - `400 Bad Request`: Parámetros requeridos faltantes o con formato
+        inválido.
+            
+        - `401 Unauthorized`: Token JWT inválido, expirado o ausente.
+            
+        - `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.
+            
+        - `404 Not Found`: El recurso solicitado no existe.
+            
+        - `500 Internal Server Error`: Error inesperado en el servidor.
+            
+
+        Cuando sea posible, cada endpoint detallará sus códigos de error
+        específicos y estructura de respuesta en su propia descripción.
+servers:
+  - url: https://clientex.talento.cloud/api/html
+    description: Servidor de producción  
+    variables: {}
+paths:
+  /valoracion360/acordeon/listar-preguntas/{codEvaluacion360}/{codAsignacion2}/{idDuenio}.json:
+    get:
+      tags:
+      - Acordeon
+      summary: listarCuestionario
+      description: "A diferencia del estándar que solo carga una pregunta por vez para el acordeón cargaremos varias.\n\nAl elegir un colaborador a evaluar se listará las competencias y comportamientos asociados para que el frontend elija si mostrará por competencia o todo en una sola hoja.  \nNecesitamos un JWT, accedemos al servicio REST tipo GET en la url endpoint  \n{urlBaseTalento}/html/valoracion360/acordeon/listar-preguntas/{{codEvaluacion360}}/  \n{{codAsignacion2}}/{{idDuenio}}.json\n\nLo anterior listará las competencias a evaluar al usuario, donde por cada competencia también se  \ntendrá las preguntas/comportamientos asociados y por cada comportamiento los niveles de  \ncalificación que aplica, inclusive si ya estaba calificado el nivel elegido tendrá una marca sobre esto.  \nTambién nos dirá si el comportamiento ya tiene fortalezas, oportunidades u observaciones  \nregistradas.  \nEn la raíz del json de respuesta también nos dirá si debe usar selección múltiple normal o con estrellas  \ncon la propiedad “descriptorEstrellas”"
+      operationId: listarCuestionario
+      parameters:
+      - name: codEvaluacion360
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: codAsignacion2
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: idDuenio
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /valoracion360/acordeon/guardar-cuestionario.json:
+    post:
+      tags:
+      - Acordeon
+      summary: guardarRespuesta
+      description: "Para guardar la respuesta a una pregunta dada por el evaluador.  \nNecesitamos un JWT, accedemos al servicio REST tipo GET en la url endpoint  \n{urlBaseTalento}/html/valoracion360/acordeon/guardar-cuestionario.json"
+      operationId: guardarRespuesta
+      parameters:
+      - name: asignacion
+        in: query
+        description: Código asignación
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          example: 16913
+      - name: codigo
+        in: query
+        description: Código de la pregunta
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          example: 7680
+      - name: resultado
+        in: query
+        description: Nivel calificado
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          example: 80
+      - name: fortalezas
+        in: query
+        description: Texto de la fortaleza para la pregunta (opcional)
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: oportunidades
+        in: query
+        description: Texto de la oportunidad para la pregunta (opcional)
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: observaciones
+        in: query
+        description: Texto de la observación para la pregunta (opcional)
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /valoracion360/acordeon/terminar-evaluacion/{codAsignacion2}.json:
+    post:
+      tags:
+      - Acordeon
+      summary: terminarEvaluacion
+      description: "Cuando el evaluador ya terminó de calificar todas las preguntas debe terminar la evaluación indicando unas observaciones generales.  \nNecesitamos un JWT, accedemos al servicio REST tipo POST en la url endpoint  \n{urlBaseTalento}/html/valoracion360/acordeon/terminar-evaluacion/{{codAsignacion2}}.json"
+      operationId: terminarEvaluacion
+      parameters:
+      - name: observaciones
+        in: query
+        description: Puede ser obligatorio según configuraciones
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: Eres una excelente persona y como parte del equipo siento que eres una parte fundamental de élOrganizado, capaz y con amplias actitudes de Líder.Me encantaría verte mas fuerte con competencias de liderazgo y gestion de equipos, creo que tienes oportunidades en ese sentido
+      - name: codAsignacion2
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /operativos/cantidadPreguntasEvaluacion/.json:
+    get:
+      tags:
+      - Calibracion
+      summary: cantidadPreguntasEvaluacion
+      description: "### Endpoint Description\n\nThis endpoint retrieves the total number of questions evaluated for a specific process identified by `codProceso360`.\n\n### Request\n\n- **Method**: GET\n    \n- **URL**: `{{urlBaseTalento}}/html/operativos/cantidadPreguntasEvaluacion/{{codProceso360}}.json`\n    \n- **Headers**:\n    \n    - Content-Type: application/json\n        \n\n### Response\n\n- **Status Code**: 200 OK\n    \n- **Content-Type**: application/json\n    \n- **Response Body**:\n    \n    - `totalCalificados`: Integer representing the total number of questions that have been evaluated.\n        \n    - `totalPorCalificar`: Integer representing the total number of questions that are yet to be evaluated.\n        \n\n### Example Response\n\n``` json\n{\n  \"totalCalificados\": 0,\n  \"totalPorCalificar\": 0\n}\n\n ```\n\nThis response indicates that there are currently no questions evaluated and none pending evaluation for the specified process."
+      operationId: cantidadPreguntasEvaluacion
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /operativos/listarCompetenciasHVP/.json:
+    get:
+      tags:
+      - Calibracion
+      summary: listarCompetenciasHVP
+      description: "### Endpoint Description\n\nThis endpoint retrieves the total number of questions evaluated for a specific process identified by `codProceso360`.\n\n### Request\n\n- **Method**: GET\n    \n- **URL**: `{{urlBaseTalento}}/html/operativos/cantidadPreguntasEvaluacion/{{codProceso360}}.json`\n    \n- **Headers**:\n    \n    - Content-Type: application/json\n        \n\n### Response\n\n- **Status Code**: 200 OK\n    \n- **Content-Type**: application/json\n    \n- **Response Body**:\n    \n    - `totalCalificados`: Integer representing the total number of questions that have been evaluated.\n        \n    - `totalPorCalificar`: Integer representing the total number of questions that are yet to be evaluated.\n        \n\n### Example Response\n\n``` json\n{\n  \"totalCalificados\": 0,\n  \"totalPorCalificar\": 0\n}\n\n ```\n\nThis response indicates that there are currently no questions evaluated and none pending evaluation for the specified process."
+      operationId: listarCompetenciasHVP
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /operativos/listarPreguntas/{codCompetencia}/.json:
+    get:
+      tags:
+      - Calibracion
+      summary: listarPreguntas
+      description: "### Endpoint Description\n\nThis endpoint retrieves the total number of questions evaluated for a specific process identified by `codProceso360`.\n\n### Request\n\n- **Method**: GET\n    \n- **URL**: `{{urlBaseTalento}}/html/operativos/cantidadPreguntasEvaluacion/{{codProceso360}}.json`\n    \n- **Headers**:\n    \n    - Content-Type: application/json\n        \n\n### Response\n\n- **Status Code**: 200 OK\n    \n- **Content-Type**: application/json\n    \n- **Response Body**:\n    \n    - `totalCalificados`: Integer representing the total number of questions that have been evaluated.\n        \n    - `totalPorCalificar`: Integer representing the total number of questions that are yet to be evaluated.\n        \n\n### Example Response\n\n``` json\n{\n  \"totalCalificados\": 0,\n  \"totalPorCalificar\": 0\n}\n\n ```\n\nThis response indicates that there are currently no questions evaluated and none pending evaluation for the specified process."
+      operationId: listarPreguntas
+      parameters:
+      - name: codCompetencia
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /operativos/listarNivelescalificacion/.json:
+    get:
+      tags:
+      - Calibracion
+      summary: listarNivelescalificacion
+      description: "### Endpoint Description\n\nThis endpoint retrieves the total number of questions evaluated for a specific process identified by `codProceso360`.\n\n### Request\n\n- **Method**: GET\n    \n- **URL**: `{{urlBaseTalento}}/html/operativos/cantidadPreguntasEvaluacion/{{codProceso360}}.json`\n    \n- **Headers**:\n    \n    - Content-Type: application/json\n        \n\n### Response\n\n- **Status Code**: 200 OK\n    \n- **Content-Type**: application/json\n    \n- **Response Body**:\n    \n    - `totalCalificados`: Integer representing the total number of questions that have been evaluated.\n        \n    - `totalPorCalificar`: Integer representing the total number of questions that are yet to be evaluated.\n        \n\n### Example Response\n\n``` json\n{\n  \"totalCalificados\": 0,\n  \"totalPorCalificar\": 0\n}\n\n ```\n\nThis response indicates that there are currently no questions evaluated and none pending evaluation for the specified process."
+      operationId: listarNivelescalificacion
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /operativos/listarEvaluados//{codCompetencia}/{codPregunta}/{nivel}.json:
+    get:
+      tags:
+      - Calibracion
+      summary: listarEvaluados
+      description: "### Endpoint Description\n\nThis endpoint retrieves the total number of questions evaluated for a specific process identified by `codProceso360`.\n\n### Request\n\n- **Method**: GET\n    \n- **URL**: `{{urlBaseTalento}}/html/operativos/cantidadPreguntasEvaluacion/{{codProceso360}}.json`\n    \n- **Headers**:\n    \n    - Content-Type: application/json\n        \n\n### Response\n\n- **Status Code**: 200 OK\n    \n- **Content-Type**: application/json\n    \n- **Response Body**:\n    \n    - `totalCalificados`: Integer representing the total number of questions that have been evaluated.\n        \n    - `totalPorCalificar`: Integer representing the total number of questions that are yet to be evaluated.\n        \n\n### Example Response\n\n``` json\n{\n  \"totalCalificados\": 0,\n  \"totalPorCalificar\": 0\n}\n\n ```\n\nThis response indicates that there are currently no questions evaluated and none pending evaluation for the specified process."
+      operationId: listarEvaluados
+      parameters:
+      - name: codCompetencia
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: codPregunta
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: nivel
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /operativos/guardarActualizarEvaluacionesOperativos.json:
+    post:
+      tags:
+      - Calibracion
+      summary: guardarActualizarEvaluacionesOperativos
+      description: "### Endpoint Description\n\nThis endpoint retrieves the total number of questions evaluated for a specific process identified by `codProceso360`.\n\n### Request\n\n- **Method**: GET\n    \n- **URL**: `{{urlBaseTalento}}/html/operativos/cantidadPreguntasEvaluacion/{{codProceso360}}.json`\n    \n- **Headers**:\n    \n    - Content-Type: application/json\n        \n\n### Response\n\n- **Status Code**: 200 OK\n    \n- **Content-Type**: application/json\n    \n- **Response Body**:\n    \n    - `totalCalificados`: Integer representing the total number of questions that have been evaluated.\n        \n    - `totalPorCalificar`: Integer representing the total number of questions that are yet to be evaluated.\n        \n\n### Example Response\n\n``` json\n{\n  \"totalCalificados\": 0,\n  \"totalPorCalificar\": 0\n}\n\n ```\n\nThis response indicates that there are currently no questions evaluated and none pending evaluation for the specified process."
+      operationId: guardarActualizarEvaluacionesOperativos
+      parameters: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            encoding: {}
+            schema:
+              required:
+              - datas
+              type: object
+              properties:
+                datas:
+                  allOf:
+                  - $ref: '#/components/schemas/datas'
+                  - example:
+                      codigoOperador: 42
+                      rol: c
+                      observacion: ''
+                      calificacion: 40
+                      evaluacion: 237
+                      competencia: 2503
+                      pregunta: 7501
+                      asignacion: 13983
+        required: false
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /operativos/procesarObject.json:
+    post:
+      tags:
+      - Calibracion
+      summary: guardarEvaluacionesMasiva
+      description: "### Endpoint Description\n\nThis endpoint retrieves the total number of questions evaluated for a specific process identified by `codProceso360`.\n\n### Request\n\n- **Method**: GET\n    \n- **URL**: `{{urlBaseTalento}}/html/operativos/cantidadPreguntasEvaluacion/{{codProceso360}}.json`\n    \n- **Headers**:\n    \n    - Content-Type: application/json\n        \n\n### Response\n\n- **Status Code**: 200 OK\n    \n- **Content-Type**: application/json\n    \n- **Response Body**:\n    \n    - `totalCalificados`: Integer representing the total number of questions that have been evaluated.\n        \n    - `totalPorCalificar`: Integer representing the total number of questions that are yet to be evaluated.\n        \n\n### Example Response\n\n``` json\n{\n  \"totalCalificados\": 0,\n  \"totalPorCalificar\": 0\n}\n\n ```\n\nThis response indicates that there are currently no questions evaluated and none pending evaluation for the specified process."
+      operationId: guardarEvaluacionesMasiva
+      parameters: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            encoding: {}
+            schema:
+              required:
+              - datas
+              type: object
+              properties:
+                datas:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/datas1'
+                  description: Array con todos los colaboradores a mover de calificación
+                  example:
+                  - codigoOperador: 72
+                    rol: j
+                    observacion: ''
+                    calificacion: 60
+                    evaluacion: 237
+                    competencia: 2503
+                    pregunta: 7501
+                  - codigoOperador: 72
+                    rol: p
+                    observacion: ''
+                    calificacion: 60
+                    evaluacion: 237
+                    competencia: 2503
+                    pregunta: 7501
+                  - codigoOperador: 64
+                    rol: c
+                    observacion: ''
+                    calificacion: 60
+                    evaluacion: 237
+                    competencia: 2503
+                    pregunta: 7501
+                  - codigoOperador: 73
+                    rol: c
+                    observacion: ''
+                    calificacion: 60
+                    evaluacion: 237
+                    competencia: 2503
+                    pregunta: 7501
+                  - codigoOperador: 125
+                    rol: c
+                    observacion: ''
+                    calificacion: 60
+                    evaluacion: 237
+                    competencia: 2503
+                    pregunta: 7501
+                  - codigoOperador: 176
+                    rol: c
+                    observacion: ''
+                    calificacion: 60
+                    evaluacion: 237
+                    competencia: 2503
+                    pregunta: 7501
+                  - codigoOperador: 106
+                    rol: c
+                    observacion: ''
+                    calificacion: 60
+                    evaluacion: 237
+                    competencia: 2503
+                    pregunta: 7501
+                  - codigoOperador: 25
+                    rol: p
+                    observacion: ''
+                    calificacion: 60
+                    evaluacion: 237
+                    competencia: 2503
+                    pregunta: 7501
+                  - codigoOperador: 117
+                    rol: c
+                    observacion: ''
+                    calificacion: 60
+                    evaluacion: 237
+                    competencia: 2503
+                    pregunta: 7501
+                  - codigoOperador: 1
+                    rol: m
+                    observacion: ''
+                    calificacion: 60
+                    evaluacion: 237
+                    competencia: 2503
+                    pregunta: 7501
+                  - codigoOperador: 78
+                    rol: p
+                    observacion: ''
+                    calificacion: 60
+                    evaluacion: 237
+                    competencia: 2503
+                    pregunta: 7501
+                  - codigoOperador: 103
+                    rol: c
+                    observacion: ''
+                    calificacion: 60
+                    evaluacion: 237
+                    competencia: 2503
+                    pregunta: 7501
+                  - codigoOperador: 128
+                    rol: c
+                    observacion: ''
+                    calificacion: 60
+                    evaluacion: 237
+                    competencia: 2503
+                    pregunta: 7501
+                  - codigoOperador: 174
+                    rol: c
+                    observacion: ''
+                    calificacion: 60
+                    evaluacion: 237
+                    competencia: 2503
+                    pregunta: 7501
+        required: false
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /operativos/estadoPregunta/{codPregunta}/{codCompetencia}/.json:
+    get:
+      tags:
+      - Calibracion
+      summary: estadoPregunta
+      description: "### Endpoint Description\n\nThis endpoint retrieves the total number of questions evaluated for a specific process identified by `codProceso360`.\n\n### Request\n\n- **Method**: GET\n    \n- **URL**: `{{urlBaseTalento}}/html/operativos/cantidadPreguntasEvaluacion/{{codProceso360}}.json`\n    \n- **Headers**:\n    \n    - Content-Type: application/json\n        \n\n### Response\n\n- **Status Code**: 200 OK\n    \n- **Content-Type**: application/json\n    \n- **Response Body**:\n    \n    - `totalCalificados`: Integer representing the total number of questions that have been evaluated.\n        \n    - `totalPorCalificar`: Integer representing the total number of questions that are yet to be evaluated.\n        \n\n### Example Response\n\n``` json\n{\n  \"totalCalificados\": 0,\n  \"totalPorCalificar\": 0\n}\n\n ```\n\nThis response indicates that there are currently no questions evaluated and none pending evaluation for the specified process."
+      operationId: estadoPregunta
+      parameters:
+      - name: codPregunta
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: codCompetencia
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /operativos/getObservacionesPregunta/{codPregunta}/{codAsignacion3}.json:
+    get:
+      tags:
+      - Calibracion
+      summary: getObservacionesPregunta
+      operationId: getObservacionesPregunta
+      parameters:
+      - name: codPregunta
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: codAsignacion3
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /valoracion360/guardarComentariosCalibracion/{codAsignacion3}/{codPregunta}.json:
+    post:
+      tags:
+      - Calibracion
+      summary: guardarComentariosCalibracion
+      operationId: guardarComentariosCalibracion
+      parameters:
+      - name: fortalezas
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: Año nuevo día
+      - name: oprortunidad
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: Las cosas de oportunidad
+      - name: observacion
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: Martes fustón
+      - name: codAsignacion3
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: codPregunta
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /valoracion360/acordeon/terminar-evaluacion/{codAsignacion3}.json:
+    post:
+      tags:
+      - Calibracion
+      summary: observacionesFinales
+      operationId: observacionesFinales
+      parameters:
+      - name: soloObservaciones
+        in: query
+        description: Si false es que tambien quiere finalizar
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          example: true
+      - name: observaciones
+        in: query
+        description: Texto de observaciones finales
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: Estas son unas observaciones finales sobre las competencias del colaborador Catalina Díaz Añol
+      - name: codAsignacion3
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /operativos/terminarEvaluaciones/.json:
+    post:
+      tags:
+      - Calibracion
+      summary: terminarEvaluaciones
+      operationId: terminarEvaluaciones
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /operativos/listarPreguntasAll/2503,2500,2497,2502/.json:
+    get:
+      tags:
+      - Calibracion
+      summary: listarPreguntasAll
+      description: "### Endpoint Description\n\nThis endpoint retrieves the total number of questions evaluated for a specific process identified by `codProceso360`.\n\n### Request\n\n- **Method**: GET\n    \n- **URL**: `{{urlBaseTalento}}/html/operativos/cantidadPreguntasEvaluacion/{{codProceso360}}.json`\n    \n- **Headers**:\n    \n    - Content-Type: application/json\n        \n\n### Response\n\n- **Status Code**: 200 OK\n    \n- **Content-Type**: application/json\n    \n- **Response Body**:\n    \n    - `totalCalificados`: Integer representing the total number of questions that have been evaluated.\n        \n    - `totalPorCalificar`: Integer representing the total number of questions that are yet to be evaluated.\n        \n\n### Example Response\n\n``` json\n{\n  \"totalCalificados\": 0,\n  \"totalPorCalificar\": 0\n}\n\n ```\n\nThis response indicates that there are currently no questions evaluated and none pending evaluation for the specified process."
+      operationId: listarPreguntasAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /val360/valoresvaloracion/get.json:
+    get:
+      tags:
+      - AdministracionCptValoresValoracion
+      summary: listarValoresValoracion
+      operationId: listarValoresValoracion
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors *
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/listarValoresValoracion'
+                - example:
+                    cantidad: 4
+                    datos:
+                    - activo: s
+                      creado: 1597964634999
+                      modificado: 1597964634999
+                      codigo: 4
+                      nombre: No cumple
+                      minimo: 0
+                      maximo: 35
+                      color: FF6469
+                      nombreCorto: No cumple
+                      descripcion: null
+                      label: No cumple
+                    - activo: s
+                      creado: 1597964634999
+                      modificado: 1597964634999
+                      codigo: 3
+                      nombre: Susceptible de mejora
+                      minimo: 36
+                      maximo: 60
+                      color: FBE758
+                      nombreCorto: Susceptible de mejora
+                      descripcion: null
+                      label: Susceptible de mejora
+                    - activo: s
+                      creado: 1597964634999
+                      modificado: 1597964634999
+                      codigo: 2
+                      nombre: Ajustado a lo esperado
+                      minimo: 61
+                      maximo: 80
+                      color: 71D47D
+                      nombreCorto: Ajustado a lo esperado
+                      descripcion: null
+                      label: Ajustado a lo esperado
+                    - activo: s
+                      creado: 1597964634999
+                      modificado: 1597964634999
+                      codigo: 1
+                      nombre: Excede lo esperado
+                      minimo: 81
+                      maximo: 100
+                      color: 00BBE6
+                      nombreCorto: Excede lo esperado
+                      descripcion: null
+                      label: Excede lo esperado
+                    message: OK
+                    success: true
+              example:
+                cantidad: 4
+                datos:
+                - activo: s
+                  creado: 1597964634999
+                  modificado: 1597964634999
+                  codigo: 4
+                  nombre: No cumple
+                  minimo: 0
+                  maximo: 35
+                  color: FF6469
+                  nombreCorto: No cumple
+                  descripcion: null
+                  label: No cumple
+                - activo: s
+                  creado: 1597964634999
+                  modificado: 1597964634999
+                  codigo: 3
+                  nombre: Susceptible de mejora
+                  minimo: 36
+                  maximo: 60
+                  color: FBE758
+                  nombreCorto: Susceptible de mejora
+                  descripcion: null
+                  label: Susceptible de mejora
+                - activo: s
+                  creado: 1597964634999
+                  modificado: 1597964634999
+                  codigo: 2
+                  nombre: Ajustado a lo esperado
+                  minimo: 61
+                  maximo: 80
+                  color: 71D47D
+                  nombreCorto: Ajustado a lo esperado
+                  descripcion: null
+                  label: Ajustado a lo esperado
+                - activo: s
+                  creado: 1597964634999
+                  modificado: 1597964634999
+                  codigo: 1
+                  nombre: Excede lo esperado
+                  minimo: 81
+                  maximo: 100
+                  color: 00BBE6
+                  nombreCorto: Excede lo esperado
+                  descripcion: null
+                  label: Excede lo esperado
+                message: OK
+                success: true
+      deprecated: false
+  /val360/valoresvaloracion/save.json:
+    post:
+      tags:
+      - AdministracionCptValoresValoracion
+      summary: guardarRango
+      operationId: guardarRango
+      parameters:
+      - name: codigo
+        in: query
+        description: 'Si se desea editar se debe proporcionar el codigo del rango'
+        required: false
+        style: form
+        explode: true 
+        schema:
+          type: string  
+      - name: nombre
+        in: query
+        description: Obligatorio, nombre a usar en el rango de resultados
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: Extra Excelente
+      - name: minimo
+        in: query
+        description: Obligatorio, valor mínimo del rango
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+          example: 100.01
+      - name: maximo
+        in: query
+        description: Obligatorio, valor máximo del rango
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+          example: 120
+      - name: color
+        in: query
+        description: 'Color en formato hex, puede o no llevar el #'
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: '#00BBE6'
+      - name: nombreCorto
+        in: query
+        description: 'Opcional, nombre corto a usar en el rango de resultados'
+        required: false
+        style: form
+        explode: true 
+        schema:
+          type: string  
+      - name: descripcion
+        in: query
+        description: 'Opcional,descripción del rango de resultados'
+        required: false
+        style: form
+        explode: true 
+        schema:
+          type: string       
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors *
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/guardarRango'
+                - example:
+                    datos:
+                      activo: s
+                      creado: 1773868404501
+                      modificado: 1773868404554
+                      codigo: 5
+                      nombre: Extra Excelente
+                      minimo: 100.01
+                      maximo: 120
+                      color: 00BBE6
+                      nombreCorto: null
+                      descripcion: null
+                      label: Extra Excelente
+                    message: Los datos se almacenaron correctamente.
+                    success: true
+                    entidad:
+                      activo: s
+                      creado: 1773868404501
+                      modificado: 1773868404554
+                      codigo: 5
+                      nombre: Extra Excelente
+                      minimo: 100.01
+                      maximo: 120
+                      color: 00BBE6
+                      nombreCorto: null
+                      descripcion: null
+                      label: Extra Excelente
+              example:
+                datos:
+                  activo: s
+                  creado: 1773868404501
+                  modificado: 1773868404554
+                  codigo: 5
+                  nombre: Extra Excelente
+                  minimo: 100.01
+                  maximo: 120
+                  color: 00BBE6
+                  nombreCorto: null
+                  descripcion: null
+                  label: Extra Excelente
+                message: Los datos se almacenaron correctamente.
+                success: true
+                entidad:
+                  activo: s
+                  creado: 1773868404501
+                  modificado: 1773868404554
+                  codigo: 5
+                  nombre: Extra Excelente
+                  minimo: 100.01
+                  maximo: 120
+                  color: 00BBE6
+                  nombreCorto: null
+                  descripcion: null
+                  label: Extra Excelente
+      deprecated: false
+  /val360/valoresvaloracion/delete/5.json:
+    delete:
+      tags:
+      - AdministracionCptValoresValoracion
+      summary: inactivarRango
+      operationId: inactivarRango
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors *
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/inactivarRango'
+                - example:
+                    message: El registro se ha eliminado satisfactoriamente
+                    success: true
+              example:
+                message: El registro se ha eliminado satisfactoriamente
+                success: true
+      deprecated: false
+  /versionesevaluacionpublicadas.json:
+    get:
+      tags:
+      - Misc
+      summary: EvaluacionesPublicadas
+      description: "## Evaluaciones Publicadas\n\n**Request name:** EvaluacionesPublicadas  \n**Descripción:** Lista los procesos en los que el usuario es evaluador activo y debe valorar competencias de otros usuarios.\n\n---\n\n### Método y URL\n\n```\nGET {urlBaseTalento}/html/    versionesevaluacionpublicadas.json\n\n ```\n\n- `{urlBaseTalento}`: Variable de entorno/colección que define la URL base del backend de Talento.\n    \n\n---\n\n### Parámetros\n\n#### Parámetros de consulta (query params)\n\n| Nombre | Tipo | Obligatorio | Valores posibles | Descripción |\n| --- | --- | --- | --- | --- |\n| `movil` | boolean/string | Opcional | `false` (posible valor) | Bandera especial para versiones móvil |\n\nEjemplo de URL con query param:\n\n```\nGET {urlBaseTalento}/html/    versionesevaluacionpublicadas.json?    movil=false\n\n ```\n\n#### Variables relevantes\n\n| Nombre | Tipo | Ámbito recomendado | Descripción |\n| --- | --- | --- | --- |\n| `Token_JWT` | string | Environment | Token JWT del usuario autenticado, usado en el header `Authorization`. |\n| `urlBaseTalento` | string | Environment/Collection | URL base de la API de Talento, por ejemplo: `https://demo.talento-dev.cloud` |\n\n---\n\n### Headers de ejemplo\n\n```\nAuthorization: Bearer {Token_JWT} Content-Type: application/jsonAccept: application/json\n\n ```\n\n- **Authorization**: use un JWT válido almacenado en la variable `{Token_JWT}`.\n    \n\n---\n\n### Ejemplo de respuesta\n\n**Código de estado:** `200 OK`  \n**Content-Type:** `application/json`\n\n```\n{    \"datos\": [        {            \"activo\": \"s\",            \"codigo\": 249,            \"descripcion\": \"Valoracion                 Agosto\",            \"descripcionLarga\": \"dfgdfg\",            \"fecha_creacion\": 1754079171567,            \"fecha_terminacion\": null,            \"porcentajeAutoevaluacion\": 20,            \"porcentajeMisPares\": 20,            \"porcentajeMisColaboradores\": 20,            \"porcentajeMiJefe\": 20,            \"porcentajeClienteProveedores\":                 20,            \"totalEvaluacionesProgramadas\":                 368,            \"totalEvaluacionesHechas\": 1,            \"estado\": 3,            \"camponosabenoresponde\": true,            \"porCargoActual\": true,            \"porCargoProyectado\": true,            \"porNivelOrganizacional\": true,            \"porCorporativas\": true,            \"porArea\": true,            \"porRol\": true,            \"urlTransient\": \"http://base.                local:8889/\",            \"label\": \"Valoracion Agosto\",            \"empresaStr\": \"TODAS\",            \"estadoStr\":                 \"VAL_estado_enprogreso\",            \"...\": \"Object truncated\"        },        {            \"activo\": \"s\",            \"codigo\": 239,            \"descripcion\": \"CLON: Valoración                 DEC operativos!\",            \"fecha_creacion\": 1744391183385,            \"fecha_terminacion\":                 1663384106131,            \"totalEvaluacionesProgramadas\":                 11,            \"totalEvaluacionesHechas\": 0,            \"estado\": 3,            \"urlTransient\": \"https://demo.                talento-dev.cloud/\",            \"label\": \"CLON: Valoración DEC                 operativos!\",            \"empresaStr\": \"TODAS\",            \"estadoStr\":                 \"VAL_estado_enprogreso\",            \"...\": \"Object truncated\"        }        // ... otros procesos de valoración    ],    \"...\": \"Object truncated\"}\n\n ```\n\n> &lt;p &gt;Nota: La respuesta real incluye más campos y objetos. Aquí se muestra una versión truncada solo para referencia.&lt;/p&gt; \n  \n\n---\n\n### Notas de uso / flujo típico\n\n1. Obtén un JWT válido (por ejemplo, mediante el endpoint de autenticación correspondiente) y guárdalo en la variable `{Token_JWT}` del entorno.\n    \n2. Configura la variable `{urlBaseTalento}` en el entorno **Talento Environment** con la URL base adecuada para el ambiente (dev, qa, prod, etc.).\n    \n3. Envía la petición `GET` a `{urlBaseTalento}/html/versionesevaluacionpublicadas.json` con el header `Authorization: Bearer {Token_JWT}`.\n    \n4. Verifica que el arreglo `datos` contenga los procesos de evaluación donde el usuario actual es evaluador activo, junto con sus atributos de configuración (porcentajes, fechas de apertura/cierre, banderas, etc.).\n    \n\n---\n\n### Posibles variaciones\n\n- GET {urlBaseTalento}/html/ versionesevaluacionpublicadas.json? movil=false\n    \n- **Ambientes diferentes**: cambia el valor de `{urlBaseTalento}` en el entorno para apuntar a distintos ambientes (por ejemplo, demo, producción del cliente, etc.).\n    \n- **Filtros adicionales**: si en futuras versiones se añaden más parámetros de query, deberán documentarse aquí (por ejemplo, filtros por estado, fechas, empresa, etc.).\n    \n\n---\n\n## Manejo de errores\n\nLos errores habituales pueden incluir:\n\n- `400 Bad Request`: Parámetros requeridos faltantes o con formato inválido.\n    \n- `401 Unauthorized`: Token JWT inválido, expirado o ausente.\n    \n- `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.\n    \n- `404 Not Found`: El recurso solicitado no existe.\n    \n- `500 Internal Server Error`: Error inesperado en el servidor.\n    \n\nCuando sea posible, cada endpoint detallará sus códigos de error específicos y estructura de respuesta en su propia descripción."
+      operationId: EvaluacionesPublicadas
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /valoracion360/personasAEvaluar/.json:
+    get:
+      tags:
+      - Misc
+      summary: PersonasAEvaluar
+      description: "Para listar los usuarios que el usuario en sesión debe evaluar de un proceso elegido. (Usado en el  \nformulario estandar)  \nNecesitamos una sesión activa previa, accedemos al servicio REST tipo GET en la url end point  \n{urlBaseTalento}/html/valoracion360/personasAEvaluar/{{codEvaluacion}}.json\n\n**Parámetros tipo query**:\n\n- **query** Para filtrar por nombre si se desea NO\n    \n- **estado** Para filtrar por estados si se desea, ej: PENDIENTE, ENCURSO,FINALIZADA, ECHAZADA. NO es obligatorio\n    \n\nLa foto del usuario se toma a partir de su código con la url: ../html/foto/descargaralt/\\[cod_usuario\\]/2  \nestadoCalificacion nos indica la bandera de si el usuario a calificar esta: pendiente(0), en progreso (3),  \nrechazado(2) o finalizado (1)  \nEl codAsignacion es importante más adelante"
+      operationId: PersonasAEvaluar
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /valoracion360/total-evaluacion/{codAsignacion}.json:
+    get:
+      tags:
+      - Misc
+      summary: TotalEvaluacion
+      description: Total de evaluaciones a realizar
+      operationId: TotalEvaluacion
+      parameters:
+      - name: codAsignacion
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /valoracion360/cargar-informacion-pregunta/{codAsignacion}/SIGUIENTE.json:
+    get:
+      tags:
+      - Misc
+      summary: CargarPregunta
+      description: "En el formulario estándar (tipo wizard) existe un endpoint que te da los detalles de preguntas una a la  \nvez según se va respondiendo y avanzando cuando se le da al botón siguiente.  \nNecesitamos una sesión activa previa, accedemos al servicio REST tipo GET en la url endpoint  \n{urlBaseTalento}/html/valoracion360/cargar-informacion-pregunta/{{codAsignacion}}/-1.json\n\n**Parámetros tipo query:**\n\n- **primer_pregunta**: Si se quiere devolver a la primera pregunta se manda con true y dirección ATRAS. No es obligatorio\n    \n\nEl -1 es si es la primera vez que entramos, se puede cambiar por SIGUIENTE o ATRAS para movernos  \nentre preguntas. El servicio siempre tratará de entregarnos la ultima pregunta/comportamiento sin  \nresponder.\n\nEl resultado es la pregunta con su competencia asociada, además tiene la escala  \ncon que se puede calificar y si ya estaba respondida la pregunta indicará cual fue la  \nopción seleccionada previamente."
+      operationId: CargarPregunta
+      parameters:
+      - name: codAsignacion
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /valoracion360/totalPrceso///{codAsignacion}.json:
+    get:
+      tags:
+      - Misc
+      summary: TotalProceso
+      description: "Para consultar la cantidad de preguntas respondidas y totales de un evaluado por parte del evaluador  \nen sesión.  \nNecesitamos una sesión activa previa, accedemos al servicio REST tipo GET en la url end point  \n{urlBaseTalento}/html/valoracion360/totalPrceso/{{codEvaluacion}}/{{codEvaluado}}/  \n{{codAsignacion}}.json\n\nDonde codEvaluacion es el código del proceso, codEvaluado es el mismo codUsuario  \nque obtenemos al listar evaluados, de esa misma lista sacamos el codAsignacion"
+      operationId: TotalProceso
+      parameters:
+      - name: codAsignacion
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /valoracion360/guardarCalificacionIndividual/{codAsignacion}//.json:
+    post:
+      tags:
+      - Misc
+      summary: GuardarRespuestasElegida
+      description: "Para guardar la calificación a una pregunta dada:  \nNecesitamos una sesión activa previa, accedemos al servicio REST tipo POST en la url endpoint  \n{urlBaseTalento}/html/valoracion360/guardarCalificacionIndividual/{{codAsignacion}}/  \n{{codReferencia}}/{{calificacion}}.json\n\n**Path param:**\n\nCodAsignacion, codReferencia y calificacion se tomán según el endpoint anterior, donde  \ncodReferencia es el mismo campo codigo en la pregunta (no confundir con codPregunta), y  \ncalificación es uno de los valores de la escala"
+      operationId: GuardarRespuestasElegida
+      parameters:
+      - name: codAsignacion
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /valoracion360/guardarComentarios/{codAsignacion}/.json:
+    post:
+      tags:
+      - Misc
+      summary: guardarComentarios
+      description: "Para guardar las fortalezas, oportunidades u observaciones de una pregunta/comportamiento  \nindicado. Esos campos son configurables de si se ven, o son obligatorios o tienen límite de caracteres.  \nNecesitamos una sesión activa previa, accedemos al servicio REST tipo POST en la url end point  \n{urlBaseTalento}/html/valoracion360/guardarComentarios/{{codAsignacion}}/{{codReferencia}}.json\n\n**Query params:**\n\n- observacion Texto\n    \n- fortalezas Texto\n    \n- oprortunidad Texto\n    \n\nDonde codAsignacion la tomamos de la lista de evaluados y codReferencia es el codigo en pregunta  \nque no es codPregunta.  \nSi codReferencia es igual a -1 se debe mandar un parametro adicional llamado copiaPregunta. Esto  \npuede pasar en el acordeón."
+      operationId: guardarComentarios
+      parameters:
+      - name: observacion
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: Lo que escriba el evaluador
+      - name: fortalezas
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: Lo que escriba el evaluador
+      - name: oprortunidad
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: Lo que escriba el evaluador
+      - name: codAsignacion
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /valoracion360/guardar-observaciones/{codAsignacion}.json:
+    post:
+      tags:
+      - Misc
+      summary: guardarRetroalimentacion
+      description: "Para guardar las observaciones finales sobre el usuario que se termina de calificar  \nNecesitamos una sesión activa previa, accedemos al servicio REST tipo POST en la url endpoint  \n{urlBaseTalento}/html/valoracion360/guardar-observaciones/{{codAsignacion}}.json\n\n**Query params:**\n\n- **datas**: Observaciones en formato json, ejem: {\"observacion\":\"Esta es la observaciones final del evaluados que es la retroalimentaci\\\\u00f3n tambien.\"}. Es obligatorio\n    \n- **finalizar:** Si true indica que esa evaluación se debe finalizar, por tanto no se podrá modificar después y ya puede hacer los cálculos de los resultados por debajo. No es obligatorio"
+      operationId: guardarRetroalimentacion
+      parameters:
+      - name: datas
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/datas2'
+          - example:
+              observacion: Esta es la observaciones final del evaluados que  es la retroalimentación tambien.
+      - name: finalizar
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          example: true
+      - name: codAsignacion
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /valoracion360/rechazarEvaluacion.json:
+    post:
+      tags:
+      - Misc
+      summary: rechazarEvaluacion
+      description: "El evaluador puede decir que no tiene criterio para evaluar a un colaborador de la empresa, para esto  \nusa el siguiente endpont: {urlBaseTalento}/html/valoracion360/rechazarEvaluacion.json"
+      operationId: rechazarEvaluacion
+      parameters:
+      - name: codAsignacion
+        in: query
+        description: Código de asignación
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          example: 16920
+      - name: motivoRechazo
+        in: query
+        description: Texto con el motivo del rechazo
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: Para decir que no lo conoce
+      - name: siFueRechazado
+        in: query
+        description: 1 para rechazado y 2 quitar el estado rechazado
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          example: 1
+      - name: token
+        in: query
+        description: token fijo por si es un evaluador externo controlar
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: o7QNbTrGdvHnUwmZC2dM
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+components:
+  schemas:
+    datas:
+      title: datas
+      required:
+      - codigoOperador
+      - rol
+      - observacion
+      - calificacion
+      - evaluacion
+      - competencia
+      - pregunta
+      - asignacion
+      type: object
+      properties:
+        codigoOperador:
+          type: integer
+          format: int32
+        rol:
+          type: string
+        observacion:
+          type: string
+        calificacion:
+          type: integer
+          format: int32
+        evaluacion:
+          type: integer
+          format: int32
+        competencia:
+          type: integer
+          format: int32
+        pregunta:
+          type: integer
+          format: int32
+        asignacion:
+          type: integer
+          format: int32
+      example:
+        codigoOperador: 42
+        rol: c
+        observacion: ''
+        calificacion: 40
+        evaluacion: 237
+        competencia: 2503
+        pregunta: 7501
+        asignacion: 13983
+    datas1:
+      title: datas1
+      required:
+      - codigoOperador
+      - rol
+      - observacion
+      - calificacion
+      - evaluacion
+      - competencia
+      - pregunta
+      type: object
+      properties:
+        codigoOperador:
+          type: integer
+          format: int32
+        rol:
+          type: string
+        observacion:
+          type: string
+        calificacion:
+          type: integer
+          format: int32
+        evaluacion:
+          type: integer
+          format: int32
+        competencia:
+          type: integer
+          format: int32
+        pregunta:
+          type: integer
+          format: int32
+      example:
+        codigoOperador: 72
+        rol: j
+        observacion: ''
+        calificacion: 60
+        evaluacion: 237
+        competencia: 2503
+        pregunta: 7501
+    listarValoresValoracion:
+      title: listarValoresValoracion
+      required:
+      - cantidad
+      - datos
+      - message
+      - success
+      type: object
+      properties:
+        cantidad:
+          type: integer
+          format: int32
+        datos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dato'
+          description: ''
+        message:
+          type: string
+        success:
+          type: boolean
+      example:
+        cantidad: 4
+        datos:
+        - activo: s
+          creado: 1597964634999
+          modificado: 1597964634999
+          codigo: 4
+          nombre: No cumple
+          minimo: 0
+          maximo: 35
+          color: FF6469
+          nombreCorto: No cumple
+          descripcion: null
+          label: No cumple
+        - activo: s
+          creado: 1597964634999
+          modificado: 1597964634999
+          codigo: 3
+          nombre: Susceptible de mejora
+          minimo: 36
+          maximo: 60
+          color: FBE758
+          nombreCorto: Susceptible de mejora
+          descripcion: null
+          label: Susceptible de mejora
+        - activo: s
+          creado: 1597964634999
+          modificado: 1597964634999
+          codigo: 2
+          nombre: Ajustado a lo esperado
+          minimo: 61
+          maximo: 80
+          color: 71D47D
+          nombreCorto: Ajustado a lo esperado
+          descripcion: null
+          label: Ajustado a lo esperado
+        - activo: s
+          creado: 1597964634999
+          modificado: 1597964634999
+          codigo: 1
+          nombre: Excede lo esperado
+          minimo: 81
+          maximo: 100
+          color: 00BBE6
+          nombreCorto: Excede lo esperado
+          descripcion: null
+          label: Excede lo esperado
+        message: OK
+        success: true
+    Dato:
+      title: Dato
+      required:
+      - activo
+      - creado
+      - modificado
+      - codigo
+      - nombre
+      - minimo
+      - maximo
+      - color
+      - nombreCorto
+      - descripcion
+      - label
+      type: object
+      properties:
+        activo:
+          type: string
+        creado:
+          type: integer
+          format: int64
+        modificado:
+          type: integer
+          format: int64
+        codigo:
+          type: integer
+          format: int32
+        nombre:
+          type: string
+        minimo:
+          type: integer
+          format: int32
+        maximo:
+          type: integer
+          format: int32
+        color:
+          type: string
+        nombreCorto:
+          type: string
+        descripcion:
+          type: string
+          nullable: true
+        label:
+          type: string
+      example:
+        activo: s
+        creado: 1597964634999
+        modificado: 1597964634999
+        codigo: 4
+        nombre: No cumple
+        minimo: 0
+        maximo: 35
+        color: FF6469
+        nombreCorto: No cumple
+        descripcion: null
+        label: No cumple
+    guardarRango:
+      title: guardarRango
+      required:
+      - datos
+      - message
+      - success
+      - entidad
+      type: object
+      properties:
+        datos:
+          $ref: '#/components/schemas/Datos'
+        message:
+          type: string
+        success:
+          type: boolean
+        entidad:
+          $ref: '#/components/schemas/Entidad'
+      example:
+        datos:
+          activo: s
+          creado: 1773868404501
+          modificado: 1773868404554
+          codigo: 5
+          nombre: Extra Excelente
+          minimo: 100.01
+          maximo: 120
+          color: 00BBE6
+          nombreCorto: null
+          descripcion: null
+          label: Extra Excelente
+        message: Los datos se almacenaron correctamente.
+        success: true
+        entidad:
+          activo: s
+          creado: 1773868404501
+          modificado: 1773868404554
+          codigo: 5
+          nombre: Extra Excelente
+          minimo: 100.01
+          maximo: 120
+          color: 00BBE6
+          nombreCorto: null
+          descripcion: null
+          label: Extra Excelente
+    Datos:
+      title: Datos
+      required:
+      - activo
+      - creado
+      - modificado
+      - codigo
+      - nombre
+      - minimo
+      - maximo
+      - color
+      - nombreCorto
+      - descripcion
+      - label
+      type: object
+      properties:
+        activo:
+          type: string
+        creado:
+          type: integer
+          format: int64
+        modificado:
+          type: integer
+          format: int64
+        codigo:
+          type: integer
+          format: int32
+        nombre:
+          type: string
+        minimo:
+          type: number
+        maximo:
+          type: integer
+          format: int32
+        color:
+          type: string
+        nombreCorto:
+          type: string
+          nullable: true
+        descripcion:
+          type: string
+          nullable: true
+        label:
+          type: string
+      example:
+        activo: s
+        creado: 1773868404501
+        modificado: 1773868404554
+        codigo: 5
+        nombre: Extra Excelente
+        minimo: 100.01
+        maximo: 120
+        color: 00BBE6
+        nombreCorto: null
+        descripcion: null
+        label: Extra Excelente
+    Entidad:
+      title: Entidad
+      required:
+      - activo
+      - creado
+      - modificado
+      - codigo
+      - nombre
+      - minimo
+      - maximo
+      - color
+      - nombreCorto
+      - descripcion
+      - label
+      type: object
+      properties:
+        activo:
+          type: string
+        creado:
+          type: integer
+          format: int64
+        modificado:
+          type: integer
+          format: int64
+        codigo:
+          type: integer
+          format: int32
+        nombre:
+          type: string
+        minimo:
+          type: number
+        maximo:
+          type: integer
+          format: int32
+        color:
+          type: string
+        nombreCorto:
+          type: string
+          nullable: true
+        descripcion:
+          type: string
+          nullable: true
+        label:
+          type: string
+      example:
+        activo: s
+        creado: 1773868404501
+        modificado: 1773868404554
+        codigo: 5
+        nombre: Extra Excelente
+        minimo: 100.01
+        maximo: 120
+        color: 00BBE6
+        nombreCorto: null
+        descripcion: null
+        label: Extra Excelente
+    inactivarRango:
+      title: inactivarRango
+      required:
+      - message
+      - success
+      type: object
+      properties:
+        message:
+          type: string
+        success:
+          type: boolean
+      example:
+        message: El registro se ha eliminado satisfactoriamente
+        success: true
+    datas2:
+      title: datas2
+      required:
+      - observacion
+      type: object
+      properties:
+        observacion:
+          type: string
+      example:
+        observacion: Esta es la observaciones final del evaluados que  es la retroalimentación tambien.
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT 
+security:
+- bearer: []
+tags:
+- name: Acordeon
+- name: Calibracion
+- name: AdministracionCptValoresValoracion
+  description: Con tiene maestro CRUD para la tabla cpt_valores_valoracion, no olvidar que tambien existe la tabla copia_valores_valoracion
+- name: Misc
+  description: ''
