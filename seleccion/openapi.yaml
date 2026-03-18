@@ -1,0 +1,132 @@
+openapi: 3.0.3
+info:
+  title: Talento Cloud - API de Requisiciones
+  version: 1.0.0
+  description: >-
+    Documentación del endpoint de listar requisiciones en curso por responsable.
+
+    ## Manejo de errores
+
+
+        Los errores habituales pueden incluir:
+
+
+        - `400 Bad Request`: Parámetros requeridos faltantes o con formato
+        inválido.
+            
+        - `401 Unauthorized`: Token JWT inválido, expirado o ausente.
+            
+        - `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.
+            
+        - `404 Not Found`: El recurso solicitado no existe.
+            
+        - `500 Internal Server Error`: Error inesperado en el servidor.
+            
+
+        Cuando sea posible, cada endpoint detallará sus códigos de error
+        específicos y estructura de respuesta en su propia descripción.  
+servers:
+  - url: https://clientex.talento.cloud/html
+    description: Servidor de producción    
+
+security:
+  - bearerAuth: []
+
+paths:
+  /requisicion/listarRequisicionesEnCursoPorResposable:
+    get:
+      summary: Lista las requisiciones en curso por responsable
+      description: |
+        Obtiene un listado paginado de las requisiciones (procesos de selección) que se encuentran en curso 
+        y están asignadas al usuario administrador o responsable actual. Permite filtrar por estado, 
+        filtros de búsqueda abiertos y validación de participación de candidatos.
+      operationId: listarRequisicionesEnCursoPorResposable
+      parameters:
+        - name: soloTerminados
+          in: query
+          description: Indica si se deben listar solo las requisiciones terminadas.
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: filtrosAdicionales
+          in: query
+          description: Arreglo JSON en formato string con filtros adicionales para la búsqueda.
+          required: false
+          schema:
+            type: string
+        - name: codCandidato
+          in: query
+          description: Si se envía, indica si el candidato especificado ya se encuentra en el proceso.
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: start
+          in: query
+          description: Índice inicial para la paginación.
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: Cantidad máxima de registros a retornar (límite de paginación).
+          required: false
+          schema:
+            type: integer
+            default: 50
+        - name: query
+          in: query
+          description: Cadena de texto libre para búsqueda en los procesos (ej. nombre del cargo, código, etc).
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Operación exitosa, retorna el listado de requisiciones y cantidad total.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indica si la operación fue exitosa.
+                  cantidad:
+                    type: integer
+                    description: Cantidad total de registros disponibles que coinciden con los filtros (sin paginación).
+                  datos:
+                    type: array
+                    description: Arreglo de objetos DTORequisicion con la información de las requisiciones.
+                    items:
+                      $ref: '#/components/schemas/DTORequisicion'
+                  message:
+                    type: string
+                    description: Mensaje de error en caso de fallo.
+components:
+  securitySchemes:       # <--- Agrega esto
+    bearerAuth:          # <--- Nombre de tu esquema de seguridad
+      type: http
+      scheme: bearer
+      bearerFormat: JWT  # <--- Opcional, pero recomendado como documentación
+  schemas:
+    DTORequisicion:
+      type: object
+      description: Objeto de transferencia de datos de una Requisición.
+      properties:
+        codigo:
+          type: integer
+          format: int64
+        nroRequisicion:
+          type: integer
+          format: int64
+        cargo:
+          type: string
+        estado:
+          type: string
+        fechaCreacion:
+          type: string
+          format: date-time
+        responsable:
+          type: string
