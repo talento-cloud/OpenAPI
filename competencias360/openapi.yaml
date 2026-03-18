@@ -1642,6 +1642,6 @@ tags:
 - name: Acordeon
 - name: Calibracion
 - name: AdministracionCptValoresValoracion
-  description: Con tiene maestro CRUD para la tabla cpt_valores_valoracion, no olvidar que tambien existe la tabla copia_valores_valoracion
+  description: Con tiene maestro CRUD para la tabla cpt_valores_valoracion, no olvidar que tambien existe la tabla copia_valores_valoracion. En conclusión son los rangos de resultados de competencias y sus colores asociados.
 - name: Misc
   description: ''
