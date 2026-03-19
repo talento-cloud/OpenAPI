@@ -925,13 +925,19 @@ paths:
                   descripcion: null
                   label: Extra Excelente
       deprecated: false
-  /val360/valoresvaloracion/delete/5.json:
+  /val360/valoresvaloracion/delete/{id}.json:
     delete:
       tags:
       - AdministracionCptValoresValoracion
       summary: inactivarRango
       operationId: inactivarRango
-      parameters: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID del rango a inactivar
+        schema:
+          type: integer
       responses:
         '200':
           description: OK
