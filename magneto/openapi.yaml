@@ -1,0 +1,953 @@
+openapi: 3.0.0
+info:
+  title: Webhook de Talento Cloud para Magneto365
+  description: >-
+    Info para el consumo de webhook en talento cloud por parte del proveedor Magneto
+
+    Para poder obtener el token deben usar el client_id y client_secret que se les suministrará
+
+    ## Manejo de errores
+
+
+        Los errores habituales pueden incluir:
+
+
+        - `400 Bad Request`: Parámetros requeridos faltantes o con formato
+        inválido.
+            
+        - `401 Unauthorized`: Token JWT inválido, expirado o ausente.
+            
+        - `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.
+            
+        - `404 Not Found`: El recurso solicitado no existe.
+            
+        - `500 Internal Server Error`: Error inesperado en el servidor.
+            
+
+        Cuando sea posible, cada endpoint detallará sus códigos de error
+        específicos y estructura de respuesta en su propia descripción.
+
+  contact: {}
+  version: '1.0'
+servers:
+- url: https://clientex.talento.cloud/api
+  description: Servidor
+  variables: {}
+paths:
+  /html/oauth2/token/{tenant}.json:
+    post:
+      tags:
+      - Misc
+      summary: Oauth2 para obtener JWT
+      description: >-
+        ## Ejemplo petición con curl:
+
+        ```bash
+
+        curl -X POST https://clientex.talento.cloud/api/html/oauth2/token/bios.json \
+          -H "Content-Type: application/x-www-form-urlencoded" \          
+          -d "grant_type=client_credentials" \
+          -d "client_id=webhook-servicio" \
+          -d "client_secret=mi-secreto" \
+          -d "scope=talento.write.candidato"
+
+        ```
+
+        ## Ejemplo uso token generado:
+
+        ```bash
+
+        curl -X POST https://clientex.talento.cloud/api/slc/magneto/webhook/bios  \
+          -H "Authorization: Bearer eyJhbGci..."
+          --data-raw '{
+            "vacantId": 123456,
+            "data": {
+              ...
+            }    
+        ```      
+      operationId: oauth2
+      parameters: 
+        - name: tenant
+          in: path
+          description: Nombre del tenant, y para la empresa Bios sería bios
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            encoding: {}
+            schema:
+              required:
+              - client_id
+              - client_secret
+              - grant_type
+              - scope
+              type: object
+              properties:
+                client_id:
+                  type: string
+                  example: 97b7ff796138dfafd06b68204ad76b6d
+                  description: El client_id que se les suministró
+                client_secret:
+                  type: string
+                  example: 430ca6bcb26f352b8f9e0c0e42f6a95e83d808cb17d5d7270515b939daaddb73
+                  description: El client_secret que se les suministró
+                grant_type:
+                  type: string
+                  description: Por defecto client_credentials
+                  example: client_credentials
+                scope:
+                  type: string
+                  description: Magneto365 debe usar talento.write.candidato
+                  example: talento.write.candidato
+        required: false
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/oauth2'
+                - example:
+                    acces_token: eyJhbGciOiJIUzM4NCJ9.eyJzdW....
+                    token_type: Bearer
+                    expires_in: 900
+                    success: true
+                    scope: talento.write.candidato
+              example:
+                acces_token: eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0Y...
+                token_type: Bearer
+                expires_in: 900
+                success: true
+                scope: talento.write.candidato
+      deprecated: false
+      servers:
+      - url: https://clientex.talento.cloud/api
+        variables: {}
+  /slc/magneto/webhook/{tenant}:
+    post:
+      tags:
+      - Misc
+      summary: WebHook para Magneto
+      operationId: webHookMagneto
+      parameters: 
+        - name: tenant
+          in: path
+          description: Nombre del tenant, que para la empresa Bios sería bios
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/webHookMagnetoRequest'
+              - example:
+                  vacantId: 123456
+                  data:
+                    id: 6677796
+                    email: correo123@hotmail.com
+                    firstName: juana
+                    lastName: Lopez
+                    phone: '316617878541'
+                    birthdate: 2000-02-03
+                    gender: female
+                    identificationNumber: '1223313'
+                    cityDane: '05001'
+                    identificationType: identification
+                    isPublic: true
+                    salary: 4000000
+                    address: 'cra 56 #78-99'
+                    titleOrProfession: administradora de empresas
+                    availableToMove: true
+                    civilStatus: single
+                    cityBirth:
+                      name: Bogotá, D.C.
+                      department:
+                        name: Bogotá D.C.
+                        country:
+                          name: Colombia
+                    educationLevel: Profesional
+                    studies:
+                    - institute: Universidad Nacional
+                      title: Administración De Empresas
+                      startDate: 2019-01-01
+                      endDate: 2023-11-01
+                      inProgress: null
+                      infoStudies: null
+                      profession: Administradora De Empresas
+                    experiences:
+                    - company: Patprimo
+                      position: Administradora De Cuentas Empresariales
+                      startDate: 2023-01-01
+                      endDate: null
+                      atPresent: true
+                      jobFunctions: null
+                      description: 'El administrador tiene un campo de acción amplio ya que puede desarrollarse en diferentes áreas como: organización y métodos, producción, planeamiento, finanzas, mercadeo, supervisión, ventas, capacitación, selección de personal.'
+                      withdrawalReason: null
+                      otherWithdrawalReason: null
+                    skills:
+                    - name: habilidad 1
+                      level: 1
+                    - name: habilidad 2
+                      level: 1
+                    languages: []
+                    sectors: []
+            example:
+              vacantId: 123456
+              data:
+                id: 6677796
+                email: correo123@hotmail.com
+                firstName: juana
+                lastName: Lopez
+                phone: '316617878541'
+                birthdate: 2000-02-03
+                gender: female
+                identificationNumber: '1223313'
+                cityDane: '05001'
+                identificationType: identification
+                isPublic: true
+                salary: 4000000
+                address: 'cra 56 #78-99'
+                titleOrProfession: administradora de empresas
+                availableToMove: true
+                civilStatus: single
+                cityBirth:
+                  name: Bogotá, D.C.
+                  department:
+                    name: Bogotá D.C.
+                    country:
+                      name: Colombia
+                educationLevel: Profesional
+                studies:
+                - institute: Universidad Nacional
+                  title: Administración De Empresas
+                  startDate: 2019-01-01
+                  endDate: 2023-11-01
+                  inProgress: null
+                  infoStudies: null
+                  profession: Administradora De Empresas
+                experiences:
+                - company: Patprimo
+                  position: Administradora De Cuentas Empresariales
+                  startDate: 2023-01-01
+                  endDate: null
+                  atPresent: true
+                  jobFunctions: null
+                  description: 'El administrador tiene un campo de acción amplio ya que puede desarrollarse en diferentes áreas como: organización y métodos, producción, planeamiento, finanzas, mercadeo, supervisión, ventas, capacitación, selección de personal.'
+                  withdrawalReason: null
+                  otherWithdrawalReason: null
+                skills:
+                - name: habilidad 1
+                  level: 1
+                - name: habilidad 2
+                  level: 1
+                languages: []
+                sectors: []
+        required: true
+      responses:
+        '200':
+          description: OK
+          headers:
+            content-length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '1432'
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/webHookMagneto'
+                - example:
+                    message: Datos del candidato de Magneto recibidos
+                    payload:
+                      vacantId: 123456
+                      data:
+                        id: 6677796
+                        email: correo123@hotmail.com
+                        firstName: juana
+                        lastName: Lopez
+                        phone: '316617878541'
+                        birthdate: 2000-02-03
+                        gender: female
+                        identificationNumber: '1223313'
+                        cityDane: '05001'
+                        identificationType: identification
+                        isPublic: true
+                        salary: 4000000
+                        address: 'cra 56 #78-99'
+                        titleOrProfession: administradora de empresas
+                        availableToMove: true
+                        civilStatus: single
+                        cityBirth:
+                          name: Bogotá, D.C.
+                          department:
+                            name: Bogotá D.C.
+                            country:
+                              name: Colombia
+                        educationLevel: Profesional
+                        studies:
+                        - institute: Universidad Nacional
+                          title: Administración De Empresas
+                          startDate: 2019-01-01
+                          endDate: 2023-11-01
+                          inProgress: null
+                          infoStudies: null
+                          profession: Administradora De Empresas
+                        experiences:
+                        - company: Patprimo
+                          position: Administradora De Cuentas Empresariales
+                          startDate: 2023-01-01
+                          endDate: null
+                          atPresent: true
+                          jobFunctions: null
+                          description: 'El administrador tiene un campo de acción amplio ya que puede desarrollarse en diferentes áreas como: organización y métodos, producción, planeamiento, finanzas, mercadeo, supervisión, ventas, capacitación, selección de personal.'
+                          withdrawalReason: null
+                          otherWithdrawalReason: null
+                        skills:
+                        - name: habilidad 1
+                          level: 1
+                        - name: habilidad 2
+                          level: 1
+                        languages: []
+                        sectors: []
+                    success: true
+              example:
+                message: Datos del candidato de Magneto recibidos
+                payload:
+                  vacantId: 123456
+                  data:
+                    id: 6677796
+                    email: correo123@hotmail.com
+                    firstName: juana
+                    lastName: Lopez
+                    phone: '316617878541'
+                    birthdate: 2000-02-03
+                    gender: female
+                    identificationNumber: '1223313'
+                    cityDane: '05001'
+                    identificationType: identification
+                    isPublic: true
+                    salary: 4000000
+                    address: 'cra 56 #78-99'
+                    titleOrProfession: administradora de empresas
+                    availableToMove: true
+                    civilStatus: single
+                    cityBirth:
+                      name: Bogotá, D.C.
+                      department:
+                        name: Bogotá D.C.
+                        country:
+                          name: Colombia
+                    educationLevel: Profesional
+                    studies:
+                    - institute: Universidad Nacional
+                      title: Administración De Empresas
+                      startDate: 2019-01-01
+                      endDate: 2023-11-01
+                      inProgress: null
+                      infoStudies: null
+                      profession: Administradora De Empresas
+                    experiences:
+                    - company: Patprimo
+                      position: Administradora De Cuentas Empresariales
+                      startDate: 2023-01-01
+                      endDate: null
+                      atPresent: true
+                      jobFunctions: null
+                      description: 'El administrador tiene un campo de acción amplio ya que puede desarrollarse en diferentes áreas como: organización y métodos, producción, planeamiento, finanzas, mercadeo, supervisión, ventas, capacitación, selección de personal.'
+                      withdrawalReason: null
+                      otherWithdrawalReason: null
+                    skills:
+                    - name: habilidad 1
+                      level: 1
+                    - name: habilidad 2
+                      level: 1
+                    languages: []
+                    sectors: []
+                success: true
+      deprecated: false
+      servers:
+      - url: https://slc/magneto/webhook
+        variables: {}
+components:
+  schemas:
+    oauth2:
+      title: oauth2
+      required:
+      - acces_token
+      - token_type
+      - expires_in
+      - success
+      - scope
+      type: object
+      properties:
+        acces_token:
+          type: string
+        token_type:
+          type: string
+        expires_in:
+          type: integer
+          format: int32
+        success:
+          type: boolean
+        scope:
+          type: string
+      example:
+        acces_token: eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0YWxlbnRvLndyaXRlLmNhbmRpZGF0b3w5N2I3ZmY3OTYxMzhkZmFmZDA2YjY4MjA0YWQ3NmI2ZCIsInVzZXJJZCI6IjM0Iiwicm9sZSI6IldFQlNFUlZJQ0UiLCJleHBpcmUiOiIxNzc0MzgwNzU2NDQ1IiwiZW1wcmVzYSI6InRhbGVudG9fZGVtbyIsImxuZyI6ImVzIiwianRpIjoiNDE4MDM0ZjctMTQ1ZS00ZGQ2LTk4ZjMtYzc1YWMyMmI3YTIzIiwiaWF0IjoxNzc0Mzc5ODU3fQ.u4y60HfGC8sv3ZmFNZRSSO0-9grdxvWrjzZBA2f2dcXQReNHv5mubvjRUdDSu-Y4
+        token_type: Bearer
+        expires_in: 900
+        success: true
+        scope: talento.write.candidato
+    webHookMagnetoRequest:
+      title: webHookMagnetoRequest
+      required:
+      - vacantId      
+      - data
+      type: object
+      properties:
+        vacantId:
+          type: integer
+          format: int32
+          description: Identificador único de la vacante en Magneto365.
+        data:
+          $ref: '#/components/schemas/Data'
+          description: Payload con la info de la hoja de vida candidato recibido.
+      example:
+        vacantId: 123456
+        data:
+          id: 6677796
+          email: correo123@hotmail.com
+          firstName: juana
+          lastName: Lopez
+          phone: '316617878541'
+          birthdate: 2000-02-03
+          gender: female
+          identificationNumber: '1223313'
+          cityDane: '05001'
+          identificationType: identification
+          isPublic: true
+          salary: 4000000
+          address: 'cra 56 #78-99'
+          titleOrProfession: administradora de empresas
+          availableToMove: true
+          civilStatus: single
+          cityBirth:
+            name: Bogotá, D.C.
+            department:
+              name: Bogotá D.C.
+              country:
+                name: Colombia
+          educationLevel: Profesional
+          studies:
+          - institute: Universidad Nacional
+            title: Administración De Empresas
+            startDate: 2019-01-01
+            endDate: 2023-11-01
+            inProgress: null
+            infoStudies: null
+            profession: Administradora De Empresas
+          experiences:
+          - company: Patprimo
+            position: Administradora De Cuentas Empresariales
+            startDate: 2023-01-01
+            endDate: null
+            atPresent: true
+            jobFunctions: null
+            description: 'El administrador tiene un campo de acción amplio ya que puede desarrollarse en diferentes áreas como: organización y métodos, producción, planeamiento, finanzas, mercadeo, supervisión, ventas, capacitación, selección de personal.'
+            withdrawalReason: null
+            otherWithdrawalReason: null
+          skills:
+          - name: habilidad 1
+            level: 1
+          - name: habilidad 2
+            level: 1
+          languages: []
+          sectors: []
+    Data:
+      title: Data
+      required:
+      - id
+      - email
+      - firstName
+      - lastName
+      - phone
+      - birthdate
+      - gender
+      - identificationNumber
+      - cityDane
+      - identificationType
+      - isPublic
+      - salary
+      - address
+      - titleOrProfession
+      - availableToMove
+      - civilStatus
+      - cityBirth
+      - educationLevel
+      - studies
+      - experiences
+      - skills
+      - languages
+      - sectors
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        phone:
+          type: string
+        birthdate:
+          type: string
+        gender:
+          type: string
+        identificationNumber:
+          type: string
+        cityDane:
+          type: string
+        identificationType:
+          type: string
+        isPublic:
+          type: boolean
+        salary:
+          type: integer
+          format: int32
+        address:
+          type: string
+        titleOrProfession:
+          type: string
+        availableToMove:
+          type: boolean
+        civilStatus:
+          type: string
+        cityBirth:
+          $ref: '#/components/schemas/CityBirth'
+        educationLevel:
+          type: string
+        studies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Study'
+          description: ''
+        experiences:
+          type: array
+          items:
+            $ref: '#/components/schemas/Experience'
+          description: ''
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/Skill'
+          description: ''
+        languages:
+          type: array
+          items:
+            type: string
+          description: ''
+        sectors:
+          type: array
+          items:
+            type: string
+          description: ''
+      example:
+        id: 6677796
+        email: correo123@hotmail.com
+        firstName: juana
+        lastName: Lopez
+        phone: '316617878541'
+        birthdate: 2000-02-03
+        gender: female
+        identificationNumber: '1223313'
+        cityDane: '05001'
+        identificationType: identification
+        isPublic: true
+        salary: 4000000
+        address: 'cra 56 #78-99'
+        titleOrProfession: administradora de empresas
+        availableToMove: true
+        civilStatus: single
+        cityBirth:
+          name: Bogotá, D.C.
+          department:
+            name: Bogotá D.C.
+            country:
+              name: Colombia
+        educationLevel: Profesional
+        studies:
+        - institute: Universidad Nacional
+          title: Administración De Empresas
+          startDate: 2019-01-01
+          endDate: 2023-11-01
+          inProgress: null
+          infoStudies: null
+          profession: Administradora De Empresas
+        experiences:
+        - company: Patprimo
+          position: Administradora De Cuentas Empresariales
+          startDate: 2023-01-01
+          endDate: null
+          atPresent: true
+          jobFunctions: null
+          description: 'El administrador tiene un campo de acción amplio ya que puede desarrollarse en diferentes áreas como: organización y métodos, producción, planeamiento, finanzas, mercadeo, supervisión, ventas, capacitación, selección de personal.'
+          withdrawalReason: null
+          otherWithdrawalReason: null
+        skills:
+        - name: habilidad 1
+          level: 1
+        - name: habilidad 2
+          level: 1
+        languages: []
+        sectors: []
+    CityBirth:
+      title: CityBirth
+      required:
+      - name
+      - department
+      type: object
+      properties:
+        name:
+          type: string
+        department:
+          $ref: '#/components/schemas/Department'
+      example:
+        name: Bogotá, D.C.
+        department:
+          name: Bogotá D.C.
+          country:
+            name: Colombia
+    Department:
+      title: Department
+      required:
+      - name
+      - country
+      type: object
+      properties:
+        name:
+          type: string
+        country:
+          $ref: '#/components/schemas/Country'
+      example:
+        name: Bogotá D.C.
+        country:
+          name: Colombia
+    Country:
+      title: Country
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+      example:
+        name: Colombia
+    Study:
+      title: Study
+      required:
+      - institute
+      - title
+      - startDate
+      - endDate
+      - inProgress
+      - infoStudies
+      - profession
+      type: object
+      properties:
+        institute:
+          type: string
+        title:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+        inProgress:
+          type: string
+          nullable: true
+        infoStudies:
+          type: string
+          nullable: true
+        profession:
+          type: string
+      example:
+        institute: Universidad Nacional
+        title: Administración De Empresas
+        startDate: 2019-01-01
+        endDate: 2023-11-01
+        inProgress: null
+        infoStudies: null
+        profession: Administradora De Empresas
+    Experience:
+      title: Experience
+      required:
+      - company
+      - position
+      - startDate
+      - endDate
+      - atPresent
+      - jobFunctions
+      - description
+      - withdrawalReason
+      - otherWithdrawalReason
+      type: object
+      properties:
+        company:
+          type: string
+        position:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+          nullable: true
+        atPresent:
+          type: boolean
+        jobFunctions:
+          type: string
+          nullable: true
+        description:
+          type: string
+        withdrawalReason:
+          type: string
+          nullable: true
+        otherWithdrawalReason:
+          type: string
+          nullable: true
+      example:
+        company: Patprimo
+        position: Administradora De Cuentas Empresariales
+        startDate: 2023-01-01
+        endDate: null
+        atPresent: true
+        jobFunctions: null
+        description: 'El administrador tiene un campo de acción amplio ya que puede desarrollarse en diferentes áreas como: organización y métodos, producción, planeamiento, finanzas, mercadeo, supervisión, ventas, capacitación, selección de personal.'
+        withdrawalReason: null
+        otherWithdrawalReason: null
+    Skill:
+      title: Skill
+      required:
+      - name
+      - level
+      type: object
+      properties:
+        name:
+          type: string
+        level:
+          type: integer
+          format: int32
+      example:
+        name: habilidad 1
+        level: 1
+    webHookMagneto:
+      title: webHookMagneto
+      required:
+      - message
+      - payload
+      - success
+      type: object
+      properties:
+        message:
+          type: string
+        payload:
+          $ref: '#/components/schemas/Payload'
+        success:
+          type: boolean
+      example:
+        message: Datos del candidato de Magneto recibidos
+        payload:
+          vacantId: 123456
+          data:
+            id: 6677796
+            email: correo123@hotmail.com
+            firstName: juana
+            lastName: Lopez
+            phone: '316617878541'
+            birthdate: 2000-02-03
+            gender: female
+            identificationNumber: '1223313'
+            cityDane: '05001'
+            identificationType: identification
+            isPublic: true
+            salary: 4000000
+            address: 'cra 56 #78-99'
+            titleOrProfession: administradora de empresas
+            availableToMove: true
+            civilStatus: single
+            cityBirth:
+              name: Bogotá, D.C.
+              department:
+                name: Bogotá D.C.
+                country:
+                  name: Colombia
+            educationLevel: Profesional
+            studies:
+            - institute: Universidad Nacional
+              title: Administración De Empresas
+              startDate: 2019-01-01
+              endDate: 2023-11-01
+              inProgress: null
+              infoStudies: null
+              profession: Administradora De Empresas
+            experiences:
+            - company: Patprimo
+              position: Administradora De Cuentas Empresariales
+              startDate: 2023-01-01
+              endDate: null
+              atPresent: true
+              jobFunctions: null
+              description: 'El administrador tiene un campo de acción amplio ya que puede desarrollarse en diferentes áreas como: organización y métodos, producción, planeamiento, finanzas, mercadeo, supervisión, ventas, capacitación, selección de personal.'
+              withdrawalReason: null
+              otherWithdrawalReason: null
+            skills:
+            - name: habilidad 1
+              level: 1
+            - name: habilidad 2
+              level: 1
+            languages: []
+            sectors: []
+        success: true
+    Payload:
+      title: Payload
+      required:
+      - vacantId
+      - data
+      type: object
+      properties:
+        vacantId:
+          type: integer
+          format: int32
+          description: Identificador único de la vacante en Magneto365 leida.
+        data:
+          $ref: '#/components/schemas/Data'
+          description: Payload con la info de la hoja de vida candidato leida.
+      example:
+        vacantId: 123456
+        data:
+          id: 6677796
+          email: correo123@hotmail.com
+          firstName: juana
+          lastName: Lopez
+          phone: '316617878541'
+          birthdate: 2000-02-03
+          gender: female
+          identificationNumber: '1223313'
+          cityDane: '05001'
+          identificationType: identification
+          isPublic: true
+          salary: 4000000
+          address: 'cra 56 #78-99'
+          titleOrProfession: administradora de empresas
+          availableToMove: true
+          civilStatus: single
+          cityBirth:
+            name: Bogotá, D.C.
+            department:
+              name: Bogotá D.C.
+              country:
+                name: Colombia
+          educationLevel: Profesional
+          studies:
+          - institute: Universidad Nacional
+            title: Administración De Empresas
+            startDate: 2019-01-01
+            endDate: 2023-11-01
+            inProgress: null
+            infoStudies: null
+            profession: Administradora De Empresas
+          experiences:
+          - company: Patprimo
+            position: Administradora De Cuentas Empresariales
+            startDate: 2023-01-01
+            endDate: null
+            atPresent: true
+            jobFunctions: null
+            description: 'El administrador tiene un campo de acción amplio ya que puede desarrollarse en diferentes áreas como: organización y métodos, producción, planeamiento, finanzas, mercadeo, supervisión, ventas, capacitación, selección de personal.'
+            withdrawalReason: null
+            otherWithdrawalReason: null
+          skills:
+          - name: habilidad 1
+            level: 1
+          - name: habilidad 2
+            level: 1
+          languages: []
+          sectors: []
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://clientex.talento.cloud/api/html/oauth2/token/demo.json
+          scopes:
+            talento.write.candidato: "Permiso para escribir datos en talento de un candidato"
+security:
+  - oauth2:
+      - talento.write.candidato
+tags:
+- name: Misc
+  description: ''
