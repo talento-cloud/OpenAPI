@@ -33,8 +33,11 @@ info:
   version: '1.0'
 servers:
 - url: https://clientex.talento.cloud/api
-  description: Servidor
+  description: Servidor prod
   variables: {}
+- url: https://clientex.talento-dev.cloud/api
+  description: Servidor dev
+  variables: {}  
 paths:
   /html/oauth2/token/{tenant}.json:
     post:
@@ -184,7 +187,11 @@ paths:
       deprecated: false
       servers:
       - url: https://clientex.talento.cloud/api
+        description: Servidor prod
         variables: {}
+      - url: https://clientex.talento-dev.cloud/api
+        description: Servidor dev
+        variables: {}  
   /slc/magneto/webhook/{tenant}:
     post:
       tags:
@@ -433,8 +440,12 @@ paths:
                 success: true
       deprecated: false
       servers:
-      - url: https://slc/magneto/webhook
+      - url: https://clientex.talento.cloud/api
+        description: Servidor prod
         variables: {}
+      - url: https://clientex.talento-dev.cloud/api
+        description: Servidor dev
+        variables: {}  
 components:
   schemas:
     oauth2:
