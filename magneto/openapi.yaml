@@ -40,6 +40,8 @@ paths:
       - Misc
       summary: Oauth2 para obtener JWT
       description: >-
+        El token generado solo tiene una vigencia de 15 minutos
+
         ## Ejemplo petición con curl:
 
         ```bash
