@@ -2,9 +2,11 @@ openapi: 3.0.0
 info:
   title: Webhook de Talento Cloud para Magneto365
   description: >-
-    Info para el consumo de webhook en talento cloud por parte del proveedor Magneto
+    Info para el consumo de webhook en talento cloud por parte del proveedor Magneto.
 
-    Para poder obtener el token deben usar el client_id y client_secret que se les suministrará
+
+    Para poder obtener el token deben usar el client_id y client_secret que se les suministrará.
+
 
     ## Manejo de errores
 
