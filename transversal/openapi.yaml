@@ -236,40 +236,49 @@ components:
           enum: [Ninguna, Primaria, Bachiller, Técnico, Tecnólogo, Profesional, Especialista, Maestría, Doctorado, Posdoctorado]
         moduloDesempenioAdministrativo:
           type: string
-          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
-          enum: [SI, NO]
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
         moduloCompetencias:
           type: string
-          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
-          enum: [SI, NO]
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
         moduloDesempenioOperativo:
           type: string
-          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
-          enum: [SI, NO]
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
         moduloDesarrollo:
           type: string
-          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
-          enum: [SI, NO]
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
         moduloSeleccion:
           type: string
-          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
-          enum: [SI, NO]
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
         moduloFormacion:
           type: string
-          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
-          enum: [SI, NO]
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
         moduloOKR:
           type: string
-          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
-          enum: [SI, NO]
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
         moduloBeneficios:
           type: string
-          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
-          enum: [SI, NO]
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
         moduloClimaLaboral:
           type: string
-          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
-          enum: [SI, NO]
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
         idExternoCargo:
           type: string
         documentoLiderFunciona:
@@ -287,36 +296,44 @@ components:
           description: Días disponibles de vacaciones. Solo se permiten valores numéricos (enteros o decimales) positivos.
         moduloEncuesta:
           type: string
-          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
-          enum: [SI, NO]
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
         moduloOnboarding:
           type: string
-          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
-          enum: [SI, NO]
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
         moduloAutogestion:
           type: string
-          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
-          enum: [SI, NO]
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
         moduloDisciplinarios:
           type: string
-          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
-          enum: [SI, NO]
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
         moduloSucesion:
           type: string
-          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
-          enum: [SI, NO]
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
         moduloBasesConocimiento:
           type: string
-          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
-          enum: [SI, NO]
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
         moduloCompetenciasOperativo:
           type: string
-          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
-          enum: [SI, NO]
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
         moduloDesarrolloOperativo:
           type: string
-          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
-          enum: [SI, NO]
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
         moduloOperativosMedicos:
           type: string
           deprecated: true
