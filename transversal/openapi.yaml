@@ -142,10 +142,30 @@ components:
           type: string
         tipoDocumento:
           type: string
+          description: |
+            Tipo de documento del colaborador. Los valores base permitidos son:
+            - CC: Cédula de ciudadanía
+            - Cédula: Cédula de ciudadanía
+            - CE: Cédula de extranjería
+            - PP: Pasaporte
+            - TI: Tarjeta de identidad
+            - CG: Cédula Guatemala
+            - NU: Número único nacional
+            - RE: Registro civil
+            - Registro: Registro civil
+            - CURP
+            - DL
+            - PEP
+            - RFC
+            - RUN
+            *Nota: Es posible crear nuevos tipos de documento por el administrador general (opción tipificadores).*
         numeroDocumento:
           type: string
+          description: Número de documento del participante. No debe contener puntos ni separadores de miles.
         genero:
           type: string
+          description: Género del colaborador.
+          enum: [Masculino, Femenino]
         email:
           type: string
         empresa:
@@ -154,18 +174,22 @@ components:
           type: string
         nivelOrganizacional:
           type: string
+          description: Nivel organizacional. En conjunto con el área, determina la singularidad del cargo en la organización.
         area:
           type: string
+          description: Área del colaborador. En conjunto con el nivel organizacional, determina la singularidad del cargo.
         categoriaCargo:
           type: string
         criticidades:
           type: string
         sede:
           type: string
+          description: Sede corporativa. Si hay sedes que se llamen igual, deben pertenecer a la misma ciudad.
         direccion:
           type: string
         ciudad:
           type: string
+          description: Ciudad de la sede. Fundamental para diferenciar sedes que se llamen igual.
         departamento:
           type: string
         pais:
@@ -182,32 +206,70 @@ components:
           type: string
         fechaIngreso:
           type: string
+          format: date
+          description: Fecha de ingreso estructurada en formato aaaa-mm-dd (Ejemplo 2023-12-31).
         fechaInicioCargoActual:
           type: string
+          format: date
+          description: Fecha estructurada en formato aaaa-mm-dd (Ejemplo 2023-12-31).
         vicepresidencia:
           type: string
         tipoUsuario:
           type: string
+          description: Tipo de usuario en el sistema.
+          enum: [Administrativo, Operativo]
         escolaridad:
           type: string
+          description: |
+            Nivel de escolaridad. Valores permitidos:
+            - Ninguna
+            - Primaria
+            - Bachiller
+            - Técnico
+            - Tecnólogo
+            - Profesional
+            - Especialista
+            - Maestría
+            - Doctorado
+            - Posdoctorado
+            *(Si se envían valores diferentes a estos, no se guardará la información de este campo).*
+          enum: [Ninguna, Primaria, Bachiller, Técnico, Tecnólogo, Profesional, Especialista, Maestría, Doctorado, Posdoctorado]
         moduloDesempenioAdministrativo:
           type: string
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
+          enum: [SI, NO]
         moduloCompetencias:
           type: string
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
+          enum: [SI, NO]
         moduloDesempenioOperativo:
           type: string
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
+          enum: [SI, NO]
         moduloDesarrollo:
           type: string
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
+          enum: [SI, NO]
         moduloSeleccion:
           type: string
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
+          enum: [SI, NO]
         moduloFormacion:
           type: string
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
+          enum: [SI, NO]
         moduloOKR:
           type: string
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
+          enum: [SI, NO]
         moduloBeneficios:
           type: string
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
+          enum: [SI, NO]
         moduloClimaLaboral:
           type: string
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
+          enum: [SI, NO]
         idExternoCargo:
           type: string
         documentoLiderFunciona:
@@ -216,26 +278,45 @@ components:
           type: string
         tiempoLaborado:
           type: string
+          description: Indica el porcentaje de tiempo que el colaborador labora en la empresa (ejemplo Medio tiempo 50%).
         etiquetas:
           type: string
+          description: Múltiples registros de etiquetas sin repetir, separados por ";" cumpliendo el formato etiqueta:valor (Ej. Sistema operativos:windows; Sistemas operativos:macOS).
         diasVacaciones:
           type: string
+          description: Días disponibles de vacaciones. Solo se permiten valores numéricos (enteros o decimales) positivos.
         moduloEncuesta:
           type: string
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
+          enum: [SI, NO]
         moduloOnboarding:
           type: string
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
+          enum: [SI, NO]
         moduloAutogestion:
           type: string
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
+          enum: [SI, NO]
         moduloDisciplinarios:
           type: string
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
+          enum: [SI, NO]
         moduloSucesion:
           type: string
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
+          enum: [SI, NO]
         moduloBasesConocimiento:
           type: string
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
+          enum: [SI, NO]
         moduloCompetenciasOperativo:
           type: string
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
+          enum: [SI, NO]
         moduloDesarrolloOperativo:
           type: string
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO.
+          enum: [SI, NO]
         moduloOperativosMedicos:
           type: string
           deprecated: true
