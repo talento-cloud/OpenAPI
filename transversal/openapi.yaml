@@ -1,0 +1,241 @@
+openapi: 3.0.3
+info:
+  title: Talento Cloud - API Transversal
+  version: 1.0.0
+  description: >-
+    Documentación de APIs transversales, incluyendo la carga masiva de usuarios en formato JSON.
+
+    ## Manejo de errores
+
+
+        Los errores habituales pueden incluir:
+
+
+        - `400 Bad Request`: Parámetros requeridos faltantes o con formato inválido.
+            
+        - `401 Unauthorized`: Token JWT inválido, expirado o ausente.
+            
+        - `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.
+            
+        - `404 Not Found`: El recurso solicitado no existe.
+            
+        - `500 Internal Server Error`: Error inesperado en el servidor durante el procesamiento de la carga.
+            
+
+        Cuando sea posible, cada endpoint detallará sus códigos de error
+        específicos y estructura de respuesta en su propia descripción.  
+servers:
+  - url: https://clientex.talento.cloud/html
+    description: Servidor de producción    
+  - url: http://127.0.1.1:8889/html
+    description: Servidor local
+
+security:
+  - bearerAuth: []
+
+paths:
+  /token/getTokenAPI.json:
+    post:
+      summary: Obtener token de acceso para API externa
+      description: |
+        Genera un token JWT (Bearer) validando las credenciales proporcionadas de clientID y clientSecret (proporcionadas por talento).
+        Este token es requerido para consumir otros endpoints seguros, como el de carga de usuarios masiva.
+      operationId: getTokenAPI
+      security: [] # No requiere token para obtener el token
+      requestBody:
+        description: Credenciales de acceso de la API (enviadas como datos de formulario o parámetros)
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                clientID:
+                  type: string
+                  description: Identificador del cliente.
+                clientSecret:
+                  type: string
+                  description: Secreto o constraseña del cliente.
+              required:
+                - clientID
+                - clientSecret
+      responses:
+        '200':
+          description: Token generado exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indica verdadero si la generación fue exitosa.
+                  token:
+                    type: string
+                    description: Token Bearer JWT generado para el cliente.
+        '403':
+          description: Forbidden - Las credenciales proporcionadas son inválidas o el acceso está denegado.
+        '423':
+          description: Locked - La petición fue bloqueada temporalmente por demasiados intentos fallidos consecutivos de autenticación.
+        '429':
+          description: Too Many Requests - Límite de peticiones superado por la IP de origen.
+        '500':
+          description: Error interno del servidor al procesar la solicitud de token.
+
+  /carga/usuarios/cargarUsuariosJson.json:
+    post:
+      summary: Carga masiva de usuarios a partir de un arreglo JSON
+      description: |
+        Endpoint que recibe un listado de usuarios en formato JSON y realiza la inserción o actualización masiva en el sistema.
+        Procesa la información, crea tablas temporales, actualiza datos de los usuarios, e indica mediante correo electrónico el resultado de la carga masiva.
+      operationId: cargarUsuariosJson
+      requestBody:
+        description: Listado de usuarios a cargar.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/DTOUsuarioCarga'
+      responses:
+        '200':
+          description: Operación procesada. Devuelve un estado de éxito y un mensaje con el detalle de la ejecución de carga.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indica si la operación inicial de carga fue exitosa.
+                  message:
+                    type: string
+                    description: Mensaje con el resultado de la operación.
+                  mensajes:
+                    type: array
+                    items:
+                      type: string
+                    description: Lista de mensajes de error o validación generados durante la carga masiva.
+        '403':
+          description: Acceso denegado. El cliente asociado al token no existe o no tiene el rol Requerido para la carga.
+        '500':
+          description: Error inesperado en la fase de carga e integración.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    DTOUsuarioCarga:
+      type: object
+      description: Objeto de transferencia de datos con la información del usuario a cargar.
+      properties:
+        primerNombre:
+          type: string
+        otrosNombres:
+          type: string
+        primerApellido:
+          type: string
+        segundoApellido:
+          type: string
+        tipoDocumento:
+          type: string
+        numeroDocumento:
+          type: string
+        genero:
+          type: string
+        email:
+          type: string
+        empresa:
+          type: string
+        cargo:
+          type: string
+        nivelOrganizacional:
+          type: string
+        area:
+          type: string
+        categoriaCargo:
+          type: string
+        criticidades:
+          type: string
+        sede:
+          type: string
+        direccion:
+          type: string
+        ciudad:
+          type: string
+        departamento:
+          type: string
+        pais:
+          type: string
+        regional:
+          type: string
+        negocio:
+          type: string
+        uen:
+          type: string
+        numeroDocumentoJefe:
+          type: string
+        nombreJefe:
+          type: string
+        fechaIngreso:
+          type: string
+        fechaInicioCargoActual:
+          type: string
+        vicepresidencia:
+          type: string
+        tipoUsuario:
+          type: string
+        escolaridad:
+          type: string
+        moduloDesempenioAdministrativo:
+          type: string
+        moduloCompetencias:
+          type: string
+        moduloDesempenioOperativo:
+          type: string
+        moduloDesarrollo:
+          type: string
+        moduloSeleccion:
+          type: string
+        moduloFormacion:
+          type: string
+        moduloOKR:
+          type: string
+        moduloBeneficios:
+          type: string
+        moduloClimaLaboral:
+          type: string
+        idExternoCargo:
+          type: string
+        documentoLiderFunciona:
+          type: string
+        nombreLiderFunciona:
+          type: string
+        tiempoLaborado:
+          type: string
+        etiquetas:
+          type: string
+        diasVacaciones:
+          type: string
+        moduloEncuesta:
+          type: string
+        moduloOnboarding:
+          type: string
+        moduloAutogestion:
+          type: string
+        moduloDisciplinarios:
+          type: string
+        moduloSucesion:
+          type: string
+        moduloBasesConocimiento:
+          type: string
+        moduloCompetenciasOperativo:
+          type: string
+        moduloDesarrolloOperativo:
+          type: string
+        moduloOperativosMedicos:
+          type: string
+          deprecated: true
