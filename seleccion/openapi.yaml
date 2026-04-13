@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Talento Cloud - API de Selección
-  version: 1.2.0
+  version: 1.3.0
   description: |
     Documentación de los endpoints del módulo de Selección (Requisiciones y Procesos).
 
@@ -44,6 +44,15 @@ tags:
     description: >-
       Endpoints que controlan la visibilidad de campos y pestañas en la interfaz
       de creación/edición de requisiciones. Deben consultarse antes de renderizar la UI.
+  - name: Etapas del Proceso
+    description: >-
+      Endpoints relacionados con la configuración y consulta de las etapas elegidas
+      para una requisición, así como las pruebas psicotécnicas, técnicas, entrevistas
+      y assessments asociados.
+  - name: Candidatos
+    description: >-
+      Endpoints para listar y gestionar los candidatos dentro de cada etapa
+      del proceso de selección.
 
 paths:
 
@@ -672,6 +681,499 @@ paths:
         '403':
           description: Sesión inválida o sin permisos.
 
+  # ──────────────────────────────────────────────────────────────────────────────
+  # ETAPAS ELEGIDAS
+  # Controlador: mundial.server.vista.rest.EtapasElegidasController
+  # Base path: /etapasElegidas
+  # ──────────────────────────────────────────────────────────────────────────────
+  /etapasElegidas/listar/{codRequi}:
+    get:
+      tags:
+        - Etapas del Proceso
+      summary: Lista las etapas elegidas de una requisición
+      description: |
+        Retorna todas las etapas que fueron seleccionadas (elegidas) para el proceso de selección
+        de una requisición determinada.
+
+        Cuando se invoca desde la pantalla de **procesos en curso** (`paraEnProceso=true`), se
+        enriquece cada etapa con datos de delegación, conteos de candidatos aprobados/rechazados
+        y el total de candidatos.
+
+        El parámetro `valOfertaSalarial` controla si se aplican reglas de visibilidad sobre la
+        etapa de Oferta Salarial, basándose en la propiedad `SLC_OFERTASALARIAL_ETAPA_GESTIONADOR`
+        y el permiso `PERMISO_SLC_OFERTASALARIAL_MANEJOETAPA`.
+      operationId: listarEtapasElegidas
+      parameters:
+        - name: codRequi
+          in: path
+          description: Código de la requisición.
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 121
+        - name: paraEnProceso
+          in: query
+          description: >-
+            Indica que la consulta se realiza desde la pantalla de procesos en curso.
+            Si `true`, se agregan datos de delegación y conteos de candidatos.
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: valOfertaSalarial
+          in: query
+          description: >-
+            Si `true`, valida si la etapa de oferta salarial debe ocultarse u ofuscarse
+            según reglas de configuración y permisos del usuario.
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Listado de etapas elegidas.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  datos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DTOEtapasElegidas'
+                  message:
+                    type: string
+                    description: Presente solo cuando success=false.
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # PRUEBAS PSICOTÉCNICAS
+  # Controlador: mundial.server.vista.rest.PsicotecnicaRequisicionController
+  # Base path: /psicotecnicaRequisicion
+  # ──────────────────────────────────────────────────────────────────────────────
+  /psicotecnicaRequisicion/listarPP/{codRequi}:
+    get:
+      tags:
+        - Etapas del Proceso
+      summary: Lista las pruebas psicotécnicas de una requisición
+      description: |
+        Retorna todas las pruebas psicotécnicas configuradas para la requisición indicada.
+
+        Además del listado de pruebas, la respuesta incluye campos adicionales de la requisición:
+        - `tieneVYA`: indica si la requisición aplica VYA.
+        - `evalartIdCredenciales` / `evalartIdPerfil`: IDs de integración con Evalart.
+        - `total`: conteo total de pruebas psicotécnicas asociadas.
+      operationId: listarPruebasPsicotecnicasRequisicion
+      parameters:
+        - name: codRequi
+          in: path
+          description: Código de la requisición.
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 121
+      responses:
+        '200':
+          description: Listado de pruebas psicotécnicas.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  total:
+                    type: integer
+                    description: Cantidad total de pruebas psicotécnicas.
+                    example: 3
+                  tieneVYA:
+                    type: boolean
+                    description: Indica si la requisición aplica VYA.
+                  evalartIdCredenciales:
+                    type: integer
+                    format: int64
+                    description: ID de credenciales de Evalart (puede ser null).
+                    nullable: true
+                  evalartIdPerfil:
+                    type: integer
+                    format: int64
+                    description: ID de perfil de Evalart (puede ser null).
+                    nullable: true
+                  datos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DTOPsicotecnicaRequisicion'
+                  message:
+                    type: string
+                    description: Presente solo cuando success=false.
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # PRUEBAS TÉCNICAS
+  # Controlador: mundial.server.vista.rest.PruebaTecnicaRequisicionController
+  # Base path: /pruebaTecnicaRequisicion
+  # ──────────────────────────────────────────────────────────────────────────────
+  /pruebaTecnicaRequisicion/listarPruebasTecnicas/{codRequi}:
+    get:
+      tags:
+        - Etapas del Proceso
+      summary: Lista las pruebas técnicas de una requisición
+      description: |
+        Retorna todas las pruebas técnicas configuradas para la requisición indicada.
+      operationId: listarPruebasTecnicasRequisicion
+      parameters:
+        - name: codRequi
+          in: path
+          description: Código de la requisición.
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 121
+      responses:
+        '200':
+          description: Listado de pruebas técnicas.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                    description: Cantidad total de pruebas técnicas.
+                    example: 2
+                  datos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DTOPruebaTecnicaRequisicion'
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # ENTREVISTAS GRUPALES
+  # Controlador: mundial.server.vista.rest.EntrevistaValoracionController
+  # Base path: /entrevistaValoracion
+  # ──────────────────────────────────────────────────────────────────────────────
+  /entrevistaValoracion/listar/{codRequi}:
+    get:
+      tags:
+        - Etapas del Proceso
+      summary: Lista las entrevistas grupales de una requisición
+      description: |
+        Retorna todas las entrevistas de valoración (entrevistas grupales) configuradas
+        para la requisición indicada.
+      operationId: listarEntrevistasValoracion
+      parameters:
+        - name: codRequi
+          in: path
+          description: Código de la requisición.
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 121
+        - name: page
+          in: query
+          description: Número de página (basado en 1).
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: start
+          in: query
+          description: Índice inicial para la paginación (offset).
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: Cantidad máxima de registros a retornar.
+          required: false
+          schema:
+            type: integer
+            default: 25
+      responses:
+        '200':
+          description: Listado de entrevistas grupales.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                    description: Cantidad total de entrevistas.
+                    example: 5
+                  datos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DTOEntrevistaValoracion'
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # ASSESSMENTS
+  # Controlador: mundial.server.vista.rest.EntrevistaValoracionController
+  # Base path: /entrevistaValoracion
+  # ──────────────────────────────────────────────────────────────────────────────
+  /entrevistaValoracion/listarAsses/{codRequi}:
+    get:
+      tags:
+        - Etapas del Proceso
+      summary: Lista los assessments de una requisición
+      description: |
+        Retorna todos los assessments (Assessment Center) configurados para la requisición
+        indicada. Utiliza el mismo DTO que las entrevistas grupales.
+      operationId: listarAssessmentsValoracion
+      parameters:
+        - name: codRequi
+          in: path
+          description: Código de la requisición.
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 121
+        - name: page
+          in: query
+          description: Número de página (basado en 1).
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: start
+          in: query
+          description: Índice inicial para la paginación (offset).
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: Cantidad máxima de registros a retornar.
+          required: false
+          schema:
+            type: integer
+            default: 25
+      responses:
+        '200':
+          description: Listado de assessments.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                    description: Cantidad total de assessments.
+                    example: 2
+                  datos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DTOEntrevistaValoracion'
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # CONTEO CANDIDATOS POR ETAPA
+  # Controlador: mundial.server.vista.rest.EtapaCandidatoController
+  # Base path: /etapaCandidato
+  # ──────────────────────────────────────────────────────────────────────────────
+  /etapaCandidato/conteoEtapa/{etapa}/{codRequisicion}:
+    get:
+      tags:
+        - Candidatos
+      summary: Conteo de candidatos en una etapa
+      description: |
+        Retorna el conteo de candidatos en una etapa específica de una requisición,
+        desglosado en aprobados, rechazados y total. También incluye el número
+        de vacantes de la requisición.
+      operationId: conteoEtapaCandidato
+      parameters:
+        - name: etapa
+          in: path
+          description: Código de la etapa de selección.
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 3
+        - name: codRequisicion
+          in: path
+          description: Código de la requisición.
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 121
+      responses:
+        '200':
+          description: Conteo de candidatos en la etapa.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  total:
+                    type: integer
+                    format: int64
+                    description: Total de candidatos en la etapa.
+                    example: 15
+                  aprobados:
+                    type: integer
+                    format: int64
+                    description: Candidatos aprobados (estado ACEPTADO).
+                    example: 8
+                  rechazados:
+                    type: integer
+                    format: int64
+                    description: Candidatos rechazados (estado DESCARTADO).
+                    example: 3
+                  vacantes:
+                    type: integer
+                    description: Número de vacantes de la requisición.
+                    example: 2
+                  message:
+                    type: string
+                    description: Presente solo cuando success=false.
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # LISTAR CANDIDATOS POR ETAPA
+  # Controlador: mundial.server.vista.rest.EtapaCandidatoController
+  # Base path: /etapaCandidato
+  # ──────────────────────────────────────────────────────────────────────────────
+  /etapaCandidato/listar/{etapa}/{codRequisicion}:
+    get:
+      tags:
+        - Candidatos
+      summary: Lista los candidatos de una etapa de una requisición
+      description: |
+        Retorna el listado paginado de candidatos que están en una etapa específica
+        de una requisición. Incluye datos como información del candidato, estado
+        en la etapa, profesión, porcentaje de ajuste (AI), ANS y más.
+
+        ### Parámetro `orden`
+
+        Define cómo se ordenan los candidatos:
+        - `ORDEN_AJUSTE` (por defecto): ordena por porcentaje de ajuste al cargo.
+        - `ORDEN_ALFABETICO`: ordena alfabéticamente por nombre.
+
+        ### Parámetro `query`
+
+        Texto libre para buscar por nombre, apellido o cédula del candidato.
+      operationId: listarCandidatosEtapa
+      parameters:
+        - name: etapa
+          in: path
+          description: Código de la etapa de selección.
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 3
+        - name: codRequisicion
+          in: path
+          description: Código de la requisición.
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 121
+        - name: start
+          in: query
+          description: Índice inicial para la paginación (offset).
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: Cantidad máxima de registros a retornar.
+          required: false
+          schema:
+            type: integer
+            default: 50
+        - name: orden
+          in: query
+          description: >-
+            Criterio de ordenamiento de los candidatos.
+            `ORDEN_AJUSTE` ordena por porcentaje de ajuste al cargo;
+            `ORDEN_ALFABETICO` ordena alfabéticamente.
+          required: false
+          schema:
+            type: string
+            enum:
+              - ORDEN_AJUSTE
+              - ORDEN_ALFABETICO
+            default: ORDEN_AJUSTE
+        - name: query
+          in: query
+          description: >-
+            Búsqueda de texto libre por nombre, apellido o cédula del candidato.
+          required: false
+          schema:
+            type: string
+          example: "hsg"
+        - name: page
+          in: query
+          description: Número de página (basado en 1).
+          required: false
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: Listado paginado de candidatos en la etapa.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  total:
+                    type: integer
+                    description: Total de candidatos que coinciden.
+                    example: 25
+                  datos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DTOEtapaCandidato'
+                  message:
+                    type: string
+                    description: Presente solo cuando success=false.
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
 components:
   securitySchemes:
     bearerAuth:
@@ -805,3 +1307,362 @@ components:
           type: string
         activo:
           type: boolean
+
+    DTOEtapasElegidas:
+      type: object
+      description: >-
+        Etapa elegida para una requisición. Incluye datos de delegación y conteos
+        cuando se consulta desde la vista de procesos en curso.
+      properties:
+        codigoEtapa:
+          type: integer
+          format: int64
+          description: Código de la etapa elegida (PK).
+        requisicion:
+          type: integer
+          format: int64
+          description: Código de la requisición a la que pertenece.
+        codigoEtapaElegida:
+          type: integer
+          format: int64
+          description: Código de la etapa de selección.
+        nombreEtapaElegida:
+          type: string
+          description: Nombre de la etapa.
+        fechaInicio:
+          type: string
+          description: Fecha de inicio (formato dd/MM/yyyy, vacío si no aplica).
+        fechafin:
+          type: string
+          description: Fecha fin (formato dd/MM/yyyy, vacío si no aplica).
+        orden:
+          type: integer
+          description: Orden de aparición de la etapa en el proceso.
+        veEtapa:
+          type: boolean
+          description: Indica si el usuario en sesión tiene visibilidad sobre esta etapa.
+          nullable: true
+        tieneDelegacion:
+          type: boolean
+          description: Indica si el usuario es delegado en esta etapa.
+          nullable: true
+        editaContinuidad:
+          type: boolean
+          description: Indica si el delegado puede editar la continuidad de candidatos.
+          nullable: true
+        codInteresado:
+          type: integer
+          format: int64
+          description: Código del interesado (delegado) en la etapa.
+          nullable: true
+        candidatosPendientes:
+          type: integer
+          format: int64
+          description: Número de candidatos pendientes de decisión.
+          nullable: true
+        ofuscar:
+          type: boolean
+          description: >-
+            Si `true`, la etapa debe mostrarse ofuscada en la UI
+            (ej. etapa de Oferta Salarial oculta por configuración).
+        candidatosAprobados:
+          type: integer
+          format: int64
+          description: Candidatos aprobados en esta etapa (solo con paraEnProceso=true).
+          nullable: true
+        candidatosRechazados:
+          type: integer
+          format: int64
+          description: Candidatos rechazados en esta etapa (solo con paraEnProceso=true).
+          nullable: true
+        total:
+          type: integer
+          format: int64
+          description: Total de candidatos en esta etapa (solo con paraEnProceso=true).
+          nullable: true
+
+    DTOPsicotecnicaRequisicion:
+      type: object
+      description: Prueba psicotécnica asociada a una requisición.
+      properties:
+        codigoPruebaPsicotecnica:
+          type: integer
+          format: int64
+          description: Código de la prueba psicotécnica.
+        nombrePruebaPsicotecnica:
+          type: string
+          description: Nombre de la prueba psicotécnica.
+        codigoRequisicion:
+          type: integer
+          format: int64
+          description: Código de la requisición.
+        codCursoMoodle:
+          type: integer
+          format: int64
+          description: ID del curso en Moodle (puede ser null).
+          nullable: true
+        codCuestionarioTHT:
+          type: integer
+          format: int64
+          description: ID del cuestionario en THT (puede ser null).
+          nullable: true
+        codCuestionarioGroupTHT:
+          type: integer
+          format: int64
+          description: ID del grupo de cuestionario THT (puede ser null).
+          nullable: true
+        codCuestionarioEvalart:
+          type: integer
+          format: int64
+          description: ID del cuestionario en Evalart (puede ser null).
+          nullable: true
+        puestoPsicoWeb:
+          type: string
+          description: ID del puesto en PsicoWeb (puede ser null).
+          nullable: true
+        codCentralTest:
+          type: integer
+          format: int64
+          description: ID en CentralTest (puede ser null).
+          nullable: true
+
+    DTOPruebaTecnicaRequisicion:
+      type: object
+      description: Prueba técnica asociada a una requisición.
+      properties:
+        codigoPruebaTecnica:
+          type: integer
+          format: int64
+          description: Código de la prueba técnica.
+        nombrePruebaTecnica:
+          type: string
+          description: Nombre de la prueba técnica.
+        codigoRequisicion:
+          type: integer
+          format: int64
+          description: Código de la requisición.
+        codCursoMoodle:
+          type: integer
+          format: int64
+          description: ID del curso en Moodle (puede ser null).
+          nullable: true
+
+    DTOEntrevistaValoracion:
+      type: object
+      description: >-
+        Entrevista grupal o Assessment asociado a una requisición.
+        Se usa tanto para entrevistas como para assessments.
+      properties:
+        codigo:
+          type: integer
+          format: int64
+          description: Código de la entrevista/assessment.
+        codigorequisicion:
+          type: integer
+          format: int64
+          description: Código de la requisición.
+        fechaHumana:
+          type: string
+          description: Fecha en formato legible (ej. "Lunes 15 de Enero de 2026").
+        fechaNormal:
+          type: string
+          description: Fecha en formato dd/MM/yyyy.
+        hora:
+          type: string
+          description: Hora de la entrevista.
+        lugar:
+          type: string
+          description: Lugar de la entrevista.
+        codigoSede:
+          type: integer
+          format: int64
+          description: Código de la sede.
+        nombreSede:
+          type: string
+          description: Nombre de la sede.
+        datosAdicionales:
+          type: string
+          description: Información adicional sobre la entrevista.
+          nullable: true
+        estado:
+          type: string
+          description: Estado de la entrevista.
+        cantidadInvitados:
+          type: integer
+          description: Número de candidatos invitados.
+        cantidadParticipantes:
+          type: integer
+          description: Número de participantes confirmados.
+        tipoEntrevista:
+          type: string
+          description: Tipo de entrevista (grupal, individual, etc.).
+
+    DTOEtapaCandidato:
+      type: object
+      description: >-
+        Candidato en una etapa del proceso de selección. Contiene información
+        personal, estado en la etapa, datos del proceso, ANS y datos extra.
+      properties:
+        codigo:
+          type: integer
+          format: int64
+          description: Código de la relación etapa-candidato (PK).
+        codigoCandidato:
+          type: integer
+          format: int64
+          description: Código del candidato.
+        codigoUsuario:
+          type: integer
+          description: Código del usuario del sistema asociado al candidato.
+          nullable: true
+        nombreCandidato:
+          type: string
+          description: Nombres del candidato.
+        hashCandidato:
+          type: string
+          description: Hash único del candidato.
+        apellidosCandidato:
+          type: string
+          description: Apellidos del candidato.
+        cedulaCandidato:
+          type: string
+          description: Número de cédula/documento del candidato.
+        proceso:
+          type: integer
+          format: int64
+          description: Código del proceso de selección.
+        etapa:
+          type: integer
+          format: int64
+          description: Código de la etapa elegida.
+        etapaSeleccion:
+          type: integer
+          format: int64
+          description: Código de la etapa de selección maestra.
+        estadoContinuaDescarta:
+          type: integer
+          description: >-
+            Estado del candidato en la etapa. Valores posibles:
+            aceptado (continúa), descartado, u otros estados internos.
+          nullable: true
+        requisicion:
+          type: integer
+          format: int64
+          description: Código de la requisición.
+        cargoaCubrir:
+          type: string
+          description: Nombre del cargo a cubrir.
+        nvacantesProceso:
+          type: integer
+          description: Número de vacantes del proceso.
+          nullable: true
+        estadoEtapa:
+          type: string
+          description: Estado textual de la etapa.
+        observaciones:
+          type: string
+          description: Observaciones sobre el candidato en la etapa.
+          nullable: true
+        motivoDescarte:
+          type: string
+          description: Motivo de descarte (si aplica).
+          nullable: true
+        codigoMotivoDescarte:
+          type: integer
+          format: int64
+          description: Código del motivo de descarte.
+          nullable: true
+        nombreEtapa:
+          type: string
+          description: Nombre de la etapa.
+        nroProcesosAnteriores:
+          type: integer
+          description: Número de procesos anteriores del candidato.
+        nroProcesosActuales:
+          type: integer
+          description: Número de procesos actuales del candidato.
+        requisitiosIncumplidos:
+          type: integer
+          description: Cantidad de requisitos incumplidos.
+        observacionesEncuesta:
+          type: string
+          description: Observaciones de encuesta del candidato.
+          nullable: true
+        fechaIngreso:
+          type: string
+          description: Fecha de ingreso del candidato (dd/MM/yyyy).
+          nullable: true
+        tipoCandidato:
+          type: string
+          description: Tipo de candidato ("Externo", "Interno", etc.).
+        etapaActual:
+          type: integer
+          format: int64
+          description: Código de la etapa actual del candidato.
+          nullable: true
+        cumpleRequisitos:
+          type: string
+          description: Indicador de cumplimiento de requisitos.
+        estadoEtapaActual:
+          type: string
+          description: Estado del candidato en la etapa actual.
+        aspiracionSalarial:
+          type: integer
+          description: Aspiración salarial del candidato.
+          nullable: true
+        nombreCompleto:
+          type: string
+          description: Nombre completo del candidato.
+        fechaNacimiento:
+          type: string
+          format: date-time
+          description: Fecha de nacimiento.
+          nullable: true
+        edad:
+          type: string
+          description: Edad calculada del candidato.
+        profesion:
+          type: string
+          description: Profesión o último estudio del candidato.
+        profesionExtra:
+          type: string
+          description: Información extra de formación.
+          nullable: true
+        email:
+          type: string
+          description: Correo electrónico del candidato.
+        codigoRequisicion:
+          type: integer
+          format: int64
+        codigoHojaVida:
+          type: integer
+          format: int64
+          description: Código de la hoja de vida.
+          nullable: true
+        hashHojaVida:
+          type: string
+          description: Hash de la hoja de vida.
+          nullable: true
+        urlEstado:
+          type: string
+          description: URL del gráfico SVG de estado del candidato.
+          nullable: true
+        fechaPostulacion:
+          type: string
+          description: Fecha de postulación del candidato.
+        tieneVideoPresentacion:
+          type: boolean
+          description: Indica si el candidato tiene video de presentación.
+        correoEnviado:
+          type: boolean
+          description: Indica si se envió correo al candidato.
+          nullable: true
+        overallMatchPercentage:
+          type: integer
+          description: Porcentaje de ajuste general (obtenido desde la genAI).
+          nullable: true
+        extras:
+          type: object
+          description: >-
+            Datos adicionales como ANS, tiempos transcurridos, sede y fecha de ocupación.
+          additionalProperties: true
