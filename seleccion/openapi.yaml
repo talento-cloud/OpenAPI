@@ -1,90 +1,150 @@
 openapi: 3.0.3
 info:
-  title: Talento Cloud - API de Requisiciones
-  version: 1.0.0
-  description: >-
-    Documentación del endpoint de listar requisiciones en curso por responsable.
+  title: Talento Cloud - API de Selección
+  version: 1.2.0
+  description: |
+    Documentación de los endpoints del módulo de Selección (Requisiciones y Procesos).
+
+    ## Flujo de uso del panel de filtros
+
+    Antes de llamar al endpoint principal, la UI ejecuta en paralelo:
+
+    1. `GET /seleccion/propiedades/estadoCamposOcultablesRequisicion` para determinar qué campos y filtros deben mostrarse u ocultarse.
+
+    2. Los endpoints de catálogo: `/sedesPaginado`, `/ConsultaEmpresasSpring/{negocio}`, `/cargosold/getPagin`, `/ConsultaUsuariosSpring/{negocio}/{incluirCorporativo}`, `/seleccion/plantillaconfiguracion/etapas-proceso/listar/etapas/{codigoPlantilla}/{listarEtapasSeleccionadas}`, y `/seleccion/aprobacion/flujosAprobacionAll`.
+
+    3. Con las selecciones del usuario se construye el parámetro `filtrosAdicionales` y se invoca `GET /requisicion/listarRequisicionesEnCursoPorResposable`.
 
     ## Manejo de errores
 
+    | Código | Descripción |
+    |--------|-------------|
+    | `400`  | Parámetros faltantes o con formato inválido. |
+    | `401`  | Token JWT inválido, expirado o ausente. |
+    | `403`  | El usuario autenticado no tiene permisos suficientes. |
+    | `404`  | El recurso solicitado no existe. |
+    | `500`  | Error inesperado en el servidor. |
 
-        Los errores habituales pueden incluir:
-
-
-        - `400 Bad Request`: Parámetros requeridos faltantes o con formato
-        inválido.
-            
-        - `401 Unauthorized`: Token JWT inválido, expirado o ausente.
-            
-        - `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.
-            
-        - `404 Not Found`: El recurso solicitado no existe.
-            
-        - `500 Internal Server Error`: Error inesperado en el servidor.
-            
-
-        Cuando sea posible, cada endpoint detallará sus códigos de error
-        específicos y estructura de respuesta en su propia descripción.  
 servers:
   - url: https://clientex.talento.cloud/html
-    description: Servidor de producción    
+    description: Servidor de producción
 
 security:
   - bearerAuth: []
 
+tags:
+  - name: Requisiciones
+    description: Operaciones sobre procesos de selección (requisiciones).
+  - name: Filtros de panel
+    description: >-
+      Endpoints auxiliares que alimentan los combos del panel de filtros.
+      Los valores seleccionados por el usuario se envían como elementos de
+      `filtrosAdicionales` al endpoint principal.
+  - name: Configuración UI
+    description: >-
+      Endpoints que controlan la visibilidad de campos y pestañas en la interfaz
+      de creación/edición de requisiciones. Deben consultarse antes de renderizar la UI.
+
 paths:
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # ENDPOINT PRINCIPAL
+  # Controlador: mundial.server.vista.rest.RequisicionController
+  # ──────────────────────────────────────────────────────────────────────────────
   /requisicion/listarRequisicionesEnCursoPorResposable:
     get:
+      tags:
+        - Requisiciones
       summary: Lista las requisiciones en curso por responsable
       description: |
-        Obtiene un listado paginado de las requisiciones (procesos de selección) que se encuentran en curso 
-        y están asignadas al usuario administrador o responsable actual. Permite filtrar por estado, 
-        filtros de búsqueda abiertos y validación de participación de candidatos.
+        Obtiene un listado paginado de las requisiciones (procesos de selección) que se encuentran
+        en curso y están asignadas al usuario administrador o responsable actual.
+
+        El comportamiento varía según el **rol del usuario autenticado**:
+        - **ROL_ADMIN_SELECCION**: lista *todas* las requisiciones en curso del sistema.
+        - **ROL_ADMINISTRADOR_REGIONAL**: lista las requisiciones de su regional.
+        - **Responsable / Psicólogo**: lista únicamente las asignadas a él.
+
+        ### Parámetro `filtrosAdicionales`
+
+        Es un arreglo JSON serializado como string. Cada elemento tiene la forma:
+        ```json
+        { "tipo": "<TipoFiltro>", "codigoReal": <valor> }
+        ```
+        Tipos válidos (filtros del mismo tipo actúan como **OR**; entre tipos distintos actúan como **AND**):
+
+        | `tipo`        | Descripción                                          | Tipo de `codigoReal` | Endpoint de catálogo            |
+        |---------------|------------------------------------------------------|----------------------|---------------------------------|
+        | `Sede`        | Filtra por código de sede                            | integer (Long)       | `/sedesPaginado`                |
+        | `Empresa`     | Filtra por código de empresa                         | integer (Long)       | `/ConsultaEmpresasSpring/{negocio}` |
+        | `Cliente`     | Filtra por empresa solicitante (cliente externo)     | integer (Long)       | `/ConsultaEmpresasSpring/{negocio}` |
+        | `Etapa`       | Filtra por etapa actual del proceso                  | integer (Long)       | `/seleccion/plantillaconfiguracion/etapas-proceso/listar/etapas/{codigoPlantilla}/{listarEtapasSeleccionadas}` |
+        | `Cargo`       | Filtra por código de cargo                           | integer              | `/cargosold/getPagin`           |
+        | `Tipo`        | Filtra por regla de aprobación (tipo de requisición) | integer (Long)       | `/seleccion/aprobacion/flujosAprobacionAll` |
+        | `Solicitante` | Filtra por usuario solicitante                       | integer (Long)       | `/ConsultaUsuariosSpring/{negocio}/{incluirCorporativo}` |
+
+        **Ejemplo completo:**
+        ```
+        [{"tipo":"Sede","codigoReal":5},
+         {"tipo":"Empresa","codigoReal":1},
+         {"tipo":"Etapa","codigoReal":12},
+         {"tipo":"Etapa","codigoReal":15},
+         {"tipo":"Cargo","codigoReal":"520"},
+         {"tipo":"Cargo","codigoReal":"522"},
+         {"tipo":"Tipo","codigoReal":18},
+         {"tipo":"Solicitante","codigoReal":73}]
+        ```
       operationId: listarRequisicionesEnCursoPorResposable
       parameters:
         - name: soloTerminados
           in: query
-          description: Indica si se deben listar solo las requisiciones terminadas.
+          description: >-
+            Si `true`, retorna únicamente las requisiciones en estado terminado/cerrado.
+            Si `false` (por defecto), retorna las que están en curso y publicadas.
           required: false
           schema:
             type: boolean
             default: false
-        - name: filtrosAdicionales
+        - name: query
           in: query
-          description: Arreglo JSON en formato string con filtros adicionales para la búsqueda.
+          description: >-
+            Búsqueda de texto libre por número de requisición, nombre de cargo o cargo externo.
           required: false
           schema:
             type: string
+          example: "rss"
+        - name: filtrosAdicionales
+          in: query
+          description: >-
+            Arreglo JSON serializado con los filtros adicionales. Ver tabla de tipos en la descripción.
+          required: false
+          schema:
+            type: string
+          example: '[{"tipo":"Sede","codigoReal":5},{"tipo":"Empresa","codigoReal":1},{"tipo":"Etapa","codigoReal":12}]'
         - name: codCandidato
           in: query
-          description: Si se envía, indica si el candidato especificado ya se encuentra en el proceso.
+          description: Si se envía, indica si ese candidato ya participa en cada proceso listado.
           required: false
           schema:
             type: integer
             format: int64
         - name: start
           in: query
-          description: Índice inicial para la paginación.
+          description: Índice inicial para la paginación (offset).
           required: false
           schema:
             type: integer
             default: 0
         - name: limit
           in: query
-          description: Cantidad máxima de registros a retornar (límite de paginación).
+          description: Cantidad máxima de registros a retornar.
           required: false
           schema:
             type: integer
             default: 50
-        - name: query
-          in: query
-          description: Cadena de texto libre para búsqueda en los procesos (ej. nombre del cargo, código, etc).
-          required: false
-          schema:
-            type: string
       responses:
         '200':
-          description: Operación exitosa, retorna el listado de requisiciones y cantidad total.
+          description: Listado paginado de requisiciones.
           content:
             application/json:
               schema:
@@ -92,28 +152,565 @@ paths:
                 properties:
                   success:
                     type: boolean
-                    description: Indica si la operación fue exitosa.
+                    example: true
                   cantidad:
                     type: integer
-                    description: Cantidad total de registros disponibles que coinciden con los filtros (sin paginación).
+                    description: Total de registros que coinciden (sin paginación).
+                    example: 42
                   datos:
                     type: array
-                    description: Arreglo de objetos DTORequisicion con la información de las requisiciones.
                     items:
                       $ref: '#/components/schemas/DTORequisicion'
                   message:
                     type: string
-                    description: Mensaje de error en caso de fallo.
+                    description: Presente solo cuando success=false.
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # CONFIGURACIÓN UI
+  # Controlador: mundial.server.vista.rest.seleccion.PropiedadesSeleccionController
+  # Base path: /seleccion/propiedades
+  # ──────────────────────────────────────────────────────────────────────────────
+  /seleccion/propiedades/estadoCamposOcultablesRequisicion:
+    get:
+      tags:
+        - Configuración UI
+      summary: Estado de visibilidad de los campos en Requisiciones
+      description: |
+        Retorna un mapa con el estado de configuración de visibilidad (visible/oculto) de campos
+        y pestañas que se usan al crear o editar una requisición.
+
+        > ⚠️ **Este endpoint debe consultarse antes de renderizar el panel de filtros.**
+        > Sus valores determinan qué filtros mostrar al usuario.
+
+        ### Lógica de visibilidad aplicada en la UI
+
+        **1. 🏢 Campo Empresa Solicitante (`tagEmpresaSolicitante`)**
+
+        Solo se muestra cuando se cumplen **ambas** condiciones:
+
+        | Propiedad en respuesta               | Condición |
+        |--------------------------------------|-----------|
+        | `pestana_informacion_cliente.visible` | `true`    |
+        | `campo_infcli_empresasolicitante.visible` | `true` |
+
+        ```
+        Si (pestaña cliente visible == true)
+           Y (campo empresa solicitante visible == true)
+        → Mostrar filtro "Empresa Solicitante"
+        En caso contrario → Ocultar
+        ```
+
+        **2. 💼 Campo Cargo (`tagCargo`)**
+
+        Se oculta cuando el cargo externo está habilitado:
+
+        | Propiedad en respuesta      | Condición |
+        |-----------------------------|-----------|
+        | `req_cargo_externo.visible`  | `true`    |
+
+        ```
+        Si (cargo externo visible == true) → Ocultar campo "Cargo"
+        Si no                              → Mostrar campo  "Cargo"
+        ```
+      operationId: estadoCamposOcultablesRequisicion
+      responses:
+        '200':
+          description: Mapa de visibilidad de campos y pestañas.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  datos:
+                    type: object
+                    description: >-
+                      Mapa de claves de configuración con su estado visible/oculto.
+                      Cada clave corresponde a un campo o pestaña configurable.
+                    additionalProperties:
+                      type: object
+                      properties:
+                        visible:
+                          type: boolean
+                          description: Indica si el elemento debe mostrarse en la UI.
+                  message:
+                    type: string
+                    description: Mensaje de error (solo presente cuando success=false).
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # FILTRO: Sedes
+  # Controlador: mundial.server.vista.rest.MaestrosController
+  # ──────────────────────────────────────────────────────────────────────────────
+  /sedesPaginado:
+    get:
+      tags:
+        - Filtros de panel
+      summary: Lista las sedes disponibles (para filtro Sede)
+      description: |
+        Retorna el catálogo paginado de sedes activas. Alimenta el combo "Sede" del panel de filtros.
+
+        > El código de sede seleccionado se envía como `{"tipo":"Sede","codigoReal":<código>}`
+        > dentro de `filtrosAdicionales`.
+      operationId: sedesPaginado
+      parameters:
+        - name: query
+          in: query
+          description: Filtro por nombre de sede.
+          required: false
+          schema:
+            type: string
+        - name: activo
+          in: query
+          description: "`true` (por defecto) lista sedes activas; `false` lista las inactivas."
+          required: false
+          schema:
+            type: string
+            enum: ["true", "false"]
+            default: "true"
+        - name: start
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: Listado de sedes.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cantidad:
+                    type: integer
+                    example: 15
+                  datos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Sede'
+        '403':
+          description: Sesión inválida o sin permisos.
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # FILTRO: Empresas / Clientes
+  # Controlador: mundial.server.vista.rest.ConsultaEmpresasAction
+  # ──────────────────────────────────────────────────────────────────────────────
+  /ConsultaEmpresasSpring/{negocio}:
+    get:
+      tags:
+        - Filtros de panel
+      summary: Lista las empresas activas (para filtros Empresa y Cliente)
+      description: |
+        Retorna las empresas activas. Si se especifica un negocio, filtra las empresas
+        de ese negocio; de lo contrario retorna todas las empresas activas del sistema.
+
+        Se usa para alimentar dos filtros distintos:
+        - **Filtro `Empresa`**: empresa interna a la que pertenece la requisición.
+        - **Filtro `Cliente`**: empresa solicitante (cliente externo). Solo visible si lo
+          habilita `/seleccion/propiedades/estadoCamposOcultablesRequisicion`.
+
+        > Usar `negocio = -1` para obtener todas las empresas sin importar el negocio.
+      operationId: consultaEmpresasSpring
+      parameters:
+        - name: negocio
+          in: path
+          description: Código del negocio. Enviar `-1` para todas las empresas.
+          required: true
+          schema:
+            type: string
+          example: "-1"
+        - name: query
+          in: query
+          description: Texto libre para filtrar por nombre de empresa.
+          required: false
+          schema:
+            type: string
+        - name: start
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 25
+      responses:
+        '200':
+          description: Listado de empresas.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cantidad:
+                    type: integer
+                    example: 8
+                  datos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Empresa'
+        '403':
+          description: Sesión inválida o sin permisos.
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # FILTRO: Cargos
+  # Controlador: mundial.server.vista.rest.ConsultaTiposCargo
+  # ──────────────────────────────────────────────────────────────────────────────
+  /cargosold/getPagin:
+    get:
+      tags:
+        - Filtros de panel
+      summary: Lista los cargos (para filtro Cargo)
+      description: |
+        Retorna el catálogo paginado de cargos. Alimenta el combo "Cargo" del panel de filtros.
+
+        > El código del cargo seleccionado se envía como `{"tipo":"Cargo","codigoReal":"<código>"}`
+        > dentro de `filtrosAdicionales` (el codigoReal del cargo es string).
+
+        > Solo visible si `/seleccion/propiedades/estadoCamposOcultablesRequisicion` indica que
+        > `req_cargo_externo.visible == false`.
+      operationId: cargosGetPagin
+      parameters:
+        - name: query
+          in: query
+          description: Filtro por nombre de cargo.
+          required: false
+          schema:
+            type: string
+        - name: start
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+        - name: mostrarTodos
+          in: query
+          description: >-
+            Si `true`, añade al inicio una opción "Todos" con código `-1`.
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Listado de cargos.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  cantidad:
+                    type: integer
+                    example: 120
+                  datos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Cargo'
+                  message:
+                    type: string
+        '403':
+          description: Sesión inválida o sin permisos.
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # FILTRO: Usuarios (Solicitantes)
+  # Controlador: mundial.server.vista.rest.ConsultaUsuariosAction
+  # ──────────────────────────────────────────────────────────────────────────────
+  /ConsultaUsuariosSpring/{negocio}/{incluirCorporativo}:
+    get:
+      tags:
+        - Filtros de panel
+      summary: Lista los usuarios del sistema (para filtro Solicitante)
+      description: |
+        Retorna el listado paginado de usuarios activos. Alimenta el combo "Solicitante" del panel.
+
+        El resultado se limita automáticamente según el rol del usuario autenticado:
+        - Si no es administrador y no tiene `PERMISO_SELECCION_ADMIN`, solo ve su cadena de mando.
+        - Si se envía `moreThanCadenaMando=true`, se ignora esa restricción.
+
+        > El código del usuario seleccionado se envía como `{"tipo":"Solicitante","codigoReal":<código>}`
+        > dentro de `filtrosAdicionales`.
+      operationId: consultaUsuariosSpring
+      parameters:
+        - name: negocio
+          in: path
+          description: Código del negocio. Enviar `-1` para no filtrar por negocio.
+          required: true
+          schema:
+            type: string
+          example: "-1"
+        - name: incluirCorporativo
+          in: path
+          description: Parámetro heredado (deprecated). Enviar `-1`.
+          required: true
+          schema:
+            type: string
+          example: "-1"
+        - name: modulo
+          in: query
+          description: Filtra usuarios que tienen licencia del módulo especificado (ej. `SELECCION`).
+          required: false
+          schema:
+            type: string
+          example: "SELECCION"
+        - name: moreThanCadenaMando
+          in: query
+          description: >-
+            Si `true`, omite la restricción de cadena de mando y lista todos los usuarios
+            según los permisos del rol, sin importar si son parte de la jerarquía directa.
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: query
+          in: query
+          description: Filtro por nombre completo del usuario.
+          required: false
+          schema:
+            type: string
+        - name: start
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: Listado de usuarios.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cantidad:
+                    type: integer
+                    example: 35
+                  datos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Usuario'
+        '403':
+          description: Sesión inválida o sin permisos.
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # FILTRO: Etapas de proceso
+  # Controlador: mundial.server.vista.rest.seleccion.plantilla.PlantillaConfiguracionController
+  # Base path: /seleccion/plantillaconfiguracion
+  # ──────────────────────────────────────────────────────────────────────────────
+  /seleccion/plantillaconfiguracion/etapas-proceso/listar/etapas/{codigoPlantilla}/{listarEtapasSeleccionadas}:
+    get:
+      tags:
+        - Filtros de panel
+      summary: Lista las etapas de proceso disponibles (para filtro Etapa)
+      description: |
+        Retorna el catálogo de etapas de proceso. Alimenta el combo "Etapa" del panel de filtros.
+
+        Con `codigoPlantilla = -1` y `listarEtapasSeleccionadas = false` se obtiene el listado
+        completo de etapas del sistema, independiente de cualquier plantilla.
+
+        Los parámetros `mostrarPreselecion` y `mostrarCierre` controlan si esas etapas
+        aparecen en la respuesta, **permitiendo mostrar u ocultar esos elementos en la UI**.
+
+        > El código de etapa seleccionada se envía como `{"tipo":"Etapa","codigoReal":<código>}`
+        > dentro de `filtrosAdicionales`.
+      operationId: listarEtapasProcesoPlantilla
+      parameters:
+        - name: codigoPlantilla
+          in: path
+          description: Código de la plantilla. Usar `-1` para el catálogo completo.
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: -1
+        - name: listarEtapasSeleccionadas
+          in: path
+          description: >-
+            Si `true`, solo incluye etapas ya seleccionadas en la plantilla.
+            Si `false`, lista todas las disponibles.
+          required: true
+          schema:
+            type: boolean
+          example: false
+        - name: mostrarPreselecion
+          in: query
+          description: >-
+            Controla la visibilidad de la etapa de Preselección en la UI.
+            Si `false`, esa etapa no aparecerá en el combo de filtros.
+          required: false
+          schema:
+            type: boolean
+            default: false
+          example: true
+        - name: mostrarCierre
+          in: query
+          description: >-
+            Controla la visibilidad de la etapa de Cierre en la UI.
+            Si `false`, esa etapa no aparecerá en el combo de filtros.
+          required: false
+          schema:
+            type: boolean
+            default: false
+          example: true
+        - name: start
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 25
+      responses:
+        '200':
+          description: Listado de etapas de proceso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  estado:
+                    type: string
+                  datas:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EtapaProceso'
+                  message:
+                    type: string
+        '403':
+          description: Sesión inválida o sin permisos.
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # FILTRO: Flujos de aprobación
+  # Controlador: mundial.server.vista.rest.seleccion.AprobacionController
+  # Base path: /seleccion/aprobacion
+  # ──────────────────────────────────────────────────────────────────────────────
+  /seleccion/aprobacion/flujosAprobacionAll:
+    get:
+      tags:
+        - Filtros de panel
+      summary: Lista todos los flujos de aprobación activos (para filtro Tipo)
+      description: |
+        Retorna todos los flujos/reglas de aprobación activos. Alimenta el combo "Tipo" del panel.
+
+        A diferencia de `/seleccion/aprobacion/flujosAprobacionSolicitables`, este endpoint
+        devuelve *todos* los flujos sin restricción de rol ni licencia.
+
+        > El código del flujo seleccionado se envía como `{"tipo":"Tipo","codigoReal":<código>}`
+        > dentro de `filtrosAdicionales`.
+      operationId: flujosAprobacionAll
+      parameters:
+        - name: start
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 25
+      responses:
+        '200':
+          description: Listado de flujos de aprobación.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  cantidad:
+                    type: integer
+                    example: 3
+                  datos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ReglaAprobacion'
+        '403':
+          description: Sesión inválida o sin permisos.
+
 components:
-  securitySchemes:       # <--- Agrega esto
-    bearerAuth:          # <--- Nombre de tu esquema de seguridad
+  securitySchemes:
+    bearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: JWT  # <--- Opcional, pero recomendado como documentación
+      bearerFormat: JWT
+
   schemas:
+
+    FiltroAdicional:
+      type: object
+      description: >-
+        Elemento de filtro usado en el parámetro `filtrosAdicionales` de
+        `listarRequisicionesEnCursoPorResposable`.
+      required:
+        - tipo
+        - codigoReal
+      properties:
+        tipo:
+          type: string
+          enum:
+            - Sede
+            - Empresa
+            - Cliente
+            - Etapa
+            - Cargo
+            - Tipo
+            - Solicitante
+          example: "Etapa"
+        codigoReal:
+          description: Código del elemento. Long para la mayoría; string para Cargo.
+          oneOf:
+            - type: integer
+            - type: string
+          example: 12
+
     DTORequisicion:
       type: object
-      description: Objeto de transferencia de datos de una Requisición.
+      description: DTO de una requisición (proceso de selección).
       properties:
         codigo:
           type: integer
@@ -123,10 +720,88 @@ components:
           format: int64
         cargo:
           type: string
+        cargoExterno:
+          type: string
         estado:
+          type: string
+        etapaActual:
           type: string
         fechaCreacion:
           type: string
           format: date-time
         responsable:
           type: string
+        sede:
+          type: string
+        empresa:
+          type: string
+        candidatoEnProceso:
+          type: boolean
+          description: Solo presente cuando se envía `codCandidato`. Indica si el candidato ya participa.
+
+    Sede:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+
+    Empresa:
+      type: object
+      properties:
+        codigo:
+          type: integer
+        nombre:
+          type: string
+
+    Cargo:
+      type: object
+      properties:
+        codigo:
+          type: integer
+        nombre:
+          type: string
+
+    Usuario:
+      type: object
+      properties:
+        codigo:
+          type: integer
+        nombrecompleto:
+          type: string
+        cargo1:
+          type: object
+          properties:
+            nombre:
+              type: string
+        sede:
+          type: object
+          properties:
+            nombre:
+              type: string
+
+    EtapaProceso:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        seleccionada:
+          type: boolean
+        orden:
+          type: integer
+
+    ReglaAprobacion:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        activo:
+          type: boolean
