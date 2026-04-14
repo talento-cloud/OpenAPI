@@ -2022,7 +2022,30 @@ paths:
       servers:
       - url: https://ag/ausentismos
         variables: {}
-  /ro/administracion/getTipoAusentismo/1:
+  /ro/administracion/getFlujoAprobacion/{codTipoAusentismo}:
+    get:
+      tags:
+      - Ausentismos
+      summary: getFlujoAprobacion
+      description: >-
+        ## Descripción
+
+
+        Retorna lista con el flujo de aprobación de un tipo de ausentismo
+      operationId: getFlujoAprobacion
+      parameters:
+      - name: codTipoAusentismo
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Successfully retrieved
+          content:
+            application/json: {}
+  /ro/administracion/getTipoAusentismo/{codTipoAusentismo}:
     get:
       tags:
       - Ausentismos
@@ -2239,7 +2262,7 @@ paths:
       servers:
       - url: https://ag/ausentismos
         variables: {}
-  /wr/administracion/flujoAprobacion/2:
+  /wr/administracion/flujoAprobacion/{codTipoAusentismo}:
     post:
       tags:
       - Ausentismos
@@ -2253,7 +2276,13 @@ paths:
 
         /ag/ausentismos/wr/administracion/flujoAprobacion/{codTipoAusentismo}
       operationId: guardarFlujoAprobacion
-      parameters: []
+      parameters:
+      - name: codTipoAusentismo
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
       requestBody:
         description: ''
         content:
@@ -3358,7 +3387,8 @@ paths:
         description: ''
         required: true
         schema:
-          type: string
+          type: integer
+          format: int64
       responses:
         '200':
           description: OK
