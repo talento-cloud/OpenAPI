@@ -1,6 +1,6 @@
 # API de talento cloud para Autogestión
 
-En este proyecto se documenta API REST para módulo de Autogestión y submódulo Ausentismos
+En este proyecto se documenta API REST para módulo de Autogestión
 
 ## Documentación de la API de talento cloud generado con redoc
 Para generar documento html
