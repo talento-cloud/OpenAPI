@@ -1,0 +1,2104 @@
+---
+openapi: 3.1.0
+components:
+  schemas:
+    AgAdminAusentismosResource:
+      type: object
+      description: "API consultar la configuración de tipos de ausentismos, endpoints\
+        \ con acceso a escritura y lectura en la BD"
+      properties:
+        servicioPropiedades:
+          $ref: "#/components/schemas/ServicioPropiedades"
+        agTipoAusentismoRepositoryEM:
+          $ref: "#/components/schemas/AgTipoAusentismoRepositoryEM"
+        agFlujoAprobacionAusentismoRepositoryEM:
+          $ref: "#/components/schemas/AgFlujoAprobacionAusentismoRepositoryEM"
+        permisoRepositoryEM:
+          $ref: "#/components/schemas/PermisoRepositoryEM"
+    AgAprobadoresAusentismoRepositoryEM:
+      type: object
+      properties:
+        domainClass:
+          type: object
+        logger:
+          $ref: "#/components/schemas/Logger"
+        entityManager:
+          $ref: "#/components/schemas/EntityManager"
+    AgFlujoAprobacionAusentismo:
+      type: object
+      properties:
+        eliminado:
+          $ref: "#/components/schemas/Date"
+        creado:
+          $ref: "#/components/schemas/Date"
+        modificado:
+          $ref: "#/components/schemas/Date"
+        codigo:
+          type: integer
+          format: int64
+        tipo:
+          $ref: "#/components/schemas/Tipo"
+        codigos:
+          type: array
+          items:
+            type: integer
+            format: int64
+        nivel:
+          type: integer
+          format: int32
+        codigosNombres:
+          type: array
+          items:
+            type: object
+    AgFlujoAprobacionAusentismoRepositoryEM:
+      type: object
+      properties:
+        domainClass:
+          type: object
+        logger:
+          $ref: "#/components/schemas/Logger"
+        entityManager:
+          $ref: "#/components/schemas/EntityManager"
+    AgSolicitudAusentismo:
+      type: object
+      properties:
+        eliminado:
+          $ref: "#/components/schemas/Date"
+        creado:
+          $ref: "#/components/schemas/Date"
+        modificado:
+          $ref: "#/components/schemas/Date"
+        codigo:
+          type: integer
+          format: int64
+        usuario:
+          $ref: "#/components/schemas/Usuarios"
+          type: object
+          writeOnly: true
+        tipoAusentismo:
+          $ref: "#/components/schemas/AgTipoAusentismo"
+        fechaInicial:
+          $ref: "#/components/schemas/Date"
+        fechaFinal:
+          $ref: "#/components/schemas/Date"
+        horaInicial:
+          $ref: "#/components/schemas/LocalTime"
+        horaFinal:
+          $ref: "#/components/schemas/LocalTime"
+        observaciones:
+          type: string
+        estado:
+          $ref: "#/components/schemas/Estado"
+        archivos:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgSolicitudAusentismoDocumentos"
+    AgSolicitudAusentismoDocumentos:
+      type: object
+      properties:
+        eliminado:
+          $ref: "#/components/schemas/Date"
+        creado:
+          $ref: "#/components/schemas/Date"
+        modificado:
+          $ref: "#/components/schemas/Date"
+        codigo:
+          type: integer
+          format: int64
+        nombreArchivo:
+          type: string
+        extensionArchivo:
+          type: string
+        nombreOriginalArchivo:
+          type: string
+        contentTypeArchivo:
+          type: string
+        sizeArchivo:
+          type: integer
+          format: int64
+    AgSolicitudAusentismoDocumentosRepositoryEM:
+      type: object
+      properties:
+        domainClass:
+          type: object
+        logger:
+          $ref: "#/components/schemas/Logger"
+        entityManager:
+          $ref: "#/components/schemas/EntityManager"
+    AgSolicitudAusentismoRepositoryEM:
+      type: object
+      properties:
+        domainClass:
+          type: object
+        logger:
+          $ref: "#/components/schemas/Logger"
+        entityManager:
+          $ref: "#/components/schemas/EntityManager"
+    AgSolicitudAusentismosResource:
+      type: object
+      description: "API para solicitud y aprobación de ausentismos, endpoints con\
+        \ acceso a escritura y lectura en la BD"
+      properties:
+        usuariosRespositoryEM:
+          $ref: "#/components/schemas/UsuariosRepositoryEM"
+        servicioPropiedades:
+          $ref: "#/components/schemas/ServicioPropiedades"
+        servicioCorreos:
+          $ref: "#/components/schemas/ServicioCorreos"
+        servicioNotificaciones:
+          $ref: "#/components/schemas/ServicioNotificaciones"
+        agSolicitudAusentismoRepositoryEM:
+          $ref: "#/components/schemas/AgSolicitudAusentismoRepositoryEM"
+        agTipoAusentismoRepositoryEM:
+          $ref: "#/components/schemas/AgTipoAusentismoRepositoryEM"
+        agAprobadoresAusentismoRepositoryEM:
+          $ref: "#/components/schemas/AgAprobadoresAusentismoRepositoryEM"
+        agAusentismosFlujoAprobacionRepositoryEM:
+          $ref: "#/components/schemas/AgFlujoAprobacionAusentismoRepositoryEM"
+        permisoRepositoryEM:
+          $ref: "#/components/schemas/PermisoRepositoryEM"
+        agSolicitudAusentismoDocumentosEM:
+          $ref: "#/components/schemas/AgSolicitudAusentismoDocumentosRepositoryEM"
+        archivoFactory:
+          $ref: "#/components/schemas/ArchivoFactory"
+        servicioPermisosYRoles:
+          $ref: "#/components/schemas/ServicioPermisosYRoles"
+    AgTipoAusentismo:
+      type: object
+      properties:
+        eliminado:
+          $ref: "#/components/schemas/Date"
+        creado:
+          $ref: "#/components/schemas/Date"
+        modificado:
+          $ref: "#/components/schemas/Date"
+        codigo:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        categoria:
+          $ref: "#/components/schemas/Tipificadores"
+        requiereSoporte:
+          type: boolean
+        esRemunerado:
+          type: boolean
+        gestionadoPor:
+          $ref: "#/components/schemas/GESTIONADO_POR"
+        nivelesAprobadores:
+          type: integer
+          format: int32
+        flujoAprobacion:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgFlujoAprobacionAusentismo"
+    AgTipoAusentismoRepositoryEM:
+      type: object
+      properties:
+        domainClass:
+          type: object
+        logger:
+          $ref: "#/components/schemas/Logger"
+        entityManager:
+          $ref: "#/components/schemas/EntityManager"
+    ArchivoFactory:
+      type: object
+      properties:
+        servicioPropiedades:
+          $ref: "#/components/schemas/ServicioPropiedades"
+        daoUsuario:
+          $ref: "#/components/schemas/UsuariosRepositoryEM"
+        s3client:
+          $ref: "#/components/schemas/S3Client"
+        BUCKET_NAME:
+          type: string
+        archivoInterface:
+          $ref: "#/components/schemas/ArchivoInterface"
+    ArchivoInterface:
+      type: object
+    Areas:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int32
+        nombre:
+          type: string
+        activo:
+          type: string
+          format: char
+    BindableType:
+      type: string
+      enum:
+      - SINGULAR_ATTRIBUTE
+      - PLURAL_ATTRIBUTE
+      - ENTITY_TYPE
+    Cache:
+      type: object
+    Cargo:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int32
+        nombre:
+          type: string
+        activo:
+          type: string
+          format: char
+        tipoCargo:
+          $ref: "#/components/schemas/Tipificadores"
+    CollectionType:
+      type: string
+      enum:
+      - COLLECTION
+      - SET
+      - LIST
+      - MAP
+    CriteriaBuilder:
+      type: object
+    Date:
+      type: string
+      format: date
+      examples:
+      - 2022-03-10
+    DtoTipoAusentismo:
+      type: object
+      required:
+      - nombre
+      - categoria
+      - gestionadoPor
+      - nivelesAprobadores
+      properties:
+        codigo:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        categoria:
+          type: integer
+          format: int64
+        requiereSoporte:
+          type: boolean
+        esRemunerado:
+          type: boolean
+        gestionadoPor:
+          $ref: "#/components/schemas/GESTIONADO_POR"
+          type: string
+          description: "Uno de estos valores DIAS, HORAS, DIAS_Y_HORAS"
+        nivelesAprobadores:
+          type: integer
+          format: int32
+    Empresas:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        activo:
+          type: string
+          format: char
+        contexto:
+          type: string
+        chartColor:
+          type: string
+        chartColorOrden:
+          type: string
+        xlsColorLetraTitulo:
+          type: string
+        xlsColorFondoTitulo:
+          type: string
+        tipoValoracion:
+          type: string
+        dominioEmailNoexiste:
+          type: string
+        nit:
+          type: string
+        label:
+          type: string
+    EntityManager:
+      type: object
+      properties:
+        flushMode:
+          $ref: "#/components/schemas/FlushModeType"
+        properties:
+          type: object
+          additionalProperties: {}
+        joinedToTransaction:
+          type: boolean
+        delegate: {}
+        open:
+          type: boolean
+        transaction:
+          $ref: "#/components/schemas/EntityTransaction"
+        entityManagerFactory:
+          $ref: "#/components/schemas/EntityManagerFactory"
+        criteriaBuilder:
+          $ref: "#/components/schemas/CriteriaBuilder"
+        metamodel:
+          $ref: "#/components/schemas/Metamodel"
+    EntityManagerFactory:
+      type: object
+      properties:
+        criteriaBuilder:
+          $ref: "#/components/schemas/CriteriaBuilder"
+        metamodel:
+          $ref: "#/components/schemas/Metamodel"
+        open:
+          type: boolean
+        properties:
+          type: object
+          additionalProperties: {}
+        cache:
+          $ref: "#/components/schemas/Cache"
+        persistenceUnitUtil:
+          $ref: "#/components/schemas/PersistenceUnitUtil"
+    EntityTransaction:
+      type: object
+      properties:
+        rollbackOnly:
+          type: boolean
+        active:
+          type: boolean
+    Estado:
+      type: string
+      enum:
+      - PENDIENTE
+      - APROBADO
+      - RECHAZADO
+      - CANCELADO
+    FileUploadItem:
+      type: object
+      properties:
+        fileName:
+          type: string
+        contentBase64:
+          type: string
+        documento:
+          type: integer
+          format: int64
+    FlushModeType:
+      type: string
+      enum:
+      - COMMIT
+      - AUTO
+    GESTIONADO_POR:
+      type: string
+      enum:
+      - DIAS
+      - HORAS
+      - DIAS_Y_HORAS
+    GlobalEsquemasHostsRepositoryEM:
+      type: object
+      properties:
+        domainClass:
+          type: object
+        logger:
+          $ref: "#/components/schemas/Logger"
+        entityManager:
+          $ref: "#/components/schemas/EntityManager"
+    IdentifiableTypeSuperObject:
+      type: object
+      properties:
+        attributes:
+          type: array
+          uniqueItems: true
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              persistentAttributeType:
+                $ref: "#/components/schemas/PersistentAttributeType"
+              declaringType:
+                $ref: "#/components/schemas/ManagedTypeSuperObject"
+              javaType:
+                type: object
+              javaMember:
+                type: object
+              association:
+                type: boolean
+              collection:
+                type: boolean
+        declaredAttributes:
+          type: array
+          uniqueItems: true
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              persistentAttributeType:
+                $ref: "#/components/schemas/PersistentAttributeType"
+              declaringType:
+                $ref: "#/components/schemas/ManagedTypeObject"
+              javaType:
+                type: object
+              javaMember:
+                type: object
+              association:
+                type: boolean
+              collection:
+                type: boolean
+        singularAttributes:
+          type: array
+          uniqueItems: true
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              persistentAttributeType:
+                $ref: "#/components/schemas/PersistentAttributeType"
+              declaringType:
+                $ref: "#/components/schemas/ManagedTypeSuperObject"
+              javaType:
+                type: object
+              javaMember:
+                type: object
+              association:
+                type: boolean
+              collection:
+                type: boolean
+              bindableType:
+                $ref: "#/components/schemas/BindableType"
+              bindableJavaType:
+                type: object
+              id:
+                type: boolean
+              version:
+                type: boolean
+              optional:
+                type: boolean
+              type:
+                $ref: "#/components/schemas/TypeObject"
+        declaredSingularAttributes:
+          type: array
+          uniqueItems: true
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              persistentAttributeType:
+                $ref: "#/components/schemas/PersistentAttributeType"
+              declaringType:
+                $ref: "#/components/schemas/ManagedTypeObject"
+              javaType:
+                type: object
+              javaMember:
+                type: object
+              association:
+                type: boolean
+              collection:
+                type: boolean
+              bindableType:
+                $ref: "#/components/schemas/BindableType"
+              bindableJavaType:
+                type: object
+              id:
+                type: boolean
+              version:
+                type: boolean
+              optional:
+                type: boolean
+              type:
+                $ref: "#/components/schemas/TypeObject"
+        pluralAttributes:
+          type: array
+          uniqueItems: true
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              persistentAttributeType:
+                $ref: "#/components/schemas/PersistentAttributeType"
+              declaringType:
+                $ref: "#/components/schemas/ManagedTypeSuperObject"
+              javaType:
+                type: object
+              javaMember:
+                type: object
+              association:
+                type: boolean
+              collection:
+                type: boolean
+              bindableType:
+                $ref: "#/components/schemas/BindableType"
+              bindableJavaType:
+                type: object
+              collectionType:
+                $ref: "#/components/schemas/CollectionType"
+              elementType:
+                $ref: "#/components/schemas/TypeObject"
+        declaredPluralAttributes:
+          type: array
+          uniqueItems: true
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              persistentAttributeType:
+                $ref: "#/components/schemas/PersistentAttributeType"
+              declaringType:
+                $ref: "#/components/schemas/ManagedTypeObject"
+              javaType:
+                type: object
+              javaMember:
+                type: object
+              association:
+                type: boolean
+              collection:
+                type: boolean
+              bindableType:
+                $ref: "#/components/schemas/BindableType"
+              bindableJavaType:
+                type: object
+              collectionType:
+                $ref: "#/components/schemas/CollectionType"
+              elementType:
+                $ref: "#/components/schemas/TypeObject"
+        persistenceType:
+          $ref: "#/components/schemas/PersistenceType"
+        javaType:
+          type: object
+        supertype:
+          $ref: "#/components/schemas/IdentifiableTypeSuperObject"
+        idClassAttributes:
+          type: array
+          uniqueItems: true
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              persistentAttributeType:
+                $ref: "#/components/schemas/PersistentAttributeType"
+              declaringType:
+                $ref: "#/components/schemas/ManagedTypeSuperObject"
+              javaType:
+                type: object
+              javaMember:
+                type: object
+              association:
+                type: boolean
+              collection:
+                type: boolean
+              bindableType:
+                $ref: "#/components/schemas/BindableType"
+              bindableJavaType:
+                type: object
+              id:
+                type: boolean
+              version:
+                type: boolean
+              optional:
+                type: boolean
+              type:
+                $ref: "#/components/schemas/TypeObject"
+        idType:
+          $ref: "#/components/schemas/TypeObject"
+    JsonNode:
+      type: object
+      properties:
+        empty:
+          type: boolean
+        valueNode:
+          type: boolean
+        containerNode:
+          type: boolean
+        missingNode:
+          type: boolean
+        array:
+          type: boolean
+        object:
+          type: boolean
+        nodeType:
+          $ref: "#/components/schemas/JsonNodeType"
+        pojo:
+          type: boolean
+        number:
+          type: boolean
+        integralNumber:
+          type: boolean
+        floatingPointNumber:
+          type: boolean
+        short:
+          type: boolean
+        int:
+          type: boolean
+        long:
+          type: boolean
+        float:
+          type: boolean
+        double:
+          type: boolean
+        bigDecimal:
+          type: boolean
+        bigInteger:
+          type: boolean
+        textual:
+          type: boolean
+        boolean:
+          type: boolean
+        "null":
+          type: boolean
+        binary:
+          type: boolean
+    JsonNodeType:
+      type: string
+      enum:
+      - ARRAY
+      - BINARY
+      - BOOLEAN
+      - MISSING
+      - "NULL"
+      - NUMBER
+      - OBJECT
+      - POJO
+      - STRING
+    LocalTime:
+      type: string
+      format: local-time
+      examples:
+      - 13:45:30.123456789
+      externalDocs:
+        description: As defined by 'partial-time' in RFC3339
+        url: https://www.rfc-editor.org/rfc/rfc3339.html#section-5.6
+    Logger:
+      type: object
+      properties:
+        name:
+          type: string
+        traceEnabled:
+          type: boolean
+        debugEnabled:
+          type: boolean
+        infoEnabled:
+          type: boolean
+        warnEnabled:
+          type: boolean
+        errorEnabled:
+          type: boolean
+    ManagedTypeObject:
+      type: object
+      properties:
+        persistenceType:
+          $ref: "#/components/schemas/PersistenceType"
+        javaType:
+          type: object
+        attributes:
+          type: array
+          uniqueItems: true
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              persistentAttributeType:
+                $ref: "#/components/schemas/PersistentAttributeType"
+              declaringType:
+                $ref: "#/components/schemas/ManagedTypeSuperObject"
+              javaType:
+                type: object
+              javaMember:
+                type: object
+              association:
+                type: boolean
+              collection:
+                type: boolean
+        declaredAttributes:
+          type: array
+          uniqueItems: true
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              persistentAttributeType:
+                $ref: "#/components/schemas/PersistentAttributeType"
+              declaringType:
+                $ref: "#/components/schemas/ManagedTypeObject"
+              javaType:
+                type: object
+              javaMember:
+                type: object
+              association:
+                type: boolean
+              collection:
+                type: boolean
+        singularAttributes:
+          type: array
+          uniqueItems: true
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              persistentAttributeType:
+                $ref: "#/components/schemas/PersistentAttributeType"
+              declaringType:
+                $ref: "#/components/schemas/ManagedTypeSuperObject"
+              javaType:
+                type: object
+              javaMember:
+                type: object
+              association:
+                type: boolean
+              collection:
+                type: boolean
+              bindableType:
+                $ref: "#/components/schemas/BindableType"
+              bindableJavaType:
+                type: object
+              id:
+                type: boolean
+              version:
+                type: boolean
+              optional:
+                type: boolean
+              type:
+                $ref: "#/components/schemas/TypeObject"
+        declaredSingularAttributes:
+          type: array
+          uniqueItems: true
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              persistentAttributeType:
+                $ref: "#/components/schemas/PersistentAttributeType"
+              declaringType:
+                $ref: "#/components/schemas/ManagedTypeObject"
+              javaType:
+                type: object
+              javaMember:
+                type: object
+              association:
+                type: boolean
+              collection:
+                type: boolean
+              bindableType:
+                $ref: "#/components/schemas/BindableType"
+              bindableJavaType:
+                type: object
+              id:
+                type: boolean
+              version:
+                type: boolean
+              optional:
+                type: boolean
+              type:
+                $ref: "#/components/schemas/TypeObject"
+        pluralAttributes:
+          type: array
+          uniqueItems: true
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              persistentAttributeType:
+                $ref: "#/components/schemas/PersistentAttributeType"
+              declaringType:
+                $ref: "#/components/schemas/ManagedTypeSuperObject"
+              javaType:
+                type: object
+              javaMember:
+                type: object
+              association:
+                type: boolean
+              collection:
+                type: boolean
+              bindableType:
+                $ref: "#/components/schemas/BindableType"
+              bindableJavaType:
+                type: object
+              collectionType:
+                $ref: "#/components/schemas/CollectionType"
+              elementType:
+                $ref: "#/components/schemas/TypeObject"
+        declaredPluralAttributes:
+          type: array
+          uniqueItems: true
+          items:
+            description: Cyclic reference to jakarta.persistence.metamodel.PluralAttribute
+    ManagedTypeSuperObject:
+      type: object
+      properties:
+        persistenceType:
+          $ref: "#/components/schemas/PersistenceType"
+        javaType:
+          type: object
+        attributes:
+          type: array
+          uniqueItems: true
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              persistentAttributeType:
+                $ref: "#/components/schemas/PersistentAttributeType"
+              declaringType:
+                $ref: "#/components/schemas/ManagedTypeSuperObject"
+              javaType:
+                type: object
+              javaMember:
+                type: object
+              association:
+                type: boolean
+              collection:
+                type: boolean
+        declaredAttributes:
+          type: array
+          uniqueItems: true
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              persistentAttributeType:
+                $ref: "#/components/schemas/PersistentAttributeType"
+              declaringType:
+                $ref: "#/components/schemas/ManagedTypeObject"
+              javaType:
+                type: object
+              javaMember:
+                type: object
+              association:
+                type: boolean
+              collection:
+                type: boolean
+        singularAttributes:
+          type: array
+          uniqueItems: true
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              persistentAttributeType:
+                $ref: "#/components/schemas/PersistentAttributeType"
+              declaringType:
+                $ref: "#/components/schemas/ManagedTypeSuperObject"
+              javaType:
+                type: object
+              javaMember:
+                type: object
+              association:
+                type: boolean
+              collection:
+                type: boolean
+              bindableType:
+                $ref: "#/components/schemas/BindableType"
+              bindableJavaType:
+                type: object
+              id:
+                type: boolean
+              version:
+                type: boolean
+              optional:
+                type: boolean
+              type:
+                $ref: "#/components/schemas/TypeObject"
+        declaredSingularAttributes:
+          type: array
+          uniqueItems: true
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              persistentAttributeType:
+                $ref: "#/components/schemas/PersistentAttributeType"
+              declaringType:
+                $ref: "#/components/schemas/ManagedTypeObject"
+              javaType:
+                type: object
+              javaMember:
+                type: object
+              association:
+                type: boolean
+              collection:
+                type: boolean
+              bindableType:
+                $ref: "#/components/schemas/BindableType"
+              bindableJavaType:
+                type: object
+              id:
+                type: boolean
+              version:
+                type: boolean
+              optional:
+                type: boolean
+              type:
+                $ref: "#/components/schemas/TypeObject"
+        pluralAttributes:
+          type: array
+          uniqueItems: true
+          items:
+            description: Cyclic reference to jakarta.persistence.metamodel.PluralAttribute
+        declaredPluralAttributes:
+          type: array
+          uniqueItems: true
+          items:
+            description: Cyclic reference to jakarta.persistence.metamodel.PluralAttribute
+    Metamodel:
+      type: object
+      properties:
+        managedTypes:
+          type: array
+          uniqueItems: true
+          items:
+            type: object
+            properties:
+              persistenceType:
+                $ref: "#/components/schemas/PersistenceType"
+              javaType:
+                type: object
+              attributes:
+                type: array
+                uniqueItems: true
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    persistentAttributeType:
+                      $ref: "#/components/schemas/PersistentAttributeType"
+                    declaringType:
+                      $ref: "#/components/schemas/ManagedTypeSuperObject"
+                    javaType:
+                      type: object
+                    javaMember:
+                      type: object
+                    association:
+                      type: boolean
+                    collection:
+                      type: boolean
+              declaredAttributes:
+                type: array
+                uniqueItems: true
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    persistentAttributeType:
+                      $ref: "#/components/schemas/PersistentAttributeType"
+                    declaringType:
+                      $ref: "#/components/schemas/ManagedTypeObject"
+                    javaType:
+                      type: object
+                    javaMember:
+                      type: object
+                    association:
+                      type: boolean
+                    collection:
+                      type: boolean
+              singularAttributes:
+                type: array
+                uniqueItems: true
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    persistentAttributeType:
+                      $ref: "#/components/schemas/PersistentAttributeType"
+                    declaringType:
+                      $ref: "#/components/schemas/ManagedTypeSuperObject"
+                    javaType:
+                      type: object
+                    javaMember:
+                      type: object
+                    association:
+                      type: boolean
+                    collection:
+                      type: boolean
+                    bindableType:
+                      $ref: "#/components/schemas/BindableType"
+                    bindableJavaType:
+                      type: object
+                    id:
+                      type: boolean
+                    version:
+                      type: boolean
+                    optional:
+                      type: boolean
+                    type:
+                      $ref: "#/components/schemas/TypeObject"
+              declaredSingularAttributes:
+                type: array
+                uniqueItems: true
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    persistentAttributeType:
+                      $ref: "#/components/schemas/PersistentAttributeType"
+                    declaringType:
+                      $ref: "#/components/schemas/ManagedTypeObject"
+                    javaType:
+                      type: object
+                    javaMember:
+                      type: object
+                    association:
+                      type: boolean
+                    collection:
+                      type: boolean
+                    bindableType:
+                      $ref: "#/components/schemas/BindableType"
+                    bindableJavaType:
+                      type: object
+                    id:
+                      type: boolean
+                    version:
+                      type: boolean
+                    optional:
+                      type: boolean
+                    type:
+                      $ref: "#/components/schemas/TypeObject"
+              pluralAttributes:
+                type: array
+                uniqueItems: true
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    persistentAttributeType:
+                      $ref: "#/components/schemas/PersistentAttributeType"
+                    declaringType:
+                      $ref: "#/components/schemas/ManagedTypeSuperObject"
+                    javaType:
+                      type: object
+                    javaMember:
+                      type: object
+                    association:
+                      type: boolean
+                    collection:
+                      type: boolean
+                    bindableType:
+                      $ref: "#/components/schemas/BindableType"
+                    bindableJavaType:
+                      type: object
+                    collectionType:
+                      $ref: "#/components/schemas/CollectionType"
+                    elementType:
+                      $ref: "#/components/schemas/TypeObject"
+              declaredPluralAttributes:
+                type: array
+                uniqueItems: true
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    persistentAttributeType:
+                      $ref: "#/components/schemas/PersistentAttributeType"
+                    declaringType:
+                      $ref: "#/components/schemas/ManagedTypeObject"
+                    javaType:
+                      type: object
+                    javaMember:
+                      type: object
+                    association:
+                      type: boolean
+                    collection:
+                      type: boolean
+                    bindableType:
+                      $ref: "#/components/schemas/BindableType"
+                    bindableJavaType:
+                      type: object
+                    collectionType:
+                      $ref: "#/components/schemas/CollectionType"
+                    elementType:
+                      $ref: "#/components/schemas/TypeObject"
+        entities:
+          type: array
+          uniqueItems: true
+          items:
+            type: object
+            properties:
+              supertype:
+                $ref: "#/components/schemas/IdentifiableTypeSuperObject"
+              idClassAttributes:
+                type: array
+                uniqueItems: true
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    persistentAttributeType:
+                      $ref: "#/components/schemas/PersistentAttributeType"
+                    declaringType:
+                      $ref: "#/components/schemas/ManagedTypeSuperObject"
+                    javaType:
+                      type: object
+                    javaMember:
+                      type: object
+                    association:
+                      type: boolean
+                    collection:
+                      type: boolean
+                    bindableType:
+                      $ref: "#/components/schemas/BindableType"
+                    bindableJavaType:
+                      type: object
+                    id:
+                      type: boolean
+                    version:
+                      type: boolean
+                    optional:
+                      type: boolean
+                    type:
+                      $ref: "#/components/schemas/TypeObject"
+              idType:
+                $ref: "#/components/schemas/TypeObject"
+              attributes:
+                type: array
+                uniqueItems: true
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    persistentAttributeType:
+                      $ref: "#/components/schemas/PersistentAttributeType"
+                    declaringType:
+                      $ref: "#/components/schemas/ManagedTypeSuperObject"
+                    javaType:
+                      type: object
+                    javaMember:
+                      type: object
+                    association:
+                      type: boolean
+                    collection:
+                      type: boolean
+              declaredAttributes:
+                type: array
+                uniqueItems: true
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    persistentAttributeType:
+                      $ref: "#/components/schemas/PersistentAttributeType"
+                    declaringType:
+                      $ref: "#/components/schemas/ManagedTypeObject"
+                    javaType:
+                      type: object
+                    javaMember:
+                      type: object
+                    association:
+                      type: boolean
+                    collection:
+                      type: boolean
+              singularAttributes:
+                type: array
+                uniqueItems: true
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    persistentAttributeType:
+                      $ref: "#/components/schemas/PersistentAttributeType"
+                    declaringType:
+                      $ref: "#/components/schemas/ManagedTypeSuperObject"
+                    javaType:
+                      type: object
+                    javaMember:
+                      type: object
+                    association:
+                      type: boolean
+                    collection:
+                      type: boolean
+                    bindableType:
+                      $ref: "#/components/schemas/BindableType"
+                    bindableJavaType:
+                      type: object
+                    id:
+                      type: boolean
+                    version:
+                      type: boolean
+                    optional:
+                      type: boolean
+                    type:
+                      $ref: "#/components/schemas/TypeObject"
+              declaredSingularAttributes:
+                type: array
+                uniqueItems: true
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    persistentAttributeType:
+                      $ref: "#/components/schemas/PersistentAttributeType"
+                    declaringType:
+                      $ref: "#/components/schemas/ManagedTypeObject"
+                    javaType:
+                      type: object
+                    javaMember:
+                      type: object
+                    association:
+                      type: boolean
+                    collection:
+                      type: boolean
+                    bindableType:
+                      $ref: "#/components/schemas/BindableType"
+                    bindableJavaType:
+                      type: object
+                    id:
+                      type: boolean
+                    version:
+                      type: boolean
+                    optional:
+                      type: boolean
+                    type:
+                      $ref: "#/components/schemas/TypeObject"
+              pluralAttributes:
+                type: array
+                uniqueItems: true
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    persistentAttributeType:
+                      $ref: "#/components/schemas/PersistentAttributeType"
+                    declaringType:
+                      $ref: "#/components/schemas/ManagedTypeSuperObject"
+                    javaType:
+                      type: object
+                    javaMember:
+                      type: object
+                    association:
+                      type: boolean
+                    collection:
+                      type: boolean
+                    bindableType:
+                      $ref: "#/components/schemas/BindableType"
+                    bindableJavaType:
+                      type: object
+                    collectionType:
+                      $ref: "#/components/schemas/CollectionType"
+                    elementType:
+                      $ref: "#/components/schemas/TypeObject"
+              declaredPluralAttributes:
+                type: array
+                uniqueItems: true
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    persistentAttributeType:
+                      $ref: "#/components/schemas/PersistentAttributeType"
+                    declaringType:
+                      $ref: "#/components/schemas/ManagedTypeObject"
+                    javaType:
+                      type: object
+                    javaMember:
+                      type: object
+                    association:
+                      type: boolean
+                    collection:
+                      type: boolean
+                    bindableType:
+                      $ref: "#/components/schemas/BindableType"
+                    bindableJavaType:
+                      type: object
+                    collectionType:
+                      $ref: "#/components/schemas/CollectionType"
+                    elementType:
+                      $ref: "#/components/schemas/TypeObject"
+              persistenceType:
+                $ref: "#/components/schemas/PersistenceType"
+              javaType:
+                type: object
+              bindableType:
+                $ref: "#/components/schemas/BindableType"
+              bindableJavaType:
+                type: object
+              name:
+                type: string
+        embeddables:
+          type: array
+          uniqueItems: true
+          items:
+            type: object
+            properties:
+              attributes:
+                type: array
+                uniqueItems: true
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    persistentAttributeType:
+                      $ref: "#/components/schemas/PersistentAttributeType"
+                    declaringType:
+                      $ref: "#/components/schemas/ManagedTypeSuperObject"
+                    javaType:
+                      type: object
+                    javaMember:
+                      type: object
+                    association:
+                      type: boolean
+                    collection:
+                      type: boolean
+              declaredAttributes:
+                type: array
+                uniqueItems: true
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    persistentAttributeType:
+                      $ref: "#/components/schemas/PersistentAttributeType"
+                    declaringType:
+                      $ref: "#/components/schemas/ManagedTypeObject"
+                    javaType:
+                      type: object
+                    javaMember:
+                      type: object
+                    association:
+                      type: boolean
+                    collection:
+                      type: boolean
+              singularAttributes:
+                type: array
+                uniqueItems: true
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    persistentAttributeType:
+                      $ref: "#/components/schemas/PersistentAttributeType"
+                    declaringType:
+                      $ref: "#/components/schemas/ManagedTypeSuperObject"
+                    javaType:
+                      type: object
+                    javaMember:
+                      type: object
+                    association:
+                      type: boolean
+                    collection:
+                      type: boolean
+                    bindableType:
+                      $ref: "#/components/schemas/BindableType"
+                    bindableJavaType:
+                      type: object
+                    id:
+                      type: boolean
+                    version:
+                      type: boolean
+                    optional:
+                      type: boolean
+                    type:
+                      $ref: "#/components/schemas/TypeObject"
+              declaredSingularAttributes:
+                type: array
+                uniqueItems: true
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    persistentAttributeType:
+                      $ref: "#/components/schemas/PersistentAttributeType"
+                    declaringType:
+                      $ref: "#/components/schemas/ManagedTypeObject"
+                    javaType:
+                      type: object
+                    javaMember:
+                      type: object
+                    association:
+                      type: boolean
+                    collection:
+                      type: boolean
+                    bindableType:
+                      $ref: "#/components/schemas/BindableType"
+                    bindableJavaType:
+                      type: object
+                    id:
+                      type: boolean
+                    version:
+                      type: boolean
+                    optional:
+                      type: boolean
+                    type:
+                      $ref: "#/components/schemas/TypeObject"
+              pluralAttributes:
+                type: array
+                uniqueItems: true
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    persistentAttributeType:
+                      $ref: "#/components/schemas/PersistentAttributeType"
+                    declaringType:
+                      $ref: "#/components/schemas/ManagedTypeSuperObject"
+                    javaType:
+                      type: object
+                    javaMember:
+                      type: object
+                    association:
+                      type: boolean
+                    collection:
+                      type: boolean
+                    bindableType:
+                      $ref: "#/components/schemas/BindableType"
+                    bindableJavaType:
+                      type: object
+                    collectionType:
+                      $ref: "#/components/schemas/CollectionType"
+                    elementType:
+                      $ref: "#/components/schemas/TypeObject"
+              declaredPluralAttributes:
+                type: array
+                uniqueItems: true
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    persistentAttributeType:
+                      $ref: "#/components/schemas/PersistentAttributeType"
+                    declaringType:
+                      $ref: "#/components/schemas/ManagedTypeObject"
+                    javaType:
+                      type: object
+                    javaMember:
+                      type: object
+                    association:
+                      type: boolean
+                    collection:
+                      type: boolean
+                    bindableType:
+                      $ref: "#/components/schemas/BindableType"
+                    bindableJavaType:
+                      type: object
+                    collectionType:
+                      $ref: "#/components/schemas/CollectionType"
+                    elementType:
+                      $ref: "#/components/schemas/TypeObject"
+              persistenceType:
+                $ref: "#/components/schemas/PersistenceType"
+              javaType:
+                type: object
+    Negocios:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int32
+        nombre:
+          type: string
+        activo:
+          type: string
+          format: char
+    PermisoRepositoryEM:
+      type: object
+      properties:
+        logger:
+          $ref: "#/components/schemas/Logger"
+        entityManager:
+          $ref: "#/components/schemas/EntityManager"
+    PersistenceType:
+      type: string
+      enum:
+      - ENTITY
+      - EMBEDDABLE
+      - MAPPED_SUPERCLASS
+      - BASIC
+    PersistenceUnitUtil:
+      type: object
+    PersistentAttributeType:
+      type: string
+      enum:
+      - MANY_TO_ONE
+      - ONE_TO_ONE
+      - BASIC
+      - EMBEDDED
+      - MANY_TO_MANY
+      - ONE_TO_MANY
+      - ELEMENT_COLLECTION
+    RequestAgConceptoAusentismos:
+      type: object
+      required:
+      - codSolicitud
+      - codigoAprobador
+      properties:
+        codSolicitud:
+          type: integer
+          format: int64
+        observaciones:
+          type: string
+        codigoAprobador:
+          type: integer
+          format: int64
+    RequestAgSolicitud:
+      type: object
+      required:
+      - usuario
+      - tipoAusentismo
+      - fechaInicio
+      properties:
+        usuario:
+          type: integer
+          format: int32
+        tipoAusentismo:
+          type: integer
+          format: int64
+        fechaInicio:
+          type: string
+          description: Fecha en formato yyyy-MM-dd
+        fechaFin:
+          type: string
+          description: Fecha en formato yyyy-MM-dd
+        horaInicial:
+          type: string
+        horaFinal:
+          type: string
+        observaciones:
+          type: string
+        files:
+          type: array
+          items:
+            $ref: "#/components/schemas/FileUploadItem"
+    RequestFlujoAprobacion:
+      type: object
+      required:
+      - tipo
+      properties:
+        codigo:
+          type: integer
+          format: int64
+          description: Si no se indica el codigo es porque es un nuevo paso en el
+            flujo
+        tipo:
+          $ref: "#/components/schemas/Tipo"
+        nivel:
+          type: integer
+          format: int32
+        codigos:
+          type: array
+          items:
+            type: integer
+            format: int64
+          description: "Si tipo es ROL o PERSONA, se debe indicar una lista de có\
+            digos"
+    S3Client:
+      type: object
+    Sede:
+      type: object
+      properties:
+        activo:
+          type: string
+          format: char
+        codigo:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        direccion:
+          type: string
+        ubicacionVYA:
+          type: integer
+          format: int32
+        gmtZH:
+          type: string
+        codigoExterno:
+          type: string
+        label:
+          type: string
+    SemillasTenant:
+      type: object
+      properties:
+        daoGlobalEsquemasHosts:
+          $ref: "#/components/schemas/GlobalEsquemasHostsRepositoryEM"
+        mapa:
+          type: object
+          additionalProperties:
+            type: string
+    ServicioCorreos:
+      type: object
+    ServicioNotificaciones:
+      type: object
+    ServicioPermisosYRoles:
+      type: object
+    ServicioPropiedades:
+      type: object
+    TemporalResource:
+      type: object
+      description: API para actualizar semilla temporal
+      properties:
+        semillasTenant:
+          $ref: "#/components/schemas/SemillasTenant"
+    Tipificadores:
+      type: object
+      properties:
+        activo:
+          type: string
+          format: char
+        codigo:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        descripcion:
+          type: string
+        tipo:
+          $ref: "#/components/schemas/TipoTipificador"
+        nombreCorto:
+          type: string
+        variacionPatron:
+          type: string
+        valor:
+          type: integer
+          format: int32
+        categoria:
+          $ref: "#/components/schemas/Tipificadores"
+          type: object
+          writeOnly: true
+        extra:
+          $ref: "#/components/schemas/JsonNode"
+    Tipo:
+      type: string
+      enum:
+      - LIDER
+      - ROL
+      - PERSONA
+    TipoTipificador:
+      type: string
+      enum:
+      - MODALIDAD
+      - LINEA_ACCION
+      - CRITICIDAD
+      - CAPACIDAD
+      - NIVEL_HABILIDAD
+      - TIPO_RESIDENCIA
+      - EPS
+      - ARL
+      - PENSION
+      - CESANTIAS
+      - CAJA_COMPENSACION
+      - ALCANCE
+      - PASATIEMPO
+      - SUENIO
+      - LETRA
+      - VIA
+      - COMPLEMENTO
+      - TIPO_TRANSPORTE
+      - PANTALON_MASCULINO
+      - PANTALON_FEMENINO
+      - CAMISA_MASCULINO
+      - CAMISA_FEMENINO
+      - ZAPATO_MASCULINO
+      - ZAPATO_FEMENINO
+      - CHAQUETA_FEMENINO
+      - CHAQUETA_MASCULINO
+      - TIPO_DOCUMENTO
+      - ALCANCE_CARGO
+      - NIVELES_POTENCIAL
+      - TIPO_RECURSOS_SELECCION
+      - ACCION_FORMACION
+      - MEDICION
+      - TAGS
+      - ETAPA_PHVA
+      - OKR_INDICADOR_ESTRETEGICO
+      - BANCOS
+      - TIPO_CUENTA_BANCO
+      - TIPO_VIVIENDA
+      - ESTADO_VIVIENDA
+      - PRIORIDAD_ANS
+      - ESTADO_EPS
+      - ESTADO_CAJA_COMPENSACION
+      - COLOR_ESCALA_VALORACION
+      - TIPO_PROYECTO_SELECCION
+      - DISPONIBILIDAD_INGRESO
+      - MOVILIDAD
+      - FAMILIA_CARGO_SELECCION
+      - ESPECIALIDAD_SELECCION
+      - PERFIL_SELECCION
+      - TIPO_PROYECTO_EXPERIENCIA
+      - PREGUNTA_CERTIFICACIONES
+      - PREGUNTA_CONOCIMIENTOS
+      - PREGUNTA_EXPERIENCIA
+      - PREGUNTA_FAMILIAR
+      - PREGUNTA_FORMACION_FORMAL
+      - PREGUNTA_FORMACION_NOFORMAL
+      - PREGUNTA_IDIOMAS
+      - PREGUNTA_LICENCIA
+      - PREGUNTA_PASAPORTE
+      - PREGUNTA_VISA
+      - RANGO_SALARIO_TCN
+      - TECNOLOGIA_ALTERNA_SELECCION
+      - TAGS_FAQ
+      - PCG_FRECUENCIA_RELACIONES
+      - MOTIVO_RETIRO
+      - TIPO_CARGO
+      - CRITICIDAD_TIPO_PESO
+      - CRITICIDAD_CATEGORIA
+      - MODALIDAD_TRABAJO
+      - CATEGORIA_DOCUMENTO
+      - GRUPO_ETNIA
+      - ESTADO_CIERRE_PLANDLLO
+      - TIPO_IDENTIFICACION
+      - VEHICULO
+      - JORNADA_LABORAL
+      - FACTOR_RIESGO
+      - TIPO_CONTRATO
+      - FUENTES_NECESIDAD_FORMACION
+      - TIPO_INICIATIVA_RETENCION
+      - TIEMPO_LABORADO
+      - FORMA_TRABAJO_NFT
+      - CATEGORIA_BENEFICIOS
+      - CENTROS_TRABAJO
+      - DISCAPACIDAD
+      - FORMA_PAGO
+      - TIPO_SALARIO
+      - TIPO_NOMINA
+      - TIPO_REGIMEN
+      - RELACION_SEGURIDAD_SOCIAL
+      - CENTROS_DE_TRABAJO
+      - CONCEPTO_NOMINA
+      - TABLA_SEGURIDAD_SOCIAL
+      - FALTA_DISCIPLINARIA
+      - TIPO_ACCION_BANNER
+      - CATEGORIAS_AYUDA
+      - CATEGORIA_BENEFICIOS_GENERAL
+      - GRAVEDAD_FALTA_DISCIPLINARIA
+      - SANCION_FALTA_DISCIPLINARIA
+      - CATEGORIA_TIPO_AUSENTISMO
+    TypeObject:
+      type: object
+      properties:
+        persistenceType:
+          $ref: "#/components/schemas/PersistenceType"
+        javaType:
+          type: object
+    Uen:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int32
+        nombre:
+          type: string
+        activo:
+          type: string
+          format: char
+    Usuarios:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int32
+        nrodocumento:
+          type: string
+        nombrecompleto:
+          type: string
+        activo:
+          type: string
+          format: char
+        operario:
+          type: string
+          format: char
+        email:
+          type: string
+        primerNombre:
+          type: string
+        segundoNombre:
+          type: string
+        primerApellido:
+          type: string
+        segundoApellido:
+          type: string
+        empresas:
+          $ref: "#/components/schemas/Empresas"
+        negocios:
+          $ref: "#/components/schemas/Negocios"
+        area:
+          $ref: "#/components/schemas/Areas"
+        uen:
+          $ref: "#/components/schemas/Uen"
+        vicepresidencia:
+          $ref: "#/components/schemas/Vicepresidencia"
+        sede:
+          $ref: "#/components/schemas/Sede"
+        cargo1:
+          $ref: "#/components/schemas/Cargo"
+        licenciaTieneDesempenio:
+          type: boolean
+          writeOnly: true
+        licenciaTieneValoracion:
+          type: boolean
+          writeOnly: true
+        licenciaTieneSeleccion:
+          type: boolean
+          writeOnly: true
+        licenciaTieneDesarrollo:
+          type: boolean
+          writeOnly: true
+        licenciaTieneDesempenioOperativo:
+          type: boolean
+          writeOnly: true
+        licenciaTieneFormacion:
+          type: boolean
+          writeOnly: true
+        licenciaTieneDesarrolloOperativo:
+          type: boolean
+          writeOnly: true
+        licenciaTieneCompetenciasOperativo:
+          type: boolean
+          writeOnly: true
+        licenciaTieneBeneficios:
+          type: boolean
+          writeOnly: true
+        licenciaTieneClimaLaboral:
+          type: boolean
+          writeOnly: true
+        licenciaTieneOKR:
+          type: boolean
+          writeOnly: true
+        licenciaTieneOnboarding:
+          type: boolean
+          writeOnly: true
+        licenciaTieneEncuesta:
+          type: boolean
+          writeOnly: true
+        licenciaTieneAutogestion:
+          type: boolean
+          writeOnly: true
+        licenciaTieneSucesion:
+          type: boolean
+          writeOnly: true
+        licenciaTieneDisciplinarios:
+          type: boolean
+          writeOnly: true
+        diasVacacionesDisponibles:
+          type: integer
+          format: int32
+        aceptaEmailNotificacion:
+          type: boolean
+        codsRoles:
+          type: array
+          items:
+            type: integer
+            format: int64
+    UsuariosRepositoryEM:
+      type: object
+      properties:
+        domainClass:
+          type: object
+        logger:
+          $ref: "#/components/schemas/Logger"
+        entityManager:
+          $ref: "#/components/schemas/EntityManager"
+        servicioPermisosYRoles:
+          $ref: "#/components/schemas/ServicioPermisosYRoles"
+    Vicepresidencia:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int32
+        nombre:
+          type: string
+        activo:
+          type: string
+          format: char
+tags:
+- name: AgAdminAusentismosResource
+  description: AgAdminAusentismosResource operations
+- name: AgSolicitudAusentismosResource
+  description: AgSolicitudAusentismosResource operations
+- name: TemporalResource
+  description: TemporalResource operations
+paths:
+  /ag/ausentismos/wr/administracion/flujoAprobacion/{codTipoAusentismo}:
+    post:
+      summary: Actualizar flujo aprobación
+      description: "Para actualizar el flujo de aprobación de un tipo de ausentismo,\
+        \ se recibe un array json con los pasos del flujo de aprobación, si alguno\
+        \ viene con código es indicativo de que lo quiere modificar, en caso contrario\
+        \ es nuevo; pasos que no lleguen en el flujo y estén en la BD será inactivados"
+      tags:
+      - AgAdminAusentismosResource
+      parameters:
+      - name: codTipoAusentismo
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/RequestFlujoAprobacion"
+        required: true
+      responses:
+        "200":
+          description: Successfully retrieved
+          content:
+            application/json: {}
+        "400":
+          description: Bad Request
+  /ag/ausentismos/wr/administracion/guardar:
+    post:
+      summary: "Para guardar configuracion de un tipo de ausentismo, nuevo o existente."
+      description: Para actualizar la información de la configuración de un tipo de
+        ausentismo
+      tags:
+      - AgAdminAusentismosResource
+      requestBody:
+        description: Objeto con los datos del tipo de ausentismo a guardar
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DtoTipoAusentismo"
+        required: true
+      responses:
+        "200":
+          description: Successfully retrieved
+          content:
+            application/json: {}
+        "404":
+          description: Not found
+        "400":
+          description: Error datos inválidos
+  /ag/ausentismos/wr/administracion/inactivar/{codTipoAusentismo}:
+    delete:
+      summary: Inactivar/eliminar un tipo Ausentismo
+      description: Para inactivar un tipo de ausentismo
+      tags:
+      - AgAdminAusentismosResource
+      parameters:
+      - name: codTipoAusentismo
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Successfully retrieved
+          content:
+            application/json: {}
+  /ag/ausentismos/wr/administracion/reactivar/{codTipoAusentismo}:
+    delete:
+      summary: Reactivar un tipo Ausentismo
+      description: Para reactivar un tipo de ausentismo
+      tags:
+      - AgAdminAusentismosResource
+      parameters:
+      - name: codTipoAusentismo
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Successfully retrieved
+          content:
+            application/json: {}
+  /ag/ausentismos/wr/solicitud:
+    post:
+      summary: Para guardar una solicitud de ausentismos
+      description: Crea registro de solicitud de ausentismo en ag_solicitudes_ausentismo
+        para el usuario suministrado del tipo suministrado
+      tags:
+      - AgSolicitudAusentismosResource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RequestAgSolicitud"
+        required: true
+      responses:
+        "200":
+          description: Successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RequestAgSolicitud"
+        "400":
+          description: Bad Request
+  /ag/ausentismos/wr/solicitud/aprobacion:
+    post:
+      summary: Para realizar la aprobación de una solicitud de ausentismos
+      description: Realiza a aprobación de la solicitud de ausentismos en el paso
+        del flujo que corresponda
+      tags:
+      - AgSolicitudAusentismosResource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RequestAgConceptoAusentismos"
+        required: true
+      responses:
+        "200":
+          description: Aprobación realizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgSolicitudAusentismo"
+        "400":
+          description: Bad Request
+  /ag/ausentismos/wr/solicitud/rechazo:
+    post:
+      summary: Para realizar el rechazo de una solicitud de ausentismos
+      description: Realiza el rechazo de la solicitud de ausentismos
+      tags:
+      - AgSolicitudAusentismosResource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RequestAgConceptoAusentismos"
+        required: true
+      responses:
+        "200":
+          description: Rechazo realizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgSolicitudAusentismo"
+        "400":
+          description: Bad Request
+info:
+  title: Talento - Autogestión - Ausentismos API WR
+  version: 1.0.1
+  description: Microservicio para administración de Ausentismos en Autogestión.
+  termsOfService: Uso privado
+  contact:
+    name: API Support
+    email: soporte@talento.cloud
+    url: https://talento.cloud/contact
+  license:
+    name: Privado
+    url: https://talento.cloud/licenses
