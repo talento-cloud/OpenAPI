@@ -1,0 +1,516 @@
+openapi: 3.0.0
+info:
+  title: Objetivos_Chatbot
+  description: >-
+    Microservicio para gestión en talento cloud del módulo de Objetivos SMART, pensado para ser consultado por chatbot ClaudIA.
+
+    ## Manejo de errores
+
+
+        Los errores habituales pueden incluir:
+
+
+        - `400 Bad Request`: Parámetros requeridos faltantes o con formato
+        inválido.
+            
+        - `401 Unauthorized`: Token JWT inválido, expirado o ausente.
+            
+        - `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.
+            
+        - `404 Not Found`: El recurso solicitado no existe.
+            
+        - `500 Internal Server Error`: Error inesperado en el servidor.
+            
+
+        Cuando sea posible, cada endpoint detallará sus códigos de error
+        específicos y estructura de respuesta en su propia descripción.  
+  termsOfService: Uso privado
+  contact:
+    name: API Support
+    email: soporte@talento.cloud
+    url: https://talento.cloud/contact
+  license:
+    name: Privado
+    url: https://talento.cloud/licenses
+  version: '1.0'
+servers:
+  - url: https://clientex.talento.cloud/api
+    description: Servidor de producción     
+  - url: https://clientex.talento-dev.cloud/api
+    description: Servidor de pruebas
+paths:
+  /html/objetivos/smart/chatbot/procesos-activos.json:
+    get:
+      tags:
+      - ObjetivosSMART
+      summary: procesosActivos
+      operationId: procesosActivos
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Set-Cookie:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: JSESSIONID=19ree07ze9nl01652vhe2qjmry;Path=/
+            Expires:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Thu, 01 Jan 1970 00:00:00 GMT
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/procesosActivos'
+                - example:
+                    data:
+                    - actual: true
+                      codigo: 2026
+                      estado: EN_PROCESO
+                      nombre: 2026A
+                    - codigo: 2024
+                      estado: EN_PROCESO
+                      nombre: '2025'
+                    success: true
+              example:
+                data:
+                - actual: true
+                  codigo: 2026
+                  estado: EN_PROCESO
+                  nombre: 2026A
+                - codigo: 2024
+                  estado: EN_PROCESO
+                  nombre: '2025'
+                success: true
+      deprecated: false
+  /html/objetivos/smart/chatbot/resumen-definicion-acuerdo/2024.json:
+    get:
+      tags:
+      - ObjetivosSMART
+      summary: resumenDefinicionAcuerdo
+      operationId: resumenDefinicionAcuerdo
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/resumenDefinicionAcuerdo'
+                - example:
+                    data:
+                      proceso:
+                        codigo: 2024
+                        nombre: '2025'
+                      tipos_objetivos:
+                      - codigo: 1
+                        porcentaje_definicion_pendiente: 0
+                        porcentaje_definicion_total: 50
+                        porcentaje_definicion_creado: 50
+                        nombre: Objetivos estratégicos
+                      - codigo: 2
+                        porcentaje_definicion_pendiente: 0
+                        porcentaje_definicion_total: 25
+                        porcentaje_definicion_creado: 25
+                        nombre: Objetivos de área
+                      - codigo: 3
+                        porcentaje_definicion_pendiente: 25
+                        porcentaje_definicion_total: 25
+                        porcentaje_definicion_creado: 0
+                        nombre: Desarrollo individual
+                      - codigo: 4
+                        porcentaje_definicion_pendiente: 1
+                        porcentaje_definicion_total: 1
+                        porcentaje_definicion_creado: 0
+                        nombre: Plan de desarrollo
+                      - codigo: 5
+                        porcentaje_definicion_pendiente: 2
+                        porcentaje_definicion_total: 2
+                        porcentaje_definicion_creado: 0
+                        nombre: Objetivos de desarrollo
+                      - codigo: 6
+                        porcentaje_definicion_pendiente: 3
+                        porcentaje_definicion_total: 3
+                        porcentaje_definicion_creado: 0
+                        nombre: Mis objetivos
+                      - codigo: 7
+                        porcentaje_definicion_pendiente: 4
+                        porcentaje_definicion_total: 4
+                        porcentaje_definicion_creado: 0
+                        nombre: Objetivos genéricos
+                      porcentaje_definicion_avance_general: 75
+                    success: true
+              example:
+                data:
+                  proceso:
+                    codigo: 2024
+                    nombre: '2025'
+                  tipos_objetivos:
+                  - codigo: 1
+                    porcentaje_definicion_pendiente: 0
+                    porcentaje_definicion_total: 50
+                    porcentaje_definicion_creado: 50
+                    nombre: Objetivos estratégicos
+                  - codigo: 2
+                    porcentaje_definicion_pendiente: 0
+                    porcentaje_definicion_total: 25
+                    porcentaje_definicion_creado: 25
+                    nombre: Objetivos de área
+                  - codigo: 3
+                    porcentaje_definicion_pendiente: 25
+                    porcentaje_definicion_total: 25
+                    porcentaje_definicion_creado: 0
+                    nombre: Desarrollo individual
+                  - codigo: 4
+                    porcentaje_definicion_pendiente: 1
+                    porcentaje_definicion_total: 1
+                    porcentaje_definicion_creado: 0
+                    nombre: Plan de desarrollo
+                  - codigo: 5
+                    porcentaje_definicion_pendiente: 2
+                    porcentaje_definicion_total: 2
+                    porcentaje_definicion_creado: 0
+                    nombre: Objetivos de desarrollo
+                  - codigo: 6
+                    porcentaje_definicion_pendiente: 3
+                    porcentaje_definicion_total: 3
+                    porcentaje_definicion_creado: 0
+                    nombre: Mis objetivos
+                  - codigo: 7
+                    porcentaje_definicion_pendiente: 4
+                    porcentaje_definicion_total: 4
+                    porcentaje_definicion_creado: 0
+                    nombre: Objetivos genéricos
+                  porcentaje_definicion_avance_general: 75
+                success: true
+      deprecated: false
+components:
+  schemas:
+    procesosActivos:
+      title: procesosActivos
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Datum'
+          description: ''
+        success:
+          type: boolean
+      example:
+        data:
+        - actual: true
+          codigo: 2026
+          estado: EN_PROCESO
+          nombre: 2026A
+        - codigo: 2024
+          estado: EN_PROCESO
+          nombre: '2025'
+        success: true
+    Datum:
+      title: Datum
+      required:
+      - codigo
+      - estado
+      - nombre
+      type: object
+      properties:
+        actual:
+          type: boolean
+        codigo:
+          type: integer
+          format: int32
+        estado:
+          type: string
+        nombre:
+          type: string
+      example:
+        actual: true
+        codigo: 2026
+        estado: EN_PROCESO
+        nombre: 2026A
+    resumenDefinicionAcuerdo:
+      title: resumenDefinicionAcuerdo
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Data'
+        success:
+          type: boolean
+      example:
+        data:
+          proceso:
+            codigo: 2024
+            nombre: '2025'
+          tipos_objetivos:
+          - codigo: 1
+            porcentaje_definicion_pendiente: 0
+            porcentaje_definicion_total: 50
+            porcentaje_definicion_creado: 50
+            nombre: Objetivos estratégicos
+          - codigo: 2
+            porcentaje_definicion_pendiente: 0
+            porcentaje_definicion_total: 25
+            porcentaje_definicion_creado: 25
+            nombre: Objetivos de área
+          - codigo: 3
+            porcentaje_definicion_pendiente: 25
+            porcentaje_definicion_total: 25
+            porcentaje_definicion_creado: 0
+            nombre: Desarrollo individual
+          - codigo: 4
+            porcentaje_definicion_pendiente: 1
+            porcentaje_definicion_total: 1
+            porcentaje_definicion_creado: 0
+            nombre: Plan de desarrollo
+          - codigo: 5
+            porcentaje_definicion_pendiente: 2
+            porcentaje_definicion_total: 2
+            porcentaje_definicion_creado: 0
+            nombre: Objetivos de desarrollo
+          - codigo: 6
+            porcentaje_definicion_pendiente: 3
+            porcentaje_definicion_total: 3
+            porcentaje_definicion_creado: 0
+            nombre: Mis objetivos
+          - codigo: 7
+            porcentaje_definicion_pendiente: 4
+            porcentaje_definicion_total: 4
+            porcentaje_definicion_creado: 0
+            nombre: Objetivos genéricos
+          porcentaje_definicion_avance_general: 75
+        success: true
+    Data:
+      title: Data
+      required:
+      - proceso
+      - tipos_objetivos
+      - porcentaje_definicion_avance_general
+      type: object
+      properties:
+        proceso:
+          $ref: '#/components/schemas/Proceso'
+        tipos_objetivos:
+          type: array
+          items:
+            $ref: '#/components/schemas/TiposObjetivo'
+          description: ''
+        porcentaje_definicion_avance_general:
+          type: integer
+          format: int32
+      example:
+        proceso:
+          codigo: 2024
+          nombre: '2025'
+        tipos_objetivos:
+        - codigo: 1
+          porcentaje_definicion_pendiente: 0
+          porcentaje_definicion_total: 50
+          porcentaje_definicion_creado: 50
+          nombre: Objetivos estratégicos
+        - codigo: 2
+          porcentaje_definicion_pendiente: 0
+          porcentaje_definicion_total: 25
+          porcentaje_definicion_creado: 25
+          nombre: Objetivos de área
+        - codigo: 3
+          porcentaje_definicion_pendiente: 25
+          porcentaje_definicion_total: 25
+          porcentaje_definicion_creado: 0
+          nombre: Desarrollo individual
+        - codigo: 4
+          porcentaje_definicion_pendiente: 1
+          porcentaje_definicion_total: 1
+          porcentaje_definicion_creado: 0
+          nombre: Plan de desarrollo
+        - codigo: 5
+          porcentaje_definicion_pendiente: 2
+          porcentaje_definicion_total: 2
+          porcentaje_definicion_creado: 0
+          nombre: Objetivos de desarrollo
+        - codigo: 6
+          porcentaje_definicion_pendiente: 3
+          porcentaje_definicion_total: 3
+          porcentaje_definicion_creado: 0
+          nombre: Mis objetivos
+        - codigo: 7
+          porcentaje_definicion_pendiente: 4
+          porcentaje_definicion_total: 4
+          porcentaje_definicion_creado: 0
+          nombre: Objetivos genéricos
+        porcentaje_definicion_avance_general: 75
+    Proceso:
+      title: Proceso
+      required:
+      - codigo
+      - nombre
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int32
+        nombre:
+          type: string
+      example:
+        codigo: 2024
+        nombre: '2025'
+    TiposObjetivo:
+      title: TiposObjetivo
+      required:
+      - codigo
+      - porcentaje_definicion_pendiente
+      - porcentaje_definicion_total
+      - porcentaje_definicion_creado
+      - nombre
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int32
+        porcentaje_definicion_pendiente:
+          type: integer
+          format: int32
+        porcentaje_definicion_total:
+          type: integer
+          format: int32
+        porcentaje_definicion_creado:
+          type: integer
+          format: int32
+        nombre:
+          type: string
+      example:
+        codigo: 1
+        porcentaje_definicion_pendiente: 0
+        porcentaje_definicion_total: 50
+        porcentaje_definicion_creado: 50
+        nombre: Objetivos estratégicos
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+security:
+- bearer: []
+tags:
+- name: ObjetivosSMART
+  description: ''
