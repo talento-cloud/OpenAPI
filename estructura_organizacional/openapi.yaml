@@ -1,0 +1,462 @@
+openapi: 3.0.3
+info:
+  title: Talento Cloud - API de Estructura Organizacional
+  version: 1.0.0
+  description: |
+    Documentación de los endpoints para la gestión de la Estructura Organizacional Jerárquica.
+
+    ## Flujo de uso
+    1.  La UI puede consultar los catálogos de **Niveles Organizacionales** (`/niveles-organizacionales`) y **Cargos** (`/cargos-activos`) para alimentar selectores.
+    2.  Para visualizar el organigrama, se consume `GET /ver-estructura`.
+    3.  La creación de la estructura comienza con `POST /primera-posicion` para establecer el nodo raíz.
+    4.  Se añaden nodos hijos con `POST /{posicionPadreId}/subordinadas`.
+    5.  Las posiciones vacantes se pueden llenar automáticamente con `POST /{posicionId}/asignar-ocupante`.
+    6.  Se puede consultar quiénes son los usuarios sin posición asignada con `GET /personas-sin-posicion`.
+
+    ## Manejo de errores
+
+    | Código | Descripción |
+    |--------|-------------|
+    | `400`  | Parámetros faltantes o con formato inválido (Bad Request). |
+    | `401`  | Token JWT inválido, expirado o ausente (Unauthorized). |
+    | `403`  | El usuario autenticado no tiene permisos suficientes (Forbidden). |
+    | `404`  | El recurso solicitado no existe (Not Found). |
+    | `500`  | Error inesperado en el servidor (Internal Server Error). |
+
+servers:
+  - url: https://clientex.talento.cloud/html
+    description: Servidor de producción
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: Estructura Organizacional
+    description: Operaciones para crear, modificar y visualizar la estructura del organigrama.
+  - name: Catálogos
+    description: Endpoints que proveen listas de datos para alimentar selectores en la UI (cargos, niveles, etc.).
+  - name: Usuarios y Colaboradores
+    description: Endpoints para consultar información sobre usuarios en el contexto de la estructura.
+
+paths:
+
+  # -------------------- CATÁLOGOS --------------------
+  /arquitectura/estructura-organizacional/niveles-organizacionales:
+    get:
+      tags:
+        - Catálogos
+      summary: Lista los niveles organizacionales activos.
+      description: Retorna una lista de todos los niveles organizacionales (tipos de cargo) que se encuentran activos en el sistema.
+      operationId: getNivelesOrganizacionales
+      responses:
+        '200':
+          description: Listado de niveles organizacionales.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TipoCargoDTO'
+        '403':
+          description: Sesión inválida o sin permisos.
+
+  /arquitectura/estructura-organizacional/cargos-activos:
+    get:
+      tags:
+        - Catálogos
+      summary: Lista los cargos activos.
+      description: Retorna una lista de todos los cargos que se encuentran activos en el sistema.
+      operationId: getCargosActivos
+      responses:
+        '200':
+          description: Listado de cargos activos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CargoDTO'
+        '403':
+          description: Sesión inválida o sin permisos.
+
+  # -------------------- ESTRUCTURA --------------------
+  /arquitectura/estructura-organizacional/ver-estructura:
+    get:
+      tags:
+        - Estructura Organizacional
+      summary: Obtiene la estructura organizacional completa.
+      description: |
+        Retorna la jerarquía completa de la estructura organizacional, partiendo de las posiciones raíz.
+        Incluye también un conteo general de posiciones ocupadas, vacantes y usuarios sin asignar.
+      operationId: obtenerEstructuraCompleta
+      responses:
+        '200':
+          description: Estructura completa y conteos.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EstructuraConteoDTO'
+        '403':
+          description: Sesión inválida o sin permisos.
+
+  /arquitectura/estructura-organizacional/primera-posicion:
+    post:
+      tags:
+        - Estructura Organizacional
+      summary: Crea la primera posición (raíz) de la estructura.
+      description: Establece la posición raíz del organigrama. Falla si ya existe una posición raíz.
+      operationId: crearPrimeraPosicion
+      parameters:
+        - name: cargoId
+          in: query
+          description: ID del cargo para la nueva posición raíz.
+          required: true
+          schema:
+            type: integer
+        - name: ocupanteId
+          in: query
+          description: (Opcional) ID del usuario que ocupará la posición.
+          required: false
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: Posición raíz creada exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PosicionEstructuraDTO'
+        '400':
+          description: El `cargoId` es obligatorio o ya existe una raíz.
+        '404':
+          description: El `cargoId` o el `ocupanteId` no existen.
+        '403':
+          description: Sesión inválida o sin permisos.
+
+  /arquitectura/estructura-organizacional/{posicionPadreId}/subordinadas:
+    post:
+      tags:
+        - Estructura Organizacional
+      summary: Crea una o más posiciones subordinadas.
+      description: Añade una o más posiciones como hijas de una posición existente.
+      operationId: crearPosicionesSubordinadas
+      parameters:
+        - name: posicionPadreId
+          in: path
+          description: ID de la posición padre a la que se añadirán los subordinados.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Lista de subordinados a crear.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/SubordinadoRequestDTO'
+      responses:
+        '201':
+          description: Posiciones subordinadas creadas exitosamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PosicionEstructuraDTO'
+        '400':
+          description: La lista de subordinados está vacía o un `cargoId` es nulo.
+        '404':
+          description: La `posicionPadreId` no existe, o algún `cargoId` u `ocupanteId` es inválido.
+        '403':
+          description: Sesión inválida o sin permisos.
+
+  /arquitectura/estructura-organizacional/inicializar-estructura:
+    post:
+      tags:
+        - Estructura Organizacional
+      summary: Inicializa la estructura desde las relaciones de jefe en usuarios.
+      description: Crea una estructura inicial completa basándose en la jerarquía de jefes definida en la tabla de usuarios. Falla si la estructura ya tiene posiciones.
+      operationId: inicializarEstructura
+      responses:
+        '200':
+          description: Estructura inicializada exitosamente.
+        '400':
+          description: La estructura ya ha sido inicializada.
+        '404':
+          description: No se encontraron usuarios activos para procesar.
+        '403':
+          description: Sesión inválida o sin permisos.
+
+  /arquitectura/estructura-organizacional/{posicionId}:
+    delete:
+      tags:
+        - Estructura Organizacional
+      summary: Elimina una posición.
+      description: Elimina una posición de la estructura. Falla si la posición tiene subordinados.
+      operationId: eliminarPosicion
+      parameters:
+        - name: posicionId
+          in: path
+          description: ID de la posición a eliminar.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Posición eliminada exitosamente.
+        '400':
+          description: La posición tiene subordinados y no puede ser eliminada.
+        '404':
+          description: La `posicionId` no existe.
+        '403':
+          description: Sesión inválida o sin permisos.
+
+  # -------------------- USUARIOS Y COLABORADORES --------------------
+  /arquitectura/estructura-organizacional/personas-sin-posicion:
+    get:
+      tags:
+        - Usuarios y Colaboradores
+      summary: Lista las personas sin una posición asignada.
+      description: Retorna una lista de colaboradores activos que actualmente no ocupan ninguna posición en la estructura organizacional.
+      operationId: getPersonasSinPosicion
+      responses:
+        '200':
+          description: Listado de colaboradores sin posición.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ColaboradorDTO'
+        '403':
+          description: Sesión inválida o sin permisos.
+
+  /arquitectura/estructura-organizacional/usuarios/{id}/detalles:
+    get:
+      tags:
+        - Usuarios y Colaboradores
+      summary: Obtiene los detalles de un usuario.
+      description: Retorna información detallada de un usuario, incluyendo su cargo, nivel organizacional, jefe y más.
+      operationId: getUsuarioDetalle
+      parameters:
+        - name: id
+          in: path
+          description: ID del usuario a consultar.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalles del usuario.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioDetalleDTO'
+        '404':
+          description: El usuario no fue encontrado.
+        '403':
+          description: Sesión inválida o sin permisos.
+
+  /arquitectura/estructura-organizacional/{posicionId}/asignar-ocupante:
+    post:
+      tags:
+        - Estructura Organizacional
+      summary: Asigna un ocupante a una posición vacante automáticamente.
+      description: |
+        Busca un candidato adecuado y lo asigna a la posición especificada. La lógica de búsqueda es:
+        1.  Si la posición padre tiene un ocupante (líder), busca un usuario sin posición que reporte a ese líder y tenga el cargo requerido.
+        2.  Si no, busca cualquier usuario sin posición que tenga el cargo requerido.
+        Falla si no se encuentra un candidato que cumpla los criterios.
+      operationId: asignarOcupante
+      parameters:
+        - name: posicionId
+          in: path
+          description: ID de la posición vacante a la que se le asignará un ocupante.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Ocupante asignado exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PosicionEstructuraDTO'
+        '400':
+          description: La posición ya está ocupada o no tiene un cargo definido.
+        '404':
+          description: La `posicionId` no existe o no se encontró un candidato adecuado.
+        '403':
+          description: Sesión inválida o sin permisos.
+
+  /arquitectura/estructura-organizacional/{posicionId}/separar-vacante:
+    post:
+      tags:
+        - Estructura Organizacional
+      summary: Desvincula un ocupante de una posición.
+      description: Libera una posición, dejándola como vacante. El ocupante anterior pasa a estar "sin posición".
+      operationId: separarVacante
+      parameters:
+        - name: posicionId
+          in: path
+          description: ID de la posición que se desea dejar vacante.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Posición actualizada a "vacante".
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PosicionEstructuraDTO'
+        '400':
+          description: La posición ya se encuentra vacante.
+        '404':
+          description: La `posicionId` no existe.
+        '403':
+          description: Sesión inválida o sin permisos.
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    PosicionEstructuraDTO:
+      type: object
+      description: Representa una posición dentro de la estructura organizacional.
+      properties:
+        id:
+          type: integer
+          format: int64
+        cargoId:
+          type: integer
+        cargoNombre:
+          type: string
+        tipoCargoCodigo:
+          type: string
+        tipoCargoNombre:
+          type: string
+        ocupanteId:
+          type: integer
+          nullable: true
+        ocupanteNombre:
+          type: string
+          nullable: true
+        nivelJerarquico:
+          type: integer
+        estado:
+          type: string
+          description: "OCUPADA o VACANTE"
+        posicionesHijas:
+          type: array
+          items:
+            $ref: '#/components/schemas/PosicionEstructuraDTO'
+
+    ColaboradorDTO:
+      type: object
+      description: Representa un colaborador con sus datos básicos.
+      properties:
+        codigo:
+          type: integer
+        nombreCompleto:
+          type: string
+        cargo:
+          type: string
+        numeroDocumento:
+          type: string
+        email:
+          type: string
+
+    UsuarioDetalleDTO:
+      type: object
+      description: Información detallada de un usuario.
+      properties:
+        nombreCompleto:
+          type: string
+        cargo:
+          type: string
+        nivelOrganizacional:
+          type: string
+        documento:
+          type: string
+        email:
+          type: string
+        ubicacion:
+          type: string
+        celular:
+          type: string
+        fechaIngreso:
+          type: string
+          format: date
+        nombreJefe:
+          type: string
+        codigoJefe:
+          type: integer
+        nivelOrganizacionalJefe:
+          type: string
+
+    CargoDTO:
+      type: object
+      description: Representa un cargo.
+      properties:
+        codigo:
+          type: integer
+        nombre:
+          type: string
+          
+    TipoCargoDTO:
+      type: object
+      description: Representa un nivel organizacional (tipo de cargo).
+      properties:
+        codigo:
+          type: string
+        nombre:
+          type: string
+
+    SubordinadoRequestDTO:
+      type: object
+      description: Objeto para solicitar la creación de un subordinado.
+      properties:
+        cargoId:
+          type: integer
+        ocupanteId:
+          type: integer
+          nullable: true
+
+    EstructuraConteoDTO:
+      type: object
+      description: Contiene la estructura jerárquica y los conteos globales.
+      properties:
+        estructura:
+          type: array
+          items:
+            $ref: '#/components/schemas/PosicionEstructuraDTO'
+        conteo:
+          $ref: '#/components/schemas/ConteoDTO'
+
+    ConteoDTO:
+      type: object
+      description: Conteos de posiciones y usuarios en la estructura.
+      properties:
+        posicionesOcupadas:
+          type: integer
+          format: int64
+        posicionesVacantes:
+          type: integer
+          format: int64
+        usuariosSinPosicion:
+          type: integer
+          format: int64
+        totalPosiciones:
+          type: integer
+          format: int64
