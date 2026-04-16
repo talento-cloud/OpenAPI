@@ -142,13 +142,20 @@ paths:
                   nombre: '2025'
                 success: true
       deprecated: false
-  /html/objetivos/smart/chatbot/resumen-definicion-acuerdo/2024.json:
+  /html/objetivos/smart/chatbot/resumen-definicion-acuerdo/{codProcesoAnio}.json:
     get:
       tags:
       - ObjetivosSMART
       summary: resumenDefinicionAcuerdo
       operationId: resumenDefinicionAcuerdo
-      parameters: []
+      parameters: 
+        - name: codProcesoAnio
+          in: path
+          required: true
+          description: Codigo de proceso de objetivos SMART
+          schema:
+            type: integer
+            example: 2024
       responses:
         '200':
           description: OK
