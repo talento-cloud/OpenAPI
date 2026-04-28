@@ -53,9 +53,17 @@ tags:
     description: >-
       Endpoints para listar y gestionar los candidatos dentro de cada etapa
       del proceso de selección.
+  - name: Preselección
+    description: >-
+      Endpoints específicos de la etapa de Preselección (etapa 3), donde se valida
+      el perfil del candidato, se consulta la compatibilidad con IA y se gestionan
+      delegaciones.
+  - name: Hojas de Vida
+    description: >-
+      Endpoints relacionados con la gestión de Hojas de Vida, incluyendo notas internas
+      y otra información relevante del candidato.
 
 paths:
-
   # ──────────────────────────────────────────────────────────────────────────────
   # ENDPOINT PRINCIPAL
   # Controlador: mundial.server.vista.rest.RequisicionController
@@ -1064,6 +1072,58 @@ paths:
           description: Error interno del servidor.
 
   # ──────────────────────────────────────────────────────────────────────────────
+  # APROBACIÓN MASIVA DE CANDIDATOS
+  # Controlador: mundial.server.vista.rest.EtapaCandidatoController
+  # ──────────────────────────────────────────────────────────────────────────────
+  /aprobacionMasivaCandidatos/{etapa}/{codRequisicion}:
+    put:
+      tags:
+        - Candidatos
+        - Etapas del Proceso
+      summary: Realiza una aprobación masiva de candidatos en una etapa.
+      description: |
+        Aprueba masivamente todos los candidatos en estado 'Pendiente' de una etapa
+        específica, moviéndolos a la siguiente etapa del proceso. Requiere permisos
+        de administrador o responsable de selección.
+      operationId: aprobacionMasivaCandidatos
+      parameters:
+        - name: etapa
+          in: path
+          description: ID de la etapa donde se realizará la aprobación masiva.
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: codRequisicion
+          in: path
+          description: ID de la requisición.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Operación de aprobación masiva exitosa.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/DTOAprobacionMasivaResultado'
+                  message:
+                    type: string
+                    example: "OK"
+        '403':
+          description: Sin permisos o sesión inválida.
+        '500':
+          description: Error interno del servidor.
+
+
+  # ──────────────────────────────────────────────────────────────────────────────
   # LISTAR CANDIDATOS POR ETAPA
   # Controlador: mundial.server.vista.rest.EtapaCandidatoController
   # Base path: /etapaCandidato
@@ -1173,6 +1233,504 @@ paths:
           description: Sesión inválida o sin permisos.
         '500':
           description: Error interno del servidor.
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # VALIDACIÓN DE PERFIL (PRESELECCIÓN)
+  # Controlador: mundial.server.vista.rest.EtapaClienteController
+  # ──────────────────────────────────────────────────────────────────────────────
+  /etapa-cliente/cargarValidacionPerfil/{proceso_id}/{candidato_id}:
+    get:
+      tags:
+        - Preselección
+      summary: Carga la información de validación de perfil de un candidato.
+      description: |
+        Recupera el concepto y las observaciones de la validación del perfil de un candidato
+        en una requisición específica. También puede incluir información sobre el evaluador
+        delegado.
+      operationId: cargarValidacionPerfil
+      parameters:
+        - name: proceso_id
+          in: path
+          description: ID de la requisición (proceso).
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: candidato_id
+          in: path
+          description: ID del candidato.
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: cargarDelegado
+          in: query
+          description: Si `true`, la respuesta incluye información del evaluador delegado.
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          description: Información de la validación de perfil.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DTOValidacionPerfil'
+        '403':
+          description: Sesión inválida o sin permisos.
+
+  /etapa-cliente/guardarValidacionPerfil:
+    post:
+      tags:
+        - Preselección
+      summary: Guarda el concepto de la validación de perfil.
+      description: |
+        Guarda el concepto (ej. "Aceptado", "Rechazado") y las observaciones que un
+        evaluador realiza sobre el perfil de un candidato durante la etapa de preselección.
+      operationId: guardarValidacionPerfil
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - requisicion
+                - candidato
+                - etapa
+                - concepto
+              properties:
+                requisicion:
+                  type: integer
+                  format: int64
+                  description: ID de la requisición.
+                candidato:
+                  type: integer
+                  format: int64
+                  description: ID del candidato.
+                etapa:
+                  type: integer
+                  format: int64
+                  description: ID de la etapa (debe ser 3 para Preselección).
+                  example: 3
+                concepto:
+                  type: string
+                  description: Concepto emitido por el evaluador.
+                  example: "Aceptado"
+                observaciones:
+                  type: string
+                  description: Observaciones adicionales.
+      responses:
+        '200':
+          description: Concepto guardado exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "El concepto ha sido guardado exitosamente."
+        '400':
+          description: Parámetros inválidos.
+        '403':
+          description: Sesión inválida o sin permisos.
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # COMPATIBILIDAD CON IA (PRESELECCIÓN)
+  # Controlador: mundial.server.vista.rest.seleccion.PreseleccionController
+  # ──────────────────────────────────────────────────────────────────────────────
+  /preseleccion/compatibilidadPerfil/{candidato_id}/{requisicion_id}:
+    get:
+      tags:
+        - Preselección
+      summary: Obtiene la compatibilidad del perfil de un candidato con IA.
+      description: |
+        Consulta el servicio de IA para obtener el grado de compatibilidad y un análisis
+        detallado del perfil de un candidato frente a los requisitos de una requisición.
+      operationId: compatibilidadPerfil
+      parameters:
+        - name: candidato_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: requisicion_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Compatibilidad del perfil obtenida.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DTOCompatibilidadPerfil'
+        '400':
+          description: Error en la consulta de compatibilidad.
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # ACCIONES ADICIONALES (PRESELECCIÓN)
+  # ──────────────────────────────────────────────────────────────────────────────
+  /slc/encuestavacante/reenviarCorreoEncuesta:
+    post:
+      tags:
+        - Preselección
+      summary: Reenvía el correo de la encuesta de vacante.
+      operationId: reenviarCorreoEncuesta
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                requisicion:
+                  type: integer
+                  format: int64
+                candidato:
+                  type: integer
+                  format: int64
+      responses:
+        '200':
+          description: Correo reenviado.
+
+  /preseleccion/forzarCumplimiento:
+    post:
+      tags:
+        - Preselección
+      summary: Fuerza el cumplimiento de un requisito del perfil.
+      operationId: forzarCumplimiento
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/DTOForzarCumplimiento'
+      responses:
+        '200':
+          description: Cumplimiento forzado.
+
+  /seleccion/interesadoProceso/reenviarCorreoDelegado:
+    post:
+      tags:
+        - Preselección
+      summary: Reenvía el correo a un evaluador delegado.
+      operationId: reenviarCorreoDelegado
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                delegado:
+                  type: integer
+                  format: int64
+      responses:
+        '200':
+          description: Correo reenviado.
+
+  /seleccion/interesadoProceso/eliminarDelegado:
+    delete:
+      tags:
+        - Preselección
+      summary: Elimina la delegación de un evaluador.
+      operationId: eliminarDelegado
+      parameters:
+        - name: delegado
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Delegación eliminada.
+
+  /preseleccion/getAccessMatchAI:
+    get:
+      tags:
+        - Preselección
+      summary: Obtiene las credenciales para el servicio de compatibilidad de IA.
+      operationId: getAccessMatchAI
+      responses:
+        '200':
+          description: Credenciales de acceso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DTOAccessMatchAI'
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # DELEGADOS
+  # Controlador: mundial.server.vista.rest.seleccion.SlcInteresadoProcesoController
+  # ──────────────────────────────────────────────────────────────────────────────
+  /seleccion/interesadoProceso/listarInteresadosProcesoEsDelegado/{proceso}:
+    get:
+      tags:
+        - Preselección
+      summary: Lista interesados que pueden ser delegados para una etapa de un proceso.
+      description: >-
+        Retorna un listado paginado de usuarios que pueden ser asignados como delegados
+        para evaluar un candidato en una etapa específica. Puede ser filtrado por el nombre del usuario.
+      operationId: listarInteresadosProcesoEsDelegado
+      parameters:
+        - name: proceso
+          in: path
+          description: ID de la requisición (proceso).
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: etapa
+          in: query
+          description: ID de la etapa.
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: candidato
+          in: query
+          description: ID del candidato (opcional).
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: query
+          in: query
+          description: Filtro por nombre completo del usuario.
+          required: false
+          schema:
+            type: string
+        - name: start
+          in: query
+          description: Índice inicial para la paginación (offset).
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: Cantidad máxima de registros a retornar.
+          required: false
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: Listado de interesados que pueden ser delegados.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cantidad:
+                    type: integer
+                  datos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DTOInteresadoDelegado'
+        '403':
+          description: Sesión inválida o sin permisos.
+
+  /seleccion/interesadoProceso/delegarEtapa:
+    post:
+      tags:
+        - Preselección
+      summary: Delega una etapa a uno o varios evaluadores.
+      description: >-
+        Asigna uno o varios usuarios como delegados para evaluar a un candidato en
+        una etapa específica del proceso de selección.
+      operationId: delegarEtapa
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - requisicion
+                - candidato
+                - etapa
+                - defineContinuidad
+              properties:
+                requisicion:
+                  type: integer
+                  format: int64
+                candidato:
+                  type: integer
+                  format: int64
+                etapa:
+                  type: integer
+                  format: int64
+                defineContinuidad:
+                  type: boolean
+                delegado:
+                  type: integer
+                  format: int64
+                  description: ID de un único delegado (si se delega a uno solo).
+                codigosDelegados:
+                  type: string
+                  description: JSON array de IDs de delegados (si se delega a varios).
+                  example: "[123,456,789]"
+      responses:
+        '200':
+          description: Etapa delegada exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  delegadoEtapa:
+                    oneOf:
+                      - $ref: '#/components/schemas/SlcDelegadoEtapa'
+                      - type: array
+                        items:
+                          $ref: '#/components/schemas/SlcDelegadoEtapa'
+                  message:
+                    type: string
+        '400':
+          description: Parámetros inválidos.
+        '403':
+          description: Sesión inválida o sin permisos.
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # NOTAS INTERNAS DE HOJA DE VIDA
+  # Controlador: mundial.server.vista.rest.hv.HvNotasInternasController
+  # ──────────────────────────────────────────────────────────────────────────────
+  /hojas-vida/notas-internas/obtener/{codigoHv}:
+    get:
+      tags:
+        - Hojas de Vida
+      summary: Obtiene las notas internas de una Hoja de Vida.
+      description: |
+        Recupera las notas internas, el estado del candidato, las etiquetas,
+        la fuente de reclutamiento y otra información asociada a una Hoja de Vida.
+      operationId: obtenerNotasInternasHv
+      parameters:
+        - name: codigoHv
+          in: path
+          description: El identificador único de la Hoja de Vida.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Información de notas internas obtenida exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  datos:
+                    $ref: '#/components/schemas/DTOHvNotasInternas'
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # DESCARTE AUTOMÁTICO DE CANDIDATOS (PRESELECCIÓN)
+  # Controlador: mundial.server.vista.rest.PreseleccionController
+  # ──────────────────────────────────────────────────────────────────────────────
+  /previoDescarteAutomatico/{idRequisicion}/{tipo}/{valor}:
+    get:
+      tags:
+        - Preselección
+      summary: Previsualiza el resultado de un descarte automático.
+      description: |
+        Calcula y retorna cuántos candidatos serían descartados con una regla específica,
+        sin ejecutar la acción.
+      operationId: previoDescarteAutomatico
+      parameters:
+        - name: idRequisicion
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: tipo
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [POR_PORCENTUAL, POR_CANTIDAD]
+        - name: valor
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Resultado de la previsualización.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  nroPendientes:
+                    type: integer
+                  nroDescartados:
+                    type: integer
+                  nroQuedan:
+                    type: integer
+
+  /descarteAutomaticoCandidatos/{idRequisicion}/{tipo}/{valor}:
+    post:
+      tags:
+        - Preselección
+      summary: Ejecuta un descarte automático de candidatos.
+      description: |
+        Realiza el descarte de candidatos en la etapa de preselección según la
+        regla especificada (por porcentaje de ajuste o por cantidad).
+      operationId: descarteAutomaticoCandidatos
+      parameters:
+        - name: idRequisicion
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: tipo
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [POR_PORCENTUAL, POR_CANTIDAD]
+        - name: valor
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Operación de descarte exitosa.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        '400':
+          description: Tipo de descarte no válido.
+        '403':
+          description: Sesión inválida o sin permisos.
 
 components:
   securitySchemes:
@@ -1666,3 +2224,204 @@ components:
           description: >-
             Datos adicionales como ANS, tiempos transcurridos, sede y fecha de ocupación.
           additionalProperties: true
+
+    DTOInteresadoDelegado:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int64
+        nombrecompleto:
+          type: string
+        cargo:
+          type: string
+        area:
+          type: string
+
+    SlcDelegadoEtapa:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int64
+        requisicion:
+          type: integer
+          format: int64
+        candidato:
+          type: integer
+          format: int64
+        etapa:
+          type: integer
+          format: int64
+        interesadoProceso:
+          type: object
+          properties:
+            codigo:
+              type: integer
+              format: int64
+            nombreContactoInterno:
+              type: string
+        defineContinuidad:
+          type: boolean
+        ejecutado:
+          type: string
+          format: date-time
+          nullable: true
+        estado:
+          type: string
+
+
+    DTOValidacionPerfil:
+      type: object
+      properties:
+        datas:
+          type: object
+          properties:
+            concepto:
+              type: string
+            observaciones:
+              type: string
+        delegadoEtapa:
+          type: object
+        tieneEntrevista:
+          type: boolean
+
+    DTOCompatibilidadPerfil:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        datos:
+          type: object
+          properties:
+            overallMatchPercentage:
+              type: integer
+            overallMatchExplanation:
+              type: string
+            escolaridadPriorizadaMeets:
+              type: boolean
+            escolaridadPriorizadaWhy:
+              type: string
+
+    DTOForzarCumplimiento:
+      type: object
+      properties:
+        itemValor:
+          type: string
+        cumple:
+          type: boolean
+        requisicion:
+          type: integer
+          format: int64
+        candidato:
+          type: integer
+          format: int64
+
+    DTOAccessMatchAI:
+      type: object
+      properties:
+        tenant:
+          type: string
+        confIAMatch:
+          type: object
+          properties:
+            apiUrl:
+              type: string
+            apiKey:
+              type: string
+
+    DTOHvNotasInternas:
+      type: object
+      properties:
+        notas:
+          type: string
+        codigoEstadoCandidato:
+          type: integer
+          format: int64
+        nombreEstadoCandidato:
+          type: string
+        mensajeUltimaActulizacion:
+          type: string
+        tipoFuenteReclutamiento:
+          type: integer
+        fuenteColaborador:
+          $ref: '#/components/schemas/UsuarioSimple'
+        fuenteOtro:
+          type: string
+        fuenteNombre:
+          type: string
+        fuenteEmpresa:
+          type: string
+        fuenteTelefono:
+          type: string
+        fuenteCorreo:
+          type: string
+        fuentePersonaInterna:
+          type: boolean
+        aspiracionSalarial:
+          type: number
+          format: float
+        registroAspiracionSalarial:
+          type: string
+        movilidadObservaciones:
+          type: string
+        salarioActual:
+          type: number
+          format: float
+        disponibilidadIngreso:
+          $ref: '#/components/schemas/ReferenciaSimple'
+        movilidadCiudades:
+          $ref: '#/components/schemas/ReferenciaSimple'
+        fechaRegistroSalarioActual:
+          type: integer
+          format: int64
+        fechaDisponibilidadIngreso:
+          type: integer
+          format: int64
+        etiquetas:
+          type: array
+          items:
+            type: string
+        licenciaTieneDesarrollo:
+          type: boolean
+        riesgoPerdidaBandera:
+          type: string
+        riesgoPerdidaBanderaRango:
+          type: string
+        riesgoPerdidaBanderaValor:
+          type: integer
+        criticoBandera:
+          type: string
+        criticoBanderaRango:
+          type: string
+        criticoBanderaValor:
+          type: integer
+
+    UsuarioSimple:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int64
+        nombrecompleto:
+          type: string
+
+    ReferenciaSimple:
+      type: object
+      properties:
+        codigo:
+          type: integer
+        nombre:
+          type: string
+
+    DTOAprobacionMasivaResultado:
+      type: object
+      properties:
+        candidatosProcesados:
+          type: integer
+        candidatosAprobados:
+          type: integer
+        candidatosFallidos:
+          type: integer
