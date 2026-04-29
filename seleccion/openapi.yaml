@@ -62,9 +62,12 @@ tags:
     description: >-
       Endpoints relacionados con la gestión de Hojas de Vida, incluyendo notas internas
       y otra información relevante del candidato.
+  - name: Filtro Telefónico
+    description: >-
+      Endpoints para la etapa de Filtro Telefónico (etapa 4), donde se registra
+      la información de la llamada y se gestiona la delegación.
 
-paths:
-  # ──────────────────────────────────────────────────────────────────────────────
+paths:  # ──────────────────────────────────────────────────────────────────────────────
   # ENDPOINT PRINCIPAL
   # Controlador: mundial.server.vista.rest.RequisicionController
   # ──────────────────────────────────────────────────────────────────────────────
@@ -1732,6 +1735,66 @@ paths:
         '403':
           description: Sesión inválida o sin permisos.
 
+  # ──────────────────────────────────────────────────────────────────────────────
+  # FILTRO TELEFÓNICO
+  # Controlador: mundial.server.vista.rest.FiltroTelefonicoController
+  # ──────────────────────────────────────────────────────────────────────────────
+  /filtrotelefonico/guardar:
+    post:
+      tags:
+        - Filtro Telefónico
+      summary: Guarda los datos del filtro telefónico para un candidato.
+      operationId: guardarFiltroTelefonico
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DTOFiltroTelefonico'
+      responses:
+        '200':
+          description: Datos guardados exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+
+  /filtrotelefonico/obtenerInfo:
+    get:
+      tags:
+        - Filtro Telefónico
+      summary: Obtiene los datos del filtro telefónico de un candidato.
+      operationId: obtenerInfoFiltroTelefonico
+      parameters:
+        - name: idCandidato
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: idRequisicion
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Datos del filtro telefónico.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/DTOFiltroTelefonico'
+
 components:
   securitySchemes:
     bearerAuth:
@@ -2425,3 +2488,29 @@ components:
           type: integer
         candidatosFallidos:
           type: integer
+
+    DTOFiltroTelefonico:
+      type: object
+      required:
+        - idCandidato
+        - idRequisicion
+        - aspiracionSalarial
+        - observaciones
+      properties:
+        idCandidato:
+          type: integer
+          format: int64
+        idRequisicion:
+          type: integer
+          format: int64
+        aspiracionSalarial:
+          type: number
+          format: float
+        observaciones:
+          type: string
+        experienciaConocimiento:
+          type: string
+        informacionPersonal:
+          type: string
+        informacionSalarioActual:
+          type: string
