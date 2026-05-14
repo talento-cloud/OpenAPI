@@ -1,0 +1,3415 @@
+openapi: 3.0.0
+info:
+  title: API Seleccion
+  description: >-
+    Contiene servicios web con endpoints pensados para uso de cliente externo a talento, para consultar procesos aprobados en el módulo de selección y tambien para consultar el detalle de un proceso, para poder usarlos debe primero autenticarse con el client_id y client_secret que talento cloud les suministrará
+
+    ## Manejo de errores
+
+
+        Los errores habituales pueden incluir:
+
+
+        - `400 Bad Request`: Parámetros requeridos faltantes o con formato
+        inválido.
+            
+        - `401 Unauthorized`: Token JWT inválido, expirado o ausente.
+            
+        - `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.
+            
+        - `404 Not Found`: El recurso solicitado no existe.
+            
+        - `500 Internal Server Error`: Error inesperado en el servidor.
+            
+
+        Cuando sea posible, cada endpoint detallará sus códigos de error
+        específicos y estructura de respuesta en su propia descripción.  
+  contact: {}
+  version: '1.0'
+servers:
+- url: https://clientex.talento.cloud/api/html
+  description: Servidor de producción     
+- url: https://clientex.talento-dev.cloud/api/html
+  description: Servidor de pruebas
+  variables: {}
+paths:
+  /oauth2/token/{tenant}.json:
+    post:
+      tags:
+      - Selección
+      summary: oauth2
+      description: >-
+        Para generar JWT que se usará en las siguientes peticiones, este tiene un TTL de 15 minutos.
+
+        ## Ejemplo petición con curl:
+
+        ```bash
+
+        curl -X POST https://clientex.talento.cloud/api/html/oauth2/token/landers.json \
+          -H "Content-Type: application/x-www-form-urlencoded" \          
+          -d "grant_type=client_credentials" \
+          -d "client_id=mi-id" \
+          -d "client_secret=mi-secreto" \
+          -d "scope=talento.seleccion.read"
+
+        ```
+
+        ## Ejemplo uso token generado:
+
+        ```bash
+
+        curl -X POST https://clientex.talento.cloud/api/v1/servicex  \
+          -H "Authorization: Bearer eyJhbGci..."
+
+        ```      
+      operationId: oauth2
+      parameters:
+        - name: tenant
+          in: path
+          description: Nombre del tenant, y para la empresa Landers sería landers
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            encoding: {}
+            schema:
+              required:
+              - client_id
+              - client_secret
+              - grant_type
+              - scope
+              type: object
+              properties:
+                client_id:
+                  type: string
+                  description: El client_id que talento cloud les suministra
+                  example: 97b7ff796138dfafd06b6820yyyy
+                client_secret:
+                  type: string
+                  description: El client_secret que talento cloud les suministra
+                  example: 430ca6bcb26f352b8f9e0c0e42f6a95e83d808cb17d5dxxxxx
+                grant_type:
+                  type: string
+                  description: Por defecto client_credentials
+                  example: client_credentials
+                scope:
+                  type: string
+                  description: Por defecto talento.read
+                  example: talento.seleccion.read
+        required: false
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/oauth2'
+                - example:
+                    acces_token: eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0YWxlbnRvLnNlbGVjxxx
+                    token_type: Bearer
+                    expires_in: 900
+                    success: true
+                    scope: talento.seleccion.read
+              example:
+                acces_token: eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0YWxlbnRvLnNlbGVjY2lvbxxxx
+                token_type: Bearer
+                expires_in: 900
+                success: true
+                scope: talento.seleccion.read
+      deprecated: false
+      security: []
+  /v2/slc/requisiciones/get.json:
+    get:
+      tags:
+      - Selección
+      summary: listaRequisiciones
+      description: Retorna todos los procesos de selección **aprobados,** de forma paginada
+      operationId: listaRequisiciones
+      parameters:
+      - name: start
+        in: query
+        description: Por defecto 0
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          example: 0
+      - name: limit
+        in: query
+        description: Por defecto 100, máximo 100
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          example: 10
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/listaRequisiciones'
+                - example:
+                    data:
+                    - codigo: 211
+                      seleccionados: 0
+                      cargo: Analista Desarrollador
+                      etapa_seleccion: Aprobación
+                      solitante: Juan Fernando Osorio Ospina
+                    - codigo: 210
+                      seleccionados: 0
+                      cargo: Auxiliar de tesorería
+                      etapa_seleccion: Aprobación
+                      solitante: Juan Fernando Osorio Ospina
+                    - codigo: 209
+                      seleccionados: 3
+                      cargo: Coordinador de Calidad
+                      etapa_seleccion: Cierre
+                      solitante: Juan Fernando Osorio Ospina
+                    - codigo: 208
+                      seleccionados: 1
+                      cargo: Ingeniero(a) de sistemas
+                      etapa_seleccion: Cierre
+                      solitante: Juan Fernando Osorio Ospina
+                    - codigo: 207
+                      seleccionados: 1
+                      cargo: 'Director Gestion '
+                      etapa_seleccion: Cierre
+                      solitante: Juan Fernando Osorio Ospina
+                    - codigo: 206
+                      seleccionados: 0
+                      cargo: Asistente de tecnología
+                      etapa_seleccion: Filtro telefónico
+                      solitante: Juan Fernando Osorio Ospina
+                    - codigo: 205
+                      seleccionados: 1
+                      cargo: Auxiliar de tesorería
+                      etapa_seleccion: Cierre
+                      solitante: Blanca Ruiz Suarez
+                    - codigo: 204
+                      seleccionados: 0
+                      cargo: Asistente de tecnología
+                      etapa_seleccion: Cierre
+                      solitante: Juan Fernando Osorio Ospina
+                    - codigo: 203
+                      seleccionados: 0
+                      cargo: Auxiliar de Operaciones
+                      etapa_seleccion: Preselección
+                      solitante: Juan Fernando Osorio Ospina
+                    - codigo: 202
+                      seleccionados: 0
+                      cargo: Auxiliar de Operaciones
+                      etapa_seleccion: Preselección
+                      solitante: Juan Fernando Osorio Ospina
+                    success: true
+                    total: 62
+              example:
+                data:
+                - codigo: 211
+                  seleccionados: 0
+                  cargo: Analista Desarrollador
+                  etapa_seleccion: Aprobación
+                  solitante: Juan Fernando Osorio Ospina
+                - codigo: 210
+                  seleccionados: 0
+                  cargo: Auxiliar de tesorería
+                  etapa_seleccion: Aprobación
+                  solitante: Juan Fernando Osorio Ospina
+                - codigo: 209
+                  seleccionados: 3
+                  cargo: Coordinador de Calidad
+                  etapa_seleccion: Cierre
+                  solitante: Juan Fernando Osorio Ospina
+                - codigo: 208
+                  seleccionados: 1
+                  cargo: Ingeniero(a) de sistemas
+                  etapa_seleccion: Cierre
+                  solitante: Juan Fernando Osorio Ospina
+                - codigo: 207
+                  seleccionados: 1
+                  cargo: 'Director Gestion '
+                  etapa_seleccion: Cierre
+                  solitante: Juan Fernando Osorio Ospina
+                - codigo: 206
+                  seleccionados: 0
+                  cargo: Asistente de tecnología
+                  etapa_seleccion: Filtro telefónico
+                  solitante: Juan Fernando Osorio Ospina
+                - codigo: 205
+                  seleccionados: 1
+                  cargo: Auxiliar de tesorería
+                  etapa_seleccion: Cierre
+                  solitante: Blanca Ruiz Suarez
+                - codigo: 204
+                  seleccionados: 0
+                  cargo: Asistente de tecnología
+                  etapa_seleccion: Cierre
+                  solitante: Juan Fernando Osorio Ospina
+                - codigo: 203
+                  seleccionados: 0
+                  cargo: Auxiliar de Operaciones
+                  etapa_seleccion: Preselección
+                  solitante: Juan Fernando Osorio Ospina
+                - codigo: 202
+                  seleccionados: 0
+                  cargo: Auxiliar de Operaciones
+                  etapa_seleccion: Preselección
+                  solitante: Juan Fernando Osorio Ospina
+                success: true
+                total: 62
+      deprecated: false
+  /v2/slc/requisiciones/get/{codProceso}.json:
+    get:
+      tags:
+      - Selección
+      summary: detalleRequisicion
+      description: Retorna la información de una requisición específica
+      operationId: detalleRequisicion
+      parameters:
+        - name: codProceso
+          in: path
+          description: Código de proceso de selección
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/detalleRequisicion'
+                - example:
+                    data:
+                      misionCargo: "Coordinar los aspectos administrativos y de control al interior de la organización en el marco de la\nimplementación y posterior mantención del Sistema de Gestión de Calidad, de acuerdo con los\nrequisitos de las normas ISO 9001:2008, para todos los Sistemas de Calidad de los Programas de\nMejoramiento de la Gestión "
+                      aprobaciones: []
+                      recursos:
+                      - codigo: 489
+                        recurso: 28
+                        nombreRecurso: "Diadema \U0001F3A7"
+                        cantidad: 1
+                        descripcion: Diadema con micrófono de cancelación de ruido para mejorar la calidad de llamadas y videoconferencias.
+                        categoria: Equipos de Comunicación
+                        requisicion: 209
+                        notificar: 0
+                        codRecursoCandidato: null
+                        codCandidato: null
+                      requisicion:
+                        codigo: 209
+                        fechaCreacion: 2025-09-19 14:52:54
+                        fechaModificacion: N/A
+                        fechaCancelacion: null
+                        codigoCargo: 92
+                        nombreCargo: Coordinador de Calidad
+                        cargoExterno: null
+                        codigoCargoJefe: 96
+                        nombreCargoJefe: Director de Operaciones
+                        codigoUsuarioSolicitante: 1
+                        nombreUsuarioSolicitante: Juan Fernando Osorio Ospina
+                        nroRequisicion: 209
+                        estadoRequisicion: 20
+                        estadoProceso: 7
+                        nombreEstadoProceso: Cierre
+                        nombreMacroEstado: null
+                        nombreEtapaProceso: Cierre
+                        estadoRequisicionStr: Cierre
+                        estadoProcesoStr: null
+                        codigoMotivo: 2
+                        motivo: Convocatoria
+                        codigoTipoVinculacion: 1564
+                        tipoVinculacion: Contrato de aprendizaje
+                        nroVacantes: 3
+                        ans: 158/0
+                        eliminar: null
+                        justificacion: 'eg dfg sdfg sdf sgdf '
+                        duracionDias: '333'
+                        salarioMensual: Según experiencia
+                        observacionesAdicionales: Sin observaciones adicionales
+                        recibeCompensacion: false
+                        fechaHumana: 19 de sep 2025
+                        nombreRegional: Antioquia
+                        disponibilidadViajar: false
+                        rotacionTurnos: false
+                        tipoConvocatoria: MIXTA
+                        codigoCentroCostos: null
+                        nombreCentroCostos: null
+                        edadDesde: 12
+                        edadhasta: 88
+                        codigoSede: 1
+                        nombreSede: Medellín
+                        nombreCiudad: Medellin
+                        compensacionVariable: null
+                        codigoAprobacion: null
+                        codigoAprobador: null
+                        fechaAprobacion: 19 de sep 2025
+                        concepto: null
+                        comentario: null
+                        tipoAprobador: null
+                        fechaEstimada: 30/01/2027
+                        personaReemplaza: null
+                        nombrePersonaReemplaza: null
+                        nombresPersonasReemplazaHtml: null
+                        personasReemplazar: []
+                        personaEvaluar: null
+                        jornadaLaboral: 1549
+                        nombreJornadaLaboral: No definido
+                        ansTipoCargo: 0
+                        ansDiasLider: null
+                        ansDiasPsicologo: null
+                        ansPrioridadLiderTxt: null
+                        ansPrioridadPsicologoTxt: null
+                        ansPrioridadLider: null
+                        ansPrioridadPsicologo: null
+                        tipoProcesoSeleccion: null
+                        tipoProcesoSeleccionTxt: null
+                        familiaCargo: null
+                        familiaCargoTxt: null
+                        especialidad: null
+                        especialidadTxt: null
+                        perfil: null
+                        perfilTxt: null
+                        lider: null
+                        liderTxt: null
+                        tecnologiaSophos: null
+                        tecnologiaSophosTxt: null
+                        nombreArea: N/A
+                        nombreJefe: null
+                        codigoResponsableProceso: null
+                        nombreResponsableProceso: null
+                        responsablesProceso: null
+                        trvIdiomaRequisicion: []
+                        avanceANS: 0
+                        diasTranscurridos: 158
+                        vicepresidencia: Procesos
+                        hash: 1ae24d72-7795-4501-9659-31f5d480079f
+                        codigoJefeInmediato: 1
+                        jefeInmediato: Juan Fernando Osorio Ospina
+                        codigoVicepresidencia: 8
+                        nombreVicepresidencia: Procesos
+                        codigoNegocio: 1
+                        nombreNegocio: Desarrollo de Software
+                        codigoUen: 6
+                        nombreUen: UEN App Moviles
+                        codigoEmpresa: 1
+                        nombreEmpresa: talento cloud
+                        corporativo: false
+                        genero: INDIFERENTE
+                        vehiculo: null
+                        diasTotales: null
+                        tipoRequisicion: 2
+                        tipoReglaRequisicion: 24
+                        nombreReglaRequisicion: Sin aprobacion
+                        fechaCierreRequicision: Hoy
+                        codigoEntrevistadorGH: null
+                        nombreEntrevistadorGH: null
+                        codigoEncargadoExamenMedico: null
+                        experiencia: 36
+                        experienciaAnios: 3
+                        experienciaMes: 0
+                        nombreAprobador: null
+                        cliente: ''
+                        codigoProyecto: ''
+                        banda: ''
+                        escolaridad: '4'
+                        codigoEscolaridad: 4
+                        nombreEscolaridad: 'Profesional                   '
+                        estadoEscolaridad: null
+                        etapasConfiguradas: false
+                        descripcion: ' '
+                        tipoProceso: Sin aprobacion
+                        tiempoMinimoPermanencia: 0
+                        empresaSolicitante: null
+                        tarifa: ''
+                        perfilAspirante: "Asegurarse de que se establecen, implementan y mantienen los procesos necesarios para el sistema de gestión de la calidad e inocuidad.\nGarantizar el cumplimiento de las metas programadas para el sistema de calidad\ne inocuidad.\nEjecutar y llevar el seguimiento a los aspectos ambientales y programas de gestión ambiental de la empresa.\nVerificar el cumplimiento de las Buenas Prácticas de Manufactura en toda la\nplanta, tanto a nivel de los productos fabricados, como a nivel del funcionamiento\nde las áreas de producción - 36 meses, \n"
+                        valorProceso: ''
+                        confidencialidad: ''
+                        fechaOcupacionCargo: 1801198800000
+                        observacionesProceso: gsdf gsdf gsdf sgdf g
+                        centroCostosNombre: null
+                        descripcionJefe: ' '
+                        observacionesJornada: ' '
+                        alcanceCargoFK: null
+                        nombreAlcanceCargo: null
+                        infoRelevanteJefe: ' '
+                        infoRelevanteComercial: ' '
+                        politicasContratacion: ' '
+                        preferenciasAspirante: ' '
+                        nivelIdioma: null
+                        idioma: null
+                        avanceProceso: 0.727272748947144
+                        paMisionCargo: "Coordinar los aspectos administrativos y de control al interior de la organización en el marco de la\nimplementación y posterior mantención del Sistema de Gestión de Calidad, de acuerdo con los\nrequisitos de las normas ISO 9001:2008, para todos los Sistemas de Calidad de los Programas de\nMejoramiento de la Gestión "
+                        paRetoCargo: ' '
+                        paResponsabilidadCargo: ' '
+                        paIndicadores: ' '
+                        paPresupuestoArea: ' '
+                        formacionComplementaria: ''
+                        funcionesCargo: ' '
+                        tipoExperiencia: ''
+                        conocimientosTecnicosHtml: <br/>-AAA Pruebas Varias<br/>-NodeJS<br/>-Linux Scripting<br/>-Java<br/>-Comunicación asertiva<br/>
+                        conocimientosTecnicos:
+                        - codigo: 221
+                          nombre: AAA Pruebas Varias
+                        - codigo: 138
+                          nombre: NodeJS
+                        - codigo: 137
+                          nombre: Linux Scripting
+                        - codigo: 140
+                          nombre: Java
+                        - codigo: 133
+                          nombre: Comunicación asertiva
+                        competenciasFuncionales:
+                        - codigo: 89
+                          nombre: Administración y gestión de recursos
+                        - codigo: 90
+                          nombre: Análisis numérico
+                        - codigo: 101
+                          nombre: Comunicación
+                        - codigo: 97
+                          nombre: Calidad en el trabajo
+                        competenciasCorporativas:
+                        - codigo: 150
+                          nombre: Trabajo en equipo
+                        - codigo: 292
+                          nombre: Pruebas react
+                        - codigo: 149
+                          nombre: Promotor de los valores y la ética
+                        - codigo: 148
+                          nombre: Planeación, organización y control
+                        - codigo: 147
+                          nombre: Orientación al servicio al cliente
+                        - codigo: 146
+                          nombre: Experiencia y conocimientos técnicos
+                        - codigo: 100
+                          nombre: Empatía
+                        - codigo: 145
+                          nombre: Comunicación
+                        - codigo: 96
+                          nombre: Capacidad de aprendizaje
+                        - codigo: 91
+                          nombre: Análisis y resolución de problemas
+                        - codigo: 88
+                          nombre: Adaptación y flexibilidad
+                        - codigo: 86
+                          nombre: Adaptación al cambio2
+                        titulosAcademicosHtml: Ninguna                       /Administración de sistemas informáticos<br/>
+                        titulosAcademicos:
+                        - codigo: 26
+                          nombre: Administración de sistemas informáticos
+                        nombreIdioma: null
+                        nombreNivelIdioma: null
+                        codPlantilla: 2
+                        plantillaEditable: true
+                        editable: false
+                        editableConPermiso: false
+                        nroHojasVidasExternas: 0
+                        infVacanteAuxilioRodamiento: 'null'
+                        infVacanteArea: 'null'
+                        infVacanteTipoSalario: 'null'
+                        fuePublicada: true
+                        nroSolicitudERP: ''
+                        codCandidatoBuscado: null
+                        candidatoEncontrado: false
+                        calendario: COLOMBIA
+                        competenciasCorporativasHtml: null
+                        competenciasFuncionalesHtml: null
+                        afinacion: null
+                        instruccionesIA: '{"idiomas":"medio","observaciones_adicionales":"Que viva en medellin es lo mejor","experiencia_laboral":"alto","nivel_educacion":"alto","ciudad":"medio","genero":"medio","disponibilidad_viajar":"bajo","descripcion_funciones_puesto":"irrelevante","titulos_academicos":"medio","expectativa_salarial":"medio","habilidades_especificas":"bajo","edad":"bajo"}'
+                        label: 209 - Coordinador de Calidad
+                        disponibilidadViajarAlt: false
+                        rotacionTurnosAlt: false
+                        nombreEmpresaSolicitante: N/A
+                        aprobador: null
+                      publicacion:
+                        estadoPublicacion: PUBLICADO
+                        cargo: Coordinador de Calidad
+                        codigo: 209
+                        publicada: true
+                        tipoConvocatoria: MIXTA
+                        experiencia: 36
+                        experienciaAnios: 3
+                        experienciaMeses: 0
+                        nombreTipoVinculacion: Contrato de aprendizaje
+                        codigoTipoVinculacion: 1564
+                        salario: Según experiencia
+                        salarioPublico: '5000000'
+                        nombreHorario: No definido
+                        codigoHorario: 1549
+                        funciones: >+
+                          Asesorar al Representante de la Dirección en la planeación, mantenimiento y perfeccionamiento del Sistema de Gestión de Calidad..
+
+                          Planear, dirigir y organizar las actividades necesarias para la implantación y mejora del Sistema de Gestión de Calidad..
+
+                          Mantener, Actualizar y Soportar todos los procesos del Sistema de Gestión de Calidad en la empresa  .
+
+                        conocimeintos: "<br/>-Comunicación asertiva \r<br/>-Java \r<br/>-Linux Scripting \r<br/>-NodeJS \r<br/>"
+                        fechaCreacion: 2025-09-19 14:52:54.539
+                        nroRequisicion: '209'
+                        fechaCierre: 31-07-2027
+                        fechaCierreD: 1817096399000
+                        fechaCierreDia: 31
+                        fechaCierreMes: 7
+                        fechaCierreAnio: 2027
+                        fechaCierreHumana: 31 de julio de 2027
+                        fechaQueda: (Quedan 443 dias, 8 horas)
+                        sede: null
+                        ciudad: null
+                        nroVacantes: null
+                        escolaridad: 4
+                        fechaIngreso: 2027-01-30 00:00:00.0
+                        fechaIngresoD: 1801285200000
+                        fechaIngresoDia: 30
+                        fechaIngresoMes: 1
+                        fechaIngresoAnio: 2027
+                        estadoEducacion: GRADUADO
+                        paraElEmpleo: false
+                        paraComputrabajo: false
+                        paraTicJob: false
+                        errorElEmpleo: null
+                        errorComputrabajo: null
+                        errorTicJob: null
+                        aplicado: 0
+                        eeTitulo: Coordinador de Calidad
+                        eeDescripcion: "Gestión del talento > Desarrollo > Comunicación asertiva, \r\nSistemas de información > Lenguajes > Java, \r\nSistemas de información > Sistemas Operativos > Linux Scripting, \r\nSistemas de información > Lenguajes > NodeJS, \r\n"
+                        eeRequerimientos: >+
+                          Asesorar al Representante de la Dirección en la planeación, mantenimiento y perfeccionamiento del Sistema de Gestión de Calidad..
+
+                          Planear, dirigir y organizar las actividades necesarias para la implantación y mejora del Sistema de Gestión de Calidad..
+
+                          Mantener, Actualizar y Soportar todos los procesos del Sistema de Gestión de Calidad en la empresa  .
+
+                        eePublicarNombre: null
+                        eePublicarEmpresarial: null
+                        eeIntensidadHoraria: null
+                        eePositionSublevel: null
+                        eePosition: null
+                        eeProfession: null
+                        eeWorkArea: null
+                        eeSector: null
+                        eeCity: null
+                        eeSalary: '34'
+                        tjReferencia: null
+                        tjLanguage: null
+                        tjTitle: Coordinador de Calidad
+                        tjKeywords: null
+                        tjLocation: null
+                        tjHtmlcontent: null
+                        tjSkills: null
+                        tjExperience: null
+                        tjStudyLevel: null
+                        tjJobMode: null
+                        tjJobType: null
+                        tjJobDuration: null
+                        tjJobLocation: null
+                        titulosAcademicosHtml: null
+                        titulosAcademicos:
+                        - codigo: 26
+                          nombre: Administración de sistemas informáticos
+                        formacionComplementaria: null
+                        tipoExperiencia: null
+                        informacion: La cosa nostra a usar
+                        usuarioReapertura: Desconocido
+                        fechaReapertura: null
+                        ansTipoCargo: null
+                        ansDiasLider: null
+                        ansDiasPsicologo: null
+                        ansPrioridadLiderTxt: null
+                        ansPrioridadPsicologoTxt: null
+                        ansPrioridadLider: null
+                        ansPrioridadPsicologo: null
+                        rangoSalarioID: null
+                        rangoSalarioName: null
+                        encuestaVacanteCodigo: null
+                        encuestaVacanteNombre: null
+                    success: true
+              example:
+                data:
+                  misionCargo: "Coordinar los aspectos administrativos y de control al interior de la organización en el marco de la\nimplementación y posterior mantención del Sistema de Gestión de Calidad, de acuerdo con los\nrequisitos de las normas ISO 9001:2008, para todos los Sistemas de Calidad de los Programas de\nMejoramiento de la Gestión "
+                  aprobaciones: []
+                  recursos:
+                  - codigo: 489
+                    recurso: 28
+                    nombreRecurso: "Diadema \U0001F3A7"
+                    cantidad: 1
+                    descripcion: Diadema con micrófono de cancelación de ruido para mejorar la calidad de llamadas y videoconferencias.
+                    categoria: Equipos de Comunicación
+                    requisicion: 209
+                    notificar: 0
+                    codRecursoCandidato: null
+                    codCandidato: null
+                  requisicion:
+                    codigo: 209
+                    fechaCreacion: 2025-09-19 14:52:54
+                    fechaModificacion: N/A
+                    fechaCancelacion: null
+                    codigoCargo: 92
+                    nombreCargo: Coordinador de Calidad
+                    cargoExterno: null
+                    codigoCargoJefe: 96
+                    nombreCargoJefe: Director de Operaciones
+                    codigoUsuarioSolicitante: 1
+                    nombreUsuarioSolicitante: Juan Fernando Osorio Ospina
+                    nroRequisicion: 209
+                    estadoRequisicion: 20
+                    estadoProceso: 7
+                    nombreEstadoProceso: Cierre
+                    nombreMacroEstado: null
+                    nombreEtapaProceso: Cierre
+                    estadoRequisicionStr: Cierre
+                    estadoProcesoStr: null
+                    codigoMotivo: 2
+                    motivo: Convocatoria
+                    codigoTipoVinculacion: 1564
+                    tipoVinculacion: Contrato de aprendizaje
+                    nroVacantes: 3
+                    ans: 158/0
+                    eliminar: null
+                    justificacion: 'eg dfg sdfg sdf sgdf '
+                    duracionDias: '333'
+                    salarioMensual: Según experiencia
+                    observacionesAdicionales: Sin observaciones adicionales
+                    recibeCompensacion: false
+                    fechaHumana: 19 de sep 2025
+                    nombreRegional: Antioquia
+                    disponibilidadViajar: false
+                    rotacionTurnos: false
+                    tipoConvocatoria: MIXTA
+                    codigoCentroCostos: null
+                    nombreCentroCostos: null
+                    edadDesde: 12
+                    edadhasta: 88
+                    codigoSede: 1
+                    nombreSede: Medellín
+                    nombreCiudad: Medellin
+                    compensacionVariable: null
+                    codigoAprobacion: null
+                    codigoAprobador: null
+                    fechaAprobacion: 19 de sep 2025
+                    concepto: null
+                    comentario: null
+                    tipoAprobador: null
+                    fechaEstimada: 30/01/2027
+                    personaReemplaza: null
+                    nombrePersonaReemplaza: null
+                    nombresPersonasReemplazaHtml: null
+                    personasReemplazar: []
+                    personaEvaluar: null
+                    jornadaLaboral: 1549
+                    nombreJornadaLaboral: No definido
+                    ansTipoCargo: 0
+                    ansDiasLider: null
+                    ansDiasPsicologo: null
+                    ansPrioridadLiderTxt: null
+                    ansPrioridadPsicologoTxt: null
+                    ansPrioridadLider: null
+                    ansPrioridadPsicologo: null
+                    tipoProcesoSeleccion: null
+                    tipoProcesoSeleccionTxt: null
+                    familiaCargo: null
+                    familiaCargoTxt: null
+                    especialidad: null
+                    especialidadTxt: null
+                    perfil: null
+                    perfilTxt: null
+                    lider: null
+                    liderTxt: null
+                    tecnologiaSophos: null
+                    tecnologiaSophosTxt: null
+                    nombreArea: N/A
+                    nombreJefe: null
+                    codigoResponsableProceso: null
+                    nombreResponsableProceso: null
+                    responsablesProceso: null
+                    trvIdiomaRequisicion: []
+                    avanceANS: 0
+                    diasTranscurridos: 158
+                    vicepresidencia: Procesos
+                    hash: 1ae24d72-7795-4501-9659-31f5d480079f
+                    codigoJefeInmediato: 1
+                    jefeInmediato: Juan Fernando Osorio Ospina
+                    codigoVicepresidencia: 8
+                    nombreVicepresidencia: Procesos
+                    codigoNegocio: 1
+                    nombreNegocio: Desarrollo de Software
+                    codigoUen: 6
+                    nombreUen: UEN App Moviles
+                    codigoEmpresa: 1
+                    nombreEmpresa: talento cloud
+                    corporativo: false
+                    genero: INDIFERENTE
+                    vehiculo: null
+                    diasTotales: null
+                    tipoRequisicion: 2
+                    tipoReglaRequisicion: 24
+                    nombreReglaRequisicion: Sin aprobacion
+                    fechaCierreRequicision: Hoy
+                    codigoEntrevistadorGH: null
+                    nombreEntrevistadorGH: null
+                    codigoEncargadoExamenMedico: null
+                    experiencia: 36
+                    experienciaAnios: 3
+                    experienciaMes: 0
+                    nombreAprobador: null
+                    cliente: ''
+                    codigoProyecto: ''
+                    banda: ''
+                    escolaridad: '4'
+                    codigoEscolaridad: 4
+                    nombreEscolaridad: 'Profesional                   '
+                    estadoEscolaridad: null
+                    etapasConfiguradas: false
+                    descripcion: ' '
+                    tipoProceso: Sin aprobacion
+                    tiempoMinimoPermanencia: 0
+                    empresaSolicitante: null
+                    tarifa: ''
+                    perfilAspirante: "Asegurarse de que se establecen, implementan y mantienen los procesos necesarios para el sistema de gestión de la calidad e inocuidad.\nGarantizar el cumplimiento de las metas programadas para el sistema de calidad\ne inocuidad.\nEjecutar y llevar el seguimiento a los aspectos ambientales y programas de gestión ambiental de la empresa.\nVerificar el cumplimiento de las Buenas Prácticas de Manufactura en toda la\nplanta, tanto a nivel de los productos fabricados, como a nivel del funcionamiento\nde las áreas de producción - 36 meses, \n"
+                    valorProceso: ''
+                    confidencialidad: ''
+                    fechaOcupacionCargo: 1801198800000
+                    observacionesProceso: gsdf gsdf gsdf sgdf g
+                    centroCostosNombre: null
+                    descripcionJefe: ' '
+                    observacionesJornada: ' '
+                    alcanceCargoFK: null
+                    nombreAlcanceCargo: null
+                    infoRelevanteJefe: ' '
+                    infoRelevanteComercial: ' '
+                    politicasContratacion: ' '
+                    preferenciasAspirante: ' '
+                    nivelIdioma: null
+                    idioma: null
+                    avanceProceso: 0.727272748947144
+                    paMisionCargo: "Coordinar los aspectos administrativos y de control al interior de la organización en el marco de la\nimplementación y posterior mantención del Sistema de Gestión de Calidad, de acuerdo con los\nrequisitos de las normas ISO 9001:2008, para todos los Sistemas de Calidad de los Programas de\nMejoramiento de la Gestión "
+                    paRetoCargo: ' '
+                    paResponsabilidadCargo: ' '
+                    paIndicadores: ' '
+                    paPresupuestoArea: ' '
+                    formacionComplementaria: ''
+                    funcionesCargo: ' '
+                    tipoExperiencia: ''
+                    conocimientosTecnicosHtml: <br/>-AAA Pruebas Varias<br/>-NodeJS<br/>-Linux Scripting<br/>-Java<br/>-Comunicación asertiva<br/>
+                    conocimientosTecnicos:
+                    - codigo: 221
+                      nombre: AAA Pruebas Varias
+                    - codigo: 138
+                      nombre: NodeJS
+                    - codigo: 137
+                      nombre: Linux Scripting
+                    - codigo: 140
+                      nombre: Java
+                    - codigo: 133
+                      nombre: Comunicación asertiva
+                    competenciasFuncionales:
+                    - codigo: 89
+                      nombre: Administración y gestión de recursos
+                    - codigo: 90
+                      nombre: Análisis numérico
+                    - codigo: 101
+                      nombre: Comunicación
+                    - codigo: 97
+                      nombre: Calidad en el trabajo
+                    competenciasCorporativas:
+                    - codigo: 150
+                      nombre: Trabajo en equipo
+                    - codigo: 292
+                      nombre: Pruebas react
+                    - codigo: 149
+                      nombre: Promotor de los valores y la ética
+                    - codigo: 148
+                      nombre: Planeación, organización y control
+                    - codigo: 147
+                      nombre: Orientación al servicio al cliente
+                    - codigo: 146
+                      nombre: Experiencia y conocimientos técnicos
+                    - codigo: 100
+                      nombre: Empatía
+                    - codigo: 145
+                      nombre: Comunicación
+                    - codigo: 96
+                      nombre: Capacidad de aprendizaje
+                    - codigo: 91
+                      nombre: Análisis y resolución de problemas
+                    - codigo: 88
+                      nombre: Adaptación y flexibilidad
+                    - codigo: 86
+                      nombre: Adaptación al cambio2
+                    titulosAcademicosHtml: Ninguna                       /Administración de sistemas informáticos<br/>
+                    titulosAcademicos:
+                    - codigo: 26
+                      nombre: Administración de sistemas informáticos
+                    nombreIdioma: null
+                    nombreNivelIdioma: null
+                    codPlantilla: 2
+                    plantillaEditable: true
+                    editable: false
+                    editableConPermiso: false
+                    nroHojasVidasExternas: 0
+                    infVacanteAuxilioRodamiento: 'null'
+                    infVacanteArea: 'null'
+                    infVacanteTipoSalario: 'null'
+                    fuePublicada: true
+                    nroSolicitudERP: ''
+                    codCandidatoBuscado: null
+                    candidatoEncontrado: false
+                    calendario: COLOMBIA
+                    competenciasCorporativasHtml: null
+                    competenciasFuncionalesHtml: null
+                    afinacion: null
+                    instruccionesIA: '{"idiomas":"medio","observaciones_adicionales":"Que viva en medellin es lo mejor","experiencia_laboral":"alto","nivel_educacion":"alto","ciudad":"medio","genero":"medio","disponibilidad_viajar":"bajo","descripcion_funciones_puesto":"irrelevante","titulos_academicos":"medio","expectativa_salarial":"medio","habilidades_especificas":"bajo","edad":"bajo"}'
+                    label: 209 - Coordinador de Calidad
+                    disponibilidadViajarAlt: false
+                    rotacionTurnosAlt: false
+                    nombreEmpresaSolicitante: N/A
+                    aprobador: null
+                  publicacion:
+                    estadoPublicacion: PUBLICADO
+                    cargo: Coordinador de Calidad
+                    codigo: 209
+                    publicada: true
+                    tipoConvocatoria: MIXTA
+                    experiencia: 36
+                    experienciaAnios: 3
+                    experienciaMeses: 0
+                    nombreTipoVinculacion: Contrato de aprendizaje
+                    codigoTipoVinculacion: 1564
+                    salario: Según experiencia
+                    salarioPublico: '5000000'
+                    nombreHorario: No definido
+                    codigoHorario: 1549
+                    funciones: >+
+                      Asesorar al Representante de la Dirección en la planeación, mantenimiento y perfeccionamiento del Sistema de Gestión de Calidad..
+
+                      Planear, dirigir y organizar las actividades necesarias para la implantación y mejora del Sistema de Gestión de Calidad..
+
+                      Mantener, Actualizar y Soportar todos los procesos del Sistema de Gestión de Calidad en la empresa  .
+
+                    conocimeintos: "<br/>-Comunicación asertiva \r<br/>-Java \r<br/>-Linux Scripting \r<br/>-NodeJS \r<br/>"
+                    fechaCreacion: 2025-09-19 14:52:54.539
+                    nroRequisicion: '209'
+                    fechaCierre: 31-07-2027
+                    fechaCierreD: 1817096399000
+                    fechaCierreDia: 31
+                    fechaCierreMes: 7
+                    fechaCierreAnio: 2027
+                    fechaCierreHumana: 31 de julio de 2027
+                    fechaQueda: (Quedan 443 dias, 8 horas)
+                    sede: null
+                    ciudad: null
+                    nroVacantes: null
+                    escolaridad: 4
+                    fechaIngreso: 2027-01-30 00:00:00.0
+                    fechaIngresoD: 1801285200000
+                    fechaIngresoDia: 30
+                    fechaIngresoMes: 1
+                    fechaIngresoAnio: 2027
+                    estadoEducacion: GRADUADO
+                    paraElEmpleo: false
+                    paraComputrabajo: false
+                    paraTicJob: false
+                    errorElEmpleo: null
+                    errorComputrabajo: null
+                    errorTicJob: null
+                    aplicado: 0
+                    eeTitulo: Coordinador de Calidad
+                    eeDescripcion: "Gestión del talento > Desarrollo > Comunicación asertiva, \r\nSistemas de información > Lenguajes > Java, \r\nSistemas de información > Sistemas Operativos > Linux Scripting, \r\nSistemas de información > Lenguajes > NodeJS, \r\n"
+                    eeRequerimientos: >+
+                      Asesorar al Representante de la Dirección en la planeación, mantenimiento y perfeccionamiento del Sistema de Gestión de Calidad..
+
+                      Planear, dirigir y organizar las actividades necesarias para la implantación y mejora del Sistema de Gestión de Calidad..
+
+                      Mantener, Actualizar y Soportar todos los procesos del Sistema de Gestión de Calidad en la empresa  .
+
+                    eePublicarNombre: null
+                    eePublicarEmpresarial: null
+                    eeIntensidadHoraria: null
+                    eePositionSublevel: null
+                    eePosition: null
+                    eeProfession: null
+                    eeWorkArea: null
+                    eeSector: null
+                    eeCity: null
+                    eeSalary: '34'
+                    tjReferencia: null
+                    tjLanguage: null
+                    tjTitle: Coordinador de Calidad
+                    tjKeywords: null
+                    tjLocation: null
+                    tjHtmlcontent: null
+                    tjSkills: null
+                    tjExperience: null
+                    tjStudyLevel: null
+                    tjJobMode: null
+                    tjJobType: null
+                    tjJobDuration: null
+                    tjJobLocation: null
+                    titulosAcademicosHtml: null
+                    titulosAcademicos:
+                    - codigo: 26
+                      nombre: Administración de sistemas informáticos
+                    formacionComplementaria: null
+                    tipoExperiencia: null
+                    informacion: La cosa nostra a usar
+                    usuarioReapertura: Desconocido
+                    fechaReapertura: null
+                    ansTipoCargo: null
+                    ansDiasLider: null
+                    ansDiasPsicologo: null
+                    ansPrioridadLiderTxt: null
+                    ansPrioridadPsicologoTxt: null
+                    ansPrioridadLider: null
+                    ansPrioridadPsicologo: null
+                    rangoSalarioID: null
+                    rangoSalarioName: null
+                    encuestaVacanteCodigo: null
+                    encuestaVacanteNombre: null
+                success: true
+      deprecated: false
+components:
+  schemas:
+    oauth2:
+      title: oauth2
+      required:
+      - acces_token
+      - token_type
+      - expires_in
+      - success
+      - scope
+      type: object
+      properties:
+        acces_token:
+          type: string
+        token_type:
+          type: string
+        expires_in:
+          type: integer
+          format: int32
+        success:
+          type: boolean
+        scope:
+          type: string
+      example:
+        acces_token: eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0YWxlbnRvLnNlbGVjY2lvbi5yZWFkfDk3YjdmZjc5NjEzOGRmYWZkMDZiNjgyMDRhZDc2YjZkIiwidXNlcklkIjoiMzQiLCJyb2xlIjoiV0VCU0VSVklDRSIsImV4cGlyZSI6IjE3Nzg3OTE3Mzg3MDIiLCJlbXByZXNhIjoidGFsZW50b19kZW1vIiwibG5nIjoiZXMiLCJqdGkiOiJiYmI5Zjk3ZC04MzBmLTQ3MzgtYTdjNS1hMzZhYmQwMTdlYTgiLCJpYXQiOjE3Nzg3OTA4Mzl9.YQgAOpv-5Oueo3-BZw3oVvSvzIhdE3txhx1ilvh2i1YPfysMGOEa2YPDsgN7D4gC
+        token_type: Bearer
+        expires_in: 900
+        success: true
+        scope: talento.seleccion.read
+    listaRequisiciones:
+      title: listaRequisiciones
+      required:
+      - data
+      - success
+      - total
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Datum'
+          description: ''
+        success:
+          type: boolean
+        total:
+          type: integer
+          format: int32
+      example:
+        data:
+        - codigo: 211
+          seleccionados: 0
+          cargo: Analista Desarrollador
+          etapa_seleccion: Aprobación
+          solitante: Juan Fernando Osorio Ospina
+        - codigo: 210
+          seleccionados: 0
+          cargo: Auxiliar de tesorería
+          etapa_seleccion: Aprobación
+          solitante: Juan Fernando Osorio Ospina
+        - codigo: 209
+          seleccionados: 3
+          cargo: Coordinador de Calidad
+          etapa_seleccion: Cierre
+          solitante: Juan Fernando Osorio Ospina
+        - codigo: 208
+          seleccionados: 1
+          cargo: Ingeniero(a) de sistemas
+          etapa_seleccion: Cierre
+          solitante: Juan Fernando Osorio Ospina
+        - codigo: 207
+          seleccionados: 1
+          cargo: 'Director Gestion '
+          etapa_seleccion: Cierre
+          solitante: Juan Fernando Osorio Ospina
+        - codigo: 206
+          seleccionados: 0
+          cargo: Asistente de tecnología
+          etapa_seleccion: Filtro telefónico
+          solitante: Juan Fernando Osorio Ospina
+        - codigo: 205
+          seleccionados: 1
+          cargo: Auxiliar de tesorería
+          etapa_seleccion: Cierre
+          solitante: Blanca Ruiz Suarez
+        - codigo: 204
+          seleccionados: 0
+          cargo: Asistente de tecnología
+          etapa_seleccion: Cierre
+          solitante: Juan Fernando Osorio Ospina
+        - codigo: 203
+          seleccionados: 0
+          cargo: Auxiliar de Operaciones
+          etapa_seleccion: Preselección
+          solitante: Juan Fernando Osorio Ospina
+        - codigo: 202
+          seleccionados: 0
+          cargo: Auxiliar de Operaciones
+          etapa_seleccion: Preselección
+          solitante: Juan Fernando Osorio Ospina
+        success: true
+        total: 62
+    Datum:
+      title: Datum
+      required:
+      - codigo
+      - seleccionados
+      - cargo
+      - etapa_seleccion
+      - solitante
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int32
+        seleccionados:
+          type: integer
+          format: int32
+        cargo:
+          type: string
+        etapa_seleccion:
+          type: string
+        solitante:
+          type: string
+      example:
+        codigo: 211
+        seleccionados: 0
+        cargo: Analista Desarrollador
+        etapa_seleccion: Aprobación
+        solitante: Juan Fernando Osorio Ospina
+    detalleRequisicion:
+      title: detalleRequisicion
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Data'
+        success:
+          type: boolean
+      example:
+        data:
+          misionCargo: "Coordinar los aspectos administrativos y de control al interior de la organización en el marco de la\nimplementación y posterior mantención del Sistema de Gestión de Calidad, de acuerdo con los\nrequisitos de las normas ISO 9001:2008, para todos los Sistemas de Calidad de los Programas de\nMejoramiento de la Gestión "
+          aprobaciones: []
+          recursos:
+          - codigo: 489
+            recurso: 28
+            nombreRecurso: "Diadema \U0001F3A7"
+            cantidad: 1
+            descripcion: Diadema con micrófono de cancelación de ruido para mejorar la calidad de llamadas y videoconferencias.
+            categoria: Equipos de Comunicación
+            requisicion: 209
+            notificar: 0
+            codRecursoCandidato: null
+            codCandidato: null
+          requisicion:
+            codigo: 209
+            fechaCreacion: 2025-09-19 14:52:54
+            fechaModificacion: N/A
+            fechaCancelacion: null
+            codigoCargo: 92
+            nombreCargo: Coordinador de Calidad
+            cargoExterno: null
+            codigoCargoJefe: 96
+            nombreCargoJefe: Director de Operaciones
+            codigoUsuarioSolicitante: 1
+            nombreUsuarioSolicitante: Juan Fernando Osorio Ospina
+            nroRequisicion: 209
+            estadoRequisicion: 20
+            estadoProceso: 7
+            nombreEstadoProceso: Cierre
+            nombreMacroEstado: null
+            nombreEtapaProceso: Cierre
+            estadoRequisicionStr: Cierre
+            estadoProcesoStr: null
+            codigoMotivo: 2
+            motivo: Convocatoria
+            codigoTipoVinculacion: 1564
+            tipoVinculacion: Contrato de aprendizaje
+            nroVacantes: 3
+            ans: 158/0
+            eliminar: null
+            justificacion: 'eg dfg sdfg sdf sgdf '
+            duracionDias: '333'
+            salarioMensual: Según experiencia
+            observacionesAdicionales: Sin observaciones adicionales
+            recibeCompensacion: false
+            fechaHumana: 19 de sep 2025
+            nombreRegional: Antioquia
+            disponibilidadViajar: false
+            rotacionTurnos: false
+            tipoConvocatoria: MIXTA
+            codigoCentroCostos: null
+            nombreCentroCostos: null
+            edadDesde: 12
+            edadhasta: 88
+            codigoSede: 1
+            nombreSede: Medellín
+            nombreCiudad: Medellin
+            compensacionVariable: null
+            codigoAprobacion: null
+            codigoAprobador: null
+            fechaAprobacion: 19 de sep 2025
+            concepto: null
+            comentario: null
+            tipoAprobador: null
+            fechaEstimada: 30/01/2027
+            personaReemplaza: null
+            nombrePersonaReemplaza: null
+            nombresPersonasReemplazaHtml: null
+            personasReemplazar: []
+            personaEvaluar: null
+            jornadaLaboral: 1549
+            nombreJornadaLaboral: No definido
+            ansTipoCargo: 0
+            ansDiasLider: null
+            ansDiasPsicologo: null
+            ansPrioridadLiderTxt: null
+            ansPrioridadPsicologoTxt: null
+            ansPrioridadLider: null
+            ansPrioridadPsicologo: null
+            tipoProcesoSeleccion: null
+            tipoProcesoSeleccionTxt: null
+            familiaCargo: null
+            familiaCargoTxt: null
+            especialidad: null
+            especialidadTxt: null
+            perfil: null
+            perfilTxt: null
+            lider: null
+            liderTxt: null
+            tecnologiaSophos: null
+            tecnologiaSophosTxt: null
+            nombreArea: N/A
+            nombreJefe: null
+            codigoResponsableProceso: null
+            nombreResponsableProceso: null
+            responsablesProceso: null
+            trvIdiomaRequisicion: []
+            avanceANS: 0
+            diasTranscurridos: 158
+            vicepresidencia: Procesos
+            hash: 1ae24d72-7795-4501-9659-31f5d480079f
+            codigoJefeInmediato: 1
+            jefeInmediato: Juan Fernando Osorio Ospina
+            codigoVicepresidencia: 8
+            nombreVicepresidencia: Procesos
+            codigoNegocio: 1
+            nombreNegocio: Desarrollo de Software
+            codigoUen: 6
+            nombreUen: UEN App Moviles
+            codigoEmpresa: 1
+            nombreEmpresa: talento cloud
+            corporativo: false
+            genero: INDIFERENTE
+            vehiculo: null
+            diasTotales: null
+            tipoRequisicion: 2
+            tipoReglaRequisicion: 24
+            nombreReglaRequisicion: Sin aprobacion
+            fechaCierreRequicision: Hoy
+            codigoEntrevistadorGH: null
+            nombreEntrevistadorGH: null
+            codigoEncargadoExamenMedico: null
+            experiencia: 36
+            experienciaAnios: 3
+            experienciaMes: 0
+            nombreAprobador: null
+            cliente: ''
+            codigoProyecto: ''
+            banda: ''
+            escolaridad: '4'
+            codigoEscolaridad: 4
+            nombreEscolaridad: 'Profesional                   '
+            estadoEscolaridad: null
+            etapasConfiguradas: false
+            descripcion: ' '
+            tipoProceso: Sin aprobacion
+            tiempoMinimoPermanencia: 0
+            empresaSolicitante: null
+            tarifa: ''
+            perfilAspirante: "Asegurarse de que se establecen, implementan y mantienen los procesos necesarios para el sistema de gestión de la calidad e inocuidad.\nGarantizar el cumplimiento de las metas programadas para el sistema de calidad\ne inocuidad.\nEjecutar y llevar el seguimiento a los aspectos ambientales y programas de gestión ambiental de la empresa.\nVerificar el cumplimiento de las Buenas Prácticas de Manufactura en toda la\nplanta, tanto a nivel de los productos fabricados, como a nivel del funcionamiento\nde las áreas de producción - 36 meses, \n"
+            valorProceso: ''
+            confidencialidad: ''
+            fechaOcupacionCargo: 1801198800000
+            observacionesProceso: gsdf gsdf gsdf sgdf g
+            centroCostosNombre: null
+            descripcionJefe: ' '
+            observacionesJornada: ' '
+            alcanceCargoFK: null
+            nombreAlcanceCargo: null
+            infoRelevanteJefe: ' '
+            infoRelevanteComercial: ' '
+            politicasContratacion: ' '
+            preferenciasAspirante: ' '
+            nivelIdioma: null
+            idioma: null
+            avanceProceso: 0.727272748947144
+            paMisionCargo: "Coordinar los aspectos administrativos y de control al interior de la organización en el marco de la\nimplementación y posterior mantención del Sistema de Gestión de Calidad, de acuerdo con los\nrequisitos de las normas ISO 9001:2008, para todos los Sistemas de Calidad de los Programas de\nMejoramiento de la Gestión "
+            paRetoCargo: ' '
+            paResponsabilidadCargo: ' '
+            paIndicadores: ' '
+            paPresupuestoArea: ' '
+            formacionComplementaria: ''
+            funcionesCargo: ' '
+            tipoExperiencia: ''
+            conocimientosTecnicosHtml: <br/>-AAA Pruebas Varias<br/>-NodeJS<br/>-Linux Scripting<br/>-Java<br/>-Comunicación asertiva<br/>
+            conocimientosTecnicos:
+            - codigo: 221
+              nombre: AAA Pruebas Varias
+            - codigo: 138
+              nombre: NodeJS
+            - codigo: 137
+              nombre: Linux Scripting
+            - codigo: 140
+              nombre: Java
+            - codigo: 133
+              nombre: Comunicación asertiva
+            competenciasFuncionales:
+            - codigo: 89
+              nombre: Administración y gestión de recursos
+            - codigo: 90
+              nombre: Análisis numérico
+            - codigo: 101
+              nombre: Comunicación
+            - codigo: 97
+              nombre: Calidad en el trabajo
+            competenciasCorporativas:
+            - codigo: 150
+              nombre: Trabajo en equipo
+            - codigo: 292
+              nombre: Pruebas react
+            - codigo: 149
+              nombre: Promotor de los valores y la ética
+            - codigo: 148
+              nombre: Planeación, organización y control
+            - codigo: 147
+              nombre: Orientación al servicio al cliente
+            - codigo: 146
+              nombre: Experiencia y conocimientos técnicos
+            - codigo: 100
+              nombre: Empatía
+            - codigo: 145
+              nombre: Comunicación
+            - codigo: 96
+              nombre: Capacidad de aprendizaje
+            - codigo: 91
+              nombre: Análisis y resolución de problemas
+            - codigo: 88
+              nombre: Adaptación y flexibilidad
+            - codigo: 86
+              nombre: Adaptación al cambio2
+            titulosAcademicosHtml: Ninguna                       /Administración de sistemas informáticos<br/>
+            titulosAcademicos:
+            - codigo: 26
+              nombre: Administración de sistemas informáticos
+            nombreIdioma: null
+            nombreNivelIdioma: null
+            codPlantilla: 2
+            plantillaEditable: true
+            editable: false
+            editableConPermiso: false
+            nroHojasVidasExternas: 0
+            infVacanteAuxilioRodamiento: 'null'
+            infVacanteArea: 'null'
+            infVacanteTipoSalario: 'null'
+            fuePublicada: true
+            nroSolicitudERP: ''
+            codCandidatoBuscado: null
+            candidatoEncontrado: false
+            calendario: COLOMBIA
+            competenciasCorporativasHtml: null
+            competenciasFuncionalesHtml: null
+            afinacion: null
+            instruccionesIA: '{"idiomas":"medio","observaciones_adicionales":"Que viva en medellin es lo mejor","experiencia_laboral":"alto","nivel_educacion":"alto","ciudad":"medio","genero":"medio","disponibilidad_viajar":"bajo","descripcion_funciones_puesto":"irrelevante","titulos_academicos":"medio","expectativa_salarial":"medio","habilidades_especificas":"bajo","edad":"bajo"}'
+            label: 209 - Coordinador de Calidad
+            disponibilidadViajarAlt: false
+            rotacionTurnosAlt: false
+            nombreEmpresaSolicitante: N/A
+            aprobador: null
+          publicacion:
+            estadoPublicacion: PUBLICADO
+            cargo: Coordinador de Calidad
+            codigo: 209
+            publicada: true
+            tipoConvocatoria: MIXTA
+            experiencia: 36
+            experienciaAnios: 3
+            experienciaMeses: 0
+            nombreTipoVinculacion: Contrato de aprendizaje
+            codigoTipoVinculacion: 1564
+            salario: Según experiencia
+            salarioPublico: '5000000'
+            nombreHorario: No definido
+            codigoHorario: 1549
+            funciones: >+
+              Asesorar al Representante de la Dirección en la planeación, mantenimiento y perfeccionamiento del Sistema de Gestión de Calidad..
+
+              Planear, dirigir y organizar las actividades necesarias para la implantación y mejora del Sistema de Gestión de Calidad..
+
+              Mantener, Actualizar y Soportar todos los procesos del Sistema de Gestión de Calidad en la empresa  .
+
+            conocimeintos: "<br/>-Comunicación asertiva \r<br/>-Java \r<br/>-Linux Scripting \r<br/>-NodeJS \r<br/>"
+            fechaCreacion: 2025-09-19 14:52:54.539
+            nroRequisicion: '209'
+            fechaCierre: 31-07-2027
+            fechaCierreD: 1817096399000
+            fechaCierreDia: 31
+            fechaCierreMes: 7
+            fechaCierreAnio: 2027
+            fechaCierreHumana: 31 de julio de 2027
+            fechaQueda: (Quedan 443 dias, 8 horas)
+            sede: null
+            ciudad: null
+            nroVacantes: null
+            escolaridad: 4
+            fechaIngreso: 2027-01-30 00:00:00.0
+            fechaIngresoD: 1801285200000
+            fechaIngresoDia: 30
+            fechaIngresoMes: 1
+            fechaIngresoAnio: 2027
+            estadoEducacion: GRADUADO
+            paraElEmpleo: false
+            paraComputrabajo: false
+            paraTicJob: false
+            errorElEmpleo: null
+            errorComputrabajo: null
+            errorTicJob: null
+            aplicado: 0
+            eeTitulo: Coordinador de Calidad
+            eeDescripcion: "Gestión del talento > Desarrollo > Comunicación asertiva, \r\nSistemas de información > Lenguajes > Java, \r\nSistemas de información > Sistemas Operativos > Linux Scripting, \r\nSistemas de información > Lenguajes > NodeJS, \r\n"
+            eeRequerimientos: >+
+              Asesorar al Representante de la Dirección en la planeación, mantenimiento y perfeccionamiento del Sistema de Gestión de Calidad..
+
+              Planear, dirigir y organizar las actividades necesarias para la implantación y mejora del Sistema de Gestión de Calidad..
+
+              Mantener, Actualizar y Soportar todos los procesos del Sistema de Gestión de Calidad en la empresa  .
+
+            eePublicarNombre: null
+            eePublicarEmpresarial: null
+            eeIntensidadHoraria: null
+            eePositionSublevel: null
+            eePosition: null
+            eeProfession: null
+            eeWorkArea: null
+            eeSector: null
+            eeCity: null
+            eeSalary: '34'
+            tjReferencia: null
+            tjLanguage: null
+            tjTitle: Coordinador de Calidad
+            tjKeywords: null
+            tjLocation: null
+            tjHtmlcontent: null
+            tjSkills: null
+            tjExperience: null
+            tjStudyLevel: null
+            tjJobMode: null
+            tjJobType: null
+            tjJobDuration: null
+            tjJobLocation: null
+            titulosAcademicosHtml: null
+            titulosAcademicos:
+            - codigo: 26
+              nombre: Administración de sistemas informáticos
+            formacionComplementaria: null
+            tipoExperiencia: null
+            informacion: La cosa nostra a usar
+            usuarioReapertura: Desconocido
+            fechaReapertura: null
+            ansTipoCargo: null
+            ansDiasLider: null
+            ansDiasPsicologo: null
+            ansPrioridadLiderTxt: null
+            ansPrioridadPsicologoTxt: null
+            ansPrioridadLider: null
+            ansPrioridadPsicologo: null
+            rangoSalarioID: null
+            rangoSalarioName: null
+            encuestaVacanteCodigo: null
+            encuestaVacanteNombre: null
+        success: true
+    Data:
+      title: Data
+      required:
+      - misionCargo
+      - aprobaciones
+      - recursos
+      - requisicion
+      - publicacion
+      type: object
+      properties:
+        misionCargo:
+          type: string
+        aprobaciones:
+          type: array
+          items:
+            type: string
+          description: ''
+        recursos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Recurso'
+          description: ''
+        requisicion:
+          $ref: '#/components/schemas/Requisicion'
+        publicacion:
+          $ref: '#/components/schemas/Publicacion'
+      example:
+        misionCargo: "Coordinar los aspectos administrativos y de control al interior de la organización en el marco de la\nimplementación y posterior mantención del Sistema de Gestión de Calidad, de acuerdo con los\nrequisitos de las normas ISO 9001:2008, para todos los Sistemas de Calidad de los Programas de\nMejoramiento de la Gestión "
+        aprobaciones: []
+        recursos:
+        - codigo: 489
+          recurso: 28
+          nombreRecurso: "Diadema \U0001F3A7"
+          cantidad: 1
+          descripcion: Diadema con micrófono de cancelación de ruido para mejorar la calidad de llamadas y videoconferencias.
+          categoria: Equipos de Comunicación
+          requisicion: 209
+          notificar: 0
+          codRecursoCandidato: null
+          codCandidato: null
+        requisicion:
+          codigo: 209
+          fechaCreacion: 2025-09-19 14:52:54
+          fechaModificacion: N/A
+          fechaCancelacion: null
+          codigoCargo: 92
+          nombreCargo: Coordinador de Calidad
+          cargoExterno: null
+          codigoCargoJefe: 96
+          nombreCargoJefe: Director de Operaciones
+          codigoUsuarioSolicitante: 1
+          nombreUsuarioSolicitante: Juan Fernando Osorio Ospina
+          nroRequisicion: 209
+          estadoRequisicion: 20
+          estadoProceso: 7
+          nombreEstadoProceso: Cierre
+          nombreMacroEstado: null
+          nombreEtapaProceso: Cierre
+          estadoRequisicionStr: Cierre
+          estadoProcesoStr: null
+          codigoMotivo: 2
+          motivo: Convocatoria
+          codigoTipoVinculacion: 1564
+          tipoVinculacion: Contrato de aprendizaje
+          nroVacantes: 3
+          ans: 158/0
+          eliminar: null
+          justificacion: 'eg dfg sdfg sdf sgdf '
+          duracionDias: '333'
+          salarioMensual: Según experiencia
+          observacionesAdicionales: Sin observaciones adicionales
+          recibeCompensacion: false
+          fechaHumana: 19 de sep 2025
+          nombreRegional: Antioquia
+          disponibilidadViajar: false
+          rotacionTurnos: false
+          tipoConvocatoria: MIXTA
+          codigoCentroCostos: null
+          nombreCentroCostos: null
+          edadDesde: 12
+          edadhasta: 88
+          codigoSede: 1
+          nombreSede: Medellín
+          nombreCiudad: Medellin
+          compensacionVariable: null
+          codigoAprobacion: null
+          codigoAprobador: null
+          fechaAprobacion: 19 de sep 2025
+          concepto: null
+          comentario: null
+          tipoAprobador: null
+          fechaEstimada: 30/01/2027
+          personaReemplaza: null
+          nombrePersonaReemplaza: null
+          nombresPersonasReemplazaHtml: null
+          personasReemplazar: []
+          personaEvaluar: null
+          jornadaLaboral: 1549
+          nombreJornadaLaboral: No definido
+          ansTipoCargo: 0
+          ansDiasLider: null
+          ansDiasPsicologo: null
+          ansPrioridadLiderTxt: null
+          ansPrioridadPsicologoTxt: null
+          ansPrioridadLider: null
+          ansPrioridadPsicologo: null
+          tipoProcesoSeleccion: null
+          tipoProcesoSeleccionTxt: null
+          familiaCargo: null
+          familiaCargoTxt: null
+          especialidad: null
+          especialidadTxt: null
+          perfil: null
+          perfilTxt: null
+          lider: null
+          liderTxt: null
+          tecnologiaSophos: null
+          tecnologiaSophosTxt: null
+          nombreArea: N/A
+          nombreJefe: null
+          codigoResponsableProceso: null
+          nombreResponsableProceso: null
+          responsablesProceso: null
+          trvIdiomaRequisicion: []
+          avanceANS: 0
+          diasTranscurridos: 158
+          vicepresidencia: Procesos
+          hash: 1ae24d72-7795-4501-9659-31f5d480079f
+          codigoJefeInmediato: 1
+          jefeInmediato: Juan Fernando Osorio Ospina
+          codigoVicepresidencia: 8
+          nombreVicepresidencia: Procesos
+          codigoNegocio: 1
+          nombreNegocio: Desarrollo de Software
+          codigoUen: 6
+          nombreUen: UEN App Moviles
+          codigoEmpresa: 1
+          nombreEmpresa: talento cloud
+          corporativo: false
+          genero: INDIFERENTE
+          vehiculo: null
+          diasTotales: null
+          tipoRequisicion: 2
+          tipoReglaRequisicion: 24
+          nombreReglaRequisicion: Sin aprobacion
+          fechaCierreRequicision: Hoy
+          codigoEntrevistadorGH: null
+          nombreEntrevistadorGH: null
+          codigoEncargadoExamenMedico: null
+          experiencia: 36
+          experienciaAnios: 3
+          experienciaMes: 0
+          nombreAprobador: null
+          cliente: ''
+          codigoProyecto: ''
+          banda: ''
+          escolaridad: '4'
+          codigoEscolaridad: 4
+          nombreEscolaridad: 'Profesional                   '
+          estadoEscolaridad: null
+          etapasConfiguradas: false
+          descripcion: ' '
+          tipoProceso: Sin aprobacion
+          tiempoMinimoPermanencia: 0
+          empresaSolicitante: null
+          tarifa: ''
+          perfilAspirante: "Asegurarse de que se establecen, implementan y mantienen los procesos necesarios para el sistema de gestión de la calidad e inocuidad.\nGarantizar el cumplimiento de las metas programadas para el sistema de calidad\ne inocuidad.\nEjecutar y llevar el seguimiento a los aspectos ambientales y programas de gestión ambiental de la empresa.\nVerificar el cumplimiento de las Buenas Prácticas de Manufactura en toda la\nplanta, tanto a nivel de los productos fabricados, como a nivel del funcionamiento\nde las áreas de producción - 36 meses, \n"
+          valorProceso: ''
+          confidencialidad: ''
+          fechaOcupacionCargo: 1801198800000
+          observacionesProceso: gsdf gsdf gsdf sgdf g
+          centroCostosNombre: null
+          descripcionJefe: ' '
+          observacionesJornada: ' '
+          alcanceCargoFK: null
+          nombreAlcanceCargo: null
+          infoRelevanteJefe: ' '
+          infoRelevanteComercial: ' '
+          politicasContratacion: ' '
+          preferenciasAspirante: ' '
+          nivelIdioma: null
+          idioma: null
+          avanceProceso: 0.727272748947144
+          paMisionCargo: "Coordinar los aspectos administrativos y de control al interior de la organización en el marco de la\nimplementación y posterior mantención del Sistema de Gestión de Calidad, de acuerdo con los\nrequisitos de las normas ISO 9001:2008, para todos los Sistemas de Calidad de los Programas de\nMejoramiento de la Gestión "
+          paRetoCargo: ' '
+          paResponsabilidadCargo: ' '
+          paIndicadores: ' '
+          paPresupuestoArea: ' '
+          formacionComplementaria: ''
+          funcionesCargo: ' '
+          tipoExperiencia: ''
+          conocimientosTecnicosHtml: <br/>-AAA Pruebas Varias<br/>-NodeJS<br/>-Linux Scripting<br/>-Java<br/>-Comunicación asertiva<br/>
+          conocimientosTecnicos:
+          - codigo: 221
+            nombre: AAA Pruebas Varias
+          - codigo: 138
+            nombre: NodeJS
+          - codigo: 137
+            nombre: Linux Scripting
+          - codigo: 140
+            nombre: Java
+          - codigo: 133
+            nombre: Comunicación asertiva
+          competenciasFuncionales:
+          - codigo: 89
+            nombre: Administración y gestión de recursos
+          - codigo: 90
+            nombre: Análisis numérico
+          - codigo: 101
+            nombre: Comunicación
+          - codigo: 97
+            nombre: Calidad en el trabajo
+          competenciasCorporativas:
+          - codigo: 150
+            nombre: Trabajo en equipo
+          - codigo: 292
+            nombre: Pruebas react
+          - codigo: 149
+            nombre: Promotor de los valores y la ética
+          - codigo: 148
+            nombre: Planeación, organización y control
+          - codigo: 147
+            nombre: Orientación al servicio al cliente
+          - codigo: 146
+            nombre: Experiencia y conocimientos técnicos
+          - codigo: 100
+            nombre: Empatía
+          - codigo: 145
+            nombre: Comunicación
+          - codigo: 96
+            nombre: Capacidad de aprendizaje
+          - codigo: 91
+            nombre: Análisis y resolución de problemas
+          - codigo: 88
+            nombre: Adaptación y flexibilidad
+          - codigo: 86
+            nombre: Adaptación al cambio2
+          titulosAcademicosHtml: Ninguna                       /Administración de sistemas informáticos<br/>
+          titulosAcademicos:
+          - codigo: 26
+            nombre: Administración de sistemas informáticos
+          nombreIdioma: null
+          nombreNivelIdioma: null
+          codPlantilla: 2
+          plantillaEditable: true
+          editable: false
+          editableConPermiso: false
+          nroHojasVidasExternas: 0
+          infVacanteAuxilioRodamiento: 'null'
+          infVacanteArea: 'null'
+          infVacanteTipoSalario: 'null'
+          fuePublicada: true
+          nroSolicitudERP: ''
+          codCandidatoBuscado: null
+          candidatoEncontrado: false
+          calendario: COLOMBIA
+          competenciasCorporativasHtml: null
+          competenciasFuncionalesHtml: null
+          afinacion: null
+          instruccionesIA: '{"idiomas":"medio","observaciones_adicionales":"Que viva en medellin es lo mejor","experiencia_laboral":"alto","nivel_educacion":"alto","ciudad":"medio","genero":"medio","disponibilidad_viajar":"bajo","descripcion_funciones_puesto":"irrelevante","titulos_academicos":"medio","expectativa_salarial":"medio","habilidades_especificas":"bajo","edad":"bajo"}'
+          label: 209 - Coordinador de Calidad
+          disponibilidadViajarAlt: false
+          rotacionTurnosAlt: false
+          nombreEmpresaSolicitante: N/A
+          aprobador: null
+        publicacion:
+          estadoPublicacion: PUBLICADO
+          cargo: Coordinador de Calidad
+          codigo: 209
+          publicada: true
+          tipoConvocatoria: MIXTA
+          experiencia: 36
+          experienciaAnios: 3
+          experienciaMeses: 0
+          nombreTipoVinculacion: Contrato de aprendizaje
+          codigoTipoVinculacion: 1564
+          salario: Según experiencia
+          salarioPublico: '5000000'
+          nombreHorario: No definido
+          codigoHorario: 1549
+          funciones: >+
+            Asesorar al Representante de la Dirección en la planeación, mantenimiento y perfeccionamiento del Sistema de Gestión de Calidad..
+
+            Planear, dirigir y organizar las actividades necesarias para la implantación y mejora del Sistema de Gestión de Calidad..
+
+            Mantener, Actualizar y Soportar todos los procesos del Sistema de Gestión de Calidad en la empresa  .
+
+          conocimeintos: "<br/>-Comunicación asertiva \r<br/>-Java \r<br/>-Linux Scripting \r<br/>-NodeJS \r<br/>"
+          fechaCreacion: 2025-09-19 14:52:54.539
+          nroRequisicion: '209'
+          fechaCierre: 31-07-2027
+          fechaCierreD: 1817096399000
+          fechaCierreDia: 31
+          fechaCierreMes: 7
+          fechaCierreAnio: 2027
+          fechaCierreHumana: 31 de julio de 2027
+          fechaQueda: (Quedan 443 dias, 8 horas)
+          sede: null
+          ciudad: null
+          nroVacantes: null
+          escolaridad: 4
+          fechaIngreso: 2027-01-30 00:00:00.0
+          fechaIngresoD: 1801285200000
+          fechaIngresoDia: 30
+          fechaIngresoMes: 1
+          fechaIngresoAnio: 2027
+          estadoEducacion: GRADUADO
+          paraElEmpleo: false
+          paraComputrabajo: false
+          paraTicJob: false
+          errorElEmpleo: null
+          errorComputrabajo: null
+          errorTicJob: null
+          aplicado: 0
+          eeTitulo: Coordinador de Calidad
+          eeDescripcion: "Gestión del talento > Desarrollo > Comunicación asertiva, \r\nSistemas de información > Lenguajes > Java, \r\nSistemas de información > Sistemas Operativos > Linux Scripting, \r\nSistemas de información > Lenguajes > NodeJS, \r\n"
+          eeRequerimientos: >+
+            Asesorar al Representante de la Dirección en la planeación, mantenimiento y perfeccionamiento del Sistema de Gestión de Calidad..
+
+            Planear, dirigir y organizar las actividades necesarias para la implantación y mejora del Sistema de Gestión de Calidad..
+
+            Mantener, Actualizar y Soportar todos los procesos del Sistema de Gestión de Calidad en la empresa  .
+
+          eePublicarNombre: null
+          eePublicarEmpresarial: null
+          eeIntensidadHoraria: null
+          eePositionSublevel: null
+          eePosition: null
+          eeProfession: null
+          eeWorkArea: null
+          eeSector: null
+          eeCity: null
+          eeSalary: '34'
+          tjReferencia: null
+          tjLanguage: null
+          tjTitle: Coordinador de Calidad
+          tjKeywords: null
+          tjLocation: null
+          tjHtmlcontent: null
+          tjSkills: null
+          tjExperience: null
+          tjStudyLevel: null
+          tjJobMode: null
+          tjJobType: null
+          tjJobDuration: null
+          tjJobLocation: null
+          titulosAcademicosHtml: null
+          titulosAcademicos:
+          - codigo: 26
+            nombre: Administración de sistemas informáticos
+          formacionComplementaria: null
+          tipoExperiencia: null
+          informacion: La cosa nostra a usar
+          usuarioReapertura: Desconocido
+          fechaReapertura: null
+          ansTipoCargo: null
+          ansDiasLider: null
+          ansDiasPsicologo: null
+          ansPrioridadLiderTxt: null
+          ansPrioridadPsicologoTxt: null
+          ansPrioridadLider: null
+          ansPrioridadPsicologo: null
+          rangoSalarioID: null
+          rangoSalarioName: null
+          encuestaVacanteCodigo: null
+          encuestaVacanteNombre: null
+    Recurso:
+      title: Recurso
+      required:
+      - codigo
+      - recurso
+      - nombreRecurso
+      - cantidad
+      - descripcion
+      - categoria
+      - requisicion
+      - notificar
+      - codRecursoCandidato
+      - codCandidato
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int32
+        recurso:
+          type: integer
+          format: int32
+        nombreRecurso:
+          type: string
+        cantidad:
+          type: integer
+          format: int32
+        descripcion:
+          type: string
+        categoria:
+          type: string
+        requisicion:
+          type: integer
+          format: int32
+        notificar:
+          type: integer
+          format: int32
+        codRecursoCandidato:
+          type: string
+          nullable: true
+        codCandidato:
+          type: string
+          nullable: true
+      example:
+        codigo: 489
+        recurso: 28
+        nombreRecurso: "Diadema \U0001F3A7"
+        cantidad: 1
+        descripcion: Diadema con micrófono de cancelación de ruido para mejorar la calidad de llamadas y videoconferencias.
+        categoria: Equipos de Comunicación
+        requisicion: 209
+        notificar: 0
+        codRecursoCandidato: null
+        codCandidato: null
+    Requisicion:
+      title: Requisicion
+      required:
+      - codigo
+      - fechaCreacion
+      - fechaModificacion
+      - fechaCancelacion
+      - codigoCargo
+      - nombreCargo
+      - cargoExterno
+      - codigoCargoJefe
+      - nombreCargoJefe
+      - codigoUsuarioSolicitante
+      - nombreUsuarioSolicitante
+      - nroRequisicion
+      - estadoRequisicion
+      - estadoProceso
+      - nombreEstadoProceso
+      - nombreMacroEstado
+      - nombreEtapaProceso
+      - estadoRequisicionStr
+      - estadoProcesoStr
+      - codigoMotivo
+      - motivo
+      - codigoTipoVinculacion
+      - tipoVinculacion
+      - nroVacantes
+      - ans
+      - eliminar
+      - justificacion
+      - duracionDias
+      - salarioMensual
+      - observacionesAdicionales
+      - recibeCompensacion
+      - fechaHumana
+      - nombreRegional
+      - disponibilidadViajar
+      - rotacionTurnos
+      - tipoConvocatoria
+      - codigoCentroCostos
+      - nombreCentroCostos
+      - edadDesde
+      - edadhasta
+      - codigoSede
+      - nombreSede
+      - nombreCiudad
+      - compensacionVariable
+      - codigoAprobacion
+      - codigoAprobador
+      - fechaAprobacion
+      - concepto
+      - comentario
+      - tipoAprobador
+      - fechaEstimada
+      - personaReemplaza
+      - nombrePersonaReemplaza
+      - nombresPersonasReemplazaHtml
+      - personasReemplazar
+      - personaEvaluar
+      - jornadaLaboral
+      - nombreJornadaLaboral
+      - ansTipoCargo
+      - ansDiasLider
+      - ansDiasPsicologo
+      - ansPrioridadLiderTxt
+      - ansPrioridadPsicologoTxt
+      - ansPrioridadLider
+      - ansPrioridadPsicologo
+      - tipoProcesoSeleccion
+      - tipoProcesoSeleccionTxt
+      - familiaCargo
+      - familiaCargoTxt
+      - especialidad
+      - especialidadTxt
+      - perfil
+      - perfilTxt
+      - lider
+      - liderTxt
+      - tecnologiaSophos
+      - tecnologiaSophosTxt
+      - nombreArea
+      - nombreJefe
+      - codigoResponsableProceso
+      - nombreResponsableProceso
+      - responsablesProceso
+      - trvIdiomaRequisicion
+      - avanceANS
+      - diasTranscurridos
+      - vicepresidencia
+      - hash
+      - codigoJefeInmediato
+      - jefeInmediato
+      - codigoVicepresidencia
+      - nombreVicepresidencia
+      - codigoNegocio
+      - nombreNegocio
+      - codigoUen
+      - nombreUen
+      - codigoEmpresa
+      - nombreEmpresa
+      - corporativo
+      - genero
+      - vehiculo
+      - diasTotales
+      - tipoRequisicion
+      - tipoReglaRequisicion
+      - nombreReglaRequisicion
+      - fechaCierreRequicision
+      - codigoEntrevistadorGH
+      - nombreEntrevistadorGH
+      - codigoEncargadoExamenMedico
+      - experiencia
+      - experienciaAnios
+      - experienciaMes
+      - nombreAprobador
+      - cliente
+      - codigoProyecto
+      - banda
+      - escolaridad
+      - codigoEscolaridad
+      - nombreEscolaridad
+      - estadoEscolaridad
+      - etapasConfiguradas
+      - descripcion
+      - tipoProceso
+      - tiempoMinimoPermanencia
+      - empresaSolicitante
+      - tarifa
+      - perfilAspirante
+      - valorProceso
+      - confidencialidad
+      - fechaOcupacionCargo
+      - observacionesProceso
+      - centroCostosNombre
+      - descripcionJefe
+      - observacionesJornada
+      - alcanceCargoFK
+      - nombreAlcanceCargo
+      - infoRelevanteJefe
+      - infoRelevanteComercial
+      - politicasContratacion
+      - preferenciasAspirante
+      - nivelIdioma
+      - idioma
+      - avanceProceso
+      - paMisionCargo
+      - paRetoCargo
+      - paResponsabilidadCargo
+      - paIndicadores
+      - paPresupuestoArea
+      - formacionComplementaria
+      - funcionesCargo
+      - tipoExperiencia
+      - conocimientosTecnicosHtml
+      - conocimientosTecnicos
+      - competenciasFuncionales
+      - competenciasCorporativas
+      - titulosAcademicosHtml
+      - titulosAcademicos
+      - nombreIdioma
+      - nombreNivelIdioma
+      - codPlantilla
+      - plantillaEditable
+      - editable
+      - editableConPermiso
+      - nroHojasVidasExternas
+      - infVacanteAuxilioRodamiento
+      - infVacanteArea
+      - infVacanteTipoSalario
+      - fuePublicada
+      - nroSolicitudERP
+      - codCandidatoBuscado
+      - candidatoEncontrado
+      - calendario
+      - competenciasCorporativasHtml
+      - competenciasFuncionalesHtml
+      - afinacion
+      - instruccionesIA
+      - label
+      - disponibilidadViajarAlt
+      - rotacionTurnosAlt
+      - nombreEmpresaSolicitante
+      - aprobador
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int32
+        fechaCreacion:
+          type: string
+        fechaModificacion:
+          type: string
+        fechaCancelacion:
+          type: string
+          nullable: true
+        codigoCargo:
+          type: integer
+          format: int32
+        nombreCargo:
+          type: string
+        cargoExterno:
+          type: string
+          nullable: true
+        codigoCargoJefe:
+          type: integer
+          format: int32
+        nombreCargoJefe:
+          type: string
+        codigoUsuarioSolicitante:
+          type: integer
+          format: int32
+        nombreUsuarioSolicitante:
+          type: string
+        nroRequisicion:
+          type: integer
+          format: int32
+        estadoRequisicion:
+          type: integer
+          format: int32
+        estadoProceso:
+          type: integer
+          format: int32
+        nombreEstadoProceso:
+          type: string
+        nombreMacroEstado:
+          type: string
+          nullable: true
+        nombreEtapaProceso:
+          type: string
+        estadoRequisicionStr:
+          type: string
+        estadoProcesoStr:
+          type: string
+          nullable: true
+        codigoMotivo:
+          type: integer
+          format: int32
+        motivo:
+          type: string
+        codigoTipoVinculacion:
+          type: integer
+          format: int32
+        tipoVinculacion:
+          type: string
+        nroVacantes:
+          type: integer
+          format: int32
+        ans:
+          type: string
+        eliminar:
+          type: string
+          nullable: true
+        justificacion:
+          type: string
+        duracionDias:
+          type: string
+        salarioMensual:
+          type: string
+        observacionesAdicionales:
+          type: string
+        recibeCompensacion:
+          type: boolean
+        fechaHumana:
+          type: string
+        nombreRegional:
+          type: string
+        disponibilidadViajar:
+          type: boolean
+        rotacionTurnos:
+          type: boolean
+        tipoConvocatoria:
+          type: string
+        codigoCentroCostos:
+          type: string
+          nullable: true
+        nombreCentroCostos:
+          type: string
+          nullable: true
+        edadDesde:
+          type: integer
+          format: int32
+        edadhasta:
+          type: integer
+          format: int32
+        codigoSede:
+          type: integer
+          format: int32
+        nombreSede:
+          type: string
+        nombreCiudad:
+          type: string
+        compensacionVariable:
+          type: string
+          nullable: true
+        codigoAprobacion:
+          type: string
+          nullable: true
+        codigoAprobador:
+          type: string
+          nullable: true
+        fechaAprobacion:
+          type: string
+        concepto:
+          type: string
+          nullable: true
+        comentario:
+          type: string
+          nullable: true
+        tipoAprobador:
+          type: string
+          nullable: true
+        fechaEstimada:
+          type: string
+        personaReemplaza:
+          type: string
+          nullable: true
+        nombrePersonaReemplaza:
+          type: string
+          nullable: true
+        nombresPersonasReemplazaHtml:
+          type: string
+          nullable: true
+        personasReemplazar:
+          type: array
+          items:
+            type: string
+          description: ''
+        personaEvaluar:
+          type: string
+          nullable: true
+        jornadaLaboral:
+          type: integer
+          format: int32
+        nombreJornadaLaboral:
+          type: string
+        ansTipoCargo:
+          type: integer
+          format: int32
+        ansDiasLider:
+          type: string
+          nullable: true
+        ansDiasPsicologo:
+          type: string
+          nullable: true
+        ansPrioridadLiderTxt:
+          type: string
+          nullable: true
+        ansPrioridadPsicologoTxt:
+          type: string
+          nullable: true
+        ansPrioridadLider:
+          type: string
+          nullable: true
+        ansPrioridadPsicologo:
+          type: string
+          nullable: true
+        tipoProcesoSeleccion:
+          type: string
+          nullable: true
+        tipoProcesoSeleccionTxt:
+          type: string
+          nullable: true
+        familiaCargo:
+          type: string
+          nullable: true
+        familiaCargoTxt:
+          type: string
+          nullable: true
+        especialidad:
+          type: string
+          nullable: true
+        especialidadTxt:
+          type: string
+          nullable: true
+        perfil:
+          type: string
+          nullable: true
+        perfilTxt:
+          type: string
+          nullable: true
+        lider:
+          type: string
+          nullable: true
+        liderTxt:
+          type: string
+          nullable: true
+        tecnologiaSophos:
+          type: string
+          nullable: true
+        tecnologiaSophosTxt:
+          type: string
+          nullable: true
+        nombreArea:
+          type: string
+        nombreJefe:
+          type: string
+          nullable: true
+        codigoResponsableProceso:
+          type: string
+          nullable: true
+        nombreResponsableProceso:
+          type: string
+          nullable: true
+        responsablesProceso:
+          type: string
+          nullable: true
+        trvIdiomaRequisicion:
+          type: array
+          items:
+            type: string
+          description: ''
+        avanceANS:
+          type: integer
+          format: int32
+        diasTranscurridos:
+          type: integer
+          format: int32
+        vicepresidencia:
+          type: string
+        hash:
+          type: string
+        codigoJefeInmediato:
+          type: integer
+          format: int32
+        jefeInmediato:
+          type: string
+        codigoVicepresidencia:
+          type: integer
+          format: int32
+        nombreVicepresidencia:
+          type: string
+        codigoNegocio:
+          type: integer
+          format: int32
+        nombreNegocio:
+          type: string
+        codigoUen:
+          type: integer
+          format: int32
+        nombreUen:
+          type: string
+        codigoEmpresa:
+          type: integer
+          format: int32
+        nombreEmpresa:
+          type: string
+        corporativo:
+          type: boolean
+        genero:
+          type: string
+        vehiculo:
+          type: string
+          nullable: true
+        diasTotales:
+          type: string
+          nullable: true
+        tipoRequisicion:
+          type: integer
+          format: int32
+        tipoReglaRequisicion:
+          type: integer
+          format: int32
+        nombreReglaRequisicion:
+          type: string
+        fechaCierreRequicision:
+          type: string
+        codigoEntrevistadorGH:
+          type: string
+          nullable: true
+        nombreEntrevistadorGH:
+          type: string
+          nullable: true
+        codigoEncargadoExamenMedico:
+          type: string
+          nullable: true
+        experiencia:
+          type: integer
+          format: int32
+        experienciaAnios:
+          type: integer
+          format: int32
+        experienciaMes:
+          type: integer
+          format: int32
+        nombreAprobador:
+          type: string
+          nullable: true
+        cliente:
+          type: string
+        codigoProyecto:
+          type: string
+        banda:
+          type: string
+        escolaridad:
+          type: string
+        codigoEscolaridad:
+          type: integer
+          format: int32
+        nombreEscolaridad:
+          type: string
+        estadoEscolaridad:
+          type: string
+          nullable: true
+        etapasConfiguradas:
+          type: boolean
+        descripcion:
+          type: string
+        tipoProceso:
+          type: string
+        tiempoMinimoPermanencia:
+          type: integer
+          format: int32
+        empresaSolicitante:
+          type: string
+          nullable: true
+        tarifa:
+          type: string
+        perfilAspirante:
+          type: string
+        valorProceso:
+          type: string
+        confidencialidad:
+          type: string
+        fechaOcupacionCargo:
+          type: integer
+          format: int64
+        observacionesProceso:
+          type: string
+        centroCostosNombre:
+          type: string
+          nullable: true
+        descripcionJefe:
+          type: string
+        observacionesJornada:
+          type: string
+        alcanceCargoFK:
+          type: string
+          nullable: true
+        nombreAlcanceCargo:
+          type: string
+          nullable: true
+        infoRelevanteJefe:
+          type: string
+        infoRelevanteComercial:
+          type: string
+        politicasContratacion:
+          type: string
+        preferenciasAspirante:
+          type: string
+        nivelIdioma:
+          type: string
+          nullable: true
+        idioma:
+          type: string
+          nullable: true
+        avanceProceso:
+          type: number
+        paMisionCargo:
+          type: string
+        paRetoCargo:
+          type: string
+        paResponsabilidadCargo:
+          type: string
+        paIndicadores:
+          type: string
+        paPresupuestoArea:
+          type: string
+        formacionComplementaria:
+          type: string
+        funcionesCargo:
+          type: string
+        tipoExperiencia:
+          type: string
+        conocimientosTecnicosHtml:
+          type: string
+        conocimientosTecnicos:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConocimientosTecnico'
+          description: ''
+        competenciasFuncionales:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompetenciasFuncionale'
+          description: ''
+        competenciasCorporativas:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompetenciasCorporativa'
+          description: ''
+        titulosAcademicosHtml:
+          type: string
+        titulosAcademicos:
+          type: array
+          items:
+            $ref: '#/components/schemas/TitulosAcademico'
+          description: ''
+        nombreIdioma:
+          type: string
+          nullable: true
+        nombreNivelIdioma:
+          type: string
+          nullable: true
+        codPlantilla:
+          type: integer
+          format: int32
+        plantillaEditable:
+          type: boolean
+        editable:
+          type: boolean
+        editableConPermiso:
+          type: boolean
+        nroHojasVidasExternas:
+          type: integer
+          format: int32
+        infVacanteAuxilioRodamiento:
+          type: string
+        infVacanteArea:
+          type: string
+        infVacanteTipoSalario:
+          type: string
+        fuePublicada:
+          type: boolean
+        nroSolicitudERP:
+          type: string
+        codCandidatoBuscado:
+          type: string
+          nullable: true
+        candidatoEncontrado:
+          type: boolean
+        calendario:
+          type: string
+        competenciasCorporativasHtml:
+          type: string
+          nullable: true
+        competenciasFuncionalesHtml:
+          type: string
+          nullable: true
+        afinacion:
+          type: string
+          nullable: true
+        instruccionesIA:
+          type: string
+        label:
+          type: string
+        disponibilidadViajarAlt:
+          type: boolean
+        rotacionTurnosAlt:
+          type: boolean
+        nombreEmpresaSolicitante:
+          type: string
+        aprobador:
+          type: string
+          nullable: true
+      example:
+        codigo: 209
+        fechaCreacion: 2025-09-19 14:52:54
+        fechaModificacion: N/A
+        fechaCancelacion: null
+        codigoCargo: 92
+        nombreCargo: Coordinador de Calidad
+        cargoExterno: null
+        codigoCargoJefe: 96
+        nombreCargoJefe: Director de Operaciones
+        codigoUsuarioSolicitante: 1
+        nombreUsuarioSolicitante: Juan Fernando Osorio Ospina
+        nroRequisicion: 209
+        estadoRequisicion: 20
+        estadoProceso: 7
+        nombreEstadoProceso: Cierre
+        nombreMacroEstado: null
+        nombreEtapaProceso: Cierre
+        estadoRequisicionStr: Cierre
+        estadoProcesoStr: null
+        codigoMotivo: 2
+        motivo: Convocatoria
+        codigoTipoVinculacion: 1564
+        tipoVinculacion: Contrato de aprendizaje
+        nroVacantes: 3
+        ans: 158/0
+        eliminar: null
+        justificacion: 'eg dfg sdfg sdf sgdf '
+        duracionDias: '333'
+        salarioMensual: Según experiencia
+        observacionesAdicionales: Sin observaciones adicionales
+        recibeCompensacion: false
+        fechaHumana: 19 de sep 2025
+        nombreRegional: Antioquia
+        disponibilidadViajar: false
+        rotacionTurnos: false
+        tipoConvocatoria: MIXTA
+        codigoCentroCostos: null
+        nombreCentroCostos: null
+        edadDesde: 12
+        edadhasta: 88
+        codigoSede: 1
+        nombreSede: Medellín
+        nombreCiudad: Medellin
+        compensacionVariable: null
+        codigoAprobacion: null
+        codigoAprobador: null
+        fechaAprobacion: 19 de sep 2025
+        concepto: null
+        comentario: null
+        tipoAprobador: null
+        fechaEstimada: 30/01/2027
+        personaReemplaza: null
+        nombrePersonaReemplaza: null
+        nombresPersonasReemplazaHtml: null
+        personasReemplazar: []
+        personaEvaluar: null
+        jornadaLaboral: 1549
+        nombreJornadaLaboral: No definido
+        ansTipoCargo: 0
+        ansDiasLider: null
+        ansDiasPsicologo: null
+        ansPrioridadLiderTxt: null
+        ansPrioridadPsicologoTxt: null
+        ansPrioridadLider: null
+        ansPrioridadPsicologo: null
+        tipoProcesoSeleccion: null
+        tipoProcesoSeleccionTxt: null
+        familiaCargo: null
+        familiaCargoTxt: null
+        especialidad: null
+        especialidadTxt: null
+        perfil: null
+        perfilTxt: null
+        lider: null
+        liderTxt: null
+        tecnologiaSophos: null
+        tecnologiaSophosTxt: null
+        nombreArea: N/A
+        nombreJefe: null
+        codigoResponsableProceso: null
+        nombreResponsableProceso: null
+        responsablesProceso: null
+        trvIdiomaRequisicion: []
+        avanceANS: 0
+        diasTranscurridos: 158
+        vicepresidencia: Procesos
+        hash: 1ae24d72-7795-4501-9659-31f5d480079f
+        codigoJefeInmediato: 1
+        jefeInmediato: Juan Fernando Osorio Ospina
+        codigoVicepresidencia: 8
+        nombreVicepresidencia: Procesos
+        codigoNegocio: 1
+        nombreNegocio: Desarrollo de Software
+        codigoUen: 6
+        nombreUen: UEN App Moviles
+        codigoEmpresa: 1
+        nombreEmpresa: talento cloud
+        corporativo: false
+        genero: INDIFERENTE
+        vehiculo: null
+        diasTotales: null
+        tipoRequisicion: 2
+        tipoReglaRequisicion: 24
+        nombreReglaRequisicion: Sin aprobacion
+        fechaCierreRequicision: Hoy
+        codigoEntrevistadorGH: null
+        nombreEntrevistadorGH: null
+        codigoEncargadoExamenMedico: null
+        experiencia: 36
+        experienciaAnios: 3
+        experienciaMes: 0
+        nombreAprobador: null
+        cliente: ''
+        codigoProyecto: ''
+        banda: ''
+        escolaridad: '4'
+        codigoEscolaridad: 4
+        nombreEscolaridad: 'Profesional                   '
+        estadoEscolaridad: null
+        etapasConfiguradas: false
+        descripcion: ' '
+        tipoProceso: Sin aprobacion
+        tiempoMinimoPermanencia: 0
+        empresaSolicitante: null
+        tarifa: ''
+        perfilAspirante: "Asegurarse de que se establecen, implementan y mantienen los procesos necesarios para el sistema de gestión de la calidad e inocuidad.\nGarantizar el cumplimiento de las metas programadas para el sistema de calidad\ne inocuidad.\nEjecutar y llevar el seguimiento a los aspectos ambientales y programas de gestión ambiental de la empresa.\nVerificar el cumplimiento de las Buenas Prácticas de Manufactura en toda la\nplanta, tanto a nivel de los productos fabricados, como a nivel del funcionamiento\nde las áreas de producción - 36 meses, \n"
+        valorProceso: ''
+        confidencialidad: ''
+        fechaOcupacionCargo: 1801198800000
+        observacionesProceso: gsdf gsdf gsdf sgdf g
+        centroCostosNombre: null
+        descripcionJefe: ' '
+        observacionesJornada: ' '
+        alcanceCargoFK: null
+        nombreAlcanceCargo: null
+        infoRelevanteJefe: ' '
+        infoRelevanteComercial: ' '
+        politicasContratacion: ' '
+        preferenciasAspirante: ' '
+        nivelIdioma: null
+        idioma: null
+        avanceProceso: 0.727272748947144
+        paMisionCargo: "Coordinar los aspectos administrativos y de control al interior de la organización en el marco de la\nimplementación y posterior mantención del Sistema de Gestión de Calidad, de acuerdo con los\nrequisitos de las normas ISO 9001:2008, para todos los Sistemas de Calidad de los Programas de\nMejoramiento de la Gestión "
+        paRetoCargo: ' '
+        paResponsabilidadCargo: ' '
+        paIndicadores: ' '
+        paPresupuestoArea: ' '
+        formacionComplementaria: ''
+        funcionesCargo: ' '
+        tipoExperiencia: ''
+        conocimientosTecnicosHtml: <br/>-AAA Pruebas Varias<br/>-NodeJS<br/>-Linux Scripting<br/>-Java<br/>-Comunicación asertiva<br/>
+        conocimientosTecnicos:
+        - codigo: 221
+          nombre: AAA Pruebas Varias
+        - codigo: 138
+          nombre: NodeJS
+        - codigo: 137
+          nombre: Linux Scripting
+        - codigo: 140
+          nombre: Java
+        - codigo: 133
+          nombre: Comunicación asertiva
+        competenciasFuncionales:
+        - codigo: 89
+          nombre: Administración y gestión de recursos
+        - codigo: 90
+          nombre: Análisis numérico
+        - codigo: 101
+          nombre: Comunicación
+        - codigo: 97
+          nombre: Calidad en el trabajo
+        competenciasCorporativas:
+        - codigo: 150
+          nombre: Trabajo en equipo
+        - codigo: 292
+          nombre: Pruebas react
+        - codigo: 149
+          nombre: Promotor de los valores y la ética
+        - codigo: 148
+          nombre: Planeación, organización y control
+        - codigo: 147
+          nombre: Orientación al servicio al cliente
+        - codigo: 146
+          nombre: Experiencia y conocimientos técnicos
+        - codigo: 100
+          nombre: Empatía
+        - codigo: 145
+          nombre: Comunicación
+        - codigo: 96
+          nombre: Capacidad de aprendizaje
+        - codigo: 91
+          nombre: Análisis y resolución de problemas
+        - codigo: 88
+          nombre: Adaptación y flexibilidad
+        - codigo: 86
+          nombre: Adaptación al cambio2
+        titulosAcademicosHtml: Ninguna                       /Administración de sistemas informáticos<br/>
+        titulosAcademicos:
+        - codigo: 26
+          nombre: Administración de sistemas informáticos
+        nombreIdioma: null
+        nombreNivelIdioma: null
+        codPlantilla: 2
+        plantillaEditable: true
+        editable: false
+        editableConPermiso: false
+        nroHojasVidasExternas: 0
+        infVacanteAuxilioRodamiento: 'null'
+        infVacanteArea: 'null'
+        infVacanteTipoSalario: 'null'
+        fuePublicada: true
+        nroSolicitudERP: ''
+        codCandidatoBuscado: null
+        candidatoEncontrado: false
+        calendario: COLOMBIA
+        competenciasCorporativasHtml: null
+        competenciasFuncionalesHtml: null
+        afinacion: null
+        instruccionesIA: '{"idiomas":"medio","observaciones_adicionales":"Que viva en medellin es lo mejor","experiencia_laboral":"alto","nivel_educacion":"alto","ciudad":"medio","genero":"medio","disponibilidad_viajar":"bajo","descripcion_funciones_puesto":"irrelevante","titulos_academicos":"medio","expectativa_salarial":"medio","habilidades_especificas":"bajo","edad":"bajo"}'
+        label: 209 - Coordinador de Calidad
+        disponibilidadViajarAlt: false
+        rotacionTurnosAlt: false
+        nombreEmpresaSolicitante: N/A
+        aprobador: null
+    ConocimientosTecnico:
+      title: ConocimientosTecnico
+      required:
+      - codigo
+      - nombre
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int32
+        nombre:
+          type: string
+      example:
+        codigo: 221
+        nombre: AAA Pruebas Varias
+    CompetenciasFuncionale:
+      title: CompetenciasFuncionale
+      required:
+      - codigo
+      - nombre
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int32
+        nombre:
+          type: string
+      example:
+        codigo: 89
+        nombre: Administración y gestión de recursos
+    CompetenciasCorporativa:
+      title: CompetenciasCorporativa
+      required:
+      - codigo
+      - nombre
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int32
+        nombre:
+          type: string
+      example:
+        codigo: 150
+        nombre: Trabajo en equipo
+    TitulosAcademico:
+      title: TitulosAcademico
+      required:
+      - codigo
+      - nombre
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int32
+        nombre:
+          type: string
+      example:
+        codigo: 26
+        nombre: Administración de sistemas informáticos
+    Publicacion:
+      title: Publicacion
+      required:
+      - estadoPublicacion
+      - cargo
+      - codigo
+      - publicada
+      - tipoConvocatoria
+      - experiencia
+      - experienciaAnios
+      - experienciaMeses
+      - nombreTipoVinculacion
+      - codigoTipoVinculacion
+      - salario
+      - salarioPublico
+      - nombreHorario
+      - codigoHorario
+      - funciones
+      - conocimeintos
+      - fechaCreacion
+      - nroRequisicion
+      - fechaCierre
+      - fechaCierreD
+      - fechaCierreDia
+      - fechaCierreMes
+      - fechaCierreAnio
+      - fechaCierreHumana
+      - fechaQueda
+      - sede
+      - ciudad
+      - nroVacantes
+      - escolaridad
+      - fechaIngreso
+      - fechaIngresoD
+      - fechaIngresoDia
+      - fechaIngresoMes
+      - fechaIngresoAnio
+      - estadoEducacion
+      - paraElEmpleo
+      - paraComputrabajo
+      - paraTicJob
+      - errorElEmpleo
+      - errorComputrabajo
+      - errorTicJob
+      - aplicado
+      - eeTitulo
+      - eeDescripcion
+      - eeRequerimientos
+      - eePublicarNombre
+      - eePublicarEmpresarial
+      - eeIntensidadHoraria
+      - eePositionSublevel
+      - eePosition
+      - eeProfession
+      - eeWorkArea
+      - eeSector
+      - eeCity
+      - eeSalary
+      - tjReferencia
+      - tjLanguage
+      - tjTitle
+      - tjKeywords
+      - tjLocation
+      - tjHtmlcontent
+      - tjSkills
+      - tjExperience
+      - tjStudyLevel
+      - tjJobMode
+      - tjJobType
+      - tjJobDuration
+      - tjJobLocation
+      - titulosAcademicosHtml
+      - titulosAcademicos
+      - formacionComplementaria
+      - tipoExperiencia
+      - informacion
+      - usuarioReapertura
+      - fechaReapertura
+      - ansTipoCargo
+      - ansDiasLider
+      - ansDiasPsicologo
+      - ansPrioridadLiderTxt
+      - ansPrioridadPsicologoTxt
+      - ansPrioridadLider
+      - ansPrioridadPsicologo
+      - rangoSalarioID
+      - rangoSalarioName
+      - encuestaVacanteCodigo
+      - encuestaVacanteNombre
+      type: object
+      properties:
+        estadoPublicacion:
+          type: string
+        cargo:
+          type: string
+        codigo:
+          type: integer
+          format: int32
+        publicada:
+          type: boolean
+        tipoConvocatoria:
+          type: string
+        experiencia:
+          type: integer
+          format: int32
+        experienciaAnios:
+          type: integer
+          format: int32
+        experienciaMeses:
+          type: integer
+          format: int32
+        nombreTipoVinculacion:
+          type: string
+        codigoTipoVinculacion:
+          type: integer
+          format: int32
+        salario:
+          type: string
+        salarioPublico:
+          type: string
+        nombreHorario:
+          type: string
+        codigoHorario:
+          type: integer
+          format: int32
+        funciones:
+          type: string
+        conocimeintos:
+          type: string
+        fechaCreacion:
+          type: string
+        nroRequisicion:
+          type: string
+        fechaCierre:
+          type: string
+        fechaCierreD:
+          type: integer
+          format: int64
+        fechaCierreDia:
+          type: integer
+          format: int32
+        fechaCierreMes:
+          type: integer
+          format: int32
+        fechaCierreAnio:
+          type: integer
+          format: int32
+        fechaCierreHumana:
+          type: string
+        fechaQueda:
+          type: string
+        sede:
+          type: string
+          nullable: true
+        ciudad:
+          type: string
+          nullable: true
+        nroVacantes:
+          type: string
+          nullable: true
+        escolaridad:
+          type: integer
+          format: int32
+        fechaIngreso:
+          type: string
+        fechaIngresoD:
+          type: integer
+          format: int64
+        fechaIngresoDia:
+          type: integer
+          format: int32
+        fechaIngresoMes:
+          type: integer
+          format: int32
+        fechaIngresoAnio:
+          type: integer
+          format: int32
+        estadoEducacion:
+          type: string
+        paraElEmpleo:
+          type: boolean
+        paraComputrabajo:
+          type: boolean
+        paraTicJob:
+          type: boolean
+        errorElEmpleo:
+          type: string
+          nullable: true
+        errorComputrabajo:
+          type: string
+          nullable: true
+        errorTicJob:
+          type: string
+          nullable: true
+        aplicado:
+          type: integer
+          format: int32
+        eeTitulo:
+          type: string
+        eeDescripcion:
+          type: string
+        eeRequerimientos:
+          type: string
+        eePublicarNombre:
+          type: string
+          nullable: true
+        eePublicarEmpresarial:
+          type: string
+          nullable: true
+        eeIntensidadHoraria:
+          type: string
+          nullable: true
+        eePositionSublevel:
+          type: string
+          nullable: true
+        eePosition:
+          type: string
+          nullable: true
+        eeProfession:
+          type: string
+          nullable: true
+        eeWorkArea:
+          type: string
+          nullable: true
+        eeSector:
+          type: string
+          nullable: true
+        eeCity:
+          type: string
+          nullable: true
+        eeSalary:
+          type: string
+        tjReferencia:
+          type: string
+          nullable: true
+        tjLanguage:
+          type: string
+          nullable: true
+        tjTitle:
+          type: string
+        tjKeywords:
+          type: string
+          nullable: true
+        tjLocation:
+          type: string
+          nullable: true
+        tjHtmlcontent:
+          type: string
+          nullable: true
+        tjSkills:
+          type: string
+          nullable: true
+        tjExperience:
+          type: string
+          nullable: true
+        tjStudyLevel:
+          type: string
+          nullable: true
+        tjJobMode:
+          type: string
+          nullable: true
+        tjJobType:
+          type: string
+          nullable: true
+        tjJobDuration:
+          type: string
+          nullable: true
+        tjJobLocation:
+          type: string
+          nullable: true
+        titulosAcademicosHtml:
+          type: string
+          nullable: true
+        titulosAcademicos:
+          type: array
+          items:
+            $ref: '#/components/schemas/TitulosAcademico'
+          description: ''
+        formacionComplementaria:
+          type: string
+          nullable: true
+        tipoExperiencia:
+          type: string
+          nullable: true
+        informacion:
+          type: string
+        usuarioReapertura:
+          type: string
+        fechaReapertura:
+          type: string
+          nullable: true
+        ansTipoCargo:
+          type: string
+          nullable: true
+        ansDiasLider:
+          type: string
+          nullable: true
+        ansDiasPsicologo:
+          type: string
+          nullable: true
+        ansPrioridadLiderTxt:
+          type: string
+          nullable: true
+        ansPrioridadPsicologoTxt:
+          type: string
+          nullable: true
+        ansPrioridadLider:
+          type: string
+          nullable: true
+        ansPrioridadPsicologo:
+          type: string
+          nullable: true
+        rangoSalarioID:
+          type: string
+          nullable: true
+        rangoSalarioName:
+          type: string
+          nullable: true
+        encuestaVacanteCodigo:
+          type: string
+          nullable: true
+        encuestaVacanteNombre:
+          type: string
+          nullable: true
+      example:
+        estadoPublicacion: PUBLICADO
+        cargo: Coordinador de Calidad
+        codigo: 209
+        publicada: true
+        tipoConvocatoria: MIXTA
+        experiencia: 36
+        experienciaAnios: 3
+        experienciaMeses: 0
+        nombreTipoVinculacion: Contrato de aprendizaje
+        codigoTipoVinculacion: 1564
+        salario: Según experiencia
+        salarioPublico: '5000000'
+        nombreHorario: No definido
+        codigoHorario: 1549
+        funciones: >+
+          Asesorar al Representante de la Dirección en la planeación, mantenimiento y perfeccionamiento del Sistema de Gestión de Calidad..
+
+          Planear, dirigir y organizar las actividades necesarias para la implantación y mejora del Sistema de Gestión de Calidad..
+
+          Mantener, Actualizar y Soportar todos los procesos del Sistema de Gestión de Calidad en la empresa  .
+
+        conocimeintos: "<br/>-Comunicación asertiva \r<br/>-Java \r<br/>-Linux Scripting \r<br/>-NodeJS \r<br/>"
+        fechaCreacion: 2025-09-19 14:52:54.539
+        nroRequisicion: '209'
+        fechaCierre: 31-07-2027
+        fechaCierreD: 1817096399000
+        fechaCierreDia: 31
+        fechaCierreMes: 7
+        fechaCierreAnio: 2027
+        fechaCierreHumana: 31 de julio de 2027
+        fechaQueda: (Quedan 443 dias, 8 horas)
+        sede: null
+        ciudad: null
+        nroVacantes: null
+        escolaridad: 4
+        fechaIngreso: 2027-01-30 00:00:00.0
+        fechaIngresoD: 1801285200000
+        fechaIngresoDia: 30
+        fechaIngresoMes: 1
+        fechaIngresoAnio: 2027
+        estadoEducacion: GRADUADO
+        paraElEmpleo: false
+        paraComputrabajo: false
+        paraTicJob: false
+        errorElEmpleo: null
+        errorComputrabajo: null
+        errorTicJob: null
+        aplicado: 0
+        eeTitulo: Coordinador de Calidad
+        eeDescripcion: "Gestión del talento > Desarrollo > Comunicación asertiva, \r\nSistemas de información > Lenguajes > Java, \r\nSistemas de información > Sistemas Operativos > Linux Scripting, \r\nSistemas de información > Lenguajes > NodeJS, \r\n"
+        eeRequerimientos: >+
+          Asesorar al Representante de la Dirección en la planeación, mantenimiento y perfeccionamiento del Sistema de Gestión de Calidad..
+
+          Planear, dirigir y organizar las actividades necesarias para la implantación y mejora del Sistema de Gestión de Calidad..
+
+          Mantener, Actualizar y Soportar todos los procesos del Sistema de Gestión de Calidad en la empresa  .
+
+        eePublicarNombre: null
+        eePublicarEmpresarial: null
+        eeIntensidadHoraria: null
+        eePositionSublevel: null
+        eePosition: null
+        eeProfession: null
+        eeWorkArea: null
+        eeSector: null
+        eeCity: null
+        eeSalary: '34'
+        tjReferencia: null
+        tjLanguage: null
+        tjTitle: Coordinador de Calidad
+        tjKeywords: null
+        tjLocation: null
+        tjHtmlcontent: null
+        tjSkills: null
+        tjExperience: null
+        tjStudyLevel: null
+        tjJobMode: null
+        tjJobType: null
+        tjJobDuration: null
+        tjJobLocation: null
+        titulosAcademicosHtml: null
+        titulosAcademicos:
+        - codigo: 26
+          nombre: Administración de sistemas informáticos
+        formacionComplementaria: null
+        tipoExperiencia: null
+        informacion: La cosa nostra a usar
+        usuarioReapertura: Desconocido
+        fechaReapertura: null
+        ansTipoCargo: null
+        ansDiasLider: null
+        ansDiasPsicologo: null
+        ansPrioridadLiderTxt: null
+        ansPrioridadPsicologoTxt: null
+        ansPrioridadLider: null
+        ansPrioridadPsicologo: null
+        rangoSalarioID: null
+        rangoSalarioName: null
+        encuestaVacanteCodigo: null
+        encuestaVacanteNombre: null
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+security:
+- bearer: []
+tags:
+- name: Selección
+  description: ''
