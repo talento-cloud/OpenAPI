@@ -1008,12 +1008,510 @@ paths:
                 message: El registro se ha eliminado satisfactoriamente
                 success: true
       deprecated: false
+  /val360/nivelesfrecuencia.json:
+    get:
+      tags:
+      - NivelesFrecuencia
+      summary: listarNiveles
+      operationId: listarNiveles
+      parameters:
+      - name: activos
+        in: query
+        description: Filtrar por niveles activos true o inactivos false, por defecto es true
+        required: false
+        schema:
+          type: boolean
+          example: true
+      - name: query
+        in: query
+        description: Filtrar por nombre del nivel de frecuencia otros lo llaman escala
+        required: false
+        schema:
+          type: string
+          example: Siempre    
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors *
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/listarNiveles'
+                - example:
+                    cantidad: 5
+                    datos:
+                    - activo: s
+                      codigo: 17
+                      nivel: 20
+                      nombre: Nunca
+                      descripcion: Nunca demuestra el comportamiento
+                      color: E60012
+                      label: Nunca
+                    - activo: s
+                      codigo: 16
+                      nivel: 40
+                      nombre: Muy pocas veces
+                      descripcion: Muy pocas veces demuestra el comportamiento
+                      color: FF6469
+                      label: Muy pocas veces
+                    - activo: s
+                      codigo: 14
+                      nivel: 60
+                      nombre: Algunas veces
+                      descripcion: Algunas veces demuestra el comportamiento
+                      color: FBE758
+                      label: Algunas veces
+                    - activo: s
+                      codigo: 15
+                      nivel: 80
+                      nombre: Casi siempre
+                      descripcion: Casi siempre demuestra el comportamiento
+                      color: 71D47D
+                      label: Casi siempre
+                    - activo: s
+                      codigo: 18
+                      nivel: 100
+                      nombre: Siempre
+                      descripcion: Siempre demuestra el comportamiento.
+                      color: 00BBE6
+                      label: Siempre
+                    message: OK
+                    success: true
+              example:
+                cantidad: 5
+                datos:
+                - activo: s
+                  codigo: 17
+                  nivel: 20
+                  nombre: Nunca
+                  descripcion: Nunca demuestra el comportamiento
+                  color: E60012
+                  label: Nunca
+                - activo: s
+                  codigo: 16
+                  nivel: 40
+                  nombre: Muy pocas veces
+                  descripcion: Muy pocas veces demuestra el comportamiento
+                  color: FF6469
+                  label: Muy pocas veces
+                - activo: s
+                  codigo: 14
+                  nivel: 60
+                  nombre: Algunas veces
+                  descripcion: Algunas veces demuestra el comportamiento
+                  color: FBE758
+                  label: Algunas veces
+                - activo: s
+                  codigo: 15
+                  nivel: 80
+                  nombre: Casi siempre
+                  descripcion: Casi siempre demuestra el comportamiento
+                  color: 71D47D
+                  label: Casi siempre
+                - activo: s
+                  codigo: 18
+                  nivel: 100
+                  nombre: Siempre
+                  descripcion: Siempre demuestra el comportamiento.
+                  color: 00BBE6
+                  label: Siempre
+                message: OK
+                success: true
+      deprecated: false
+  /val360/nivelesfrecuencia/save.json:
+    post:
+      tags:
+      - NivelesFrecuencia
+      summary: guardarNivel
+      operationId: guardarNivel
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                codigo:
+                  type: integer
+                  description: Código del nivel (opcional si se crea uno nuevo, obligatorio para editar)
+                  example: 18
+                nivel:
+                  type: integer
+                  description: Nivel del comportamiento (porcentaje, e.g. 100) u otro valor según deseos del cliente
+                  example: 100
+                nombre:
+                  type: string
+                  description: Nombre del nivel
+                  example: Siempre
+                descripcion:
+                  type: string
+                  description: Descripción detallada
+                  example: Siempre demuestra el comportamiento.
+                color:
+                  type: string
+                  description: Color hexadecimal asociado
+                  example: 00BBE6
+              required:
+              - nivel
+              - nombre
+              - color
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                codigo:
+                  type: integer
+                  description: Código del nivel (opcional si se crea uno nuevo, obligatorio para editar)
+                  example: 18
+                nivel:
+                  type: integer
+                  description: Nivel del comportamiento (porcentaje, e.g. 100)
+                  example: 100
+                nombre:
+                  type: string
+                  description: Nombre del nivel
+                  example: Siempre
+                descripcion:
+                  type: string
+                  description: Descripción detallada
+                  example: Siempre demuestra el comportamiento.
+                color:
+                  type: string
+                  description: Color hexadecimal asociado
+                  example: 00BBE6
+              required:
+              - nivel
+              - nombre
+              - descripcion
+              - color
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors *
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/guardarNivel'
+                - example:
+                    datos:
+                      activo: s
+                      codigo: 18
+                      nivel: 100
+                      nombre: Siempre
+                      descripcion: Siempre demuestra el comportamiento.
+                      color: 00BBE6
+                      label: Siempre
+                    message: Los datos se almacenaron correctamente.
+                    success: true
+                    entidad:
+                      activo: s
+                      codigo: 18
+                      nivel: 100
+                      nombre: Siempre
+                      descripcion: Siempre demuestra el comportamiento.
+                      color: 00BBE6
+                      label: Siempre
+              example:
+                datos:
+                  activo: s
+                  codigo: 18
+                  nivel: 100
+                  nombre: Siempre
+                  descripcion: Siempre demuestra el comportamiento.
+                  color: 00BBE6
+                  label: Siempre
+                message: Los datos se almacenaron correctamente.
+                success: true
+                entidad:
+                  activo: s
+                  codigo: 18
+                  nivel: 100
+                  nombre: Siempre
+                  descripcion: Siempre demuestra el comportamiento.
+                  color: 00BBE6
+                  label: Siempre
+      deprecated: false
+  /val360/nivelesfrecuencia/delete/{id}.json:
+    delete:
+      tags:
+      - NivelesFrecuencia
+      summary: inactivarNivel
+      operationId: inactivarNivel
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID del nivel a inactivar
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors *
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/inactivarNivel'
+                - example:
+                    message: El registro se ha eliminado satisfactoriamente
+                    success: true
+              example:
+                message: El registro se ha eliminado satisfactoriamente
+                success: true
+      deprecated: false
+  /val360/nivelesfrecuencia/reactivate/{id}.json:
+    delete:
+      tags:
+      - NivelesFrecuencia
+      summary: reactivarNivel
+      operationId: reactivarNivel
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID del nivel a reactivar
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors *
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/reactivarNivel'
+                - example:
+                    message: El registro fue reactivado exitosamente
+                    success: true
+              example:
+                message: El registro fue reactivado exitosamente
+                success: true
+      deprecated: false
   /versionesevaluacionpublicadas.json:
     get:
       tags:
-      - Misc
+      - Otros
       summary: EvaluacionesPublicadas
-      description: "## Evaluaciones Publicadas\n\n**Request name:** EvaluacionesPublicadas  \n**Descripción:** Lista los procesos en los que el usuario es evaluador activo y debe valorar competencias de otros usuarios.\n\n---\n\n### Método y URL\n\n```\nGET {urlBaseTalento}/html/    versionesevaluacionpublicadas.json\n\n ```\n\n- `{urlBaseTalento}`: Variable de entorno/colección que define la URL base del backend de Talento.\n    \n\n---\n\n### Parámetros\n\n#### Parámetros de consulta (query params)\n\n| Nombre | Tipo | Obligatorio | Valores posibles | Descripción |\n| --- | --- | --- | --- | --- |\n| `movil` | boolean/string | Opcional | `false` (posible valor) | Bandera especial para versiones móvil |\n\nEjemplo de URL con query param:\n\n```\nGET {urlBaseTalento}/html/    versionesevaluacionpublicadas.json?    movil=false\n\n ```\n\n#### Variables relevantes\n\n| Nombre | Tipo | Ámbito recomendado | Descripción |\n| --- | --- | --- | --- |\n| `Token_JWT` | string | Environment | Token JWT del usuario autenticado, usado en el header `Authorization`. |\n| `urlBaseTalento` | string | Environment/Collection | URL base de la API de Talento, por ejemplo: `https://demo.talento-dev.cloud` |\n\n---\n\n### Headers de ejemplo\n\n```\nAuthorization: Bearer {Token_JWT} Content-Type: application/jsonAccept: application/json\n\n ```\n\n- **Authorization**: use un JWT válido almacenado en la variable `{Token_JWT}`.\n    \n\n---\n\n### Ejemplo de respuesta\n\n**Código de estado:** `200 OK`  \n**Content-Type:** `application/json`\n\n```\n{    \"datos\": [        {            \"activo\": \"s\",            \"codigo\": 249,            \"descripcion\": \"Valoracion                 Agosto\",            \"descripcionLarga\": \"dfgdfg\",            \"fecha_creacion\": 1754079171567,            \"fecha_terminacion\": null,            \"porcentajeAutoevaluacion\": 20,            \"porcentajeMisPares\": 20,            \"porcentajeMisColaboradores\": 20,            \"porcentajeMiJefe\": 20,            \"porcentajeClienteProveedores\":                 20,            \"totalEvaluacionesProgramadas\":                 368,            \"totalEvaluacionesHechas\": 1,            \"estado\": 3,            \"camponosabenoresponde\": true,            \"porCargoActual\": true,            \"porCargoProyectado\": true,            \"porNivelOrganizacional\": true,            \"porCorporativas\": true,            \"porArea\": true,            \"porRol\": true,            \"urlTransient\": \"http://base.                local:8889/\",            \"label\": \"Valoracion Agosto\",            \"empresaStr\": \"TODAS\",            \"estadoStr\":                 \"VAL_estado_enprogreso\",            \"...\": \"Object truncated\"        },        {            \"activo\": \"s\",            \"codigo\": 239,            \"descripcion\": \"CLON: Valoración                 DEC operativos!\",            \"fecha_creacion\": 1744391183385,            \"fecha_terminacion\":                 1663384106131,            \"totalEvaluacionesProgramadas\":                 11,            \"totalEvaluacionesHechas\": 0,            \"estado\": 3,            \"urlTransient\": \"https://demo.                talento-dev.cloud/\",            \"label\": \"CLON: Valoración DEC                 operativos!\",            \"empresaStr\": \"TODAS\",            \"estadoStr\":                 \"VAL_estado_enprogreso\",            \"...\": \"Object truncated\"        }        // ... otros procesos de valoración    ],    \"...\": \"Object truncated\"}\n\n ```\n\n> &lt;p &gt;Nota: La respuesta real incluye más campos y objetos. Aquí se muestra una versión truncada solo para referencia.&lt;/p&gt; \n  \n\n---\n\n### Notas de uso / flujo típico\n\n1. Obtén un JWT válido (por ejemplo, mediante el endpoint de autenticación correspondiente) y guárdalo en la variable `{Token_JWT}` del entorno.\n    \n2. Configura la variable `{urlBaseTalento}` en el entorno **Talento Environment** con la URL base adecuada para el ambiente (dev, qa, prod, etc.).\n    \n3. Envía la petición `GET` a `{urlBaseTalento}/html/versionesevaluacionpublicadas.json` con el header `Authorization: Bearer {Token_JWT}`.\n    \n4. Verifica que el arreglo `datos` contenga los procesos de evaluación donde el usuario actual es evaluador activo, junto con sus atributos de configuración (porcentajes, fechas de apertura/cierre, banderas, etc.).\n    \n\n---\n\n### Posibles variaciones\n\n- GET {urlBaseTalento}/html/ versionesevaluacionpublicadas.json? movil=false\n    \n- **Ambientes diferentes**: cambia el valor de `{urlBaseTalento}` en el entorno para apuntar a distintos ambientes (por ejemplo, demo, producción del cliente, etc.).\n    \n- **Filtros adicionales**: si en futuras versiones se añaden más parámetros de query, deberán documentarse aquí (por ejemplo, filtros por estado, fechas, empresa, etc.).\n    \n\n---\n\n## Manejo de errores\n\nLos errores habituales pueden incluir:\n\n- `400 Bad Request`: Parámetros requeridos faltantes o con formato inválido.\n    \n- `401 Unauthorized`: Token JWT inválido, expirado o ausente.\n    \n- `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.\n    \n- `404 Not Found`: El recurso solicitado no existe.\n    \n- `500 Internal Server Error`: Error inesperado en el servidor.\n    \n\nCuando sea posible, cada endpoint detallará sus códigos de error específicos y estructura de respuesta en su propia descripción."
+      description: "## Evaluaciones Publicadas\n\n**Request name:** EvaluacionesPublicadas  \n**Descripción:** Lista los procesos en los que el usuario es evaluador activo y debe valorar competencias de otros usuarios.\n\n---\n\n### Método y URL\n\n```\nGET {urlBaseTalento}/html/    versionesevaluacionpublicadas.json\n\n ```\n\n- `{urlBaseTalento}`: Variable de entorno/colección que define la URL base del backend de Talento.\n    \n\n---\n\n### Parámetros\n\n#### Parámetros de consulta (query params)\n\n| Nombre | Tipo | Obligatorio | Valores posibles | Descripción |\n| --- | --- | --- | --- | --- |\n| `movil` | boolean/string | Opcional | `false` (posible valor) | Bandera especial para versiones móvil |\n\nEjemplo de URL con query param:\n\n```\nGET {urlBaseTalento}/html/    versionesevaluacionpublicadas.json?    movil=false\n\n ```\n\n#### Variables relevantes\n\n| Nombre | Tipo | Ámbito recomendado | Descripción |\n| --- | --- | --- | --- |\n| `Token_JWT` | string | Environment | Token JWT del usuario autenticado, usado en el header `Authorization`. |\n| `urlBaseTalento` | string | Environment/Collection | URL base de la API de Talento, por ejemplo: `https://demo.talento-dev.cloud` |\n\n---\n\n### Headers de ejemplo\n\n```\nAuthorization: Bearer {Token_JWT} Content-Type: application/jsonAccept: application/json\n\n ```\n\n- **Authorization**: use un JWT válido almacenado en la variable `{Token_JWT}`.\n    \n\n---\n\n### Ejemplo de respuesta\n\n**Código de estado:** `200 OK`  \n**Content-Type:** `application/json`\n\n```\n{    \"datos\": [        {            \"activo\": \"s\",            \"codigo\": 249,            \"descripcion\": \"Valoracion                 Agosto\",            \"descripcionLarga\": \"dfgdfg\",            \"fecha_creacion\": 1754079171567,            \"fecha_terminacion\": null,            \"porcentajeAutoevaluacion\": 20,            \"porcentajeMisPares\": 20,            \"porcentajeOtrosolaboradores\": 20,            \"porcentajeMiJefe\": 20,            \"porcentajeClienteProveedores\":                 20,            \"totalEvaluacionesProgramadas\":                 368,            \"totalEvaluacionesHechas\": 1,            \"estado\": 3,            \"camponosabenoresponde\": true,            \"porCargoActual\": true,            \"porCargoProyectado\": true,            \"porNivelOrganizacional\": true,            \"porCorporativas\": true,            \"porArea\": true,            \"porRol\": true,            \"urlTransient\": \"http://base.                local:8889/\",            \"label\": \"Valoracion Agosto\",            \"empresaStr\": \"TODAS\",            \"estadoStr\":                 \"VAL_estado_enprogreso\",            \"...\": \"Object truncated\"        },        {            \"activo\": \"s\",            \"codigo\": 239,            \"descripcion\": \"CLON: Valoración                 DEC operativos!\",            \"fecha_creacion\": 1744391183385,            \"fecha_terminacion\":                 1663384106131,            \"totalEvaluacionesProgramadas\":                 11,            \"totalEvaluacionesHechas\": 0,            \"estado\": 3,            \"urlTransient\": \"https://demo.                talento-dev.cloud/\",            \"label\": \"CLON: Valoración DEC                 operativos!\",            \"empresaStr\": \"TODAS\",            \"estadoStr\":                 \"VAL_estado_enprogreso\",            \"...\": \"Object truncated\"        }        // ... otros procesos de valoración    ],    \"...\": \"Object truncated\"}\n\n ```\n\n> &lt;p &gt;Nota: La respuesta real incluye más campos y objetos. Aquí se muestra una versión truncada solo para referencia.&lt;/p&gt; \n  \n\n---\n\n### Notas de uso / flujo típico\n\n1. Obtén un JWT válido (por ejemplo, mediante el endpoint de autenticación correspondiente) y guárdalo en la variable `{Token_JWT}` del entorno.\n    \n2. Configura la variable `{urlBaseTalento}` en el entorno **Talento Environment** con la URL base adecuada para el ambiente (dev, qa, prod, etc.).\n    \n3. Envía la petición `GET` a `{urlBaseTalento}/html/versionesevaluacionpublicadas.json` con el header `Authorization: Bearer {Token_JWT}`.\n    \n4. Verifica que el arreglo `datos` contenga los procesos de evaluación donde el usuario actual es evaluador activo, junto con sus atributos de configuración (porcentajes, fechas de apertura/cierre, banderas, etc.).\n    \n\n---\n\n### Posibles variaciones\n\n- GET {urlBaseTalento}/html/ versionesevaluacionpublicadas.json? movil=false\n    \n- **Ambientes diferentes**: cambia el valor de `{urlBaseTalento}` en el entorno para apuntar a distintos ambientes (por ejemplo, demo, producción del cliente, etc.).\n    \n- **Filtros adicionales**: si en futuras versiones se añaden más parámetros de query, deberán documentarse aquí (por ejemplo, filtros por estado, fechas, empresa, etc.).\n    \n\n---\n\n## Manejo de errores\n\nLos errores habituales pueden incluir:\n\n- `400 Bad Request`: Parámetros requeridos faltantes o con formato inválido.\n    \n- `401 Unauthorized`: Token JWT inválido, expirado o ausente.\n    \n- `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.\n    \n- `404 Not Found`: El recurso solicitado no existe.\n    \n- `500 Internal Server Error`: Error inesperado en el servidor.\n    \n\nCuando sea posible, cada endpoint detallará sus códigos de error específicos y estructura de respuesta en su propia descripción."
       operationId: EvaluacionesPublicadas
       parameters: []
       responses:
@@ -1024,7 +1522,7 @@ paths:
   /valoracion360/personasAEvaluar/.json:
     get:
       tags:
-      - Misc
+      - Otros
       summary: PersonasAEvaluar
       description: "Para listar los usuarios que el usuario en sesión debe evaluar de un proceso elegido. (Usado en el  \nformulario estandar)  \nNecesitamos una sesión activa previa, accedemos al servicio REST tipo GET en la url end point  \n{urlBaseTalento}/html/valoracion360/personasAEvaluar/{{codEvaluacion}}.json\n\n**Parámetros tipo query**:\n\n- **query** Para filtrar por nombre si se desea NO\n    \n- **estado** Para filtrar por estados si se desea, ej: PENDIENTE, ENCURSO,FINALIZADA, ECHAZADA. NO es obligatorio\n    \n\nLa foto del usuario se toma a partir de su código con la url: ../html/foto/descargaralt/\\[cod_usuario\\]/2  \nestadoCalificacion nos indica la bandera de si el usuario a calificar esta: pendiente(0), en progreso (3),  \nrechazado(2) o finalizado (1)  \nEl codAsignacion es importante más adelante"
       operationId: PersonasAEvaluar
@@ -1037,7 +1535,7 @@ paths:
   /valoracion360/total-evaluacion/{codAsignacion}.json:
     get:
       tags:
-      - Misc
+      - Otros
       summary: TotalEvaluacion
       description: Total de evaluaciones a realizar
       operationId: TotalEvaluacion
@@ -1056,7 +1554,7 @@ paths:
   /valoracion360/cargar-informacion-pregunta/{codAsignacion}/SIGUIENTE.json:
     get:
       tags:
-      - Misc
+      - Otros
       summary: CargarPregunta
       description: "En el formulario estándar (tipo wizard) existe un endpoint que te da los detalles de preguntas una a la  \nvez según se va respondiendo y avanzando cuando se le da al botón siguiente.  \nNecesitamos una sesión activa previa, accedemos al servicio REST tipo GET en la url endpoint  \n{urlBaseTalento}/html/valoracion360/cargar-informacion-pregunta/{{codAsignacion}}/-1.json\n\n**Parámetros tipo query:**\n\n- **primer_pregunta**: Si se quiere devolver a la primera pregunta se manda con true y dirección ATRAS. No es obligatorio\n    \n\nEl -1 es si es la primera vez que entramos, se puede cambiar por SIGUIENTE o ATRAS para movernos  \nentre preguntas. El servicio siempre tratará de entregarnos la ultima pregunta/comportamiento sin  \nresponder.\n\nEl resultado es la pregunta con su competencia asociada, además tiene la escala  \ncon que se puede calificar y si ya estaba respondida la pregunta indicará cual fue la  \nopción seleccionada previamente."
       operationId: CargarPregunta
@@ -1075,7 +1573,7 @@ paths:
   /valoracion360/totalPrceso///{codAsignacion}.json:
     get:
       tags:
-      - Misc
+      - Otros
       summary: TotalProceso
       description: "Para consultar la cantidad de preguntas respondidas y totales de un evaluado por parte del evaluador  \nen sesión.  \nNecesitamos una sesión activa previa, accedemos al servicio REST tipo GET en la url end point  \n{urlBaseTalento}/html/valoracion360/totalPrceso/{{codEvaluacion}}/{{codEvaluado}}/  \n{{codAsignacion}}.json\n\nDonde codEvaluacion es el código del proceso, codEvaluado es el mismo codUsuario  \nque obtenemos al listar evaluados, de esa misma lista sacamos el codAsignacion"
       operationId: TotalProceso
@@ -1094,7 +1592,7 @@ paths:
   /valoracion360/guardarCalificacionIndividual/{codAsignacion}//.json:
     post:
       tags:
-      - Misc
+      - Otros
       summary: GuardarRespuestasElegida
       description: "Para guardar la calificación a una pregunta dada:  \nNecesitamos una sesión activa previa, accedemos al servicio REST tipo POST en la url endpoint  \n{urlBaseTalento}/html/valoracion360/guardarCalificacionIndividual/{{codAsignacion}}/  \n{{codReferencia}}/{{calificacion}}.json\n\n**Path param:**\n\nCodAsignacion, codReferencia y calificacion se tomán según el endpoint anterior, donde  \ncodReferencia es el mismo campo codigo en la pregunta (no confundir con codPregunta), y  \ncalificación es uno de los valores de la escala"
       operationId: GuardarRespuestasElegida
@@ -1113,7 +1611,7 @@ paths:
   /valoracion360/guardarComentarios/{codAsignacion}/.json:
     post:
       tags:
-      - Misc
+      - Otros
       summary: guardarComentarios
       description: "Para guardar las fortalezas, oportunidades u observaciones de una pregunta/comportamiento  \nindicado. Esos campos son configurables de si se ven, o son obligatorios o tienen límite de caracteres.  \nNecesitamos una sesión activa previa, accedemos al servicio REST tipo POST en la url end point  \n{urlBaseTalento}/html/valoracion360/guardarComentarios/{{codAsignacion}}/{{codReferencia}}.json\n\n**Query params:**\n\n- observacion Texto\n    \n- fortalezas Texto\n    \n- oprortunidad Texto\n    \n\nDonde codAsignacion la tomamos de la lista de evaluados y codReferencia es el codigo en pregunta  \nque no es codPregunta.  \nSi codReferencia es igual a -1 se debe mandar un parametro adicional llamado copiaPregunta. Esto  \npuede pasar en el acordeón."
       operationId: guardarComentarios
@@ -1159,7 +1657,7 @@ paths:
   /valoracion360/guardar-observaciones/{codAsignacion}.json:
     post:
       tags:
-      - Misc
+      - Otros
       summary: guardarRetroalimentacion
       description: "Para guardar las observaciones finales sobre el usuario que se termina de calificar  \nNecesitamos una sesión activa previa, accedemos al servicio REST tipo POST en la url endpoint  \n{urlBaseTalento}/html/valoracion360/guardar-observaciones/{{codAsignacion}}.json\n\n**Query params:**\n\n- **datas**: Observaciones en formato json, ejem: {\"observacion\":\"Esta es la observaciones final del evaluados que es la retroalimentaci\\\\u00f3n tambien.\"}. Es obligatorio\n    \n- **finalizar:** Si true indica que esa evaluación se debe finalizar, por tanto no se podrá modificar después y ya puede hacer los cálculos de los resultados por debajo. No es obligatorio"
       operationId: guardarRetroalimentacion
@@ -1198,7 +1696,7 @@ paths:
   /valoracion360/rechazarEvaluacion.json:
     post:
       tags:
-      - Misc
+      - Otros
       summary: rechazarEvaluacion
       description: "El evaluador puede decir que no tiene criterio para evaluar a un colaborador de la empresa, para esto  \nusa el siguiente endpont: {urlBaseTalento}/html/valoracion360/rechazarEvaluacion.json"
       operationId: rechazarEvaluacion
@@ -1627,6 +2125,167 @@ components:
       example:
         message: El registro se ha eliminado satisfactoriamente
         success: true
+    listarNiveles:
+      title: listarNiveles
+      required:
+      - cantidad
+      - datos
+      - message
+      - success
+      type: object
+      properties:
+        cantidad:
+          type: integer
+          format: int32
+        datos:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatoNivelFrecuencia'
+          description: ''
+        message:
+          type: string
+        success:
+          type: boolean
+      example:
+        cantidad: 5
+        datos:
+        - activo: s
+          codigo: 17
+          nivel: 20
+          nombre: Nunca
+          descripcion: Nunca demuestra el comportamiento
+          color: E60012
+          label: Nunca
+        - activo: s
+          codigo: 16
+          nivel: 40
+          nombre: Muy pocas veces
+          descripcion: Muy pocas veces demuestra el comportamiento
+          color: FF6469
+          label: Muy pocas veces
+        - activo: s
+          codigo: 14
+          nivel: 60
+          nombre: Algunas veces
+          descripcion: Algunas veces demuestra el comportamiento
+          color: FBE758
+          label: Algunas veces
+        - activo: s
+          codigo: 15
+          nivel: 80
+          nombre: Casi siempre
+          descripcion: Casi siempre demuestra el comportamiento
+          color: 71D47D
+          label: Casi siempre
+        - activo: s
+          codigo: 18
+          nivel: 100
+          nombre: Siempre
+          descripcion: Siempre demuestra el comportamiento.
+          color: 00BBE6
+          label: Siempre
+        message: OK
+        success: true
+    DatoNivelFrecuencia:
+      title: DatoNivelFrecuencia
+      required:
+      - activo
+      - codigo
+      - nivel
+      - nombre
+      - descripcion
+      - color
+      - label
+      type: object
+      properties:
+        activo:
+          type: string
+        codigo:
+          type: integer
+          format: int32
+        nivel:
+          type: integer
+          format: int32
+        nombre:
+          type: string
+        descripcion:
+          type: string
+        color:
+          type: string
+        label:
+          type: string
+      example:
+        activo: s
+        codigo: 18
+        nivel: 100
+        nombre: Siempre
+        descripcion: Siempre demuestra el comportamiento.
+        color: 00BBE6
+        label: Siempre
+    guardarNivel:
+      title: guardarNivel
+      required:
+      - datos
+      - message
+      - success
+      - entidad
+      type: object
+      properties:
+        datos:
+          $ref: '#/components/schemas/DatoNivelFrecuencia'
+        message:
+          type: string
+        success:
+          type: boolean
+        entidad:
+          $ref: '#/components/schemas/DatoNivelFrecuencia'
+      example:
+        datos:
+          activo: s
+          codigo: 18
+          nivel: 100
+          nombre: Siempre
+          descripcion: Siempre demuestra el comportamiento.
+          color: 00BBE6
+          label: Siempre
+        message: Los datos se almacenaron correctamente.
+        success: true
+        entidad:
+          activo: s
+          codigo: 18
+          nivel: 100
+          nombre: Siempre
+          descripcion: Siempre demuestra el comportamiento.
+          color: 00BBE6
+          label: Siempre
+    inactivarNivel:
+      title: inactivarNivel
+      required:
+      - message
+      - success
+      type: object
+      properties:
+        message:
+          type: string
+        success:
+          type: boolean
+      example:
+        message: El registro se ha eliminado satisfactoriamente
+        success: true
+    reactivarNivel:
+      title: reactivarNivel
+      required:
+      - message
+      - success
+      type: object
+      properties:
+        message:
+          type: string
+        success:
+          type: boolean
+      example:
+        message: El registro fue reactivado exitosamente
+        success: true
     datas2:
       title: datas2
       required:
@@ -1649,5 +2308,7 @@ tags:
 - name: Calibracion
 - name: AdministracionCptValoresValoracion
   description: Con tiene maestro CRUD para la tabla cpt_valores_valoracion, no olvidar que tambien existe la tabla copia_valores_valoracion. En conclusión son los rangos de resultados de competencias y sus colores asociados.
-- name: Misc
+- name: NivelesFrecuencia
+  description: Contiene el maestro CRUD para administrar los niveles de frecuencia de los comportamientos en las valoraciones de competencias.
+- name: Otros
   description: ''
