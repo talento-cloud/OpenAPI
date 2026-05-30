@@ -1,3 +1,4 @@
+
 openapi: 3.0.3
 info:
   title: Talento Cloud - API de Selección
@@ -69,12 +70,21 @@ tags:
   - name: Entrevista Individual
     description: >-
       Endpoints para la etapa de Entrevista Individual por Psicología.
+  - name: Visita Domiciliaria
+    description: >-
+      Endpoints para la etapa de Visita Domiciliaria.
+  - name: Etapa cliente
+    description: >-
+      Endpoints para la etapa de Cliente.
   - name: Assessments
     description: >-
       Endpoints para la creación y consulta de Assessments (Assessment Center).
   - name: Entrevistas Grupales
     description: >-
       Endpoints para la creación, consulta y gestión de Entrevistas Grupales.
+  - name: Estudio de seguridad
+    description: >-
+      Endpoints para la etapa de Estudio de seguridad, donde se registra el resultado y adjuntos.
   - name: "Configuración: Observaciones por Defecto"
     description: >-
       Endpoints para gestionar las plantillas de texto (observaciones) que aparecen por defecto en varias etapas del proceso.
@@ -96,8 +106,11 @@ x-tagGroups:
       - Preselección
       - Filtro Telefónico
       - Entrevista Individual
+      - Visita Domiciliaria
+      - Etapa cliente
       - Assessments
       - Entrevistas Grupales
+      - Estudio de seguridad
       - "Pruebas Técnicas (Evaluación)"
       - "Pruebas Psicotécnicas (Candidato)"
 
@@ -747,6 +760,7 @@ paths:  # ───────────────────────�
         El parámetro `valOfertaSalarial` controla si se aplican reglas de visibilidad sobre la
         etapa de Oferta Salarial, basándose en la propiedad `SLC_OFERTASALARIAL_ETAPA_GESTIONADOR`
         y el permiso `PERMISO_SLC_OFERTASALARIAL_MANEJOETAPA`.
+
       operationId: listarEtapasElegidas
       parameters:
         - name: codRequi
@@ -1118,7 +1132,7 @@ paths:  # ───────────────────────�
                   description: >-
                     Un string que contiene un array JSON con un único objeto. 
                     Ver el schema GuardarPruebasTecnicasRequest para el contenido de ese objeto.
-                  example: '[{"requisicion":123,"pruebasTecnicas":"[\"1\",\"2\"]","pruebasTecnicasMoodle":"[\"10\"]"}]'
+                  example: '[{"requisicion":123,"pruebasTecnicas":"["1","2"]","pruebasTecnicasMoodle":"["10"]"}]'
       responses:
         '200':
           description: Configuración guardada.
@@ -1264,1132 +1278,74 @@ paths:  # ───────────────────────�
           description: Sesión inválida o sin permisos.
 
   # ──────────────────────────────────────────────────────────────────────────────
-  # PRUEBAS TÉCNICAS (EVALUACIÓN)
-  # Controlador: mundial.server.vista.rest.PruebaTecnicaCandidatoController
-  # Base path: /pruebaTecnicaCandidato
+  # CARGA DE ARCHIVOS (GENÉRICO)
   # ──────────────────────────────────────────────────────────────────────────────
-  /pruebaTecnicaCandidato/listar/{codRequi}/{candidato}/{codPrueba}:
+  /cargarArchivos/listar/{idRequisicion}/{idCandidato}/{idEtapa}:
     get:
       tags:
-        - "Pruebas Técnicas (Evaluación)"
-      summary: Lista la evaluación de la prueba técnica de un candidato.
-      operationId: listarEvaluacionPruebaTecnica
-      parameters:
-        - name: codRequi
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: candidato
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: codPrueba
-          in: path
-          description: "ID del registro de la prueba en la requisición (PruebaTecnicaRequisicion)."
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: "Datos de la evaluación."
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  total:
-                    type: integer
-                  datos:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/DTOPruebaTecnicaCandidato'
-        '403':
-          description: Sesión inválida o sin permisos.
-
-  /pruebaTecnicaCandidato/guardar:
-    post:
-      tags:
-        - "Pruebas Técnicas (Evaluación)"
-      summary: Guarda la evaluación de la prueba técnica de un candidato.
-      operationId: guardarEvaluacionPruebaTecnica
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                records:
-                  type: string
-                  description: "Un string que contiene un array JSON con un único objeto. Ver el schema GuardarPruebaTecnicaCandidatoRequest para el contenido."
-                  example: '[{"codigo":1,"candidato":123,"requisicion":456,"prueba":789,"concepto":"Aprobado","analisis":"..."}]'
-      responses:
-        '200':
-          description: "Evaluación guardada."
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  message:
-                    type: string
-        '403':
-          description: Sesión inválida o sin permisos.
-
-  /pruebaTecnicaCandidato/cargarArchivoTecnica/{codRequi}/{candidato}/{codPrueba}:
-    post:
-      tags:
-        - "Pruebas Técnicas (Evaluación)"
-      summary: Carga un archivo adjunto para la prueba técnica de un candidato.
-      operationId: cargarArchivoPruebaTecnica
-      parameters:
-        - name: codRequi
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: candidato
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: codPrueba
-          in: path
-          description: "ID del registro de la prueba en la requisición (PruebaTecnicaRequisicion)."
-          required: true
-          schema:
-            type: integer
-            format: int64
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                archivo:
-                  type: string
-                  format: binary
-      responses:
-        '200':
-          description: "Archivo cargado."
-          content:
-            text/html: # El controlador devuelve un ModelAndView que renderiza como HTML
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  message:
-                    type: string
-        '403':
-          description: Sesión inválida o sin permisos.
-
-  /pruebaTecnicaCandidato/descargarArchivoTecnica/{idArchivoTec}:
-    get:
-      tags:
-        - "Pruebas Técnicas (Evaluación)"
-      summary: Descarga el archivo adjunto de una prueba técnica.
-      operationId: descargarArchivoPruebaTecnica
-      parameters:
-        - name: idArchivoTec
-          in: path
-          description: "ID del registro de la prueba del candidato (PruebaTecnicaCandidato)."
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: "El archivo a descargar."
-          content:
-            application/octet-stream: {}
-        '403':
-          description: Sesión inválida o sin permisos.
-        '404':
-          description: Archivo no encontrado.
-
-  # ──────────────────────────────────────────────────────────────────────────────
-  # CONFIGURACIÓN: OBSERVACIONES POR DEFECTO
-  # Controlador: mundial.server.vista.rest.seleccion.ObservacionesDefectoController
-  # Base path: /seleccion/observacionesDefecto
-  # ──────────────────────────────────────────────────────────────────────────────
-  /seleccion/observacionesDefecto/guardar/{codigoRequisicion}:
-    post:
-      tags:
-        - "Configuración: Observaciones por Defecto"
-      summary: Guarda las observaciones por defecto para una o más etapas.
+        - Estudio de seguridad
+        - Visita Domiciliaria
+        - Entrevista Individual
+      summary: Obtiene los datos de una etapa que maneja archivos.
       description: |
-        Guarda o actualiza los textos de las observaciones por defecto para las etapas especificadas
-        en los parámetros. Si `codigoRequisicion` es -1, se aplica la configuración general.
-      operationId: guardarObservacionesDefecto
+        Recupera los datos de una etapa que maneja archivos. El parámetro `idEtapa` debe ser uno de los siguientes:
+        - `15`: Estudio de seguridad
+        - `14`: Visita Domiciliaria
+        - `10`: Entrevista Individual
+      operationId: listarDatosEtapaArchivos
       parameters:
-        - name: codigoRequisicion
-          in: path
-          description: "ID de la requisición. Usar -1 para la configuración general."
-          required: true
-          schema:
-            type: integer
-            format: int64
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/GuardarObservacionesRequest'
-      responses:
-        '200':
-          description: "Observaciones guardadas con éxito."
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  message:
-                    type: string
-        '403':
-          description: Sesión inválida o sin permisos.
-
-  /seleccion/observacionesDefecto/listar/{codigoRequisicion}:
-    get:
-      tags:
-        - "Configuración: Observaciones por Defecto"
-      summary: Lista todas las observaciones por defecto de una requisición.
-      description: |
-        Recupera una lista de todas las observaciones por defecto que han sido configuradas para una
-        requisición específica. Si `codigoRequisicion` es -1, lista la configuración general.
-      operationId: listarObservacionesDefecto
-      parameters:
-        - name: codigoRequisicion
-          in: path
-          description: "ID de la requisición. Usar -1 para la configuración general."
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: "Lista de observaciones."
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  datos:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/SlcObservacionesPorDefecto'
-        '403':
-          description: Sesión inválida o sin permisos.
-
-  /seleccion/observacionesDefecto/get/{codigoRequisicion}/{etapa}:
-    get:
-      tags:
-        - "Configuración: Observaciones por Defecto"
-      summary: Obtiene la observación por defecto de una etapa específica.
-      description: |
-        Recupera el texto de la observación por defecto para una única etapa dentro
-        de una requisición. Si `codigoRequisicion` es -1, busca en la configuración general.
-      operationId: getObservacionDefecto
-      parameters:
-        - name: codigoRequisicion
-          in: path
-          description: "ID de la requisición. Usar -1 para la configuración general."
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: etapa
-          in: path
-          description: "ID de la etapa a consultar."
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: "Observación por defecto de la etapa."
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  datos:
-                    $ref: '#/components/schemas/SlcObservacionesPorDefecto'
-        '403':
-          description: Sesión inválida o sin permisos.
-
-  # ──────────────────────────────────────────────────────────────────────────────
-  # ASSESSMENTS
-  # Controlador: mundial.server.vista.rest.EntrevistaValoracionController
-  # Base path: /entrevistaValoracion
-  # ──────────────────────────────────────────────────────────────────────────────
-  /entrevistaValoracion/listarAsses/{codRequi}:
-    get:
-      tags:
-        - Assessments
-      summary: Lista los assessments de una requisición
-      description: |
-        Retorna todos los assessments (Assessment Center) configurados para la requisición
-        indicada. Utiliza el mismo DTO que las entrevistas grupales.
-      operationId: listarAssessmentsValoracion
-      parameters:
-        - name: codRequi
-          in: path
-          description: Código de la requisición.
-          required: true
-          schema:
-            type: integer
-            format: int64
-          example: 121
-        - name: page
-          in: query
-          description: Número de página (basado en 1).
-          required: false
-          schema:
-            type: integer
-            default: 1
-        - name: start
-          in: query
-          description: Índice inicial para la paginación (offset).
-          required: false
-          schema:
-            type: integer
-            default: 0
-        - name: limit
-          in: query
-          description: Cantidad máxima de registros a retornar.
-          required: false
-          schema:
-            type: integer
-            default: 25
-      responses:
-        '200':
-          description: Listado de assessments.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  total:
-                    type: integer
-                    description: Cantidad total de assessments.
-                    example: 2
-                  datos:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/DTOEntrevistaValoracion'
-        '403':
-          description: Sesión inválida o sin permisos.
-        '500':
-          description: Error interno del servidor.
-
-  /entrevistaValoracion/guardarAssesment:
-    post:
-      tags:
-        - Assessments
-      summary: Crea o actualiza un Assessment.
-      description: |
-        Guarda un nuevo Assessment o actualiza uno existente si se proporciona un `codigo`.
-        El `tipo` interno se establece automáticamente en "Assesment".
-      operationId: guardarAssessment
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/DTOAssessmentRequest'
-      responses:
-        '200':
-          description: Assessment guardado o modificado exitosamente.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  message:
-                    type: string
-                  entrevistaSeleccionar:
-                    type: integer
-                    format: int64
-                    description: ID del assessment guardado, para seleccionarlo en la UI.
-        '400':
-          description: Error de formato en la fecha u otro parámetro.
-        '403':
-          description: Sesión inválida o sin permisos.
-
-  # ──────────────────────────────────────────────────────────────────────────────
-  # CONTEO CANDIDATOS POR ETAPA
-  # Controlador: mundial.server.vista.rest.EtapaCandidatoController
-  # Base path: /etapaCandidato
-  # ──────────────────────────────────────────────────────────────────────────────
-  /etapaCandidato/conteoEtapa/{etapa}/{codRequisicion}:
-    get:
-      tags:
-        - Candidatos
-      summary: Conteo de candidatos en una etapa
-      description: |
-        Retorna el conteo de candidatos en una etapa específica de una requisición,
-        desglosado en aprobados, rechazados y total. También incluye el número
-        de vacantes de la requisición.
-      operationId: conteoEtapaCandidato
-      parameters:
-        - name: etapa
-          in: path
-          description: Código de la etapa de selección.
-          required: true
-          schema:
-            type: integer
-            format: int64
-          example: 3
-        - name: codRequisicion
-          in: path
-          description: Código de la requisición.
-          required: true
-          schema:
-            type: integer
-            format: int64
-          example: 121
-      responses:
-        '200':
-          description: Conteo de candidatos en la etapa.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  total:
-                    type: integer
-                    format: int64
-                    description: Total de candidatos en la etapa.
-                    example: 15
-                  aprobados:
-                    type: integer
-                    format: int64
-                    description: Candidatos aprobados (estado ACEPTADO).
-                    example: 8
-                  rechazados:
-                    type: integer
-                    format: int64
-                    description: Candidatos rechazados (estado DESCARTADO).
-                    example: 3
-                  vacantes:
-                    type: integer
-                    description: Número de vacantes de la requisición.
-                    example: 2
-                  message:
-                    type: string
-                    description: Presente solo cuando success=false.
-        '403':
-          description: Sesión inválida o sin permisos.
-        '500':
-          description: Error interno del servidor.
-
-  # ──────────────────────────────────────────────────────────────────────────────
-  # APROBACIÓN MASIVA DE CANDIDATOS
-  # Controlador: mundial.server.vista.rest.EtapaCandidatoController
-  # ──────────────────────────────────────────────────────────────────────────────
-  /aprobacionMasivaCandidatos/{etapa}/{codRequisicion}:
-    put:
-      tags:
-        - Candidatos
-        - Etapas del Proceso
-      summary: Realiza una aprobación masiva de candidatos en una etapa.
-      description: |
-        Aprueba masivamente todos los candidatos en estado 'Pendiente' de una etapa
-        específica, moviéndolos a la siguiente etapa del proceso. Requiere permisos
-        de administrador o responsable de selección.
-      operationId: aprobacionMasivaCandidatos
-      parameters:
-        - name: etapa
-          in: path
-          description: ID de la etapa donde se realizará la aprobación masiva.
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: codRequisicion
+        - name: idRequisicion
           in: path
           description: ID de la requisición.
           required: true
           schema:
             type: integer
             format: int64
-      responses:
-        '200':
-          description: Operación de aprobación masiva exitosa.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  data:
-                    $ref: '#/components/schemas/DTOAprobacionMasivaResultado'
-                  message:
-                    type: string
-                    example: "OK"
-        '403':
-          description: Sin permisos o sesión inválida.
-        '500':
-          description: Error interno del servidor.
-
-
-  # ──────────────────────────────────────────────────────────────────────────────
-  # LISTAR CANDIDATOS POR ETAPA
-  # Controlador: mundial.server.vista.rest.EtapaCandidatoController
-  # Base path: /etapaCandidato
-  # ──────────────────────────────────────────────────────────────────────────────
-  /etapaCandidato/listar/{etapa}/{codRequisicion}:
-    get:
-      tags:
-        - Candidatos
-      summary: Lista los candidatos de una etapa de una requisición
-      description: |
-        Retorna el listado paginado de candidatos que están en una etapa específica
-        de una requisición. Incluye datos como información del candidato, estado
-        en la etapa, profesión, porcentaje de ajuste (AI), ANS y más.
-
-        ### Parámetro `orden`
-
-        Define cómo se ordenan los candidatos:
-        - `ORDEN_AJUSTE` (por defecto): ordena por porcentaje de ajuste al cargo.
-        - `ORDEN_ALFABETICO`: ordena alfabéticamente por nombre.
-
-        ### Parámetro `query`
-
-        Texto libre para buscar por nombre, apellido o cédula del candidato.
-      operationId: listarCandidatosEtapa
-      parameters:
-        - name: etapa
-          in: path
-          description: Código de la etapa de selección.
-          required: true
-          schema:
-            type: integer
-            format: int64
-          example: 3
-        - name: codRequisicion
-          in: path
-          description: Código de la requisición.
-          required: true
-          schema:
-            type: integer
-            format: int64
-          example: 121
-        - name: start
-          in: query
-          description: Índice inicial para la paginación (offset).
-          required: false
-          schema:
-            type: integer
-            default: 0
-        - name: limit
-          in: query
-          description: Cantidad máxima de registros a retornar.
-          required: false
-          schema:
-            type: integer
-            default: 50
-        - name: orden
-          in: query
-          description: >-
-            Criterio de ordenamiento de los candidatos.
-            `ORDEN_AJUSTE` ordena por porcentaje de ajuste al cargo;
-            `ORDEN_ALFABETICO` ordena alfabéticamente.
-          required: false
-          schema:
-            type: string
-            enum:
-              - ORDEN_AJUSTE
-              - ORDEN_ALFABETICO
-            default: ORDEN_AJUSTE
-        - name: query
-          in: query
-          description: >-
-            Búsqueda de texto libre por nombre, apellido o cédula del candidato.
-          required: false
-          schema:
-            type: string
-          example: "hsg"
-        - name: page
-          in: query
-          description: Número de página (basado en 1).
-          required: false
-          schema:
-            type: integer
-            default: 1
-      responses:
-        '200':
-          description: Listado paginado de candidatos en la etapa.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  total:
-                    type: integer
-                    description: Total de candidatos que coinciden.
-                    example: 25
-                  datos:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/DTOEtapaCandidato'
-                  message:
-                    type: string
-                    description: Presente solo cuando success=false.
-        '403':
-          description: Sesión inválida o sin permisos.
-        '500':
-          description: Error interno del servidor.
-
-  # ──────────────────────────────────────────────────────────────────────────────
-  # VALIDACIÓN DE PERFIL (PRESELECCIÓN)
-  # Controlador: mundial.server.vista.rest.EtapaClienteController
-  # ──────────────────────────────────────────────────────────────────────────────
-  /etapa-cliente/cargarValidacionPerfil/{proceso_id}/{candidato_id}:
-    get:
-      tags:
-        - Preselección
-      summary: Carga la información de validación de perfil de un candidato.
-      description: |
-        Recupera el concepto y las observaciones de la validación del perfil de un candidato
-        en una requisición específica. También puede incluir información sobre el evaluador
-        delegado.
-      operationId: cargarValidacionPerfil
-      parameters:
-        - name: proceso_id
-          in: path
-          description: ID de la requisición (proceso).
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: candidato_id
+        - name: idCandidato
           in: path
           description: ID del candidato.
           required: true
           schema:
             type: integer
             format: int64
-        - name: cargarDelegado
-          in: query
-          description: Si `true`, la respuesta incluye información del evaluador delegado.
-          schema:
-            type: boolean
-            default: true
-      responses:
-        '200':
-          description: Información de la validación de perfil.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DTOValidacionPerfil'
-        '403':
-          description: Sesión inválida o sin permisos.
-
-  /etapa-cliente/guardarValidacionPerfil:
-    post:
-      tags:
-        - Preselección
-      summary: Guarda el concepto de la validación de perfil.
-      description: |
-        Guarda el concepto (ej. "Aceptado", "Rechazado") y las observaciones que un
-        evaluador realiza sobre el perfil de un candidato durante la etapa de preselección.
-      operationId: guardarValidacionPerfil
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              required:
-                - requisicion
-                - candidato
-                - etapa
-                - concepto
-              properties:
-                requisicion:
-                  type: integer
-                  format: int64
-                  description: ID de la requisición.
-                candidato:
-                  type: integer
-                  format: int64
-                  description: ID del candidato.
-                etapa:
-                  type: integer
-                  format: int64
-                  description: ID de la etapa (debe ser 3 para Preselección).
-                  example: 3
-                concepto:
-                  type: string
-                  description: Concepto emitido por el evaluador.
-                  example: "Aceptado"
-                observaciones:
-                  type: string
-                  description: Observaciones adicionales.
-      responses:
-        '200':
-          description: Concepto guardado exitosamente.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  message:
-                    type: string
-                    example: "El concepto ha sido guardado exitosamente."
-        '400':
-          description: Parámetros inválidos.
-        '403':
-          description: Sesión inválida o sin permisos.
-
-  # ──────────────────────────────────────────────────────────────────────────────
-  # COMPATIBILIDAD CON IA (PRESELECCIÓN)
-  # Controlador: mundial.server.vista.rest.seleccion.PreseleccionController
-  # ──────────────────────────────────────────────────────────────────────────────
-  /preseleccion/compatibilidadPerfil/{candidato_id}/{requisicion_id}:
-    get:
-      tags:
-        - Preselección
-      summary: Obtiene la compatibilidad del perfil de un candidato con IA.
-      description: |
-        Consulta el servicio de IA para obtener el grado de compatibilidad y un análisis
-        detallado del perfil de un candidato frente a los requisitos de una requisición.
-      operationId: compatibilidadPerfil
-      parameters:
-        - name: candidato_id
+        - name: idEtapa
           in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: requisicion_id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: Compatibilidad del perfil obtenida.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DTOCompatibilidadPerfil'
-        '400':
-          description: Error en la consulta de compatibilidad.
-
-  # ──────────────────────────────────────────────────────────────────────────────
-  # ACCIONES ADICIONALES (PRESELECCIÓN)
-  # ──────────────────────────────────────────────────────────────────────────────
-  /slc/encuestavacante/reenviarCorreoEncuesta:
-    post:
-      tags:
-        - Preselección
-      summary: Reenvía el correo de la encuesta de vacante.
-      operationId: reenviarCorreoEncuesta
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                requisicion:
-                  type: integer
-                  format: int64
-                candidato:
-                  type: integer
-                  format: int64
-      responses:
-        '200':
-          description: Correo reenviado.
-
-  /preseleccion/forzarCumplimiento:
-    post:
-      tags:
-        - Preselección
-      summary: Fuerza el cumplimiento de un requisito del perfil.
-      operationId: forzarCumplimiento
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/DTOForzarCumplimiento'
-      responses:
-        '200':
-          description: Cumplimiento forzado.
-
-  /seleccion/interesadoProceso/reenviarCorreoDelegado:
-    post:
-      tags:
-        - Preselección
-      summary: Reenvía el correo a un evaluador delegado.
-      operationId: reenviarCorreoDelegado
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                delegado:
-                  type: integer
-                  format: int64
-      responses:
-        '200':
-          description: Correo reenviado.
-
-  /seleccion/interesadoProceso/eliminarDelegado:
-    delete:
-      tags:
-        - Preselección
-      summary: Elimina la delegación de un evaluador.
-      operationId: eliminarDelegado
-      parameters:
-        - name: delegado
-          in: query
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: Delegación eliminada.
-
-  /preseleccion/getAccessMatchAI:
-    get:
-      tags:
-        - Preselección
-      summary: Obtiene las credenciales para el servicio de compatibilidad de IA.
-      operationId: getAccessMatchAI
-      responses:
-        '200':
-          description: Credenciales de acceso.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DTOAccessMatchAI'
-
-  # ──────────────────────────────────────────────────────────────────────────────
-  # DELEGADOS
-  # Controlador: mundial.server.vista.rest.seleccion.SlcInteresadoProcesoController
-  # ──────────────────────────────────────────────────────────────────────────────
-  /seleccion/interesadoProceso/listarInteresadosProcesoEsDelegado/{proceso}:
-    get:
-      tags:
-        - Preselección
-      summary: Lista interesados que pueden ser delegados para una etapa de un proceso.
-      description: >-
-        Retorna un listado paginado de usuarios que pueden ser asignados como delegados
-        para evaluar un candidato en una etapa específica. Puede ser filtrado por el nombre del usuario.
-      operationId: listarInteresadosProcesoEsDelegado
-      parameters:
-        - name: proceso
-          in: path
-          description: ID de la requisición (proceso).
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: etapa
-          in: query
           description: ID de la etapa.
           required: true
           schema:
             type: integer
             format: int64
-        - name: candidato
-          in: query
-          description: ID del candidato (opcional).
-          required: false
-          schema:
-            type: integer
-            format: int64
-        - name: query
-          in: query
-          description: Filtro por nombre completo del usuario.
-          required: false
-          schema:
-            type: string
-        - name: start
-          in: query
-          description: Índice inicial para la paginación (offset).
-          required: false
-          schema:
-            type: integer
-            default: 0
-        - name: limit
-          in: query
-          description: Cantidad máxima de registros a retornar.
-          required: false
-          schema:
-            type: integer
-            default: 50
       responses:
         '200':
-          description: Listado de interesados que pueden ser delegados.
+          description: Datos de la etapa.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  cantidad:
-                    type: integer
-                  datos:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/DTOInteresadoDelegado'
-        '403':
-          description: Sesión inválida o sin permisos.
-
-  /seleccion/interesadoProceso/delegarEtapa:
-    post:
-      tags:
-        - Preselección
-      summary: Delega una etapa a uno o varios evaluadores.
-      description: >-
-        Asigna uno o varios usuarios como delegados para evaluar a un candidato en
-        una etapa específica del proceso de selección.
-      operationId: delegarEtapa
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              required:
-                - requisicion
-                - candidato
-                - etapa
-                - defineContinuidad
-              properties:
-                requisicion:
-                  type: integer
-                  format: int64
-                candidato:
-                  type: integer
-                  format: int64
-                etapa:
-                  type: integer
-                  format: int64
-                defineContinuidad:
-                  type: boolean
-                delegado:
-                  type: integer
-                  format: int64
-                  description: ID de un único delegado (si se delega a uno solo).
-                codigosDelegados:
-                  type: string
-                  description: JSON array de IDs de delegados (si se delega a varios).
-                  example: "[123,456,789]"
-      responses:
-        '200':
-          description: Etapa delegada exitosamente.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  delegadoEtapa:
-                    oneOf:
-                      - $ref: '#/components/schemas/SlcDelegadoEtapa'
-                      - type: array
-                        items:
-                          $ref: '#/components/schemas/SlcDelegadoEtapa'
-                  message:
-                    type: string
-        '400':
-          description: Parámetros inválidos.
-        '403':
-          description: Sesión inválida o sin permisos.
-
-  # ──────────────────────────────────────────────────────────────────────────────
-  # NOTAS INTERNAS DE HOJA DE VIDA
-  # Controlador: mundial.server.vista.rest.hv.HvNotasInternasController
-  # ──────────────────────────────────────────────────────────────────────────────
-  /hojas-vida/notas-internas/obtener/{codigoHv}:
-    get:
-      tags:
-        - Hojas de Vida
-      summary: Obtiene las notas internas de una Hoja de Vida.
-      description: |
-        Recupera las notas internas, el estado del candidato, las etiquetas,
-        la fuente de reclutamiento y otra información asociada a una Hoja de Vida.
-      operationId: obtenerNotasInternasHv
-      parameters:
-        - name: codigoHv
-          in: path
-          description: El identificador único de la Hoja de Vida.
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: Información de notas internas obtenida exitosamente.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  datos:
-                    $ref: '#/components/schemas/DTOHvNotasInternas'
+                $ref: '#/components/schemas/CargarArchivosListarResponse'
         '403':
           description: Sesión inválida o sin permisos.
         '500':
           description: Error interno del servidor.
 
-  # ──────────────────────────────────────────────────────────────────────────────
-  # DESCARTE AUTOMÁTICO DE CANDIDATOS (PRESELECCIÓN)
-  # Controlador: mundial.server.vista.rest.PreseleccionController
-  # ──────────────────────────────────────────────────────────────────────────────
-  /previoDescarteAutomatico/{idRequisicion}/{tipo}/{valor}:
-    get:
-      tags:
-        - Preselección
-      summary: Previsualiza el resultado de un descarte automático.
-      description: |
-        Calcula y retorna cuántos candidatos serían descartados con una regla específica,
-        sin ejecutar la acción.
-      operationId: previoDescarteAutomatico
-      parameters:
-        - name: idRequisicion
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: tipo
-          in: path
-          required: true
-          schema:
-            type: string
-            enum: [POR_PORCENTUAL, POR_CANTIDAD]
-        - name: valor
-          in: path
-          required: true
-          description: >-
-            El valor numérico para la regla. Si `tipo` es `POR_PORCENTUAL`, es el porcentaje
-            mínimo de ajuste (ej. 60 para 60%). Si `tipo` es `POR_CANTIDAD`, es el número
-            de candidatos a descartar (ej. 10 para los 10 candidatos con menor ajuste).
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Resultado de la previsualización.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  nroPendientes:
-                    type: integer
-                  nroDescartados:
-                    type: integer
-                  nroQuedan:
-                    type: integer
-
-  /descarteAutomaticoCandidatos/{idRequisicion}/{tipo}/{valor}:
+  /cargarArchivos/guardar:
     post:
       tags:
-        - Preselección
-      summary: Ejecuta un descarte automático de candidatos.
+        - Estudio de seguridad
+        - Visita Domiciliaria
+        - Entrevista Individual
+      summary: Guarda los datos de una etapa que maneja archivos.
       description: |
-        Realiza el descarte de candidatos en la etapa de preselección según la
-        regla especificada (por porcentaje de ajuste o por cantidad).
-      operationId: descarteAutomaticoCandidatos
-      parameters:
-        - name: idRequisicion
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: tipo
-          in: path
-          required: true
-          schema:
-            type: string
-            enum: [POR_PORCENTUAL, POR_CANTIDAD]
-        - name: valor
-          in: path
-          required: true
-          description: >-
-            El valor numérico para la regla. Si `tipo` es `POR_PORCENTUAL`, es el porcentaje
-            mínimo de ajuste (ej. 60 para 60%). Si `tipo` es `POR_CANTIDAD`, es el número
-            de candidatos a descartar (ej. 10 para los 10 candidatos con menor ajuste).
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Operación de descarte exitosa.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  message:
-                    type: string
-        '400':
-          description: Tipo de descarte no válido.
-        '403':
-          description: Sesión inválida o sin permisos.
-
-  # ──────────────────────────────────────────────────────────────────────────────
-  # FILTRO TELEFÓNICO
-  # Controlador: mundial.server.vista.rest.FiltroTelefonicoController
-  # ──────────────────────────────────────────────────────────────────────────────
-  /filtrotelefonico/otrasobservaciones/guardar:
-    post:
-      tags:
-        - Filtro Telefónico
-      summary: Guarda los datos del filtro telefónico para un candidato.
-      description: |
-        Guarda la información recopilada durante el filtro telefónico, incluyendo aspiración
-        salarial, observaciones y otros datos relevantes. También actualiza la aspiración
-        salarial en la hoja de vida del candidato y puede notificar a los responsables.
-      operationId: guardarFiltroTelefonicoObservaciones
+        Guarda los datos de una etapa que maneja archivos. El parámetro `etapa` dentro del objeto `records` debe ser uno de los siguientes:
+        - `15`: Estudio de seguridad
+        - `14`: Visita Domiciliaria
+        - `10`: Entrevista Individual
+      operationId: guardarDatosEtapaArchivos
       requestBody:
         required: true
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/DTOFiltroTelefonicoRequest'
+              $ref: '#/components/schemas/CargarArchivosGuardarRequest'
       responses:
         '200':
           description: Datos guardados exitosamente.
@@ -2407,16 +1363,19 @@ paths:  # ───────────────────────�
         '500':
           description: Error interno del servidor.
 
-  /filtrotelefonico/otrasobservaciones/obtener/{idRequisicion}/{idCandidato}:
-    get:
+  /cargarArchivos/cargarArchivoEtapa/{idRequisicion}/{idCandidato}/{idEtapa}:
+    post:
       tags:
-        - Filtro Telefónico
-      summary: Obtiene los datos del filtro telefónico de un candidato.
+        - Estudio de seguridad
+        - Visita Domiciliaria
+        - Entrevista Individual
+      summary: Carga un archivo para una etapa.
       description: |
-        Recupera la información previamente guardada de un filtro telefónico para un candidato
-        dentro de una requisición específica. Si no hay datos guardados, puede pre-llenar
-        ciertos campos con información de la hoja de vida del candidato.
-      operationId: obtenerInfoFiltroTelefonicoObservaciones
+        Carga un archivo para una etapa específica. El parámetro `idEtapa` debe ser uno de los siguientes:
+        - `15`: Estudio de seguridad
+        - `14`: Visita Domiciliaria
+        - `10`: Entrevista Individual
+      operationId: cargarArchivoEtapa
       parameters:
         - name: idRequisicion
           in: path
@@ -2432,38 +1391,80 @@ paths:  # ───────────────────────�
           schema:
             type: integer
             format: int64
-        - name: cargarDelegado
-          in: query
-          description: Si `true`, la respuesta incluye información del evaluador delegado (opcional).
-          required: false
+        - name: idEtapa
+          in: path
+          description: ID de la etapa.
+          required: true
           schema:
-            type: boolean
-            default: false
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                archivo:
+                  type: string
+                  format: binary
       responses:
         '200':
-          description: Datos del filtro telefónico.
+          description: Archivo cargado exitosamente.
           content:
-            application/json:
+            text/html:
               schema:
-                $ref: '#/components/schemas/DTOFiltroTelefonicoResponse'
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
         '403':
           description: Sesión inválida o sin permisos.
         '500':
           description: Error interno del servidor.
 
-  # ──────────────────────────────────────────────────────────────────────────────
-  # ENTREVISTA INDIVIDUAL
-  # Controlador: mundial.server.vista.rest.EntrevistaIndividualController
-  # ──────────────────────────────────────────────────────────────────────────────
-  /entrevistaIndividual/guardar:
+  /cargarArchivos/descargar/{idArchivo}:
+    get:
+      tags:
+        - Estudio de seguridad
+        - Visita Domiciliaria
+        - Entrevista Individual
+      summary: Descarga un archivo de una etapa.
+      description: |
+        Descarga un archivo previamente cargado en una etapa, utilizando el ID del archivo.
+      operationId: descargarArchivoEtapa
+      parameters:
+        - name: idArchivo
+          in: path
+          description: ID del archivo a descargar.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: El archivo a descargar.
+          content:
+            application/octet-stream: {}
+        '403':
+          description: Sesión inválida o sin permisos.
+        '404':
+          description: Archivo no encontrado.
+
+  /delegacionEtapa/delegar:
     post:
       tags:
+        - Estudio de seguridad
+        - Visita Domiciliaria
         - Entrevista Individual
-      summary: Guarda la valoración de la Entrevista Individual.
+      summary: Delega una etapa a otro usuario.
       description: |
-        Guarda el resultado y las valoraciones de la entrevista individual para un
-        candidato en una requisición específica.
-      operationId: guardarEntrevistaIndividual
+        Delega una etapa a otro usuario. El parámetro `idEtapa` debe ser uno de los siguientes:
+        - `15`: Estudio de seguridad
+        - `14`: Visita Domiciliaria
+        - `10`: Entrevista Individual
+      operationId: delegarEtapa
       requestBody:
         required: true
         content:
@@ -2471,15 +1472,21 @@ paths:  # ───────────────────────�
             schema:
               type: object
               properties:
-                records:
-                  type: string
-                  description: >-
-                    Un string que contiene un array JSON con un único objeto. 
-                    Ver el schema DTOEntrevistaIndividualRequest para el contenido de ese objeto.
-                  example: '[{"requisicion":123,"candidato":456,"fortalezas":"...","areasOportunidad":"...","conceptoGeneral":"...","tienePotencial":"S","areasPotencial":"1,2,3","tiempoPosibleAscenso":"1 año","cuantosNiveles":2,"nivelPotencial":10}]'
+                idRequisicion:
+                  type: integer
+                  format: int64
+                idCandidato:
+                  type: integer
+                  format: int64
+                idEtapa:
+                  type: integer
+                  format: int64
+                idUsuario:
+                  type: integer
+                  format: int64
       responses:
         '200':
-          description: Valoración guardada exitosamente.
+          description: Etapa delegada exitosamente.
           content:
             application/json:
               schema:
@@ -2494,17 +1501,87 @@ paths:  # ───────────────────────�
         '500':
           description: Error interno del servidor.
 
-  /entrevistaIndividual/listar/{codRequi}/{candidato}:
+  /etapaCandidato/enviarCorreo.json:
+    post:
+      tags:
+        - Estudio de seguridad
+        - Visita Domiciliaria
+        - Entrevista Individual
+      summary: Envía correos a los candidatos de una etapa.
+      description: |
+        Envía correos a los candidatos que continúan o son descartados en una etapa. El parámetro `etapa` dentro del objeto `record` debe ser uno de los siguientes:
+        - `15`: Estudio de seguridad
+        - `14`: Visita Domiciliaria
+        - `10`: Entrevista Individual
+      operationId: enviarCorreoEtapa
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EnviarCorreoRequest'
+      responses:
+        '200':
+          description: Correos enviados exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  # ──────────────────────────────────────────────────────────────────────────────
+  # ETAPA CLIENTE
+  # ──────────────────────────────────────────────────────────────────────────────
+  /etapa-cliente/guardar:
+    post:
+      tags:
+        - Etapa cliente
+      summary: Guarda los datos de la Etapa Cliente.
+      description: |
+        Guarda los datos de la etapa cliente. Etapa ID: 22.
+      operationId: guardarEtapaCliente
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EtapaClienteGuardarRequest'
+      responses:
+        '200':
+          description: Datos guardados exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  estado:
+                    type: boolean
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /etapa-cliente/cargar/{proceso}/{candidato}:
     get:
       tags:
-        - Entrevista Individual
-      summary: Obtiene la valoración de la Entrevista Individual.
+        - Etapa cliente
+      summary: Carga los datos de la Etapa Cliente.
       description: |
-        Recupera los datos de la valoración de la entrevista individual para un
-        candidato y requisición específicos.
-      operationId: listarEntrevistaIndividual
+        Carga los datos de la etapa cliente. Etapa ID: 22.
+      operationId: cargarEtapaCliente
       parameters:
-        - name: codRequi
+        - name: proceso
           in: path
           description: ID de la requisición.
           required: true
@@ -2520,18 +1597,144 @@ paths:  # ───────────────────────�
             format: int64
       responses:
         '200':
-          description: Datos de la valoración.
+          description: Datos de la etapa.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EtapaClienteCargarResponse'
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /etapa-cliente/tieneEntrevista/{codRequisicion}:
+    get:
+      tags:
+        - Etapa cliente
+      summary: Verifica si el usuario tiene una entrevista en el proceso.
+      description: |
+        Verifica si el usuario en sesión tiene una entrevista en el proceso suministrado.
+      operationId: tieneEntrevistaEtapaCliente
+      parameters:
+        - name: codRequisicion
+          in: path
+          description: ID de la requisición.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Respuesta.
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  total:
-                    type: integer
-                  datos:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/DTOEntrevistaIndividualResponse'
+                  success:
+                    type: boolean
+                  tieneEntrevista:
+                    type: boolean
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /etapa-cliente/tieneValidarPerfil/{codRequisicion}:
+    get:
+      tags:
+        - Etapa cliente
+      summary: Verifica si el usuario tiene la capacidad de validar el perfil.
+      description: |
+        Verifica si el usuario en sesión tiene la capacidad de validar el perfil de candidatos en el proceso suministrado.
+      operationId: tieneValidarPerfilEtapaCliente
+      parameters:
+        - name: codRequisicion
+          in: path
+          description: ID de la requisición.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Respuesta.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  tieneEntrevista:
+                    type: boolean
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /etapa-cliente/guardarValidacionPerfil:
+    post:
+      tags:
+        - Etapa cliente
+      summary: Guarda la validación de perfil.
+      description: |
+        Guarda la validacion de perfil hecha en la preseleccion.
+      operationId: guardarValidacionPerfilEtapaCliente
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EtapaClienteGuardarValidacionPerfilRequest'
+      responses:
+        '200':
+          description: Datos guardados exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  estado:
+                    type: boolean
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /etapa-cliente/cargarValidacionPerfil/{proceso}/{candidato}:
+    get:
+      tags:
+        - Etapa cliente
+      summary: Carga la validación del perfil.
+      description: |
+        Carga la validacion del perfil hecha en la preseleccion.
+      operationId: cargarValidacionPerfilEtapaCliente
+      parameters:
+        - name: proceso
+          in: path
+          description: ID de la requisición.
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: candidato
+          in: path
+          description: ID del candidato.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Datos de la etapa.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EtapaClienteCargarValidacionPerfilResponse'
         '403':
           description: Sesión inválida o sin permisos.
         '500':
@@ -2542,68 +1745,8 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: JWT
 
   schemas:
-
-    FiltroAdicional:
-      type: object
-      description: >-
-        Elemento de filtro usado en el parámetro `filtrosAdicionales` de
-        `listarRequisicionesEnCursoPorResposable`.
-      required:
-        - tipo
-        - codigoReal
-      properties:
-        tipo:
-          type: string
-          enum:
-            - Sede
-            - Empresa
-            - Cliente
-            - Etapa
-            - Cargo
-            - Tipo
-            - Solicitante
-          example: "Etapa"
-        codigoReal:
-          description: Código del elemento. Long para la mayoría; string para Cargo.
-          oneOf:
-            - type: integer
-            - type: string
-          example: 12
-
-    DTORequisicion:
-      type: object
-      description: DTO de una requisición (proceso de selección).
-      properties:
-        codigo:
-          type: integer
-          format: int64
-        nroRequisicion:
-          type: integer
-          format: int64
-        cargo:
-          type: string
-        cargoExterno:
-          type: string
-        estado:
-          type: string
-        etapaActual:
-          type: string
-        fechaCreacion:
-          type: string
-          format: date-time
-        responsable:
-          type: string
-        sede:
-          type: string
-        empresa:
-          type: string
-        candidatoEnProceso:
-          type: boolean
-          description: Solo presente cuando se envía `codCandidato`. Indica si el candidato ya participa.
-
     Sede:
       type: object
       properties:
@@ -2612,41 +1755,42 @@ components:
           format: int64
         nombre:
           type: string
-
+        activo:
+          type: boolean
     Empresa:
       type: object
       properties:
         codigo:
           type: integer
+          format: int64
         nombre:
           type: string
-
+        activo:
+          type: boolean
     Cargo:
       type: object
       properties:
         codigo:
           type: integer
+          format: int64
         nombre:
           type: string
-
+        activo:
+          type: boolean
     Usuario:
       type: object
       properties:
         codigo:
           type: integer
-        nombrecompleto:
+          format: int64
+        nombreCompleto:
           type: string
-        cargo1:
-          type: object
-          properties:
-            nombre:
-              type: string
-        sede:
-          type: object
-          properties:
-            nombre:
-              type: string
-
+        nombre:
+          type: string
+        apellido:
+          type: string
+        activo:
+          type: boolean
     EtapaProceso:
       type: object
       properties:
@@ -2655,11 +1799,14 @@ components:
           format: int64
         nombre:
           type: string
-        seleccionada:
+        activo:
           type: boolean
         orden:
           type: integer
-
+        mostrarPreselecion:
+          type: boolean
+        mostrarCierre:
+          type: boolean
     ReglaAprobacion:
       type: object
       properties:
@@ -2670,937 +1817,107 @@ components:
           type: string
         activo:
           type: boolean
-
+    DTORequisicion:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        estado:
+          type: string
+        fechaCreacion:
+          type: string
+          format: date-time
+        responsable:
+          $ref: '#/components/schemas/Usuario'
+        vacantes:
+          type: integer
+        empresa:
+          $ref: '#/components/schemas/Empresa'
+        sede:
+          $ref: '#/components/schemas/Sede'
+        cargo:
+          $ref: '#/components/schemas/Cargo'
+        etapaActual:
+          $ref: '#/components/schemas/EtapaProceso'
+        candidatos:
+          type: integer
+        candidatosNuevos:
+          type: integer
+        compatibilidadIA:
+          type: number
+          format: float
+        porcentajeAjusteAI:
+          type: integer
+          format: int32
+          description: Porcentaje de ajuste según la IA.
     DTOEtapasElegidas:
       type: object
-      description: >-
-        Etapa elegida para una requisición. Incluye datos de delegación y conteos
-        cuando se consulta desde la vista de procesos en curso.
       properties:
-        codigoEtapa:
+        codigo:
           type: integer
           format: int64
-          description: Código de la etapa elegida (PK).
-        requisicion:
-          type: integer
-          format: int64
-          description: Código de la requisición a la que pertenece.
-        codigoEtapaElegida:
-          type: integer
-          format: int64
-          description: Código de la etapa de selección.
-        nombreEtapaElegida:
+        nombre:
           type: string
-          description: Nombre de la etapa.
-        fechaInicio:
-          type: string
-          description: Fecha de inicio (formato dd/MM/yyyy, vacío si no aplica).
-        fechafin:
-          type: string
-          description: Fecha fin (formato dd/MM/yyyy, vacío si no aplica).
         orden:
           type: integer
-          description: Orden de aparición de la etapa en el proceso.
-        veEtapa:
-          type: boolean
-          description: Indica si el usuario en sesión tiene visibilidad sobre esta etapa.
-          nullable: true
-        tieneDelegacion:
-          type: boolean
-          description: Indica si el usuario es delegado en esta etapa.
-          nullable: true
-        editaContinuidad:
-          type: boolean
-          description: Indica si el delegado puede editar la continuidad de candidatos.
-          nullable: true
-        codInteresado:
+        delegado:
+          type: string
+          description: Nombre del usuario delegado para esta etapa.
+        aprobados:
           type: integer
-          format: int64
-          description: Código del interesado (delegado) en la etapa.
-          nullable: true
-        candidatosPendientes:
+          description: Cantidad de candidatos aprobados en esta etapa.
+        rechazados:
           type: integer
-          format: int64
-          description: Número de candidatos pendientes de decisión.
-          nullable: true
-        ofuscar:
-          type: boolean
-          description: >-
-            Si `true`, la etapa debe mostrarse ofuscada en la UI
-            (ej. etapa de Oferta Salarial oculta por configuración).
-        candidatosAprobados:
+          description: Cantidad de candidatos rechazados en esta etapa.
+        totalCandidatos:
           type: integer
-          format: int64
-          description: Candidatos aprobados en esta etapa (solo con paraEnProceso=true).
-          nullable: true
-        candidatosRechazados:
-          type: integer
-          format: int64
-          description: Candidatos rechazados en esta etapa (solo con paraEnProceso=true).
-          nullable: true
+          description: Total de candidatos en esta etapa.
+        estado:
+          type: string
+          description: Estado de la etapa (ej. "PENDIENTE", "EN_PROGRESO", "FINALIZADA").
+
+    DTOPsicotecnicaRequisicionResponse:
+      type: object
+      properties:
         total:
           type: integer
-          format: int64
-          description: Total de candidatos en esta etapa (solo con paraEnProceso=true).
-          nullable: true
-
-    DTOPsicotecnicaRequisicion:
-      type: object
-      description: Prueba psicotécnica asociada a una requisición.
-      properties:
-        codigoPruebaPsicotecnica:
-          type: integer
-          format: int64
-          description: Código de la prueba psicotécnica.
-        nombrePruebaPsicotecnica:
-          type: string
-          description: Nombre de la prueba psicotécnica.
-        codigoRequisicion:
-          type: integer
-          format: int64
-          description: Código de la requisición.
-        codCursoMoodle:
-          type: integer
-          format: int64
-          description: ID del curso en Moodle (puede ser null).
-          nullable: true
-        codCuestionarioTHT:
-          type: integer
-          format: int64
-          description: ID del cuestionario en THT (puede ser null).
-          nullable: true
-        codCuestionarioGroupTHT:
-          type: integer
-          format: int64
-          description: ID del grupo de cuestionario THT (puede ser null).
-          nullable: true
-        codCuestionarioEvalart:
-          type: integer
-          format: int64
-          description: ID del cuestionario en Evalart (puede ser null).
-          nullable: true
-        puestoPsicoWeb:
-          type: string
-          description: ID del puesto en PsicoWeb (puede ser null).
-          nullable: true
-        codCentralTest:
-          type: integer
-          format: int64
-          description: ID en CentralTest (puede ser null).
-          nullable: true
-
-    DTOPruebaTecnicaRequisicion:
-      type: object
-      description: Prueba técnica asociada a una requisición.
-      properties:
-        codigoPruebaTecnica:
-          type: integer
-          format: int64
-          description: Código de la prueba técnica.
-        nombrePruebaTecnica:
-          type: string
-          description: Nombre de la prueba técnica.
-        codigoRequisicion:
-          type: integer
-          format: int64
-          description: Código de la requisición.
-        codCursoMoodle:
-          type: integer
-          format: int64
-          description: ID del curso en Moodle (puede ser null).
-          nullable: true
-
-    DTOEntrevistaValoracion:
-      type: object
-      description: >-
-        Entrevista grupal o Assessment asociado a una requisición.
-        Se usa tanto para entrevistas como para assessments.
-      properties:
-        codigo:
-          type: integer
-          format: int64
-          description: Código de la entrevista/assessment.
-        codigorequisicion:
-          type: integer
-          format: int64
-          description: Código de la requisición.
-        fechaHumana:
-          type: string
-          description: Fecha en formato legible (ej. "Lunes 15 de Enero de 2026").
-        fechaNormal:
-          type: string
-          description: Fecha en formato dd/MM/yyyy.
-        hora:
-          type: string
-          description: Hora de la entrevista.
-        lugar:
-          type: string
-          description: Lugar de la entrevista.
-        codigoSede:
-          type: integer
-          format: int64
-          description: Código de la sede.
-        nombreSede:
-          type: string
-          description: Nombre de la sede.
-        datosAdicionales:
-          type: string
-          description: Información adicional sobre la entrevista.
-          nullable: true
-        estado:
-          type: string
-          description: Estado de la entrevista.
-        cantidadInvitados:
-          type: integer
-          description: Número de candidatos invitados.
-        cantidadParticipantes:
-          type: integer
-          description: Número de participantes confirmados.
-        tipoEntrevista:
-          type: string
-          description: Tipo de entrevista (grupal, individual, etc.).
-
-    DTOEtapaCandidato:
-      type: object
-      description: >-
-        Candidato en una etapa del proceso de selección. Contiene información
-        personal, estado en la etapa, datos del proceso, ANS y datos extra.
-      properties:
-        codigo:
-          type: integer
-          format: int64
-          description: Código de la relación etapa-candidato (PK).
-        codigoCandidato:
-          type: integer
-          format: int64
-          description: Código del candidato.
-        codigoUsuario:
-          type: integer
-          description: Código del usuario del sistema asociado al candidato.
-          nullable: true
-        nombreCandidato:
-          type: string
-          description: Nombres del candidato.
-        hashCandidato:
-          type: string
-          description: Hash único del candidato.
-        apellidosCandidato:
-          type: string
-          description: Apellidos del candidato.
-        cedulaCandidato:
-          type: string
-          description: Número de cédula/documento del candidato.
-        proceso:
-          type: integer
-          format: int64
-          description: Código del proceso de selección.
-        etapa:
-          type: integer
-          format: int64
-          description: Código de la etapa elegida.
-        etapaSeleccion:
-          type: integer
-          format: int64
-          description: Código de la etapa de selección maestra.
-        estadoContinuaDescarta:
-          type: integer
-          description: >-
-            Estado del candidato en la etapa. Valores posibles:
-            aceptado (continúa), descartado, u otros estados internos.
-          nullable: true
-        requisicion:
-          type: integer
-          format: int64
-          description: Código de la requisición.
-        cargoaCubrir:
-          type: string
-          description: Nombre del cargo a cubrir.
-        nvacantesProceso:
-          type: integer
-          description: Número de vacantes del proceso.
-          nullable: true
-        estadoEtapa:
-          type: string
-          description: Estado textual de la etapa.
-        observaciones:
-          type: string
-          description: Observaciones sobre el candidato en la etapa.
-          nullable: true
-        motivoDescarte:
-          type: string
-          description: Motivo de descarte (si aplica).
-          nullable: true
-        codigoMotivoDescarte:
-          type: integer
-          format: int64
-          description: Código del motivo de descarte.
-          nullable: true
-        nombreEtapa:
-          type: string
-          description: Nombre de la etapa.
-        nroProcesosAnteriores:
-          type: integer
-          description: Número de procesos anteriores del candidato.
-        nroProcesosActuales:
-          type: integer
-          description: Número de procesos actuales del candidato.
-        requisitiosIncumplidos:
-          type: integer
-          description: Cantidad de requisitos incumplidos.
-        observacionesEncuesta:
-          type: string
-          description: Observaciones de encuesta del candidato.
-          nullable: true
-        fechaIngreso:
-          type: string
-          description: Fecha de ingreso del candidato (dd/MM/yyyy).
-          nullable: true
-        tipoCandidato:
-          type: string
-          description: Tipo de candidato ("Externo", "Interno", etc.).
-        etapaActual:
-          type: integer
-          format: int64
-          description: Código de la etapa actual del candidato.
-          nullable: true
-        cumpleRequisitos:
-          type: string
-          description: Indicador de cumplimiento de requisitos.
-        estadoEtapaActual:
-          type: string
-          description: Estado del candidato en la etapa actual.
-        aspiracionSalarial:
-          type: integer
-          description: Aspiración salarial del candidato.
-          nullable: true
-        nombreCompleto:
-          type: string
-          description: Nombre completo del candidato.
-        fechaNacimiento:
-          type: string
-          format: date-time
-          description: Fecha de nacimiento.
-          nullable: true
-        edad:
-          type: string
-          description: Edad calculada del candidato.
-        profesion:
-          type: string
-          description: Profesión o último estudio del candidato.
-        profesionExtra:
-          type: string
-          description: Información extra de formación.
-          nullable: true
-        email:
-          type: string
-          description: Correo electrónico del candidato.
-        codigoRequisicion:
-          type: integer
-          format: int64
-        codigoHojaVida:
-          type: integer
-          format: int64
-          description: Código de la hoja de vida.
-          nullable: true
-        hashHojaVida:
-          type: string
-          description: Hash de la hoja de vida.
-          nullable: true
-        urlEstado:
-          type: string
-          description: URL del gráfico SVG de estado del candidato.
-          nullable: true
-        fechaPostulacion:
-          type: string
-          description: Fecha de postulación del candidato.
-        tieneVideoPresentacion:
-          type: boolean
-          description: Indica si el candidato tiene video de presentación.
-        correoEnviado:
-          type: boolean
-          description: Indica si se envió correo al candidato.
-          nullable: true
-        overallMatchPercentage:
-          type: integer
-          description: Porcentaje de ajuste general (obtenido desde la genAI).
-          nullable: true
-        extras:
-          type: object
-          description: >-
-            Datos adicionales como ANS, tiempos transcurridos, sede y fecha de ocupación.
-          additionalProperties: true
-
-    DTOInteresadoDelegado:
-      type: object
-      properties:
-        codigo:
-          type: integer
-          format: int64
-        nombrecompleto:
-          type: string
-        cargo:
-          type: string
-        area:
-          type: string
-
-    SlcDelegadoEtapa:
-      type: object
-      properties:
-        codigo:
-          type: integer
-          format: int64
-        requisicion:
-          type: integer
-          format: int64
-        candidato:
-          type: integer
-          format: int64
-        etapa:
-          type: integer
-          format: int64
-        interesadoProceso:
-          type: object
-          properties:
-            codigo:
-              type: integer
-              format: int64
-            nombreContactoInterno:
-              type: string
-        defineContinuidad:
-          type: boolean
-        ejecutado:
-          type: string
-          format: date-time
-          nullable: true
-        estado:
-          type: string
-
-
-    DTOValidacionPerfil:
-      type: object
-      properties:
-        datas:
-          type: object
-          properties:
-            concepto:
-              type: string
-            observaciones:
-              type: string
-        delegadoEtapa:
-          type: object
-        tieneEntrevista:
-          type: boolean
-
-    DTOCompatibilidadPerfil:
-      type: object
-      properties:
-        success:
-          type: boolean
-        message:
-          type: string
         datos:
-          type: object
-          properties:
-            overallMatchPercentage:
-              type: integer
-            overallMatchExplanation:
-              type: string
-            escolaridadPriorizadaMeets:
-              type: boolean
-            escolaridadPriorizadaWhy:
-              type: string
-
-    DTOForzarCumplimiento:
-      type: object
-      properties:
-        itemValor:
-          type: string
-        cumple:
-          type: boolean
-        requisicion:
-          type: integer
-          format: int64
-        candidato:
-          type: integer
-          format: int64
-
-    DTOAccessMatchAI:
-      type: object
-      properties:
-        tenant:
-          type: string
-        confIAMatch:
-          type: object
-          properties:
-            apiUrl:
-              type: string
-            apiKey:
-              type: string
-
-    DTOHvNotasInternas:
-      type: object
-      properties:
-        notas:
-          type: string
-        codigoEstadoCandidato:
-          type: integer
-          format: int64
-        nombreEstadoCandidato:
-          type: string
-        mensajeUltimaActulizacion:
-          type: string
-        tipoFuenteReclutamiento:
-          type: integer
-        fuenteColaborador:
-          $ref: '#/components/schemas/UsuarioSimple'
-        fuenteOtro:
-          type: string
-        fuenteNombre:
-          type: string
-        fuenteEmpresa:
-          type: string
-        fuenteTelefono:
-          type: string
-        fuenteCorreo:
-          type: string
-        fuentePersonaInterna:
-          type: boolean
-        aspiracionSalarial:
-          type: number
-          format: float
-        registroAspiracionSalarial:
-          type: string
-        movilidadObservaciones:
-          type: string
-        salarioActual:
-          type: number
-          format: float
-        disponibilidadIngreso:
-          $ref: '#/components/schemas/ReferenciaSimple'
-        movilidadCiudades:
-          $ref: '#/components/schemas/ReferenciaSimple'
-        fechaRegistroSalarioActual:
-          type: integer
-          format: int64
-        fechaDisponibilidadIngreso:
-          type: integer
-          format: int64
-        etiquetas:
           type: array
           items:
-            type: string
-        licenciaTieneDesarrollo:
-          type: boolean
-        riesgoPerdidaBandera:
-          type: string
-        riesgoPerdidaBanderaRango:
-          type: string
-        riesgoPerdidaBanderaValor:
-          type: integer
-        criticoBandera:
-          type: string
-        criticoBanderaRango:
-          type: string
-        criticoBanderaValor:
-          type: integer
-
-    UsuarioSimple:
-      type: object
-      properties:
-        codigo:
-          type: integer
-          format: int64
-        nombrecompleto:
-          type: string
-
-    ReferenciaSimple:
-      type: object
-      properties:
-        codigo:
-          type: integer
-        nombre:
-          type: string
-
-    DTOAprobacionMasivaResultado:
-      type: object
-      properties:
-        candidatosProcesados:
-          type: integer
-        candidatosAprobados:
-          type: integer
-        candidatosFallidos:
-          type: integer
-
-    DTOFiltroTelefonicoRequest:
-      type: object
-      description: Parámetros enviados como formulario urlencoded para guardar los datos del filtro telefónico.
-      required:
-        - txtIdRequisicion
-        - txtIdCandidato
-        - txtSalario
-      properties:
-        txtIdRequisicion:
-          type: integer
-          format: int64
-          description: ID de la requisición.
-        txtIdCandidato:
-          type: integer
-          format: int64
-          description: ID del candidato.
-        txtSalario:
-          type: integer
-          description: Aspiración salarial del candidato (sin puntos ni comas).
-        txtObservacionesFiltroTelefonico:
-          type: string
-          description: Observaciones generales del filtro.
-        txtExperienciaConocimiento:
-          type: string
-          description: 'Experiencia y conocimientos relevantes (opcional).'
-          nullable: true
-        txtInformacionSalarioActual:
-          type: string
-          description: 'Información sobre el salario actual del candidato (opcional).'
-          nullable: true
-        txtInformacionPersonal:
-          type: string
-          description: 'Información personal relevante del candidato (opcional).'
-          nullable: true
-        concepto:
-          type: string
-          description: 'Concepto del delegado (ej: "1" para Favorable, "2" para Desfavorable).'
-          nullable: true
-        codDelegado:
-          type: integer
-          format: int64
-          description: 'ID del registro del delegado, si la acción la realiza un delegado (opcional).'
-          nullable: true
-
-    DTOFiltroTelefonicoResponse:
-      type: object
-      description: Datos recuperados de un filtro telefónico previamente guardado.
-      properties:
-        success:
-          type: boolean
-        message:
-          type: string
-          nullable: true
-        aspiracionSalarial:
-          type: integer
-          description: Aspiración salarial registrada.
-        otrasObservaciones:
-          type: string
-          description: Observaciones generales del filtro.
-        extraExperienciaConocimiento:
-          type: string
-          description: Experiencia y conocimientos relevantes.
-        extraSalarioActual:
-          type: string
-          description: Información sobre el salario actual.
-        extraInfoPersonal:
-          type: string
-          description: Información personal relevante.
-        delegadoEtapa:
-          $ref: '#/components/schemas/SlcDelegadoEtapa'
-          description: 'Objeto con la información del delegado, si aplica y se solicitó (opcional).'
-          nullable: true
-
-    DTOEntrevistaIndividualRequest:
-      type: object
-      description: Objeto JSON que se envía como un string dentro del parámetro 'records' del formulario.
-      properties:
-        requisicion:
-          type: integer
-          format: int64
-        candidato:
-          type: integer
-          format: int64
-        fortalezas:
-          type: string
-        areasOportunidad:
-          type: string
-        conceptoGeneral:
-          type: string
-        tienePotencial:
-          type: string
-          description: "'S' o 'N'"
-        areasPotencial:
-          type: string
-          description: "String con los IDs de las áreas de potencial, separados por comas."
-        tiempoPosibleAscenso:
-          type: string
-        cuantosNiveles:
-          type: integer
-        nivelPotencial:
-          type: integer
-          format: int64
-          
-    DTOEntrevistaIndividualResponse:
-      type: object
-      description: "Datos de la valoración de la entrevista individual."
-      properties:
-        codigo:
-          type: integer
-          format: int64
-        codigoCandidato:
-          type: integer
-          format: int64
-        nombresCandidato:
-          type: string
-        apellidosCandidato:
-          type: string
-        codigoRequisicion:
-          type: integer
-          format: int64
-        fortalezas:
-          type: string
-        areasOportunidad:
-          type: string
-        conceptogeneral:
-          type: string
-        tienePotencial:
-          type: string
-        codigoArea:
-          type: integer
-        cuantosNiveles:
-          type: integer
-        tiempoAscenso:
-          type: string
-        codigoNivelPotencial:
-          type: integer
-          format: int64
-
-    DTOAssessmentRequest:
-      type: object
-      description: Parámetros enviados como formulario urlencoded para crear o actualizar un Assessment.
-      properties:
-        codigo:
-          type: integer
-          format: int64
-          description: "ID del assessment a modificar. Omitir para crear uno nuevo."
-        codigorequisicion:
-          type: integer
-          format: int64
-          description: "ID de la requisición a la que pertenece el assessment."
-        fechaNormal:
-          type: string
-          format: date
-          description: "Fecha del assessment en formato dd/MM/yyyy."
-        hora:
-          type: string
-          description: "Hora del assessment (ej. '02:00 PM')."
-        lugar:
-          type: string
-          description: "Lugar donde se realizará el assessment."
-        codigoSede:
-          type: integer
-          format: int64
-          description: "ID de la sede asociada."
-        datosAdicionales:
-          type: string
-          description: "Observaciones o datos adicionales."
-        invitarResponsable:
-          type: boolean
-          description: "Si es `true` y se está creando un nuevo assessment, se invita automáticamente al usuario responsable."
-
-    DTOEntrevistaGrupalRequest:
-      type: object
-      description: Parámetros enviados como formulario urlencoded para crear o actualizar una Entrevista Grupal.
-      properties:
-        codigo:
-          type: integer
-          format: int64
-          description: "ID de la entrevista a modificar. Omitir para crear una nueva."
-        codigorequisicion:
-          type: integer
-          format: int64
-          description: "ID de la requisición a la que pertenece la entrevista."
-        fechaNormal:
-          type: string
-          format: date
-          description: "Fecha de la entrevista en formato dd/MM/yyyy."
-        hora:
-          type: string
-          description: "Hora de la entrevista (ej. '02:00 PM')."
-        lugar:
-          type: string
-          description: "Lugar donde se realizará la entrevista."
-        codigoSede:
-          type: integer
-          format: int64
-          description: "ID de la sede asociada."
-        datosAdicionales:
-          type: string
-          description: "Observaciones o datos adicionales."
-        invitarResponsable:
-          type: boolean
-          description: "Si es `true` y se está creando una nueva entrevista, se invita automáticamente al usuario responsable."
-
-
-          
-
-
-
-
-    EtapasSeleccionSimple:
-      type: object
-      properties:
-        codigo:
-          type: integer
-        nombre:
-          type: string
-
-    SlcObservacionesPorDefecto:
-      type: object
-      properties:
-        codigo:
-          type: integer
-          format: int64
-        observaciones:
-          type: string
-        etapa:
-          $ref: '#/components/schemas/EtapasSeleccionSimple'
-        requisicion:
-          type: integer
-          format: int64
-
-    GuardarObservacionesRequest:
-      type: object
-      description: "Contiene los textos de las observaciones por defecto para una o varias etapas. Los campos son opcionales; solo se actualizan las etapas para las que se envía un valor."
-      properties:
-        filtroTelefonico:
-          type: string
-        estudioSeguridad:
-          type: string
-        entrevistaJefe:
-          type: string
-        entrevistaGH:
-          type: string
-        entrevistaGeneral:
-          type: string
-        entrevistaIndividual:
-          type: string
-        ofertaSalarial:
-          type: string
-
-    DTOPruebaTecnicaCandidato:
-      type: object
-      properties:
-        codigo:
-          type: integer
-          format: int64
-        concepto:
-          type: string
-        analisis:
-          type: string
-        nombreOriginalArchivo:
-          type: string
-          
-    GuardarPruebaTecnicaCandidatoRequest:
-      type: object
-      description: "Parámetros para guardar la evaluación de una prueba técnica. Se envía como un array JSON dentro del parámetro 'records'."
-      properties:
-        codigo:
-          type: integer
-          format: int64
-          description: "ID del registro de la prueba del candidato a modificar."
-        candidato:
-          type: integer
-          format: int64
-        requisicion:
-          type: integer
-          format: int64
-        prueba:
-          type: integer
-          format: int64
-          description: "ID de la prueba técnica (PruebaTecnicaRequisicion)."
-        concepto:
-          type: string
-        analisis:
-          type: string
-
-    GuardarPruebasTecnicasRequest:
-      type: object
-      description: "Parámetros para guardar la configuración de pruebas técnicas de una requisición. Se envía como un array JSON dentro del parámetro 'records'."
-      properties:
-        requisicion:
-          type: integer
-          format: int64
-        pruebasTecnicas:
-          type: string
-          description: "Un string que representa un array de IDs de pruebas técnicas. Ejemplo: '[\"1\",\"2\"]'"
-        pruebasTecnicasMoodle:
-          type: string
-          description: "Un string que representa un array de IDs de cursos de Moodle. Ejemplo: '[\"10\",\"11\"]'"
-
-    PruebaTecnicaGral:
-      type: object
-      description: "Representa una prueba técnica del catálogo general."
-      properties:
-        codigo:
-          type: integer
-        nombre:
-          type: string
-
+            type: object
+            properties:
+              codigo:
+                type: integer
+                format: int64
+              nombre:
+                type: string
+              prueba:
+                type: string
+              tipo:
+                type: string
+              activa:
+                type: boolean
+              obligatoria:
+                type: boolean
+              online:
+                type: boolean
+              idExterno:
+                type: string
+              moodle:
+                type: boolean
+              tth:
+                type: boolean
+              evalart:
+                type: boolean
     DTOPsicotecnicaCandidato:
       type: object
       properties:
         codigo:
           type: integer
           format: int64
-        requisicion:
-          type: integer
-          format: int64
-        candidato:
-          type: integer
-          format: int64
-        pruebaPsicotecnica:
-          type: object
-          properties:
-            codigo:
-              type: integer
-              format: int64
-            nombre:
-              type: string
-        concepto:
-          type: string
-        analisis:
-          type: string
-        nombreOriginalArchivo:
-          type: string
-        postuladoVYA:
-          type: string
-          description: "Si el candidato fue postulado a VYA."
-        urlVYAreclutador:
-          type: string
-          description: "URL del informe VYA para el reclutador."
-        postuladoTHT:
-          type: string
-          description: "Si el candidato fue postulado a THT."
-        thtIDPersona:
-          type: string
-          description: "ID de la persona en THT."
-        resultadoTHT:
-          type: string
-          description: "Resultados de THT."
-        postuladoPsicoWeb:
-          type: string
-          format: date-time
-        postuladoPsicoWebTxt:
-          type: string
-        postuladoPsicoWebLimite:
-          type: string
-        postuladoCentraltest:
-          type: string
-          format: date-time
-          
-    GuardarPsicotecnicaCandidatoRequest:
-      type: object
-      description: "Parámetros para guardar la evaluación de una prueba psicotécnica. Se envía como un array JSON dentro del parámetro 'records'."
-      properties:
-        codigo:
-          type: integer
-          format: int64
-          description: "ID del registro de la prueba del candidato a modificar. Omitir para crear uno nuevo."
         candidato:
           type: integer
           format: int64
@@ -3610,67 +1927,15 @@ components:
         prueba:
           type: integer
           format: int64
-          description: "ID de la prueba psicotécnica (PruebasPsicotecnicas)."
         concepto:
           type: string
         analisis:
           type: string
-
-    DTOPsicotecnicaRequisicionResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-        total:
-          type: integer
-        tieneVYA:
-          type: boolean
-        evalartIdCredenciales:
-          type: integer
-          format: int64
-          nullable: true
-        evalartIdPerfil:
-          type: integer
-          format: int64
-          nullable: true
-        datos:
-          type: array
-          items:
-            $ref: '#/components/schemas/DTOPsicotecnicaRequisicion'
-
-    GuardarPsicotecnicasRequest:
-      type: object
-      properties:
-        req:
-          type: integer
-          format: int64
-        pruebasPsicotecnicas:
+        archivoAdjunto:
           type: string
-          description: "String con array de IDs de pruebas. Ej: '[\"1\"]'"
-        pruebasPsicoTecnicasMoodle:
+        nombreArchivo:
           type: string
-          description: "String con array de IDs de cursos Moodle. Ej: '[\"10\"]'"
-        pruebasPsicoTecnicasTHT:
-          type: array
-          items:
-            type: object
-        pruebasPsicoTecnicasEvalart:
-          type: array
-          items:
-            type: object
-        puestoPsicoWeb:
-          type: string
-        pruebasPsicoTecnicasCentralTests:
-          type: array
-          items:
-            type: object
-        evalartCuenta:
-          type: integer
-        evalartPerfil:
-          type: integer
-          format: int64
-          
-    DTOPruebasPsicotecnicas:
+    DTOPruebaTecnicaRequisicion:
       type: object
       properties:
         codigo:
@@ -3678,5 +1943,322 @@ components:
           format: int64
         nombre:
           type: string
+        prueba:
+          type: string
+        tipo:
+          type: string
+        activa:
+          type: boolean
+        obligatoria:
+          type: boolean
+        online:
+          type: boolean
+        idExterno:
+          type: string
+        moodle:
+          type: boolean
+        tth:
+          type: boolean
+        evalart:
+          type: boolean
+    PruebaTecnicaGral:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+    DTOEntrevistaValoracion:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        tipo:
+          type: string
+        fecha:
+          type: string
+          format: date
+        hora:
+          type: string
+          format: time
+        lugar:
+          type: string
+        candidatos:
+          type: integer
+        responsables:
+          type: array
+          items:
+            $ref: '#/components/schemas/Usuario'
+    DTOEntrevistaGrupalRequest:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int64
+          description: Código de la entrevista (para actualizar).
+        requisicion:
+          type: integer
+          format: int64
+          description: Código de la requisición.
+        nombre:
+          type: string
+          description: Nombre de la entrevista.
+        fecha:
+          type: string
+          format: date
+          description: Fecha de la entrevista (formato YYYY-MM-DD).
+        hora:
+          type: string
+          format: time
+          description: Hora de la entrevista (formato HH:MM).
+        lugar:
+          type: string
+          description: Lugar de la entrevista.
+        responsables:
+          type: string
+          description: "IDs de los usuarios responsables en formato JSON (ej. `[1,2,3]`)."
+          example: "[1,2,3]"
+    GuardarObservacionesRequest:
+      type: object
+      properties:
+        records:
+          type: string
+          description: >-
+            Un array JSON como string. Cada objeto en el array debe contener `etapa`,
+            `observacion`, `idObservacion` (opcional, para actualización) y `estudioSeguridad`
+            (boolean, para indicar si es observación de estudio de seguridad).
+    DTOEtapaCandidato:
+      type: object
+      properties:
+        codigoCandidato:
+          type: integer
+          format: int64
+        nombreCandidato:
+          type: string
+        apellidoCandidato:
+          type: string
+        numeroDocumento:
+          type: string
+        profesion:
+          type: string
+        porcentajeAjuste:
+          type: number
+          format: float
+        ans:
+          type: string
+        estado:
+          type: string
+        fechaUltimoCambioEstado:
+          type: string
+          format: date-time
+    DTOAprobacionMasivaResultado:
+      type: object
+      properties:
+        aprobados:
+          type: integer
+        descartados:
+          type: integer
+        fallidos:
+          type: integer
+    DTOValidacionPerfil:
+      type: object
+      properties:
+        concepto:
+          type: string
+        observaciones:
+          type: string
+        evaluador:
+          type: string
+          description: Nombre del evaluador que realizó la validación.
+        fechaValidacion:
+          type: string
+          format: date-time
+        delegado:
+          type: string
+          description: Nombre del usuario al que se delegó la validación (si aplica).
+    CargarArchivosGuardarRequest:
+      type: object
+      description: >-
+        Parámetros enviados como formulario urlencoded para guardar los datos de una etapa que maneja archivos.
+        El objeto principal se envía como un string JSON dentro del campo `records`.
+      required:
+        - records
+      properties:
+        records:
+          type: string
+          description: Un array JSON como string, que contiene un objeto con los datos a guardar.
+          example: '[{"codigo":1,"requisicion":123,"candidato":456,"concepto":"Aprobado","observaciones":"El candidato cumple con los requisitos.","etapa":15}]'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  codigo:
+                    type: integer
+                    format: int64
+                    description: ID del registro a actualizar (opcional, solo para modificaciones).
+                  requisicion:
+                    type: integer
+                    format: int64
+                    description: ID de la requisición.
+                  candidato:
+                    type: integer
+                    format: int64
+                    description: ID del candidato.
+                  concepto:
+                    type: string
+                    description: Concepto o resultado de la evaluación en la etapa.
+                  observaciones:
+                    type: string
+                    description: Observaciones adicionales.
+                  etapa:
+                    type: integer
+                    format: int64
+                    description: ID de la etapa a la que pertenecen los datos.
 
+    CargarArchivosListarResponse:
+      type: object
+      description: Datos recuperados de un estudio de seguridad previamente guardado.
+      properties:
+        total:
+          type: integer
+        datos:
+          type: array
+          items:
+            type: object
+            properties:
+              codigo:
+                type: integer
+                format: int64
+              concepto:
+                type: string
+              observaciones:
+                type: string
+              nombreOriginal:
+                type: string
+              extension:
+                type: string
+              delegadoEtapa:
+                type: object
+                nullable: true
+    EnviarCorreoRequest:
+      type: object
+      description: >-
+        Parámetros enviados como formulario urlencoded para enviar correos a los candidatos de una etapa.
+        El objeto principal se envía como un string JSON dentro del campo `record`.
+      required:
+        - record
+      properties:
+        record:
+          type: string
+          description: Un array JSON como string, que contiene un objeto con los datos a enviar.
+          example: '{"codigoRequisicion":123,"continuan":[{"codCandidato":456}],"descartados":[],"etapa":15}'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  codigoRequisicion:
+                    type: integer
+                    format: int64
+                  continuan:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        codCandidato:
+                          type: integer
+                          format: int64
+                  descartados:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        codCandidato:
+                          type: integer
+                          format: int64
+                  etapa:
+                    type: integer
+                    format: int64
 
+    EtapaClienteGuardarRequest:
+      type: object
+      properties:
+        txtSalario:
+          type: integer
+          format: int64
+        observaciones:
+          type: string
+        requisicion:
+          type: integer
+          format: int64
+        candidato:
+          type: integer
+          format: int64
+        concepto:
+          type: string
+
+    EtapaClienteCargarResponse:
+      type: object
+      properties:
+        estado:
+          type: boolean
+        message:
+          type: string
+        datas:
+          type: array
+          items:
+            type: object
+            properties:
+              aspiracion_salarial:
+                type: integer
+                format: int64
+              observaciones:
+                type: string
+              concepto:
+                type: string
+        tieneEntrevista:
+          type: boolean
+
+    EtapaClienteGuardarValidacionPerfilRequest:
+      type: object
+      properties:
+        txtSalario:
+          type: integer
+          format: int64
+        observaciones:
+          type: string
+        requisicion:
+          type: integer
+          format: int64
+        candidato:
+          type: integer
+          format: int64
+        concepto:
+          type: string
+
+    EtapaClienteCargarValidacionPerfilResponse:
+      type: object
+      properties:
+        estado:
+          type: boolean
+        message:
+          type: string
+        datas:
+          type: array
+          items:
+            type: object
+            properties:
+              aspiracion_salarial:
+                type: integer
+                format: int64
+              observaciones:
+                type: string
+              concepto:
+                type: string
+        tieneEntrevista:
+          type: boolean
