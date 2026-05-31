@@ -78,6 +78,24 @@ tags:
   - name: Entrevista Jefe
     description: >-
       Endpoints para la etapa de Entrevista Jefe (Líder).
+  - name: "Entrevista Jefe GH"
+    description: >-
+      Endpoints para la etapa de Entrevista con el Jefe de Gestión Humana (GH).
+  - name: "Autoanálisis"
+    description: >-
+      Endpoints para gestionar la etapa de Autoanálisis dentro de un proceso de selección.
+  - name: "Autoanálisis (Configuración)"
+    description: >-
+      Endpoints para la configuración global de los formularios de autoanálisis (preguntas y categorías).
+  - name: "Autoanálisis (Candidato)"
+    description: >-
+      Endpoints para la experiencia del candidato al responder el autoanálisis.
+  - name: "Videoentrevista"
+    description: >-
+      Endpoints para la gestión de la etapa de videoentrevista en un proceso de selección.
+  - name: "Teletrabajo"
+    description: >-
+      Endpoints para la gestión de la encuesta de teletrabajo.
   - name: Assessments
     description: >-
       Endpoints para la creación y consulta de Assessments (Assessment Center).
@@ -87,6 +105,9 @@ tags:
   - name: Estudio de seguridad
     description: >-
       Endpoints para la etapa de Estudio de seguridad, donde se registra el resultado y adjuntos.
+  - name: "Examen Médico"
+    description: >-
+      Endpoints para la etapa de Examen Médico, donde se gestiona el encargado de la etapa y se le notifica.
   - name: "Configuración: Observaciones por Defecto"
     description: >-
       Endpoints para gestionar las plantillas de texto (observaciones) que aparecen por defecto en varias etapas del proceso.
@@ -111,13 +132,928 @@ x-tagGroups:
       - Visita Domiciliaria
       - Etapa cliente
       - Entrevista Jefe
+      - "Entrevista Jefe GH"
+      - "Autoanálisis"
+      - "Autoanálisis (Configuración)"
+      - "Autoanálisis (Candidato)"
+      - "Videoentrevista"
+      - "Teletrabajo"
       - Assessments
       - Entrevistas Grupales
       - Estudio de seguridad
+      - "Examen Médico"
       - "Pruebas Técnicas (Evaluación)"
       - "Pruebas Psicotécnicas (Candidato)"
 
 paths:  # ──────────────────────────────────────────────────────────────────────────────
+
+  /hv/encuesta_teletrabajo/getEncuestaTeletrabajoHojaVida/{codHV}:
+    get:
+      tags:
+        - "Teletrabajo"
+      summary: Obtiene la encuesta de teletrabajo de una hoja de vida.
+      description: |
+        Obtiene la encuesta de teletrabajo de una hoja de vida.
+      operationId: getEncuestaTeletrabajoHojaVida
+      parameters:
+        - name: codHV
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Encuesta de teletrabajo.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  datos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/HVEncuestaTeletrabajo'
+                  metadata:
+                    $ref: '#/components/schemas/HvTeletrabajoMetadata'
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /hv/encuesta_teletrabajo/guardar/{codHV}:
+    post:
+      tags:
+        - "Teletrabajo"
+      summary: Guarda la encuesta de teletrabajo de una hoja de vida.
+      description: |
+        Guarda la encuesta de teletrabajo de una hoja de vida.
+      operationId: guardarEncuestaTeletrabajo
+      parameters:
+        - name: codHV
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Encuesta guardada.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /hv/encuesta_teletrabajo/foto_puesto/cargar/{idHV}:
+    post:
+      tags:
+        - "Teletrabajo"
+      summary: Carga una foto del puesto de trabajo.
+      description: |
+        Carga una foto del puesto de trabajo.
+      operationId: cargarFotoPuesto
+      parameters:
+        - name: idHV
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                archivo:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Foto cargada.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /hv/encuesta_teletrabajo/foto_puesto/descargar/{idHV}:
+    get:
+      tags:
+        - "Teletrabajo"
+      summary: Descarga la foto del puesto de trabajo.
+      description: |
+        Descarga la foto del puesto de trabajo.
+      operationId: descargarFotoPuesto
+      parameters:
+        - name: idHV
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Foto a descargar.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /hv/encuesta_teletrabajo/foto_puesto/checkCargaS3/{hojaVida}:
+    get:
+      tags:
+        - "Teletrabajo"
+      summary: Verifica si se debe cargar a S3.
+      description: |
+        Verifica si se debe cargar la foto del puesto de trabajo a S3 y obtiene una URL prefirmada.
+      operationId: checkCargaS3FotoPuesto
+      parameters:
+        - name: hojaVida
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: eliminarPrevio
+          in: query
+          required: true
+          schema:
+            type: boolean
+        - name: nombreArchivo
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Resultado de la verificación.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  local:
+                    type: boolean
+                  urlSigned:
+                    type: string
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+
+  /seleccion/videoentrevista/video/cargar/{idRespuestaPregunta}:
+    post:
+      tags:
+        - "Videoentrevista"
+      summary: Carga un video de respuesta a una pregunta.
+      description: |
+        Carga un video de respuesta a una pregunta de la videoentrevista.
+      operationId: cargarVideo
+      parameters:
+        - name: idRespuestaPregunta
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                archivo:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Video cargado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /seleccion/videoentrevista/video/descargar/{idRespuestaPregunta}:
+    get:
+      tags:
+        - "Videoentrevista"
+      summary: Descarga un video de respuesta.
+      description: |
+        Descarga un video de respuesta de la videoentrevista.
+      operationId: descargarVideo
+      parameters:
+        - name: idRespuestaPregunta
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Video a descargar.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /seleccion/videoentrevista/video/checkCargaS3/{idRespuestaPregunta}:
+    get:
+      tags:
+        - "Videoentrevista (Admin)"
+      summary: Verifica si se debe cargar a S3.
+      description: |
+        Verifica si se debe cargar el video a S3 y obtiene una URL prefirmada.
+      operationId: checkCargaS3
+      parameters:
+        - name: idRespuestaPregunta
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: eliminarPrevio
+          in: query
+          required: true
+          schema:
+            type: boolean
+        - name: nombreArchivo
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Resultado de la verificación.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  local:
+                    type: boolean
+                  urlSigned:
+                    type: string
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /seleccion/videoentrevista/video/transformarVideoS3/{idRespuestaPregunta}:
+    post:
+      tags:
+        - "Videoentrevista (Admin)"
+      summary: Transforma un video en S3 a webm.
+      description: |
+        Transforma un video en S3 a formato webm.
+      operationId: transformarVideoS3
+      parameters:
+        - name: idRespuestaPregunta
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Video transformado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /seleccion/videoentrevista/getRespuesta/{idRespuestaPregunta}:
+    get:
+      tags:
+        - "Videoentrevista"
+      summary: Obtiene la respuesta a una pregunta.
+      description: |
+        Obtiene la respuesta a una pregunta de la videoentrevista.
+      operationId: getRespuestaVideoentrevista
+      parameters:
+        - name: idRespuestaPregunta
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Respuesta de la pregunta.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlcRespuestaPreguntagral'
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /seleccion/videoentrevista/getRespuestas/{idRequisicion}/{idCandidato}:
+    get:
+      tags:
+        - "Videoentrevista"
+      summary: Obtiene las respuestas de un candidato.
+      description: |
+        Obtiene todas las respuestas de un candidato en una videoentrevista.
+      operationId: getRespuestasVideoentrevista
+      parameters:
+        - name: idRequisicion
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: idCandidato
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Listado de respuestas.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  datos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SlcRespuestaPreguntagral'
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /seleccion/videoentrevista/getRespuestasH/{hashRequisicion}/{hashCandidato}:
+    get:
+      tags:
+        - "Videoentrevista"
+      summary: Obtiene las respuestas de un candidato por hash.
+      description: |
+        Obtiene todas las respuestas de un candidato en una videoentrevista, usando hashes.
+      operationId: getRespuestasHVideoentrevista
+      parameters:
+        - name: hashRequisicion
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: hashCandidato
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Listado de respuestas.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  datos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SlcRespuestaPreguntagral'
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /seleccion/videoentrevista/notificarCandidatos/{idRequisicion}:
+    get:
+      tags:
+        - "Videoentrevista (Admin)"
+      summary: Notifica a todos los candidatos.
+      description: |
+        Notifica a todos los candidatos en la etapa de videoentrevista de una requisición.
+      operationId: notificarCandidatosVideoentrevista
+      parameters:
+        - name: idRequisicion
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Notificación enviada.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /seleccion/videoentrevista/notificarCandidatosMarcados:
+    post:
+      tags:
+        - "Videoentrevista (Admin)"
+      summary: Notifica a candidatos seleccionados.
+      description: |
+        Notifica a una lista de candidatos seleccionados en la etapa de videoentrevista.
+      operationId: notificarCandidatosMarcadosVideoentrevista
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                record:
+                  type: string
+      responses:
+        '200':
+          description: Notificación enviada.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+
+  /autoanalisis/guardar:
+    post:
+      tags:
+        - "Autoanálisis"
+      summary: Guarda las fechas y generación del autoanálisis.
+      description: |
+        Guarda las fechas de envío y límite para el autoanálisis de un candidato o de todos los candidatos de una requisición.
+      operationId: guardarAutoanalisis
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                records:
+                  type: string
+      responses:
+        '200':
+          description: Fechas guardadas.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /autoanalisis/listar/{requisicion}/{candidato}:
+    get:
+      tags:
+        - "Autoanálisis"
+      summary: Lista las fechas de autoanálisis por candidato.
+      description: |
+        Lista las fechas de envío y límite del autoanálisis por candidato en cada requisición.
+      operationId: listarAutoanalisis
+      parameters:
+        - name: requisicion
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: candidato
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Listado de fechas.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  datos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DTOAutoanalisis'
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /autoanalisis/guardarConcepto:
+    post:
+      tags:
+        - "Autoanálisis"
+      summary: Guarda el concepto del autoanálisis.
+      description: |
+        Guarda el concepto final del autoanálisis.
+      operationId: guardarConceptoAutoanalisis
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                records:
+                  type: string
+      responses:
+        '200':
+          description: Concepto guardado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /preguntasAutoanalisis/listarCategoriasV2/{hash}:
+    get:
+      tags:
+        - "Autoanálisis (Candidato)"
+      summary: Lista las categorías de un formulario de autoanálisis.
+      description: |
+        Lista las categorías que pueda tener el formulario de autoanálisis.
+      operationId: listarCategoriasAutoanalisisV2
+      parameters:
+        - name: hash
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Listado de categorías.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cantidad:
+                    type: integer
+                  datos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SlcCategoriasgral'
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /preguntasAutoanalisisCandidato/guardar:
+    post:
+      tags:
+        - "Autoanálisis (Candidato)"
+      summary: Guarda las respuestas de autoanálisis de un candidato.
+      description: |
+        Guarda las respuestas de autoanálisis de un candidato.
+      operationId: guardarRespuestasAutoanalisis
+      parameters:
+        - name: requisicion
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: formulario
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                records:
+                  type: string
+      responses:
+        '200':
+          description: Respuestas guardadas.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /preguntasAutoanalisisCandidato/listar/{candidato}/{requisicion}:
+    get:
+      tags:
+        - "Autoanálisis (Candidato)"
+      summary: Lista las preguntas y respuestas de un candidato.
+      description: |
+        Lista las preguntas y respuestas de un candidato en el autoanálisis.
+      operationId: listarPreguntasRespuestasAutoanalisis
+      parameters:
+        - name: candidato
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: requisicion
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Listado de preguntas y respuestas.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  datos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DTOPreguntasAutoanalisisCandidato'
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /preguntasAutoanalisisRequisicion/guardarFormulario:
+    post:
+      tags:
+        - "Autoanálisis (Configuración)"
+      summary: Asocia un formulario de autoanálisis a una requisición.
+      description: |
+        Asocia un formulario de autoanálisis a una requisición.
+      operationId: guardarFormularioAutoanalisis
+      parameters:
+        - name: codProceso
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: formulario
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Formulario asociado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /preguntasAutoanalisisRequisicion/getFormulario/{codRequisicion}:
+    get:
+      tags:
+        - "Autoanálisis (Configuración)"
+      summary: Obtiene el formulario de autoanálisis de una requisición.
+      description: |
+        Obtiene el formulario de autoanálisis de una requisición.
+      operationId: getFormularioAutoanalisis
+      parameters:
+        - name: codRequisicion
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Formulario obtenido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  datos:
+                    $ref: '#/components/schemas/SlcFormulariogralSeleccion'
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+
+  /slc/examenMedico/notificarEncargado/{idRequisicion}:
+    get:
+      tags:
+        - "Examen Médico"
+      summary: Notificar al encargado del Examen Médico.
+      description: |
+        Envía una notificación por correo al usuario encargado de gestionar los exámenes médicos para una requisición específica, indicándole que tiene candidatos pendientes por gestionar en esa etapa.
+      operationId: notificarEncargadoExamenMedico
+      parameters:
+        - name: idRequisicion
+          in: path
+          description: ID de la requisición.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Resultado del envío de la notificación.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    description: |
+                      - "El correo fue enviado con éxito."
+                      - "El correo no fue enviado porque no<br/>ha seleccionado encargado"
+                      - "El correo no fue enviado porque<br/>no hay candidatos pendientes."
+                      - "El correo no pudo ser enviado."
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /slc/examenMedico/seleccionarEncargado/{idRequisicion}/{idEncargado}:
+    get:
+      tags:
+        - "Examen Médico"
+      summary: Asigna el encargado del Examen Médico.
+      description: |
+        Asigna un usuario como el responsable de gestionar la etapa de exámenes médicos para una requisición.
+      operationId: seleccionarEncargadoExamenMedico
+      parameters:
+        - name: idRequisicion
+          in: path
+          description: ID de la requisición.
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: idEncargado
+          in: path
+          description: ID del usuario que será el encargado.
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Confirmación de la asignación.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /slc/examenMedico/obtenerEncargado/{idRequisicion}:
+    get:
+      tags:
+        - "Examen Médico"
+      summary: Obtiene el encargado del Examen Médico.
+      description: |
+        Recupera la información del usuario encargado de la etapa de examen médico para una requisición.
+      operationId: obtenerEncargadoExamenMedico
+      parameters:
+        - name: idRequisicion
+          in: path
+          description: ID de la requisición.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Datos del encargado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  nombre:
+                    type: string
+                    description: Nombre del usuario encargado.
+                  codigo:
+                    type: integer
+                    description: ID del usuario encargado.
+                  message:
+                    type: string
+                    description: Mensaje en caso de no encontrar un encargado.
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
   # ENDPOINT PRINCIPAL
   # Controlador: mundial.server.vista.rest.RequisicionController
   # ──────────────────────────────────────────────────────────────────────────────
@@ -1287,9 +2223,12 @@ paths:  # ───────────────────────�
     get:
       tags:
         - Entrevista Jefe
-      summary: Lista las valoraciones de los jefes en entrevista jefe y entrevista jefe gh por candidato, requisicion,tipo jefe
+        - "Entrevista Jefe GH"
+      summary: Lista las valoraciones de la Entrevista con Jefe o Jefe de GH.
       description: |
-        Lista las valoraciones de los jefes en entrevista jefe y entrevista jefe gh por candidato, requisicion,tipo jefe
+        Recupera las valoraciones (concepto y observaciones) de la entrevista con el jefe inmediato (JJ) o con el jefe de Gestión Humana (GH) para un candidato específico en una requisición.
+
+        Si no existe una valoración guardada, puede retornar las observaciones por defecto configuradas para la etapa.
       operationId: listarEntrevistaJefe
       parameters:
         - name: codRequi
@@ -1308,10 +2247,11 @@ paths:  # ───────────────────────�
             format: int64
         - name: tipoJefe
           in: path
-          description: "Tipo de jefe (JJ o GH)."
+          description: "Tipo de entrevista a consultar: `JJ` para Jefe Inmediato, `GH` para Jefe de Gestión Humana."
           required: true
           schema:
             type: string
+            enum: [JJ, GH]
       responses:
         '200':
           description: Listado de valoraciones.
@@ -1328,11 +2268,14 @@ paths:  # ───────────────────────�
     post:
       tags:
         - Entrevista Jefe
-      summary: Guarda todas las valoraciones de los jefes de GH
+        - "Entrevista Jefe GH"
+      summary: Guarda la valoración de la Entrevista con Jefe o Jefe de GH.
       description: |
-        Guarda todas las valoraciones de los jefes de GH
+        Guarda o actualiza el concepto y las observaciones para la entrevista de un candidato. El tipo de entrevista (`JJ` o `GH`) se especifica dentro del objeto `records`.
       operationId: guardarEntrevistaJefe
       requestBody:
+        description: Un array JSON serializado como string, conteniendo un único objeto con los datos de la valoración.
+        required: true
         content:
           application/x-www-form-urlencoded:
             schema:
@@ -1340,6 +2283,11 @@ paths:  # ───────────────────────�
               properties:
                 records:
                   type: string
+                  example: '[{"codigo":"","requisicion":123,"candidato":456,"tipojefe":"GH","concepto":"Aprobado","observaciones":"El candidato cumple con el perfil."}]'
+                codDelegado:
+                  type: integer
+                  format: int64
+                  description: "Opcional. Si la acción la realiza un delegado, enviar el ID del registro de delegación."
       responses:
         '200':
           description: Valoración guardada.
@@ -1352,12 +2300,15 @@ paths:  # ───────────────────────�
                     type: boolean
                   message:
                     type: string
+        '400':
+          description: Parámetros inválidos, como no seleccionar un concepto.
         '403':
           description: Sesión inválida o sin permisos.
         '500':
           description: Error interno del servidor.
 
   /entrevistaJefe/notificarEntrevistaJefe/{idRequisicion}/{idCandidato}:
+
     get:
       tags:
         - Entrevista Jefe
@@ -1426,21 +2377,22 @@ paths:  # ───────────────────────�
   /entrevistaJefe/notificarEntrevistaJefeGHVarios/{idRequisicion}:
     get:
       tags:
-        - Entrevista Jefe
-      summary: Envía notificaciones a varios candidatos sobre su entrevista con el jefe de GH.
+        - "Entrevista Jefe GH"
+      summary: Notifica a candidatos para la Entrevista con Jefe de GH.
       description: |
-        Envía notificaciones a varios candidatos sobre su entrevista con el jefe de GH.
+        Envía notificaciones por correo a los candidatos pendientes en la etapa de Entrevista con Jefe de Gestión Humana (GH).
       operationId: notificarEntrevistaJefeGHVarios
       parameters:
         - name: idRequisicion
           in: path
+          description: ID de la requisición.
           required: true
           schema:
             type: integer
             format: int64
       responses:
         '200':
-          description: "Correo enviado."
+          description: Resultado del envío de notificaciones.
           content:
             application/json:
               schema:
@@ -1450,33 +2402,41 @@ paths:  # ───────────────────────�
                     type: boolean
                   message:
                     type: string
+                    description: |
+                      - "El correo fue enviado con éxito."
+                      - "El correo no fue enviado porqueno<br/>ha seleccionado entrevistador"
+                      - "El correo no fue enviado porque<br/>no hay candidatos pendientes."
+                      - "El correo no pudo ser enviado."
         '403':
           description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
 
   /entrevistaJefe/seleccionarEntrevistadorGH/{idRequisicion}/{idEntrevistador}:
     get:
       tags:
-        - Entrevista Jefe
-      summary: Selecciona un entrevistador de GH para la requisición.
+        - "Entrevista Jefe GH"
+      summary: Asigna el entrevistador para la Entrevista de GH.
       description: |
-        Selecciona un entrevistador de GH para la requisición.
+        Asigna un usuario como el entrevistador para la etapa de Entrevista con Jefe de Gestión Humana (GH) en una requisición.
       operationId: seleccionarEntrevistadorGH
       parameters:
         - name: idRequisicion
           in: path
+          description: ID de la requisición.
           required: true
           schema:
             type: integer
             format: int64
         - name: idEntrevistador
           in: path
+          description: ID del usuario que será el entrevistador.
           required: true
           schema:
             type: integer
-            format: int64
       responses:
         '200':
-          description: "Entrevistador seleccionado."
+          description: Confirmación de la asignación.
           content:
             application/json:
               schema:
@@ -1488,25 +2448,28 @@ paths:  # ───────────────────────�
                     type: string
         '403':
           description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
 
   /entrevistaJefe/obtenerEntrevistadorGH/{idRequisicion}:
     get:
       tags:
-        - Entrevista Jefe
-      summary: Obtiene el entrevistador de GH de la requisición.
+        - "Entrevista Jefe GH"
+      summary: Obtiene el entrevistador de GH asignado.
       description: |
-        Obtiene el entrevistador de GH de la requisición.
+        Recupera la información del entrevistador asignado para la etapa de Entrevista con Jefe de Gestión Humana (GH) en una requisición.
       operationId: obtenerEntrevistadorGH
       parameters:
         - name: idRequisicion
           in: path
+          description: ID de la requisición.
           required: true
           schema:
             type: integer
             format: int64
       responses:
         '200':
-          description: "Entrevistador obtenido."
+          description: Datos del entrevistador.
           content:
             application/json:
               schema:
@@ -1516,9 +2479,10 @@ paths:  # ───────────────────────�
                     type: string
                   codigo:
                     type: integer
-                    format: int64
         '403':
           description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
 
   /cargarArchivos/listar/{idRequisicion}/{idCandidato}/{idEtapa}:
     get:
@@ -1991,6 +2955,104 @@ components:
       scheme: bearer
 
   schemas:
+    HVEncuestaTeletrabajo:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int64
+        pregunta:
+          type: string
+        respuesta:
+          type: string
+    HvTeletrabajoMetadata:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int64
+        hojaVida:
+          type: integer
+          format: int64
+        fotoNombre:
+          type: string
+        fotoExt:
+          type: string
+    SlcRespuestaPreguntagral:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int64
+        candidato:
+          type: integer
+          format: int64
+        requisicion:
+          type: integer
+          format: int64
+        pregunta:
+          type: string
+        respuesta:
+          type: string
+        videoExt:
+          type: string
+        videoNombre:
+          type: string
+    DTOAutoanalisis:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int64
+        requisicion:
+          type: integer
+          format: int64
+        candidato:
+          type: string
+        fechaEnvio:
+          type: string
+          format: date-time
+        fechaLimite:
+          type: string
+          format: date-time
+        fechaDiligencia:
+          type: string
+          format: date-time
+        autoanalisisEnviado:
+          type: boolean
+        hash:
+          type: string
+        concepto:
+          type: string
+    SlcCategoriasgral:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+    DTOPreguntasAutoanalisisCandidato:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int64
+        pregunta:
+          type: string
+        respuesta:
+          type: string
+        codigoCategoria:
+          type: integer
+          format: int64
+    SlcFormulariogralSeleccion:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int64
+        nombre:
+          type: string
     Sede:
       type: object
       properties:
