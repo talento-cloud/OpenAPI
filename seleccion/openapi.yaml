@@ -96,6 +96,9 @@ tags:
   - name: "Teletrabajo"
     description: >-
       Endpoints para la gestión de la encuesta de teletrabajo.
+  - name: "Oferta Salarial"
+    description: >-
+      Endpoints para la gestión de la etapa de oferta salarial.
   - name: Assessments
     description: >-
       Endpoints para la creación y consulta de Assessments (Assessment Center).
@@ -138,6 +141,7 @@ x-tagGroups:
       - "Autoanálisis (Candidato)"
       - "Videoentrevista"
       - "Teletrabajo"
+      - "Oferta Salarial"
       - Assessments
       - Entrevistas Grupales
       - Estudio de seguridad
@@ -146,6 +150,189 @@ x-tagGroups:
       - "Pruebas Psicotécnicas (Candidato)"
 
 paths:  # ──────────────────────────────────────────────────────────────────────────────
+
+  /slc/ofertaSalarial/enviarOferta:
+    post:
+      tags:
+        - "Oferta Salarial"
+      summary: Envía una oferta salarial a un candidato.
+      description: |
+        Envía una oferta salarial a un candidato, que puede ser en formato de texto o PDF.
+      operationId: enviarOfertaSalarial
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                detalleOferta:
+                  type: string
+                candidato:
+                  type: integer
+                  format: int64
+                requisicion:
+                  type: integer
+                  format: int64
+                tipoOferta:
+                  type: string
+                  enum: [PDF, TEXTO]
+                adjunto:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Oferta enviada.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /slc/ofertaSalarial/aceptarOferta/{hash}:
+    post:
+      tags:
+        - "Oferta Salarial"
+      summary: Acepta una oferta salarial.
+      description: |
+        Permite a un candidato aceptar una oferta salarial.
+      operationId: aceptarOfertaSalarial
+      parameters:
+        - name: hash
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                observaciones:
+                  type: string
+      responses:
+        '200':
+          description: Oferta aceptada.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /slc/ofertaSalarial/rechazarOferta/{hash}:
+    post:
+      tags:
+        - "Oferta Salarial"
+      summary: Rechaza una oferta salarial.
+      description: |
+        Permite a un candidato rechazar una oferta salarial.
+      operationId: rechazarOfertaSalarial
+      parameters:
+        - name: hash
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                observaciones:
+                  type: string
+      responses:
+        '200':
+          description: Oferta rechazada.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /slc/ofertaSalarial/getUltimaOferta:
+    get:
+      tags:
+        - "Oferta Salarial"
+      summary: Obtiene la última oferta salarial de un candidato.
+      description: |
+        Obtiene la última oferta salarial de un candidato en una requisición.
+      operationId: getUltimaOfertaSalarial
+      parameters:
+        - name: candidato
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: requisicion
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Última oferta salarial.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlcOfertaSalarial'
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
+  /slc/ofertaSalarial/visualizar/{hash}:
+    get:
+      tags:
+        - "Oferta Salarial"
+      summary: Visualiza una oferta salarial.
+      description: |
+        Visualiza una oferta salarial a través de un hash.
+      operationId: visualizarOfertaSalarial
+      parameters:
+        - name: hash
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Oferta salarial.
+          content:
+            text/html:
+              schema:
+                type: string
+        '403':
+          description: Sesión inválida o sin permisos.
+        '500':
+          description: Error interno del servidor.
+
 
   /hv/encuesta_teletrabajo/getEncuestaTeletrabajoHojaVida/{codHV}:
     get:
@@ -2955,6 +3142,32 @@ components:
       scheme: bearer
 
   schemas:
+    SlcOfertaSalarial:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int64
+        candidato:
+          type: integer
+          format: int64
+        requisicion:
+          type: integer
+          format: int64
+        fechaEnvio:
+          type: string
+          format: date-time
+        estado:
+          type: string
+        tipoOferta:
+          type: string
+        detalleOferta:
+          type: string
+        hash:
+          type: string
+        responsable:
+          type: integer
+          format: int64
     HVEncuestaTeletrabajo:
       type: object
       properties:
