@@ -1,0 +1,2858 @@
+openapi: 3.0.0
+info:
+  title: MatriculaCrehanaAux
+  contact: {}
+  version: '1.0'
+  description: >-
+    Contiene servicios web con endpoints para hacer algunas operaciones en Crehana usando a talento cloud como intermediario.
+
+    ## Manejo de errores
+
+
+        Los errores habituales pueden incluir:
+
+
+        - `400 Bad Request`: Parámetros requeridos faltantes o con formato
+        inválido.
+            
+        - `401 Unauthorized`: Token JWT inválido, expirado o ausente.
+            
+        - `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.
+            
+        - `404 Not Found`: El recurso solicitado no existe.
+            
+        - `500 Internal Server Error`: Error inesperado en el servidor.
+            
+
+        Cuando sea posible, cada endpoint detallará sus códigos de error
+        específicos y estructura de respuesta en su propia descripción.  
+servers:
+- url: https://clientex.talento.cloud/api/html
+  description: Servidor de producción     
+- url: https://clientex.talento-dev.cloud/api/html
+  description: Servidor de pruebas
+  variables: {}
+paths:
+  /api/html/v2/formacion/crehana/matricular.json:
+    post:
+      tags:
+      - Transversal
+      summary: MatricularCursos
+      description: Para matricular el usuario en sesión a los cursos de Crehana indicados, si no tiene licencia de formación o el módulo no esta activo responderá con error.
+      operationId: MatricularCursos
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/MatricularCursosRequest'
+              - example:
+                  idsCursosCrehana:
+                  - '8994'
+                  - '9022'
+                  - '9039'
+            example:
+              idsCursosCrehana:
+              - '8994'
+              - '9022'
+              - '9039'
+        required: true
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-cache, no-store, max-age=0, must-revalidate
+            Pragma:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-cache
+            Expires:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '0'
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/MatricularCursos'
+                - example:
+                    success: true
+                    message: Se ha enviado la matrícula a la plataforma Crehana, espera un momento para poderla usar, recibirás un correo electrónico con la confirmación de la misma.
+              example:
+                success: true
+                message: Se ha enviado la matrícula a la plataforma Crehana, espera un momento para poderla usar, recibirás un correo electrónico con la confirmación de la misma.
+      deprecated: false
+      servers:
+      - url: http://example.com/html/v2/formacion/crehana
+        variables: {}
+  /api/v1/lambda/validar-acciones-desarrollo:
+    post:
+      tags:
+      - Transversal
+      summary: RecomendacionesCursos
+      operationId: RecomendacionesCursos
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/RecomendacionesCursosRequest'
+              - example:
+                  competencia: Desarrollo web front end con HTML y CSS
+                  tipo_proceso: 10
+                  tiene_licencia_crehana: true
+            example:
+              competencia: Desarrollo web front end con HTML y CSS
+              tipo_proceso: 10
+              tiene_licencia_crehana: true
+        required: true
+      responses:
+        '200':
+          description: OK
+          headers:
+            :status:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '200'
+            date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Thu, 11 Jun 2026 18:51:16 GMT
+            content-type:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: application/json
+            content-length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '30996'
+            apigw-requestid:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: ez1-nh6eIAMEMQg=
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/RecomendacionesCursos'
+                - example:
+                    action: "Completar los cursos de Crehana 'Introducción al Desarrollo Web front end: HTML y CSS desde cero' y 'CSS desde cero' para establecer bases sólidas, seguido de 'Introducción a HTML' para reforzar la estructura semántica. Posteriormente, aplicar los conocimientos en un proyecto final personal donde se recree la interfaz de una aplicación web real (como Spotify o Netflix) utilizando HTML semántico y CSS moderno (Flexbox, Grid, variables CSS y media queries), documentando el proceso en un repositorio de GitHub con README detallado. Como extensión opcional, completar 'Técnicas avanzadas de styling: Sass y SCSS' y 'Bootstrap desde cero: Construye sitios web responsive' para ampliar las capacidades de desarrollo."
+                    expected_result: Certificados de finalización de los cursos de Crehana completados, un repositorio público con el proyecto final que demuestre dominio de maquetación responsive, estructura semántica HTML, aplicación de estilos CSS fundamentales y avanzados, con al menos 3 commits documentados que muestren la evolución del desarrollo. Si se completan los cursos adicionales, se evidenciará uso de preprocesadores Sass/SCSS y/o implementación de componentes responsive con Bootstrap 4.
+                    required_resources: "Computadora con conexión a internet; suscripción activa a Crehana para acceder a los cursos 'Introducción al Desarrollo Web front end: HTML y CSS desde cero', 'CSS desde cero', 'Introducción a HTML', y opcionalmente 'Técnicas avanzadas de styling: Sass y SCSS' y 'Bootstrap desde cero: Construye sitios web responsive'; cuenta en GitHub (github.com); editor de código Visual Studio Code con extensiones Live Server y Prettier; navegador Chrome o Firefox con DevTools; 20 horas de dedicación distribuidas en 4 semanas; mentor o compañero de estudio para revisión de código vía Discord o similar (opcional pero recomendado)."
+                    courses:
+                    - id: 8987
+                      relevance_score: 0.675
+                      course:
+                        id: '8987'
+                        slug: introduccion-al-desarrollo-web-front-end-html-y-css-desde-cero
+                        image: https://crehana-public-catalog.imgix.net//images/courses/promo-images/140c642e/3b1da355.jpg
+                        title: 'Introducción al Desarrollo Web front end: HTML y CSS desde cero'
+                        modules:
+                        - id: '2155'
+                          name: Introducción
+                          order: 1
+                          videos:
+                          - id: '8045'
+                            order: 1
+                            title: Introducción al curso
+                        - id: '2156'
+                          name: ¿Cómo funciona el navegador?
+                          order: 2
+                          videos:
+                          - id: '8046'
+                            order: 2
+                            title: Cómo funciona la web
+                          - id: '8047'
+                            order: 3
+                            title: Cómo funciona el navegador
+                        - id: '2157'
+                          name: Introducción a HTML
+                          order: 3
+                          videos:
+                          - id: '8048'
+                            order: 4
+                            title: Definición de HTML
+                          - id: '8049'
+                            order: 5
+                            title: Renderizado HTML
+                        - id: '2158'
+                          name: ¿Qué necesito para empezar?
+                          order: 4
+                          videos:
+                          - id: '8050'
+                            order: 6
+                            title: Organización de archivos y programas a utilizar
+                        - id: '2159'
+                          name: Etiquetas y atributos
+                          order: 5
+                          videos:
+                          - id: '8051'
+                            order: 7
+                            title: Estructura del documento base, etiquetas y atributos
+                          - id: '8052'
+                            order: 8
+                            title: Etiqueta meta
+                          - id: '8053'
+                            order: 9
+                            title: Etiquetas para títulos y párrafos
+                          - id: '8054'
+                            order: 10
+                            title: Etiquetas para listas
+                          - id: '8055'
+                            order: 11
+                            title: Etiquetas de imágenes
+                          - id: '8056'
+                            order: 12
+                            title: Etiquetas de tablas
+                        - id: '2160'
+                          name: Formularios web
+                          order: 6
+                          videos:
+                          - id: '8057'
+                            order: 13
+                            title: Etiquetas de formularios
+                          - id: '8058'
+                            order: 14
+                            title: Captura de datos
+                          - id: '8059'
+                            order: 15
+                            title: Más etiquetas de captura de datos
+                          - id: '8060'
+                            order: 16
+                            title: Atributos en formularios
+                        - id: '2161'
+                          name: Otras etiquetas
+                          order: 7
+                          videos:
+                          - id: '8061'
+                            order: 17
+                            title: Etiqueta de enlaces
+                          - id: '8062'
+                            order: 18
+                            title: Continuando con enlaces en HTML
+                          - id: '8063'
+                            order: 19
+                            title: Enlaces con imágenes y de descarga
+                          - id: '8064'
+                            order: 20
+                            title: Etiquetas contenedoras y semánticas
+                          - id: '8065'
+                            order: 21
+                            title: Ejemplo de uso de etiquetas
+                          - id: '8066'
+                            order: 22
+                            title: Terminando maquetado básico
+                        - id: '2162'
+                          name: Etiquetas multimedia
+                          order: 8
+                          videos:
+                          - id: '8067'
+                            order: 23
+                            title: Implementación de audio en una página web
+                          - id: '8068'
+                            order: 24
+                            title: Implementación de video en una página web
+                          - id: '8069'
+                            order: 25
+                            title: Etiqueta iframe
+                        - id: '2163'
+                          name: HTML Gráfico
+                          order: 9
+                          videos:
+                          - id: '8070'
+                            order: 26
+                            title: Utilización de archivos SVG
+                          - id: '8071'
+                            order: 27
+                            title: Figuras básicas, etiquetas y atributos
+                          - id: '8072'
+                            order: 28
+                            title: Etiquetas adicionales para SVG
+                          - id: '8073'
+                            order: 29
+                            title: Herramientas para crear imágenes SVG
+                        - id: '2164'
+                          name: Introducción a CSS
+                          order: 10
+                          videos:
+                          - id: '8074'
+                            order: 30
+                            title: Qué es CSS
+                          - id: '8075'
+                            order: 31
+                            title: Utilización de CSS como atributo, etiqueta y archivo externo
+                          - id: '8076'
+                            order: 32
+                            title: Cómo funciona la herencia en CSS
+                          - id: '8077'
+                            order: 33
+                            title: Cómo funciona la cascada en CSS
+                        image_url: https://crehana-public-catalog.imgix.net//images/courses/promo-images/140c642e/3b1da355.jpg
+                        description: '<p>Conocer los fundamentos de HTML y de CSS te permitirá estructurar y definir el estilo de cualquier página web. Es el paso inicial de todo desarrollador Front End y el paso siguiente a la entrega de un diseño web, convirtiendo este último en código HTML.</p><p>Este <strong>curso de HTML y CSS</strong> te llevará desde cero a un nivel en el que podrás convertir cualquier diseño, ya sea una imagen o un .psd, a código HTML. Descubrirás temas como la funcionalidad de un navegador, introducción a HTML, etiquetas y atributos, formularios web, HTML gráfico, introducción a CSS, selectores, diseño web responsivo, animaciones y mucho más.</p><p>Soy Sergio Agamez, diseñador y desarrollador web con más de 9 años de experiencia. Soy amante de la tecnología desde niño y me especializo en áreas que me permiten brindar soluciones flexibles, ágiles y del más alto nivel.</p><p><strong>¿QUÉ INCLUYE ESTE CURSO?</strong></p><p>En este <strong>curso de HTML y CSS</strong>, descubrirás:</p><p>- Funcionalidad de un navegador<br>- Introducción a HTML<br>- Organización de archivos y programas a utilizar<br>- Etiquetas y atributos<br>- Formularios web<br>- Otras etiquetas<br>- Etiquetas multimedia<br>- HTML Gráfico<br>- Introducción a CSS<br>- Selectores<br>- Pseudoclases y pseudoelementos<br>- Modelo de caja, su flujo y posicionamiento<br>- Propiedades para texto y fuente<br>- Propiedades de visualización<br>- Diseño web responsivo<br>- Patrones de diseño adaptativo<br>- Transformaciones<br>- Animaciones<br>- Filtros<br>- Creación y presentación de tu propia página web</p><p><strong>¿QUÉ PROYECTO VAS A REALIZAR?</strong></p><p>Al finalizar este <strong>curso de HTML y CSS</strong> podrás crear tu propio proyecto final, compartiéndolo en la galería de proyectos para recibir feedback del profesor, staff de Crehana y compañeros del curso. En esta ocasión, deberás de aplicar todo lo aprendido para maquetar una página web utilizando código Front End: HTML y los estilos en cascada o CSS. Podrás convertir un archivo psd descargado del curso o uno propio.</p><p><strong>¿QUÉ VAS A LOGRAR CON ESTE CURSO?</strong></p><p>Al finalizar este <strong>curso de HTML y CSS</strong> podrás iniciar tu carrera como desarrollador Front End, manejando a nivel intermedio el lenguaje HTML y CSS. Con un poco de práctica e investigación podrás especializarte y desarrollar páginas web como un experto. ¡Inicia ya!</p>'
+                        course_level:
+                          name: Completo
+                    - id: 12425
+                      relevance_score: 0.479
+                      course:
+                        id: '12425'
+                        slug: css-desde-cero
+                        image: https://crehana-public-catalog.imgix.net//images/courses/promo-images/9781ab0f/f6574fe6.jpg
+                        title: CSS desde cero
+                        modules:
+                        - id: '10922'
+                          name: De la vista nace el amor
+                          order: 1
+                          videos:
+                          - id: '50711'
+                            order: 1
+                            title: 'Es cuestión de estilo: CSS'
+                        - id: '10923'
+                          name: Una gran primera impresión
+                          order: 2
+                          videos:
+                          - id: '50712'
+                            order: 1
+                            title: 'Cascadas y estilos: La primera impresión'
+                          - id: '50713'
+                            order: 2
+                            title: 'Los mejores amigos: CSS para HTML'
+                          - id: '50714'
+                            order: 3
+                            title: '¿Quién va primero?: Jerarquía (intro selectores)'
+                        - id: '10924'
+                          name: 'Sigue las reglas: Estilizando contenido'
+                          order: 3
+                          videos:
+                          - id: '50715'
+                            order: 1
+                            title: Selectores en detalle
+                          - id: '50716'
+                            order: 2
+                            title: Un mundo de colores
+                          - id: '50717'
+                            order: 3
+                            title: Bellas palabras
+                          - id: '50718'
+                            order: 4
+                            title: Bloques, cajas y espacios (intro layout)
+                          - id: '50719'
+                            order: 5
+                            title: 'Proyecto parte 1: ¡Me gusta tu estilo!'
+                        - id: '10925'
+                          name: 'Un clavado en CSS: Layout y multimedia'
+                          order: 4
+                          videos:
+                          - id: '50720'
+                            order: 1
+                            title: 'Layout: La estructura de un sitio web'
+                          - id: '50721'
+                            order: 2
+                            title: Cada cosa en su lugar
+                          - id: '50722'
+                            order: 3
+                            title: Alineación, desbordes y flotantes
+                          - id: '50723'
+                            order: 4
+                            title: 'Posibilidades infinitas: Selectores combinados'
+                          - id: '50724'
+                            order: 5
+                            title: 'Pseudo selectores '
+                          - id: '50725'
+                            order: 6
+                            title: 'Proyecto parte 2: Dale forma'
+                        - id: '10926'
+                          name: Todo cabe en una cajita sabiéndolo acomodar
+                          order: 5
+                          videos:
+                          - id: '50726'
+                            order: 1
+                            title: Un diseño que se adapta
+                          - id: '50727'
+                            order: 2
+                            title: ¿Cuánto mide el viewport?
+                          - id: '50728'
+                            order: 3
+                            title: Media queries y breakpoints
+                          - id: '50729'
+                            order: 4
+                            title: Todo responsivo
+                          - id: '50730'
+                            order: 5
+                            title: 'PRO: Flexbox'
+                          - id: '50731'
+                            order: 6
+                            title: 'Proyecto parte 3: Se ve bien en cualquier pantalla'
+                        - id: '10927'
+                          name: ¡Bienvenido al mundo de CSS!
+                          order: 6
+                          videos:
+                          - id: '50732'
+                            order: 1
+                            title: Esto es solo el inicio
+                          - id: '50733'
+                            order: 2
+                            title: 'Consejos finales y próximos pasos '
+                        image_url: https://crehana-public-catalog.imgix.net//images/courses/promo-images/9781ab0f/f6574fe6.jpg
+                        description: '<p>Aprender CSS desde cero es el primer paso para lograr que un sitio web se vea bien en todas las pantallas y dispositivos. Por ello, en este curso de CSS desde cero, comprenderás cuáles son los elementos básicos de estilo de un sitio web y entenderás cómo utilizar la sintaxis, efectos y controles visuales de los estilos CSS.&nbsp;</p><ul><li>Comprenderás qué es CSS, su relación con HTML y revisarás conceptos básicos sobre la sintaxis.</li><li>Descubrirás qué son los selectores CSS y cómo definir colores, texto, dimensiones y posiciones de los elementos.</li><li>Aprenderás a usar CSS para posicionamiento y alineación y lo aplicarás a elementos HTML.</li><li>Entenderás qué es mobile first y cómo realizar un diseño responsive usando CSS.</li></ul><p><strong>Nivel del curso</strong><br />Este curso de CSS desde cero es de nivel introductorio, sin embargo, es ideal que cuentes con conocimientos básicos sobre lenguaje de maquetado HTML, estructura de sitios web e interactividad de un sitio web para poder trabajar en el proyecto.</p><p>Este curso está dirigido a cualquier persona que esté interesada en el diseño o desarrollo web y puede ser especialmente útil para diseñadores UI/UX, programadores y maquetadores web.</p><p><strong>¿Qué necesito?</strong></p><ul><li>Computador o laptop con conexión a internet.</li><li>Un editor de texto (en el curso se utilizará Atom).&nbsp;</li></ul><p><strong>¿Qué habilidades desarrollaré?</strong></p><ul><li>CSS: Aprenderás CSS desde cero para lograr sitios web que se vean bien y sean congruentes.</li><li>Fundamentos web: Adquirirás conocimientos teórico-prácticos sobre la creación de sitios web para diferentes dispositivos digitales.</li><li>Manejo del editor de texto: Lograrás crear sitios web paso a paso.&nbsp;<br />&nbsp;</li></ul>'
+                        course_level:
+                          name: Introductorio
+                    - id: 12147
+                      relevance_score: 0.469
+                      course:
+                        id: '12147'
+                        slug: introduccion-a-html
+                        image: https://crehana-public-catalog.imgix.net//images/courses/promo-images/66f334de/91fe894c.jpg
+                        title: Introducción a HTML
+                        modules:
+                        - id: '10491'
+                          name: Antes de empezar
+                          order: 1
+                          videos:
+                          - id: '49274'
+                            order: 1
+                            title: Introducción al curso
+                        - id: '10492'
+                          name: Entender la web
+                          order: 2
+                          videos:
+                          - id: '49275'
+                            order: 1
+                            title: '¿Qué es el HTML? '
+                          - id: '49815'
+                            order: 2
+                            title: Páginas estáticas vs. dinámicas
+                          - id: '49276'
+                            order: 3
+                            title: Herramientas de Chrome para desarrolladores
+                          - id: '49277'
+                            order: 4
+                            title: 'Etiquetas básicas: ¿Cómo es la maqueta de un sitio web?'
+                        - id: '10493'
+                          name: Presentar información
+                          order: 3
+                          videos:
+                          - id: '49278'
+                            order: 1
+                            title: El DOM
+                          - id: '49280'
+                            order: 3
+                            title: 'Etiquetas de texto: Párrafos, títulos e hipervínculos'
+                          - id: '49281'
+                            order: 4
+                            title: 'Etiquetas de texto: Listas numeradas y no numeradas '
+                          - id: '49282'
+                            order: 5
+                            title: 'Tablas '
+                          - id: '49283'
+                            order: 6
+                            title: Etiquetas multimedia
+                          - id: '49284'
+                            order: 7
+                            title: 'Proyecto parte 1: Página personal'
+                        - id: '10494'
+                          name: Preguntar información al usuario
+                          order: 4
+                          videos:
+                          - id: '49285'
+                            order: 1
+                            title: '¿Qué es un formulario y cuáles son sus elementos? '
+                          - id: '49286'
+                            order: 2
+                            title: 'Campos de texto, password y etiquetas '
+                          - id: '49287'
+                            order: 3
+                            title: Botones y listas de selección múltiple o simple
+                          - id: '49288'
+                            order: 4
+                            title: 'Botones y envío de formularios '
+                          - id: '49289'
+                            order: 5
+                            title: 'Proyecto parte 2: Preguntas a los visitantes'
+                        - id: '10495'
+                          name: 'Inspección de otros sitios web '
+                          order: 5
+                          videos:
+                          - id: '49290'
+                            order: 1
+                            title: 'Inspector web de Google Chrome '
+                          - id: '49291'
+                            order: 2
+                            title: 'Análisis de un sitio web a través del inspector '
+                          - id: '49292'
+                            order: 3
+                            title: 'Proyecto parte 3: Inspección de la página'
+                        - id: '10496'
+                          name: Conclusiones
+                          order: 6
+                          videos:
+                          - id: '49293'
+                            order: 1
+                            title: Consejos finales y próximos pasos
+                        image_url: https://crehana-public-catalog.imgix.net//images/courses/promo-images/66f334de/91fe894c.jpg
+                        description: '<p>Aprender HTML para desarrollar páginas web es indispensable en el mundo actual, en el que la presencia digital cumple un rol primordial para la comunicación de organizaciones y personas.&nbsp;Por ello, en este curso de introducción al HTML aprenderás cómo funciona el HTML de las páginas web y, junto a Federico Ponte, descubrirás los elementos más importantes al trabajar desarrollar websites.</p><ul><li>Aprenderás los fundamentos básicos del lenguaje HTML para el diseño de páginas web desde cero.</li><li>Entenderás qué son las etiquetas, cómo maquetar un sitio web y cómo organizar la información de tus páginas.</li><li>Descubrirás qué es un formulario, cuáles son sus elementos y cómo utilizarlos para obtener información del usuario.</li><li>Aprenderás cómo inspeccionar otras web, generar etiquetas avanzadas y utilizar el inspector web de Google Chrome.</li></ul><p><strong>Nivel del curso</strong><br />El curso de introducción al lenguaje HTML es de nivel introductorio, ya que no necesitas ningún conocimiento previo o tener instalado algún software para inscribirte al curso. Este curso está dirigido a todas aquellas personas que desean adquirir conocimientos básicos de HTML y sobre los principios del desarrollo de sitios web.</p><p><strong>¿Qué necesito?</strong></p><ul><li>Computadora o laptop con conexión a internet.</li><li>Atom para edición de sitios web.</li></ul><p><strong>¿Qué habilidades desarrollaré?</strong></p><ul><li>HTML: Adquirirás conocimientos básicos sobre el lenguaje de programación HTML para la creación de sitios web.</li><li>Fundamentos web: Entenderás cuáles son los principios del desarrollo web a tener en cuenta al maquetar páginas web.</li><li>Manejo de editor de código: Serás capaz de manejar editores de código HTML para construir sitios web desde cero.<br />&nbsp;</li></ul>'
+                        course_level:
+                          name: Introductorio
+                    - id: 13105
+                      relevance_score: 0.462
+                      course:
+                        id: '13105'
+                        slug: tecnicas-avanzadas-de-styling-sass-y-scss
+                        image: https://crehana-public-catalog.imgix.net//images/courses/promo-images/11b6ca7f/9a25358f.jpg
+                        title: 'Técnicas avanzadas de styling: Sass y SCSS'
+                        modules:
+                        - id: '11481'
+                          name: El potencial
+                          order: 1
+                          videos:
+                          - id: '52333'
+                            order: 1
+                            title: Introducción al curso
+                          - id: '52334'
+                            order: 2
+                            title: 'Magia con CSS: Una librería CSS'
+                        - id: '11482'
+                          name: 'Sass: Haz más con menos'
+                          order: 2
+                          videos:
+                          - id: '52335'
+                            order: 1
+                            title: Sass desmenuzado
+                          - id: '52336'
+                            order: 2
+                            title: CSS en esteroides
+                          - id: '52337'
+                            order: 3
+                            title: Comparemos Sass con LESS y con SCSS
+                          - id: '52338'
+                            order: 4
+                            title: 'Proyecto parte 1: Estructura del proyecto'
+                        - id: '11483'
+                          name: Pongámonos técnicos
+                          order: 3
+                          videos:
+                          - id: '52339'
+                            order: 1
+                            title: Consiguiendo la gema de Sass
+                          - id: '52340'
+                            order: 2
+                            title: Comandos para hackers
+                          - id: '52341'
+                            order: 3
+                            title: 'CSS anidado: Todos tus selectores y propiedades'
+                          - id: '52342'
+                            order: 4
+                            title: Usar (y reenviar) en vez de importar
+                          - id: '52343'
+                            order: 5
+                            title: 'Proyecto parte 2: Compilando Sass'
+                        - id: '11484'
+                          name: Dominando Sass
+                          order: 4
+                          videos:
+                          - id: '52344'
+                            order: 1
+                            title: ¿Variables? ¡Variables!
+                          - id: '52345'
+                            order: 2
+                            title: Operadores, reglas y control
+                          - id: '52346'
+                            order: 3
+                            title: Haciendo moldes
+                          - id: '52347'
+                            order: 4
+                            title: No te repitas, extiende
+                          - id: '52348'
+                            order: 5
+                            title: 'Proyecto parte 3: Organizando materiales'
+                        - id: '11485'
+                          name: 'Sass: La gema de poder'
+                          order: 5
+                          videos:
+                          - id: '52349'
+                            order: 1
+                            title: Experto depurador
+                          - id: '52350'
+                            order: 2
+                            title: 'Módulos en Sass: Poderes ocultos'
+                          - id: '52351'
+                            order: 3
+                            title: Un mundo de colores inteligentes
+                          - id: '52352'
+                            order: 4
+                            title: Tú pones las reglas (funciones personalizadas)
+                          - id: '52353'
+                            order: 5
+                            title: 'Proyecto parte 4: Generando la librería'
+                        - id: '11486'
+                          name: Un gran poder…
+                          order: 6
+                          videos:
+                          - id: '52354'
+                            order: 1
+                            title: 'Organizando: Ventajas y desventajas'
+                          - id: '52355'
+                            order: 2
+                            title: Consejos finales y próximos pasos
+                        image_url: https://crehana-public-catalog.imgix.net//images/courses/promo-images/11b6ca7f/9a25358f.jpg
+                        description: '<p>Escribir en CSS puede volverse muy confuso. Por esta razón, los preprocesadores de CSS, como Sass, son herramientas geniales para crear los estilos que tienes en mente en la menor cantidad de tiempo. En este curso aprenderás a usar Sass, uno de los preprocesadores más utilizados hoy en día en el desarrollo front-end.</p><ul><li>Entenderás cómo funcionan los preprocesadores CSS y, en específico, cómo usar Sass para el desarrollo front-end.</li><li>Comprenderás las características principales de Sass y las diferencias entre las sintaxis Scss y Sass directo.</li><li>Serás capaz de identificar en qué casos es recomendable usar Sass y cómo sacar el máximo provecho de él.</li><li>Aprenderás a implementar conceptos complejos como los módulos de Sass, sus funciones, y podrás crear funciones personalizadas.</li></ul><p><strong>Nivel del curso</strong></p><p>Este es un curso de nivel intermedio, ya que es necesario tener conocimiento de CSS y de los principios de diseño web con HTML y CSS para tomar el curso.<br />El curso de Sass está dirigido a personas que estén interesadas en utilizar esta tecnología o quieran aprender técnicas avanzadas de CSS, así como para desarrolladores que buscan maneras de optimizar su proceso de maquetación y estilo.</p><p><strong>¿Qué necesito?</strong></p><ul><li>Computador o laptop con conexión a internet.</li><li>Contar con un editor de texto o código como Visual Studio Code</li><li>Estar familiarizado con Git y Github</li><li>Conocimiento de los principios de diseño web con HTML y CSS.</li><li>Utilizar las plantillas HTML facilitadas por la profesora para desarrollar tu proyecto final.</li><li>Acceder al&nbsp;<a target="_blank" href="https://github.com/crehana-studentxp/sass_scss_tecnicas_avanzadas-karen_chizon">repositorio de GitHub del curso</a>.</li><li>Estar familiarizado con el uso de la terminal o preferentemente Bash.</li></ul><p><strong>¿Qué habilidades desarrollaré?</strong></p><ul><li>Hojas de estilo: Lograrás convertir tus archivos .scss o .sass en una hoja de estilo CSS estándar usando Sass.</li><li>Sass: Aprenderás cómo funciona Sass y cómo implementar sus diversas funcionalidades de forma práctica.</li><li>Desarrollo Web: Serás capaz de optimizar el desarrollo de páginas web aplicando técnicas avanzadas de CSS con Sass.</li></ul>'
+                        course_level:
+                          name: Intermedio
+                    - id: 9200
+                      relevance_score: 0.433
+                      course:
+                        id: '9200'
+                        slug: bootstrap-desde-cero-construye-sitios-web-responsive
+                        image: https://crehana-public-catalog.imgix.net//images/courses/promo-images/44bc6c76/91e71ac9.png
+                        title: 'Bootstrap desde cero: Construye sitios web responsive'
+                        modules:
+                        - id: '3548'
+                          name: Introducción
+                          order: 1
+                          videos:
+                          - id: '15296'
+                            order: 1
+                            title: Introducción al curso
+                          - id: '17105'
+                            order: 2
+                            title: Qué es un framework y qué es Bootstrap 4
+                          - id: '15368'
+                            order: 3
+                            title: Descargando e instalando Bootstrap 4
+                        - id: '3549'
+                          name: Layout en Bootstrap 4
+                          order: 2
+                          videos:
+                          - id: '17106'
+                            order: 1
+                            title: Aprendiendo a usar los contenedores
+                          - id: '17107'
+                            order: 2
+                            title: Entendiendo las filas y columnas
+                          - id: '15370'
+                            order: 3
+                            title: Realizando un diseño base con filas y columnas
+                          - id: '17108'
+                            order: 4
+                            title: Haciendo responsivo nuestro diseño base con filas y columnas
+                          - id: '17109'
+                            order: 5
+                            title: Utilizando columnas automáticas
+                          - id: '15373'
+                            order: 6
+                            title: Alienando columnas verticalmente
+                          - id: '15374'
+                            order: 7
+                            title: Alineando columnas horizontalmente
+                          - id: '15375'
+                            order: 8
+                            title: Usando offset en las columnas
+                          - id: '15376'
+                            order: 9
+                            title: Reordenando columnas
+                          - id: '15377'
+                            order: 10
+                            title: Columnas anidadas
+                        - id: '3550'
+                          name: Utilities de Bootstrap 4
+                          order: 3
+                          videos:
+                          - id: '15309'
+                            order: 1
+                            title: Bordes
+                          - id: '15310'
+                            order: 2
+                            title: Elementos flotantes y Clearfix
+                          - id: '15311'
+                            order: 3
+                            title: Colores
+                          - id: '15312'
+                            order: 4
+                            title: Display
+                          - id: '15313'
+                            order: 5
+                            title: Embed
+                          - id: '15314'
+                            order: 6
+                            title: Posicionamiento
+                          - id: '15315'
+                            order: 6
+                            title: Espacios
+                          - id: '15316'
+                            order: 7
+                            title: Tamaños
+                          - id: '15317'
+                            order: 8
+                            title: Utilidades de Flexbox
+                        - id: '3551'
+                          name: Elementos generales de Bootstrap 4
+                          order: 4
+                          videos:
+                          - id: '15318'
+                            order: 1
+                            title: Tipografía y textos
+                          - id: '15319'
+                            order: 2
+                            title: Continuación de tipografía y textos
+                          - id: '17110'
+                            order: 3
+                            title: 'Código '
+                          - id: '15321'
+                            order: 4
+                            title: Imágenes
+                          - id: '15322'
+                            order: 5
+                            title: Tablas
+                          - id: '15323'
+                            order: 6
+                            title: Media object
+                        - id: '3552'
+                          name: Componentes de Bootstrap 4
+                          order: 5
+                          videos:
+                          - id: '15324'
+                            order: 1
+                            title: Alertas
+                          - id: '15326'
+                            order: 2
+                            title: Botones
+                          - id: '15325'
+                            order: 2
+                            title: Badges o Insignias
+                          - id: '15327'
+                            order: 3
+                            title: Continuación de Botones
+                          - id: '15328'
+                            order: 4
+                            title: Grupos de botones
+                          - id: '15329'
+                            order: 5
+                            title: Cards o Tarjetas
+                          - id: '15330'
+                            order: 6
+                            title: Layout de cards estilo masonry
+                          - id: '15331'
+                            order: 7
+                            title: Carousel
+                          - id: '15332'
+                            order: 8
+                            title: Collapse
+                          - id: '15333'
+                            order: 9
+                            title: Dropdowns
+                          - id: '15334'
+                            order: 10
+                            title: Formularios
+                          - id: '15335'
+                            order: 11
+                            title: Formularios Inline
+                          - id: '15336'
+                            order: 12
+                            title: Grupos de input
+                          - id: '15337'
+                            order: 13
+                            title: Usando la grid con formularios
+                          - id: '15338'
+                            order: 14
+                            title: Jumbotron
+                          - id: '15339'
+                            order: 15
+                            title: List groups
+                          - id: '15340'
+                            order: 16
+                            title: Mostrando y ocultando contenido con list groups
+                          - id: '15341'
+                            order: 17
+                            title: Modales
+                          - id: '15342'
+                            order: 18
+                            title: Navs
+                          - id: '15343'
+                            order: 19
+                            title: Tabs y Pills
+                          - id: '15344'
+                            order: 20
+                            title: Navbars
+                          - id: '15345'
+                            order: 21
+                            title: Paginación
+                          - id: '15346'
+                            order: 22
+                            title: Popovers
+                          - id: '15347'
+                            order: 23
+                            title: Progress bars o barras de progreso
+                          - id: '15348'
+                            order: 24
+                            title: Scrollspy
+                          - id: '15349'
+                            order: 25
+                            title: Tooltips
+                        - id: '3553'
+                          name: Iniciando HTML de sitio web con Bootstrap 4
+                          order: 6
+                          videos:
+                          - id: '15350'
+                            order: 1
+                            title: Iniciando estructura de archivos y carpetas de sitio web
+                          - id: '15351'
+                            order: 2
+                            title: Escribiendo estructura base de archivo HTML
+                          - id: '15352'
+                            order: 3
+                            title: Aprendiendo conceptos basicos de Sass para empezar
+                          - id: '15353'
+                            order: 4
+                            title: Personalizando colores base de Bootstrap con Sass
+                          - id: '15354'
+                            order: 5
+                            title: Realizando encabezado de sitio web
+                          - id: '15355'
+                            order: 6
+                            title: Iniciando nuestro carousel destacado
+                          - id: '15356'
+                            order: 7
+                            title: Terminando nuestro carousel destacado
+                          - id: '15357'
+                            order: 8
+                            title: Realizando tabs para filtrar entre productos
+                          - id: '15358'
+                            order: 9
+                            title: Agregando nuestros productos y haciendo funcionar nuestros tabs
+                          - id: '15359'
+                            order: 10
+                            title: Realizando botón de llamada a la acción
+                          - id: '15360'
+                            order: 11
+                            title: Iniciando nuestra sección de artículos del blog
+                          - id: '15361'
+                            order: 12
+                            title: Terminando nuestra sección de artículos del blog
+                          - id: '15362'
+                            order: 13
+                            title: Realizando sección de contacto
+                          - id: '15363'
+                            order: 14
+                            title: Realizando pie de página
+                        - id: '3554'
+                          name: Aplicando estilos CSS a sitios web con Bootstrap 4
+                          order: 7
+                          videos:
+                          - id: '15364'
+                            order: 1
+                            title: Aplicando estilos CSS con Sass
+                          - id: '15365'
+                            order: 2
+                            title: Terminando la aplicación de estilos CSS con Sass
+                        - id: '3555'
+                          name: Cierre
+                          order: 8
+                          videos:
+                          - id: '15366'
+                            order: 1
+                            title: Subiendo nuestro proyecto final a Surge
+                          - id: '15367'
+                            order: 2
+                            title: Cierre
+                        image_url: https://crehana-public-catalog.imgix.net//images/courses/promo-images/44bc6c76/91e71ac9.png
+                        description: <p>En el desarrollo Front-end de sitios web y aplicaciones móviles es importante utilizar herramientas que permitan ser más eficiente y rápido en la maquetación, por ello utilizamos Bootstrap 4. Es uno de los Framework más populares en todo el mundo, utilizado para crear sitios web y aplicaciones adaptables a diferentes tamaños de pantalla.<br /><br />Mi nombre es Sergio Agámez y soy desarrollador web. He trabajado con clientes de Europa&nbsp; y América Latina con más de 2 años de experiencia creando sitios web y aplicaciones móviles, lo cual me ha permitido conocer distintos tipos de personas y tener grandes resultados, utilizando herramientas que facilitan el desarrollo como Bootstrap 4.<br /><br />Este curso de Bootstrap 4 te permitirá conocer desde cero lo que es un Framework, cómo instalar Bootstrap 4 y cómo usarlo para crear un sitio web, aún si nunca has utilizado un Framework. Durante las clases aprenderemos paso a paso los diferentes componentes de bootstrap, de forma completamente práctica y realizaremos un sitio web desde cero adaptable a todos los dispositivos.<br /><br /><br /><br /><strong>¿Qué incluye este curso?</strong><br /><br />En este curso de Bootstrap 4 aprenderás:<br /><br />- Qué es un Framework y por qué elegir Bootstrap 4<br />- Cómo desarrollar con el sistema de Rejilla<br />- Elementos generales de Bootstrap 4<br />- Componentes y utilidades que podemos utilizar<br />- Cómo desarrollar un sitio web desde cero utilizando Bootstrap 4&nbsp;<br /><br /><br /><br /><strong>¿Qué proyecto vas a realizar?</strong><br /><br />Durante el curso aprenderemos a realizar un sitio web desde cero con Bootstrap 4. Al finalizar deberás realizar un sitio web desde cero o desde un diseño que tengas, utilizando el sistema de rejilla de Bootstrap y aplicando clases de color y texto; también podrás usar componentes aprendidos.</p><p><br /><br /><strong>¿Qué vas a lograr con este curso?</strong><br /><br />Al finalizar el curso Bootstrap 4&nbsp;podrás empezar a desarrollar sitios web y perfeccionarlos para trabajar con clientes.</p><p>&nbsp;</p>
+                        course_level:
+                          name: Introductorio
+              example:
+                action: "Completar los cursos de Crehana 'Introducción al Desarrollo Web front end: HTML y CSS desde cero' y 'CSS desde cero' para establecer bases sólidas, seguido de 'Introducción a HTML' para reforzar la estructura semántica. Posteriormente, aplicar los conocimientos en un proyecto final personal donde se recree la interfaz de una aplicación web real (como Spotify o Netflix) utilizando HTML semántico y CSS moderno (Flexbox, Grid, variables CSS y media queries), documentando el proceso en un repositorio de GitHub con README detallado. Como extensión opcional, completar 'Técnicas avanzadas de styling: Sass y SCSS' y 'Bootstrap desde cero: Construye sitios web responsive' para ampliar las capacidades de desarrollo."
+                expected_result: Certificados de finalización de los cursos de Crehana completados, un repositorio público con el proyecto final que demuestre dominio de maquetación responsive, estructura semántica HTML, aplicación de estilos CSS fundamentales y avanzados, con al menos 3 commits documentados que muestren la evolución del desarrollo. Si se completan los cursos adicionales, se evidenciará uso de preprocesadores Sass/SCSS y/o implementación de componentes responsive con Bootstrap 4.
+                required_resources: "Computadora con conexión a internet; suscripción activa a Crehana para acceder a los cursos 'Introducción al Desarrollo Web front end: HTML y CSS desde cero', 'CSS desde cero', 'Introducción a HTML', y opcionalmente 'Técnicas avanzadas de styling: Sass y SCSS' y 'Bootstrap desde cero: Construye sitios web responsive'; cuenta en GitHub (github.com); editor de código Visual Studio Code con extensiones Live Server y Prettier; navegador Chrome o Firefox con DevTools; 20 horas de dedicación distribuidas en 4 semanas; mentor o compañero de estudio para revisión de código vía Discord o similar (opcional pero recomendado)."
+                courses:
+                - id: 8987
+                  relevance_score: 0.675
+                  course:
+                    id: '8987'
+                    slug: introduccion-al-desarrollo-web-front-end-html-y-css-desde-cero
+                    image: https://crehana-public-catalog.imgix.net//images/courses/promo-images/140c642e/3b1da355.jpg
+                    title: 'Introducción al Desarrollo Web front end: HTML y CSS desde cero'
+                    modules:
+                    - id: '2155'
+                      name: Introducción
+                      order: 1
+                      videos:
+                      - id: '8045'
+                        order: 1
+                        title: Introducción al curso
+                    - id: '2156'
+                      name: ¿Cómo funciona el navegador?
+                      order: 2
+                      videos:
+                      - id: '8046'
+                        order: 2
+                        title: Cómo funciona la web
+                      - id: '8047'
+                        order: 3
+                        title: Cómo funciona el navegador
+                    - id: '2157'
+                      name: Introducción a HTML
+                      order: 3
+                      videos:
+                      - id: '8048'
+                        order: 4
+                        title: Definición de HTML
+                      - id: '8049'
+                        order: 5
+                        title: Renderizado HTML
+                    - id: '2158'
+                      name: ¿Qué necesito para empezar?
+                      order: 4
+                      videos:
+                      - id: '8050'
+                        order: 6
+                        title: Organización de archivos y programas a utilizar
+                    - id: '2159'
+                      name: Etiquetas y atributos
+                      order: 5
+                      videos:
+                      - id: '8051'
+                        order: 7
+                        title: Estructura del documento base, etiquetas y atributos
+                      - id: '8052'
+                        order: 8
+                        title: Etiqueta meta
+                      - id: '8053'
+                        order: 9
+                        title: Etiquetas para títulos y párrafos
+                      - id: '8054'
+                        order: 10
+                        title: Etiquetas para listas
+                      - id: '8055'
+                        order: 11
+                        title: Etiquetas de imágenes
+                      - id: '8056'
+                        order: 12
+                        title: Etiquetas de tablas
+                    - id: '2160'
+                      name: Formularios web
+                      order: 6
+                      videos:
+                      - id: '8057'
+                        order: 13
+                        title: Etiquetas de formularios
+                      - id: '8058'
+                        order: 14
+                        title: Captura de datos
+                      - id: '8059'
+                        order: 15
+                        title: Más etiquetas de captura de datos
+                      - id: '8060'
+                        order: 16
+                        title: Atributos en formularios
+                    - id: '2161'
+                      name: Otras etiquetas
+                      order: 7
+                      videos:
+                      - id: '8061'
+                        order: 17
+                        title: Etiqueta de enlaces
+                      - id: '8062'
+                        order: 18
+                        title: Continuando con enlaces en HTML
+                      - id: '8063'
+                        order: 19
+                        title: Enlaces con imágenes y de descarga
+                      - id: '8064'
+                        order: 20
+                        title: Etiquetas contenedoras y semánticas
+                      - id: '8065'
+                        order: 21
+                        title: Ejemplo de uso de etiquetas
+                      - id: '8066'
+                        order: 22
+                        title: Terminando maquetado básico
+                    - id: '2162'
+                      name: Etiquetas multimedia
+                      order: 8
+                      videos:
+                      - id: '8067'
+                        order: 23
+                        title: Implementación de audio en una página web
+                      - id: '8068'
+                        order: 24
+                        title: Implementación de video en una página web
+                      - id: '8069'
+                        order: 25
+                        title: Etiqueta iframe
+                    - id: '2163'
+                      name: HTML Gráfico
+                      order: 9
+                      videos:
+                      - id: '8070'
+                        order: 26
+                        title: Utilización de archivos SVG
+                      - id: '8071'
+                        order: 27
+                        title: Figuras básicas, etiquetas y atributos
+                      - id: '8072'
+                        order: 28
+                        title: Etiquetas adicionales para SVG
+                      - id: '8073'
+                        order: 29
+                        title: Herramientas para crear imágenes SVG
+                    - id: '2164'
+                      name: Introducción a CSS
+                      order: 10
+                      videos:
+                      - id: '8074'
+                        order: 30
+                        title: Qué es CSS
+                      - id: '8075'
+                        order: 31
+                        title: Utilización de CSS como atributo, etiqueta y archivo externo
+                      - id: '8076'
+                        order: 32
+                        title: Cómo funciona la herencia en CSS
+                      - id: '8077'
+                        order: 33
+                        title: Cómo funciona la cascada en CSS
+                    image_url: https://crehana-public-catalog.imgix.net//images/courses/promo-images/140c642e/3b1da355.jpg
+                    description: '<p>Conocer los fundamentos de HTML y de CSS te permitirá estructurar y definir el estilo de cualquier página web. Es el paso inicial de todo desarrollador Front End y el paso siguiente a la entrega de un diseño web, convirtiendo este último en código HTML.</p><p>Este <strong>curso de HTML y CSS</strong> te llevará desde cero a un nivel en el que podrás convertir cualquier diseño, ya sea una imagen o un .psd, a código HTML. Descubrirás temas como la funcionalidad de un navegador, introducción a HTML, etiquetas y atributos, formularios web, HTML gráfico, introducción a CSS, selectores, diseño web responsivo, animaciones y mucho más.</p><p>Soy Sergio Agamez, diseñador y desarrollador web con más de 9 años de experiencia. Soy amante de la tecnología desde niño y me especializo en áreas que me permiten brindar soluciones flexibles, ágiles y del más alto nivel.</p><p><strong>¿QUÉ INCLUYE ESTE CURSO?</strong></p><p>En este <strong>curso de HTML y CSS</strong>, descubrirás:</p><p>- Funcionalidad de un navegador<br>- Introducción a HTML<br>- Organización de archivos y programas a utilizar<br>- Etiquetas y atributos<br>- Formularios web<br>- Otras etiquetas<br>- Etiquetas multimedia<br>- HTML Gráfico<br>- Introducción a CSS<br>- Selectores<br>- Pseudoclases y pseudoelementos<br>- Modelo de caja, su flujo y posicionamiento<br>- Propiedades para texto y fuente<br>- Propiedades de visualización<br>- Diseño web responsivo<br>- Patrones de diseño adaptativo<br>- Transformaciones<br>- Animaciones<br>- Filtros<br>- Creación y presentación de tu propia página web</p><p><strong>¿QUÉ PROYECTO VAS A REALIZAR?</strong></p><p>Al finalizar este <strong>curso de HTML y CSS</strong> podrás crear tu propio proyecto final, compartiéndolo en la galería de proyectos para recibir feedback del profesor, staff de Crehana y compañeros del curso. En esta ocasión, deberás de aplicar todo lo aprendido para maquetar una página web utilizando código Front End: HTML y los estilos en cascada o CSS. Podrás convertir un archivo psd descargado del curso o uno propio.</p><p><strong>¿QUÉ VAS A LOGRAR CON ESTE CURSO?</strong></p><p>Al finalizar este <strong>curso de HTML y CSS</strong> podrás iniciar tu carrera como desarrollador Front End, manejando a nivel intermedio el lenguaje HTML y CSS. Con un poco de práctica e investigación podrás especializarte y desarrollar páginas web como un experto. ¡Inicia ya!</p>'
+                    course_level:
+                      name: Completo
+                - id: 12425
+                  relevance_score: 0.479
+                  course:
+                    id: '12425'
+                    slug: css-desde-cero
+                    image: https://crehana-public-catalog.imgix.net//images/courses/promo-images/9781ab0f/f6574fe6.jpg
+                    title: CSS desde cero
+                    modules:
+                    - id: '10922'
+                      name: De la vista nace el amor
+                      order: 1
+                      videos:
+                      - id: '50711'
+                        order: 1
+                        title: 'Es cuestión de estilo: CSS'
+                    - id: '10923'
+                      name: Una gran primera impresión
+                      order: 2
+                      videos:
+                      - id: '50712'
+                        order: 1
+                        title: 'Cascadas y estilos: La primera impresión'
+                      - id: '50713'
+                        order: 2
+                        title: 'Los mejores amigos: CSS para HTML'
+                      - id: '50714'
+                        order: 3
+                        title: '¿Quién va primero?: Jerarquía (intro selectores)'
+                    - id: '10924'
+                      name: 'Sigue las reglas: Estilizando contenido'
+                      order: 3
+                      videos:
+                      - id: '50715'
+                        order: 1
+                        title: Selectores en detalle
+                      - id: '50716'
+                        order: 2
+                        title: Un mundo de colores
+                      - id: '50717'
+                        order: 3
+                        title: Bellas palabras
+                      - id: '50718'
+                        order: 4
+                        title: Bloques, cajas y espacios (intro layout)
+                      - id: '50719'
+                        order: 5
+                        title: 'Proyecto parte 1: ¡Me gusta tu estilo!'
+                    - id: '10925'
+                      name: 'Un clavado en CSS: Layout y multimedia'
+                      order: 4
+                      videos:
+                      - id: '50720'
+                        order: 1
+                        title: 'Layout: La estructura de un sitio web'
+                      - id: '50721'
+                        order: 2
+                        title: Cada cosa en su lugar
+                      - id: '50722'
+                        order: 3
+                        title: Alineación, desbordes y flotantes
+                      - id: '50723'
+                        order: 4
+                        title: 'Posibilidades infinitas: Selectores combinados'
+                      - id: '50724'
+                        order: 5
+                        title: 'Pseudo selectores '
+                      - id: '50725'
+                        order: 6
+                        title: 'Proyecto parte 2: Dale forma'
+                    - id: '10926'
+                      name: Todo cabe en una cajita sabiéndolo acomodar
+                      order: 5
+                      videos:
+                      - id: '50726'
+                        order: 1
+                        title: Un diseño que se adapta
+                      - id: '50727'
+                        order: 2
+                        title: ¿Cuánto mide el viewport?
+                      - id: '50728'
+                        order: 3
+                        title: Media queries y breakpoints
+                      - id: '50729'
+                        order: 4
+                        title: Todo responsivo
+                      - id: '50730'
+                        order: 5
+                        title: 'PRO: Flexbox'
+                      - id: '50731'
+                        order: 6
+                        title: 'Proyecto parte 3: Se ve bien en cualquier pantalla'
+                    - id: '10927'
+                      name: ¡Bienvenido al mundo de CSS!
+                      order: 6
+                      videos:
+                      - id: '50732'
+                        order: 1
+                        title: Esto es solo el inicio
+                      - id: '50733'
+                        order: 2
+                        title: 'Consejos finales y próximos pasos '
+                    image_url: https://crehana-public-catalog.imgix.net//images/courses/promo-images/9781ab0f/f6574fe6.jpg
+                    description: '<p>Aprender CSS desde cero es el primer paso para lograr que un sitio web se vea bien en todas las pantallas y dispositivos. Por ello, en este curso de CSS desde cero, comprenderás cuáles son los elementos básicos de estilo de un sitio web y entenderás cómo utilizar la sintaxis, efectos y controles visuales de los estilos CSS.&nbsp;</p><ul><li>Comprenderás qué es CSS, su relación con HTML y revisarás conceptos básicos sobre la sintaxis.</li><li>Descubrirás qué son los selectores CSS y cómo definir colores, texto, dimensiones y posiciones de los elementos.</li><li>Aprenderás a usar CSS para posicionamiento y alineación y lo aplicarás a elementos HTML.</li><li>Entenderás qué es mobile first y cómo realizar un diseño responsive usando CSS.</li></ul><p><strong>Nivel del curso</strong><br />Este curso de CSS desde cero es de nivel introductorio, sin embargo, es ideal que cuentes con conocimientos básicos sobre lenguaje de maquetado HTML, estructura de sitios web e interactividad de un sitio web para poder trabajar en el proyecto.</p><p>Este curso está dirigido a cualquier persona que esté interesada en el diseño o desarrollo web y puede ser especialmente útil para diseñadores UI/UX, programadores y maquetadores web.</p><p><strong>¿Qué necesito?</strong></p><ul><li>Computador o laptop con conexión a internet.</li><li>Un editor de texto (en el curso se utilizará Atom).&nbsp;</li></ul><p><strong>¿Qué habilidades desarrollaré?</strong></p><ul><li>CSS: Aprenderás CSS desde cero para lograr sitios web que se vean bien y sean congruentes.</li><li>Fundamentos web: Adquirirás conocimientos teórico-prácticos sobre la creación de sitios web para diferentes dispositivos digitales.</li><li>Manejo del editor de texto: Lograrás crear sitios web paso a paso.&nbsp;<br />&nbsp;</li></ul>'
+                    course_level:
+                      name: Introductorio
+                - id: 12147
+                  relevance_score: 0.469
+                  course:
+                    id: '12147'
+                    slug: introduccion-a-html
+                    image: https://crehana-public-catalog.imgix.net//images/courses/promo-images/66f334de/91fe894c.jpg
+                    title: Introducción a HTML
+                    modules:
+                    - id: '10491'
+                      name: Antes de empezar
+                      order: 1
+                      videos:
+                      - id: '49274'
+                        order: 1
+                        title: Introducción al curso
+                    - id: '10492'
+                      name: Entender la web
+                      order: 2
+                      videos:
+                      - id: '49275'
+                        order: 1
+                        title: '¿Qué es el HTML? '
+                      - id: '49815'
+                        order: 2
+                        title: Páginas estáticas vs. dinámicas
+                      - id: '49276'
+                        order: 3
+                        title: Herramientas de Chrome para desarrolladores
+                      - id: '49277'
+                        order: 4
+                        title: 'Etiquetas básicas: ¿Cómo es la maqueta de un sitio web?'
+                    - id: '10493'
+                      name: Presentar información
+                      order: 3
+                      videos:
+                      - id: '49278'
+                        order: 1
+                        title: El DOM
+                      - id: '49280'
+                        order: 3
+                        title: 'Etiquetas de texto: Párrafos, títulos e hipervínculos'
+                      - id: '49281'
+                        order: 4
+                        title: 'Etiquetas de texto: Listas numeradas y no numeradas '
+                      - id: '49282'
+                        order: 5
+                        title: 'Tablas '
+                      - id: '49283'
+                        order: 6
+                        title: Etiquetas multimedia
+                      - id: '49284'
+                        order: 7
+                        title: 'Proyecto parte 1: Página personal'
+                    - id: '10494'
+                      name: Preguntar información al usuario
+                      order: 4
+                      videos:
+                      - id: '49285'
+                        order: 1
+                        title: '¿Qué es un formulario y cuáles son sus elementos? '
+                      - id: '49286'
+                        order: 2
+                        title: 'Campos de texto, password y etiquetas '
+                      - id: '49287'
+                        order: 3
+                        title: Botones y listas de selección múltiple o simple
+                      - id: '49288'
+                        order: 4
+                        title: 'Botones y envío de formularios '
+                      - id: '49289'
+                        order: 5
+                        title: 'Proyecto parte 2: Preguntas a los visitantes'
+                    - id: '10495'
+                      name: 'Inspección de otros sitios web '
+                      order: 5
+                      videos:
+                      - id: '49290'
+                        order: 1
+                        title: 'Inspector web de Google Chrome '
+                      - id: '49291'
+                        order: 2
+                        title: 'Análisis de un sitio web a través del inspector '
+                      - id: '49292'
+                        order: 3
+                        title: 'Proyecto parte 3: Inspección de la página'
+                    - id: '10496'
+                      name: Conclusiones
+                      order: 6
+                      videos:
+                      - id: '49293'
+                        order: 1
+                        title: Consejos finales y próximos pasos
+                    image_url: https://crehana-public-catalog.imgix.net//images/courses/promo-images/66f334de/91fe894c.jpg
+                    description: '<p>Aprender HTML para desarrollar páginas web es indispensable en el mundo actual, en el que la presencia digital cumple un rol primordial para la comunicación de organizaciones y personas.&nbsp;Por ello, en este curso de introducción al HTML aprenderás cómo funciona el HTML de las páginas web y, junto a Federico Ponte, descubrirás los elementos más importantes al trabajar desarrollar websites.</p><ul><li>Aprenderás los fundamentos básicos del lenguaje HTML para el diseño de páginas web desde cero.</li><li>Entenderás qué son las etiquetas, cómo maquetar un sitio web y cómo organizar la información de tus páginas.</li><li>Descubrirás qué es un formulario, cuáles son sus elementos y cómo utilizarlos para obtener información del usuario.</li><li>Aprenderás cómo inspeccionar otras web, generar etiquetas avanzadas y utilizar el inspector web de Google Chrome.</li></ul><p><strong>Nivel del curso</strong><br />El curso de introducción al lenguaje HTML es de nivel introductorio, ya que no necesitas ningún conocimiento previo o tener instalado algún software para inscribirte al curso. Este curso está dirigido a todas aquellas personas que desean adquirir conocimientos básicos de HTML y sobre los principios del desarrollo de sitios web.</p><p><strong>¿Qué necesito?</strong></p><ul><li>Computadora o laptop con conexión a internet.</li><li>Atom para edición de sitios web.</li></ul><p><strong>¿Qué habilidades desarrollaré?</strong></p><ul><li>HTML: Adquirirás conocimientos básicos sobre el lenguaje de programación HTML para la creación de sitios web.</li><li>Fundamentos web: Entenderás cuáles son los principios del desarrollo web a tener en cuenta al maquetar páginas web.</li><li>Manejo de editor de código: Serás capaz de manejar editores de código HTML para construir sitios web desde cero.<br />&nbsp;</li></ul>'
+                    course_level:
+                      name: Introductorio
+                - id: 13105
+                  relevance_score: 0.462
+                  course:
+                    id: '13105'
+                    slug: tecnicas-avanzadas-de-styling-sass-y-scss
+                    image: https://crehana-public-catalog.imgix.net//images/courses/promo-images/11b6ca7f/9a25358f.jpg
+                    title: 'Técnicas avanzadas de styling: Sass y SCSS'
+                    modules:
+                    - id: '11481'
+                      name: El potencial
+                      order: 1
+                      videos:
+                      - id: '52333'
+                        order: 1
+                        title: Introducción al curso
+                      - id: '52334'
+                        order: 2
+                        title: 'Magia con CSS: Una librería CSS'
+                    - id: '11482'
+                      name: 'Sass: Haz más con menos'
+                      order: 2
+                      videos:
+                      - id: '52335'
+                        order: 1
+                        title: Sass desmenuzado
+                      - id: '52336'
+                        order: 2
+                        title: CSS en esteroides
+                      - id: '52337'
+                        order: 3
+                        title: Comparemos Sass con LESS y con SCSS
+                      - id: '52338'
+                        order: 4
+                        title: 'Proyecto parte 1: Estructura del proyecto'
+                    - id: '11483'
+                      name: Pongámonos técnicos
+                      order: 3
+                      videos:
+                      - id: '52339'
+                        order: 1
+                        title: Consiguiendo la gema de Sass
+                      - id: '52340'
+                        order: 2
+                        title: Comandos para hackers
+                      - id: '52341'
+                        order: 3
+                        title: 'CSS anidado: Todos tus selectores y propiedades'
+                      - id: '52342'
+                        order: 4
+                        title: Usar (y reenviar) en vez de importar
+                      - id: '52343'
+                        order: 5
+                        title: 'Proyecto parte 2: Compilando Sass'
+                    - id: '11484'
+                      name: Dominando Sass
+                      order: 4
+                      videos:
+                      - id: '52344'
+                        order: 1
+                        title: ¿Variables? ¡Variables!
+                      - id: '52345'
+                        order: 2
+                        title: Operadores, reglas y control
+                      - id: '52346'
+                        order: 3
+                        title: Haciendo moldes
+                      - id: '52347'
+                        order: 4
+                        title: No te repitas, extiende
+                      - id: '52348'
+                        order: 5
+                        title: 'Proyecto parte 3: Organizando materiales'
+                    - id: '11485'
+                      name: 'Sass: La gema de poder'
+                      order: 5
+                      videos:
+                      - id: '52349'
+                        order: 1
+                        title: Experto depurador
+                      - id: '52350'
+                        order: 2
+                        title: 'Módulos en Sass: Poderes ocultos'
+                      - id: '52351'
+                        order: 3
+                        title: Un mundo de colores inteligentes
+                      - id: '52352'
+                        order: 4
+                        title: Tú pones las reglas (funciones personalizadas)
+                      - id: '52353'
+                        order: 5
+                        title: 'Proyecto parte 4: Generando la librería'
+                    - id: '11486'
+                      name: Un gran poder…
+                      order: 6
+                      videos:
+                      - id: '52354'
+                        order: 1
+                        title: 'Organizando: Ventajas y desventajas'
+                      - id: '52355'
+                        order: 2
+                        title: Consejos finales y próximos pasos
+                    image_url: https://crehana-public-catalog.imgix.net//images/courses/promo-images/11b6ca7f/9a25358f.jpg
+                    description: '<p>Escribir en CSS puede volverse muy confuso. Por esta razón, los preprocesadores de CSS, como Sass, son herramientas geniales para crear los estilos que tienes en mente en la menor cantidad de tiempo. En este curso aprenderás a usar Sass, uno de los preprocesadores más utilizados hoy en día en el desarrollo front-end.</p><ul><li>Entenderás cómo funcionan los preprocesadores CSS y, en específico, cómo usar Sass para el desarrollo front-end.</li><li>Comprenderás las características principales de Sass y las diferencias entre las sintaxis Scss y Sass directo.</li><li>Serás capaz de identificar en qué casos es recomendable usar Sass y cómo sacar el máximo provecho de él.</li><li>Aprenderás a implementar conceptos complejos como los módulos de Sass, sus funciones, y podrás crear funciones personalizadas.</li></ul><p><strong>Nivel del curso</strong></p><p>Este es un curso de nivel intermedio, ya que es necesario tener conocimiento de CSS y de los principios de diseño web con HTML y CSS para tomar el curso.<br />El curso de Sass está dirigido a personas que estén interesadas en utilizar esta tecnología o quieran aprender técnicas avanzadas de CSS, así como para desarrolladores que buscan maneras de optimizar su proceso de maquetación y estilo.</p><p><strong>¿Qué necesito?</strong></p><ul><li>Computador o laptop con conexión a internet.</li><li>Contar con un editor de texto o código como Visual Studio Code</li><li>Estar familiarizado con Git y Github</li><li>Conocimiento de los principios de diseño web con HTML y CSS.</li><li>Utilizar las plantillas HTML facilitadas por la profesora para desarrollar tu proyecto final.</li><li>Acceder al&nbsp;<a target="_blank" href="https://github.com/crehana-studentxp/sass_scss_tecnicas_avanzadas-karen_chizon">repositorio de GitHub del curso</a>.</li><li>Estar familiarizado con el uso de la terminal o preferentemente Bash.</li></ul><p><strong>¿Qué habilidades desarrollaré?</strong></p><ul><li>Hojas de estilo: Lograrás convertir tus archivos .scss o .sass en una hoja de estilo CSS estándar usando Sass.</li><li>Sass: Aprenderás cómo funciona Sass y cómo implementar sus diversas funcionalidades de forma práctica.</li><li>Desarrollo Web: Serás capaz de optimizar el desarrollo de páginas web aplicando técnicas avanzadas de CSS con Sass.</li></ul>'
+                    course_level:
+                      name: Intermedio
+                - id: 9200
+                  relevance_score: 0.433
+                  course:
+                    id: '9200'
+                    slug: bootstrap-desde-cero-construye-sitios-web-responsive
+                    image: https://crehana-public-catalog.imgix.net//images/courses/promo-images/44bc6c76/91e71ac9.png
+                    title: 'Bootstrap desde cero: Construye sitios web responsive'
+                    modules:
+                    - id: '3548'
+                      name: Introducción
+                      order: 1
+                      videos:
+                      - id: '15296'
+                        order: 1
+                        title: Introducción al curso
+                      - id: '17105'
+                        order: 2
+                        title: Qué es un framework y qué es Bootstrap 4
+                      - id: '15368'
+                        order: 3
+                        title: Descargando e instalando Bootstrap 4
+                    - id: '3549'
+                      name: Layout en Bootstrap 4
+                      order: 2
+                      videos:
+                      - id: '17106'
+                        order: 1
+                        title: Aprendiendo a usar los contenedores
+                      - id: '17107'
+                        order: 2
+                        title: Entendiendo las filas y columnas
+                      - id: '15370'
+                        order: 3
+                        title: Realizando un diseño base con filas y columnas
+                      - id: '17108'
+                        order: 4
+                        title: Haciendo responsivo nuestro diseño base con filas y columnas
+                      - id: '17109'
+                        order: 5
+                        title: Utilizando columnas automáticas
+                      - id: '15373'
+                        order: 6
+                        title: Alienando columnas verticalmente
+                      - id: '15374'
+                        order: 7
+                        title: Alineando columnas horizontalmente
+                      - id: '15375'
+                        order: 8
+                        title: Usando offset en las columnas
+                      - id: '15376'
+                        order: 9
+                        title: Reordenando columnas
+                      - id: '15377'
+                        order: 10
+                        title: Columnas anidadas
+                    - id: '3550'
+                      name: Utilities de Bootstrap 4
+                      order: 3
+                      videos:
+                      - id: '15309'
+                        order: 1
+                        title: Bordes
+                      - id: '15310'
+                        order: 2
+                        title: Elementos flotantes y Clearfix
+                      - id: '15311'
+                        order: 3
+                        title: Colores
+                      - id: '15312'
+                        order: 4
+                        title: Display
+                      - id: '15313'
+                        order: 5
+                        title: Embed
+                      - id: '15314'
+                        order: 6
+                        title: Posicionamiento
+                      - id: '15315'
+                        order: 6
+                        title: Espacios
+                      - id: '15316'
+                        order: 7
+                        title: Tamaños
+                      - id: '15317'
+                        order: 8
+                        title: Utilidades de Flexbox
+                    - id: '3551'
+                      name: Elementos generales de Bootstrap 4
+                      order: 4
+                      videos:
+                      - id: '15318'
+                        order: 1
+                        title: Tipografía y textos
+                      - id: '15319'
+                        order: 2
+                        title: Continuación de tipografía y textos
+                      - id: '17110'
+                        order: 3
+                        title: 'Código '
+                      - id: '15321'
+                        order: 4
+                        title: Imágenes
+                      - id: '15322'
+                        order: 5
+                        title: Tablas
+                      - id: '15323'
+                        order: 6
+                        title: Media object
+                    - id: '3552'
+                      name: Componentes de Bootstrap 4
+                      order: 5
+                      videos:
+                      - id: '15324'
+                        order: 1
+                        title: Alertas
+                      - id: '15326'
+                        order: 2
+                        title: Botones
+                      - id: '15325'
+                        order: 2
+                        title: Badges o Insignias
+                      - id: '15327'
+                        order: 3
+                        title: Continuación de Botones
+                      - id: '15328'
+                        order: 4
+                        title: Grupos de botones
+                      - id: '15329'
+                        order: 5
+                        title: Cards o Tarjetas
+                      - id: '15330'
+                        order: 6
+                        title: Layout de cards estilo masonry
+                      - id: '15331'
+                        order: 7
+                        title: Carousel
+                      - id: '15332'
+                        order: 8
+                        title: Collapse
+                      - id: '15333'
+                        order: 9
+                        title: Dropdowns
+                      - id: '15334'
+                        order: 10
+                        title: Formularios
+                      - id: '15335'
+                        order: 11
+                        title: Formularios Inline
+                      - id: '15336'
+                        order: 12
+                        title: Grupos de input
+                      - id: '15337'
+                        order: 13
+                        title: Usando la grid con formularios
+                      - id: '15338'
+                        order: 14
+                        title: Jumbotron
+                      - id: '15339'
+                        order: 15
+                        title: List groups
+                      - id: '15340'
+                        order: 16
+                        title: Mostrando y ocultando contenido con list groups
+                      - id: '15341'
+                        order: 17
+                        title: Modales
+                      - id: '15342'
+                        order: 18
+                        title: Navs
+                      - id: '15343'
+                        order: 19
+                        title: Tabs y Pills
+                      - id: '15344'
+                        order: 20
+                        title: Navbars
+                      - id: '15345'
+                        order: 21
+                        title: Paginación
+                      - id: '15346'
+                        order: 22
+                        title: Popovers
+                      - id: '15347'
+                        order: 23
+                        title: Progress bars o barras de progreso
+                      - id: '15348'
+                        order: 24
+                        title: Scrollspy
+                      - id: '15349'
+                        order: 25
+                        title: Tooltips
+                    - id: '3553'
+                      name: Iniciando HTML de sitio web con Bootstrap 4
+                      order: 6
+                      videos:
+                      - id: '15350'
+                        order: 1
+                        title: Iniciando estructura de archivos y carpetas de sitio web
+                      - id: '15351'
+                        order: 2
+                        title: Escribiendo estructura base de archivo HTML
+                      - id: '15352'
+                        order: 3
+                        title: Aprendiendo conceptos basicos de Sass para empezar
+                      - id: '15353'
+                        order: 4
+                        title: Personalizando colores base de Bootstrap con Sass
+                      - id: '15354'
+                        order: 5
+                        title: Realizando encabezado de sitio web
+                      - id: '15355'
+                        order: 6
+                        title: Iniciando nuestro carousel destacado
+                      - id: '15356'
+                        order: 7
+                        title: Terminando nuestro carousel destacado
+                      - id: '15357'
+                        order: 8
+                        title: Realizando tabs para filtrar entre productos
+                      - id: '15358'
+                        order: 9
+                        title: Agregando nuestros productos y haciendo funcionar nuestros tabs
+                      - id: '15359'
+                        order: 10
+                        title: Realizando botón de llamada a la acción
+                      - id: '15360'
+                        order: 11
+                        title: Iniciando nuestra sección de artículos del blog
+                      - id: '15361'
+                        order: 12
+                        title: Terminando nuestra sección de artículos del blog
+                      - id: '15362'
+                        order: 13
+                        title: Realizando sección de contacto
+                      - id: '15363'
+                        order: 14
+                        title: Realizando pie de página
+                    - id: '3554'
+                      name: Aplicando estilos CSS a sitios web con Bootstrap 4
+                      order: 7
+                      videos:
+                      - id: '15364'
+                        order: 1
+                        title: Aplicando estilos CSS con Sass
+                      - id: '15365'
+                        order: 2
+                        title: Terminando la aplicación de estilos CSS con Sass
+                    - id: '3555'
+                      name: Cierre
+                      order: 8
+                      videos:
+                      - id: '15366'
+                        order: 1
+                        title: Subiendo nuestro proyecto final a Surge
+                      - id: '15367'
+                        order: 2
+                        title: Cierre
+                    image_url: https://crehana-public-catalog.imgix.net//images/courses/promo-images/44bc6c76/91e71ac9.png
+                    description: <p>En el desarrollo Front-end de sitios web y aplicaciones móviles es importante utilizar herramientas que permitan ser más eficiente y rápido en la maquetación, por ello utilizamos Bootstrap 4. Es uno de los Framework más populares en todo el mundo, utilizado para crear sitios web y aplicaciones adaptables a diferentes tamaños de pantalla.<br /><br />Mi nombre es Sergio Agámez y soy desarrollador web. He trabajado con clientes de Europa&nbsp; y América Latina con más de 2 años de experiencia creando sitios web y aplicaciones móviles, lo cual me ha permitido conocer distintos tipos de personas y tener grandes resultados, utilizando herramientas que facilitan el desarrollo como Bootstrap 4.<br /><br />Este curso de Bootstrap 4 te permitirá conocer desde cero lo que es un Framework, cómo instalar Bootstrap 4 y cómo usarlo para crear un sitio web, aún si nunca has utilizado un Framework. Durante las clases aprenderemos paso a paso los diferentes componentes de bootstrap, de forma completamente práctica y realizaremos un sitio web desde cero adaptable a todos los dispositivos.<br /><br /><br /><br /><strong>¿Qué incluye este curso?</strong><br /><br />En este curso de Bootstrap 4 aprenderás:<br /><br />- Qué es un Framework y por qué elegir Bootstrap 4<br />- Cómo desarrollar con el sistema de Rejilla<br />- Elementos generales de Bootstrap 4<br />- Componentes y utilidades que podemos utilizar<br />- Cómo desarrollar un sitio web desde cero utilizando Bootstrap 4&nbsp;<br /><br /><br /><br /><strong>¿Qué proyecto vas a realizar?</strong><br /><br />Durante el curso aprenderemos a realizar un sitio web desde cero con Bootstrap 4. Al finalizar deberás realizar un sitio web desde cero o desde un diseño que tengas, utilizando el sistema de rejilla de Bootstrap y aplicando clases de color y texto; también podrás usar componentes aprendidos.</p><p><br /><br /><strong>¿Qué vas a lograr con este curso?</strong><br /><br />Al finalizar el curso Bootstrap 4&nbsp;podrás empezar a desarrollar sitios web y perfeccionarlos para trabajar con clientes.</p><p>&nbsp;</p>
+                    course_level:
+                      name: Introductorio
+      deprecated: false
+      servers:
+      - url: https://y34jih16v7.execute-api.us-east-1.amazonaws.com/v1/lambda
+        variables: {}
+components:
+  schemas:
+    MatricularCursosRequest:
+      title: MatricularCursosRequest
+      required:
+      - idsCursosCrehana
+      type: object
+      properties:
+        idsCursosCrehana:
+          type: array
+          items:
+            type: string
+          description: 'Contiene lista de codigos de cursos de Crehana'
+      example:
+        idsCursosCrehana:
+        - '8994'
+        - '9022'
+        - '9039'
+    MatricularCursos:
+      title: MatricularCursos
+      required:
+      - success
+      - message
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+      example:
+        success: true
+        message: Se ha enviado la matrícula a la plataforma Crehana, espera un momento para poderla usar, recibirás un correo electrónico con la confirmación de la misma.
+    RecomendacionesCursosRequest:
+      title: RecomendacionesCursosRequest
+      required:
+      - competencia
+      - tipo_proceso
+      - tiene_licencia_crehana
+      type: object
+      properties:
+        competencia:
+          type: string
+        tipo_proceso:
+          type: integer
+          format: int32
+        tiene_licencia_crehana:
+          type: boolean
+      example:
+        competencia: Desarrollo web front end con HTML y CSS
+        tipo_proceso: 10
+        tiene_licencia_crehana: true
+    RecomendacionesCursos:
+      title: RecomendacionesCursos
+      required:
+      - action
+      - expected_result
+      - required_resources
+      - courses
+      type: object
+      properties:
+        action:
+          type: string
+        expected_result:
+          type: string
+        required_resources:
+          type: string
+        courses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Course'
+          description: ''
+      example:
+        action: "Completar los cursos de Crehana 'Introducción al Desarrollo Web front end: HTML y CSS desde cero' y 'CSS desde cero' para establecer bases sólidas, seguido de 'Introducción a HTML' para reforzar la estructura semántica. Posteriormente, aplicar los conocimientos en un proyecto final personal donde se recree la interfaz de una aplicación web real (como Spotify o Netflix) utilizando HTML semántico y CSS moderno (Flexbox, Grid, variables CSS y media queries), documentando el proceso en un repositorio de GitHub con README detallado. Como extensión opcional, completar 'Técnicas avanzadas de styling: Sass y SCSS' y 'Bootstrap desde cero: Construye sitios web responsive' para ampliar las capacidades de desarrollo."
+        expected_result: Certificados de finalización de los cursos de Crehana completados, un repositorio público con el proyecto final que demuestre dominio de maquetación responsive, estructura semántica HTML, aplicación de estilos CSS fundamentales y avanzados, con al menos 3 commits documentados que muestren la evolución del desarrollo. Si se completan los cursos adicionales, se evidenciará uso de preprocesadores Sass/SCSS y/o implementación de componentes responsive con Bootstrap 4.
+        required_resources: "Computadora con conexión a internet; suscripción activa a Crehana para acceder a los cursos 'Introducción al Desarrollo Web front end: HTML y CSS desde cero', 'CSS desde cero', 'Introducción a HTML', y opcionalmente 'Técnicas avanzadas de styling: Sass y SCSS' y 'Bootstrap desde cero: Construye sitios web responsive'; cuenta en GitHub (github.com); editor de código Visual Studio Code con extensiones Live Server y Prettier; navegador Chrome o Firefox con DevTools; 20 horas de dedicación distribuidas en 4 semanas; mentor o compañero de estudio para revisión de código vía Discord o similar (opcional pero recomendado)."
+        courses:
+        - id: 8987
+          relevance_score: 0.675
+          course:
+            id: '8987'
+            slug: introduccion-al-desarrollo-web-front-end-html-y-css-desde-cero
+            image: https://crehana-public-catalog.imgix.net//images/courses/promo-images/140c642e/3b1da355.jpg
+            title: 'Introducción al Desarrollo Web front end: HTML y CSS desde cero'
+            modules:
+            - id: '2155'
+              name: Introducción
+              order: 1
+              videos:
+              - id: '8045'
+                order: 1
+                title: Introducción al curso
+            - id: '2156'
+              name: ¿Cómo funciona el navegador?
+              order: 2
+              videos:
+              - id: '8046'
+                order: 2
+                title: Cómo funciona la web
+              - id: '8047'
+                order: 3
+                title: Cómo funciona el navegador
+            - id: '2157'
+              name: Introducción a HTML
+              order: 3
+              videos:
+              - id: '8048'
+                order: 4
+                title: Definición de HTML
+              - id: '8049'
+                order: 5
+                title: Renderizado HTML
+            - id: '2158'
+              name: ¿Qué necesito para empezar?
+              order: 4
+              videos:
+              - id: '8050'
+                order: 6
+                title: Organización de archivos y programas a utilizar
+            - id: '2159'
+              name: Etiquetas y atributos
+              order: 5
+              videos:
+              - id: '8051'
+                order: 7
+                title: Estructura del documento base, etiquetas y atributos
+              - id: '8052'
+                order: 8
+                title: Etiqueta meta
+              - id: '8053'
+                order: 9
+                title: Etiquetas para títulos y párrafos
+              - id: '8054'
+                order: 10
+                title: Etiquetas para listas
+              - id: '8055'
+                order: 11
+                title: Etiquetas de imágenes
+              - id: '8056'
+                order: 12
+                title: Etiquetas de tablas
+            - id: '2160'
+              name: Formularios web
+              order: 6
+              videos:
+              - id: '8057'
+                order: 13
+                title: Etiquetas de formularios
+              - id: '8058'
+                order: 14
+                title: Captura de datos
+              - id: '8059'
+                order: 15
+                title: Más etiquetas de captura de datos
+              - id: '8060'
+                order: 16
+                title: Atributos en formularios
+            - id: '2161'
+              name: Otras etiquetas
+              order: 7
+              videos:
+              - id: '8061'
+                order: 17
+                title: Etiqueta de enlaces
+              - id: '8062'
+                order: 18
+                title: Continuando con enlaces en HTML
+              - id: '8063'
+                order: 19
+                title: Enlaces con imágenes y de descarga
+              - id: '8064'
+                order: 20
+                title: Etiquetas contenedoras y semánticas
+              - id: '8065'
+                order: 21
+                title: Ejemplo de uso de etiquetas
+              - id: '8066'
+                order: 22
+                title: Terminando maquetado básico
+            - id: '2162'
+              name: Etiquetas multimedia
+              order: 8
+              videos:
+              - id: '8067'
+                order: 23
+                title: Implementación de audio en una página web
+              - id: '8068'
+                order: 24
+                title: Implementación de video en una página web
+              - id: '8069'
+                order: 25
+                title: Etiqueta iframe
+            - id: '2163'
+              name: HTML Gráfico
+              order: 9
+              videos:
+              - id: '8070'
+                order: 26
+                title: Utilización de archivos SVG
+              - id: '8071'
+                order: 27
+                title: Figuras básicas, etiquetas y atributos
+              - id: '8072'
+                order: 28
+                title: Etiquetas adicionales para SVG
+              - id: '8073'
+                order: 29
+                title: Herramientas para crear imágenes SVG
+            - id: '2164'
+              name: Introducción a CSS
+              order: 10
+              videos:
+              - id: '8074'
+                order: 30
+                title: Qué es CSS
+              - id: '8075'
+                order: 31
+                title: Utilización de CSS como atributo, etiqueta y archivo externo
+              - id: '8076'
+                order: 32
+                title: Cómo funciona la herencia en CSS
+              - id: '8077'
+                order: 33
+                title: Cómo funciona la cascada en CSS
+            image_url: https://crehana-public-catalog.imgix.net//images/courses/promo-images/140c642e/3b1da355.jpg
+            description: '<p>Conocer los fundamentos de HTML y de CSS te permitirá estructurar y definir el estilo de cualquier página web. Es el paso inicial de todo desarrollador Front End y el paso siguiente a la entrega de un diseño web, convirtiendo este último en código HTML.</p><p>Este <strong>curso de HTML y CSS</strong> te llevará desde cero a un nivel en el que podrás convertir cualquier diseño, ya sea una imagen o un .psd, a código HTML. Descubrirás temas como la funcionalidad de un navegador, introducción a HTML, etiquetas y atributos, formularios web, HTML gráfico, introducción a CSS, selectores, diseño web responsivo, animaciones y mucho más.</p><p>Soy Sergio Agamez, diseñador y desarrollador web con más de 9 años de experiencia. Soy amante de la tecnología desde niño y me especializo en áreas que me permiten brindar soluciones flexibles, ágiles y del más alto nivel.</p><p><strong>¿QUÉ INCLUYE ESTE CURSO?</strong></p><p>En este <strong>curso de HTML y CSS</strong>, descubrirás:</p><p>- Funcionalidad de un navegador<br>- Introducción a HTML<br>- Organización de archivos y programas a utilizar<br>- Etiquetas y atributos<br>- Formularios web<br>- Otras etiquetas<br>- Etiquetas multimedia<br>- HTML Gráfico<br>- Introducción a CSS<br>- Selectores<br>- Pseudoclases y pseudoelementos<br>- Modelo de caja, su flujo y posicionamiento<br>- Propiedades para texto y fuente<br>- Propiedades de visualización<br>- Diseño web responsivo<br>- Patrones de diseño adaptativo<br>- Transformaciones<br>- Animaciones<br>- Filtros<br>- Creación y presentación de tu propia página web</p><p><strong>¿QUÉ PROYECTO VAS A REALIZAR?</strong></p><p>Al finalizar este <strong>curso de HTML y CSS</strong> podrás crear tu propio proyecto final, compartiéndolo en la galería de proyectos para recibir feedback del profesor, staff de Crehana y compañeros del curso. En esta ocasión, deberás de aplicar todo lo aprendido para maquetar una página web utilizando código Front End: HTML y los estilos en cascada o CSS. Podrás convertir un archivo psd descargado del curso o uno propio.</p><p><strong>¿QUÉ VAS A LOGRAR CON ESTE CURSO?</strong></p><p>Al finalizar este <strong>curso de HTML y CSS</strong> podrás iniciar tu carrera como desarrollador Front End, manejando a nivel intermedio el lenguaje HTML y CSS. Con un poco de práctica e investigación podrás especializarte y desarrollar páginas web como un experto. ¡Inicia ya!</p>'
+            course_level:
+              name: Completo
+        - id: 12425
+          relevance_score: 0.479
+          course:
+            id: '12425'
+            slug: css-desde-cero
+            image: https://crehana-public-catalog.imgix.net//images/courses/promo-images/9781ab0f/f6574fe6.jpg
+            title: CSS desde cero
+            modules:
+            - id: '10922'
+              name: De la vista nace el amor
+              order: 1
+              videos:
+              - id: '50711'
+                order: 1
+                title: 'Es cuestión de estilo: CSS'
+            - id: '10923'
+              name: Una gran primera impresión
+              order: 2
+              videos:
+              - id: '50712'
+                order: 1
+                title: 'Cascadas y estilos: La primera impresión'
+              - id: '50713'
+                order: 2
+                title: 'Los mejores amigos: CSS para HTML'
+              - id: '50714'
+                order: 3
+                title: '¿Quién va primero?: Jerarquía (intro selectores)'
+            - id: '10924'
+              name: 'Sigue las reglas: Estilizando contenido'
+              order: 3
+              videos:
+              - id: '50715'
+                order: 1
+                title: Selectores en detalle
+              - id: '50716'
+                order: 2
+                title: Un mundo de colores
+              - id: '50717'
+                order: 3
+                title: Bellas palabras
+              - id: '50718'
+                order: 4
+                title: Bloques, cajas y espacios (intro layout)
+              - id: '50719'
+                order: 5
+                title: 'Proyecto parte 1: ¡Me gusta tu estilo!'
+            - id: '10925'
+              name: 'Un clavado en CSS: Layout y multimedia'
+              order: 4
+              videos:
+              - id: '50720'
+                order: 1
+                title: 'Layout: La estructura de un sitio web'
+              - id: '50721'
+                order: 2
+                title: Cada cosa en su lugar
+              - id: '50722'
+                order: 3
+                title: Alineación, desbordes y flotantes
+              - id: '50723'
+                order: 4
+                title: 'Posibilidades infinitas: Selectores combinados'
+              - id: '50724'
+                order: 5
+                title: 'Pseudo selectores '
+              - id: '50725'
+                order: 6
+                title: 'Proyecto parte 2: Dale forma'
+            - id: '10926'
+              name: Todo cabe en una cajita sabiéndolo acomodar
+              order: 5
+              videos:
+              - id: '50726'
+                order: 1
+                title: Un diseño que se adapta
+              - id: '50727'
+                order: 2
+                title: ¿Cuánto mide el viewport?
+              - id: '50728'
+                order: 3
+                title: Media queries y breakpoints
+              - id: '50729'
+                order: 4
+                title: Todo responsivo
+              - id: '50730'
+                order: 5
+                title: 'PRO: Flexbox'
+              - id: '50731'
+                order: 6
+                title: 'Proyecto parte 3: Se ve bien en cualquier pantalla'
+            - id: '10927'
+              name: ¡Bienvenido al mundo de CSS!
+              order: 6
+              videos:
+              - id: '50732'
+                order: 1
+                title: Esto es solo el inicio
+              - id: '50733'
+                order: 2
+                title: 'Consejos finales y próximos pasos '
+            image_url: https://crehana-public-catalog.imgix.net//images/courses/promo-images/9781ab0f/f6574fe6.jpg
+            description: '<p>Aprender CSS desde cero es el primer paso para lograr que un sitio web se vea bien en todas las pantallas y dispositivos. Por ello, en este curso de CSS desde cero, comprenderás cuáles son los elementos básicos de estilo de un sitio web y entenderás cómo utilizar la sintaxis, efectos y controles visuales de los estilos CSS.&nbsp;</p><ul><li>Comprenderás qué es CSS, su relación con HTML y revisarás conceptos básicos sobre la sintaxis.</li><li>Descubrirás qué son los selectores CSS y cómo definir colores, texto, dimensiones y posiciones de los elementos.</li><li>Aprenderás a usar CSS para posicionamiento y alineación y lo aplicarás a elementos HTML.</li><li>Entenderás qué es mobile first y cómo realizar un diseño responsive usando CSS.</li></ul><p><strong>Nivel del curso</strong><br />Este curso de CSS desde cero es de nivel introductorio, sin embargo, es ideal que cuentes con conocimientos básicos sobre lenguaje de maquetado HTML, estructura de sitios web e interactividad de un sitio web para poder trabajar en el proyecto.</p><p>Este curso está dirigido a cualquier persona que esté interesada en el diseño o desarrollo web y puede ser especialmente útil para diseñadores UI/UX, programadores y maquetadores web.</p><p><strong>¿Qué necesito?</strong></p><ul><li>Computador o laptop con conexión a internet.</li><li>Un editor de texto (en el curso se utilizará Atom).&nbsp;</li></ul><p><strong>¿Qué habilidades desarrollaré?</strong></p><ul><li>CSS: Aprenderás CSS desde cero para lograr sitios web que se vean bien y sean congruentes.</li><li>Fundamentos web: Adquirirás conocimientos teórico-prácticos sobre la creación de sitios web para diferentes dispositivos digitales.</li><li>Manejo del editor de texto: Lograrás crear sitios web paso a paso.&nbsp;<br />&nbsp;</li></ul>'
+            course_level:
+              name: Introductorio
+        - id: 12147
+          relevance_score: 0.469
+          course:
+            id: '12147'
+            slug: introduccion-a-html
+            image: https://crehana-public-catalog.imgix.net//images/courses/promo-images/66f334de/91fe894c.jpg
+            title: Introducción a HTML
+            modules:
+            - id: '10491'
+              name: Antes de empezar
+              order: 1
+              videos:
+              - id: '49274'
+                order: 1
+                title: Introducción al curso
+            - id: '10492'
+              name: Entender la web
+              order: 2
+              videos:
+              - id: '49275'
+                order: 1
+                title: '¿Qué es el HTML? '
+              - id: '49815'
+                order: 2
+                title: Páginas estáticas vs. dinámicas
+              - id: '49276'
+                order: 3
+                title: Herramientas de Chrome para desarrolladores
+              - id: '49277'
+                order: 4
+                title: 'Etiquetas básicas: ¿Cómo es la maqueta de un sitio web?'
+            - id: '10493'
+              name: Presentar información
+              order: 3
+              videos:
+              - id: '49278'
+                order: 1
+                title: El DOM
+              - id: '49280'
+                order: 3
+                title: 'Etiquetas de texto: Párrafos, títulos e hipervínculos'
+              - id: '49281'
+                order: 4
+                title: 'Etiquetas de texto: Listas numeradas y no numeradas '
+              - id: '49282'
+                order: 5
+                title: 'Tablas '
+              - id: '49283'
+                order: 6
+                title: Etiquetas multimedia
+              - id: '49284'
+                order: 7
+                title: 'Proyecto parte 1: Página personal'
+            - id: '10494'
+              name: Preguntar información al usuario
+              order: 4
+              videos:
+              - id: '49285'
+                order: 1
+                title: '¿Qué es un formulario y cuáles son sus elementos? '
+              - id: '49286'
+                order: 2
+                title: 'Campos de texto, password y etiquetas '
+              - id: '49287'
+                order: 3
+                title: Botones y listas de selección múltiple o simple
+              - id: '49288'
+                order: 4
+                title: 'Botones y envío de formularios '
+              - id: '49289'
+                order: 5
+                title: 'Proyecto parte 2: Preguntas a los visitantes'
+            - id: '10495'
+              name: 'Inspección de otros sitios web '
+              order: 5
+              videos:
+              - id: '49290'
+                order: 1
+                title: 'Inspector web de Google Chrome '
+              - id: '49291'
+                order: 2
+                title: 'Análisis de un sitio web a través del inspector '
+              - id: '49292'
+                order: 3
+                title: 'Proyecto parte 3: Inspección de la página'
+            - id: '10496'
+              name: Conclusiones
+              order: 6
+              videos:
+              - id: '49293'
+                order: 1
+                title: Consejos finales y próximos pasos
+            image_url: https://crehana-public-catalog.imgix.net//images/courses/promo-images/66f334de/91fe894c.jpg
+            description: '<p>Aprender HTML para desarrollar páginas web es indispensable en el mundo actual, en el que la presencia digital cumple un rol primordial para la comunicación de organizaciones y personas.&nbsp;Por ello, en este curso de introducción al HTML aprenderás cómo funciona el HTML de las páginas web y, junto a Federico Ponte, descubrirás los elementos más importantes al trabajar desarrollar websites.</p><ul><li>Aprenderás los fundamentos básicos del lenguaje HTML para el diseño de páginas web desde cero.</li><li>Entenderás qué son las etiquetas, cómo maquetar un sitio web y cómo organizar la información de tus páginas.</li><li>Descubrirás qué es un formulario, cuáles son sus elementos y cómo utilizarlos para obtener información del usuario.</li><li>Aprenderás cómo inspeccionar otras web, generar etiquetas avanzadas y utilizar el inspector web de Google Chrome.</li></ul><p><strong>Nivel del curso</strong><br />El curso de introducción al lenguaje HTML es de nivel introductorio, ya que no necesitas ningún conocimiento previo o tener instalado algún software para inscribirte al curso. Este curso está dirigido a todas aquellas personas que desean adquirir conocimientos básicos de HTML y sobre los principios del desarrollo de sitios web.</p><p><strong>¿Qué necesito?</strong></p><ul><li>Computadora o laptop con conexión a internet.</li><li>Atom para edición de sitios web.</li></ul><p><strong>¿Qué habilidades desarrollaré?</strong></p><ul><li>HTML: Adquirirás conocimientos básicos sobre el lenguaje de programación HTML para la creación de sitios web.</li><li>Fundamentos web: Entenderás cuáles son los principios del desarrollo web a tener en cuenta al maquetar páginas web.</li><li>Manejo de editor de código: Serás capaz de manejar editores de código HTML para construir sitios web desde cero.<br />&nbsp;</li></ul>'
+            course_level:
+              name: Introductorio
+        - id: 13105
+          relevance_score: 0.462
+          course:
+            id: '13105'
+            slug: tecnicas-avanzadas-de-styling-sass-y-scss
+            image: https://crehana-public-catalog.imgix.net//images/courses/promo-images/11b6ca7f/9a25358f.jpg
+            title: 'Técnicas avanzadas de styling: Sass y SCSS'
+            modules:
+            - id: '11481'
+              name: El potencial
+              order: 1
+              videos:
+              - id: '52333'
+                order: 1
+                title: Introducción al curso
+              - id: '52334'
+                order: 2
+                title: 'Magia con CSS: Una librería CSS'
+            - id: '11482'
+              name: 'Sass: Haz más con menos'
+              order: 2
+              videos:
+              - id: '52335'
+                order: 1
+                title: Sass desmenuzado
+              - id: '52336'
+                order: 2
+                title: CSS en esteroides
+              - id: '52337'
+                order: 3
+                title: Comparemos Sass con LESS y con SCSS
+              - id: '52338'
+                order: 4
+                title: 'Proyecto parte 1: Estructura del proyecto'
+            - id: '11483'
+              name: Pongámonos técnicos
+              order: 3
+              videos:
+              - id: '52339'
+                order: 1
+                title: Consiguiendo la gema de Sass
+              - id: '52340'
+                order: 2
+                title: Comandos para hackers
+              - id: '52341'
+                order: 3
+                title: 'CSS anidado: Todos tus selectores y propiedades'
+              - id: '52342'
+                order: 4
+                title: Usar (y reenviar) en vez de importar
+              - id: '52343'
+                order: 5
+                title: 'Proyecto parte 2: Compilando Sass'
+            - id: '11484'
+              name: Dominando Sass
+              order: 4
+              videos:
+              - id: '52344'
+                order: 1
+                title: ¿Variables? ¡Variables!
+              - id: '52345'
+                order: 2
+                title: Operadores, reglas y control
+              - id: '52346'
+                order: 3
+                title: Haciendo moldes
+              - id: '52347'
+                order: 4
+                title: No te repitas, extiende
+              - id: '52348'
+                order: 5
+                title: 'Proyecto parte 3: Organizando materiales'
+            - id: '11485'
+              name: 'Sass: La gema de poder'
+              order: 5
+              videos:
+              - id: '52349'
+                order: 1
+                title: Experto depurador
+              - id: '52350'
+                order: 2
+                title: 'Módulos en Sass: Poderes ocultos'
+              - id: '52351'
+                order: 3
+                title: Un mundo de colores inteligentes
+              - id: '52352'
+                order: 4
+                title: Tú pones las reglas (funciones personalizadas)
+              - id: '52353'
+                order: 5
+                title: 'Proyecto parte 4: Generando la librería'
+            - id: '11486'
+              name: Un gran poder…
+              order: 6
+              videos:
+              - id: '52354'
+                order: 1
+                title: 'Organizando: Ventajas y desventajas'
+              - id: '52355'
+                order: 2
+                title: Consejos finales y próximos pasos
+            image_url: https://crehana-public-catalog.imgix.net//images/courses/promo-images/11b6ca7f/9a25358f.jpg
+            description: '<p>Escribir en CSS puede volverse muy confuso. Por esta razón, los preprocesadores de CSS, como Sass, son herramientas geniales para crear los estilos que tienes en mente en la menor cantidad de tiempo. En este curso aprenderás a usar Sass, uno de los preprocesadores más utilizados hoy en día en el desarrollo front-end.</p><ul><li>Entenderás cómo funcionan los preprocesadores CSS y, en específico, cómo usar Sass para el desarrollo front-end.</li><li>Comprenderás las características principales de Sass y las diferencias entre las sintaxis Scss y Sass directo.</li><li>Serás capaz de identificar en qué casos es recomendable usar Sass y cómo sacar el máximo provecho de él.</li><li>Aprenderás a implementar conceptos complejos como los módulos de Sass, sus funciones, y podrás crear funciones personalizadas.</li></ul><p><strong>Nivel del curso</strong></p><p>Este es un curso de nivel intermedio, ya que es necesario tener conocimiento de CSS y de los principios de diseño web con HTML y CSS para tomar el curso.<br />El curso de Sass está dirigido a personas que estén interesadas en utilizar esta tecnología o quieran aprender técnicas avanzadas de CSS, así como para desarrolladores que buscan maneras de optimizar su proceso de maquetación y estilo.</p><p><strong>¿Qué necesito?</strong></p><ul><li>Computador o laptop con conexión a internet.</li><li>Contar con un editor de texto o código como Visual Studio Code</li><li>Estar familiarizado con Git y Github</li><li>Conocimiento de los principios de diseño web con HTML y CSS.</li><li>Utilizar las plantillas HTML facilitadas por la profesora para desarrollar tu proyecto final.</li><li>Acceder al&nbsp;<a target="_blank" href="https://github.com/crehana-studentxp/sass_scss_tecnicas_avanzadas-karen_chizon">repositorio de GitHub del curso</a>.</li><li>Estar familiarizado con el uso de la terminal o preferentemente Bash.</li></ul><p><strong>¿Qué habilidades desarrollaré?</strong></p><ul><li>Hojas de estilo: Lograrás convertir tus archivos .scss o .sass en una hoja de estilo CSS estándar usando Sass.</li><li>Sass: Aprenderás cómo funciona Sass y cómo implementar sus diversas funcionalidades de forma práctica.</li><li>Desarrollo Web: Serás capaz de optimizar el desarrollo de páginas web aplicando técnicas avanzadas de CSS con Sass.</li></ul>'
+            course_level:
+              name: Intermedio
+        - id: 9200
+          relevance_score: 0.433
+          course:
+            id: '9200'
+            slug: bootstrap-desde-cero-construye-sitios-web-responsive
+            image: https://crehana-public-catalog.imgix.net//images/courses/promo-images/44bc6c76/91e71ac9.png
+            title: 'Bootstrap desde cero: Construye sitios web responsive'
+            modules:
+            - id: '3548'
+              name: Introducción
+              order: 1
+              videos:
+              - id: '15296'
+                order: 1
+                title: Introducción al curso
+              - id: '17105'
+                order: 2
+                title: Qué es un framework y qué es Bootstrap 4
+              - id: '15368'
+                order: 3
+                title: Descargando e instalando Bootstrap 4
+            - id: '3549'
+              name: Layout en Bootstrap 4
+              order: 2
+              videos:
+              - id: '17106'
+                order: 1
+                title: Aprendiendo a usar los contenedores
+              - id: '17107'
+                order: 2
+                title: Entendiendo las filas y columnas
+              - id: '15370'
+                order: 3
+                title: Realizando un diseño base con filas y columnas
+              - id: '17108'
+                order: 4
+                title: Haciendo responsivo nuestro diseño base con filas y columnas
+              - id: '17109'
+                order: 5
+                title: Utilizando columnas automáticas
+              - id: '15373'
+                order: 6
+                title: Alienando columnas verticalmente
+              - id: '15374'
+                order: 7
+                title: Alineando columnas horizontalmente
+              - id: '15375'
+                order: 8
+                title: Usando offset en las columnas
+              - id: '15376'
+                order: 9
+                title: Reordenando columnas
+              - id: '15377'
+                order: 10
+                title: Columnas anidadas
+            - id: '3550'
+              name: Utilities de Bootstrap 4
+              order: 3
+              videos:
+              - id: '15309'
+                order: 1
+                title: Bordes
+              - id: '15310'
+                order: 2
+                title: Elementos flotantes y Clearfix
+              - id: '15311'
+                order: 3
+                title: Colores
+              - id: '15312'
+                order: 4
+                title: Display
+              - id: '15313'
+                order: 5
+                title: Embed
+              - id: '15314'
+                order: 6
+                title: Posicionamiento
+              - id: '15315'
+                order: 6
+                title: Espacios
+              - id: '15316'
+                order: 7
+                title: Tamaños
+              - id: '15317'
+                order: 8
+                title: Utilidades de Flexbox
+            - id: '3551'
+              name: Elementos generales de Bootstrap 4
+              order: 4
+              videos:
+              - id: '15318'
+                order: 1
+                title: Tipografía y textos
+              - id: '15319'
+                order: 2
+                title: Continuación de tipografía y textos
+              - id: '17110'
+                order: 3
+                title: 'Código '
+              - id: '15321'
+                order: 4
+                title: Imágenes
+              - id: '15322'
+                order: 5
+                title: Tablas
+              - id: '15323'
+                order: 6
+                title: Media object
+            - id: '3552'
+              name: Componentes de Bootstrap 4
+              order: 5
+              videos:
+              - id: '15324'
+                order: 1
+                title: Alertas
+              - id: '15326'
+                order: 2
+                title: Botones
+              - id: '15325'
+                order: 2
+                title: Badges o Insignias
+              - id: '15327'
+                order: 3
+                title: Continuación de Botones
+              - id: '15328'
+                order: 4
+                title: Grupos de botones
+              - id: '15329'
+                order: 5
+                title: Cards o Tarjetas
+              - id: '15330'
+                order: 6
+                title: Layout de cards estilo masonry
+              - id: '15331'
+                order: 7
+                title: Carousel
+              - id: '15332'
+                order: 8
+                title: Collapse
+              - id: '15333'
+                order: 9
+                title: Dropdowns
+              - id: '15334'
+                order: 10
+                title: Formularios
+              - id: '15335'
+                order: 11
+                title: Formularios Inline
+              - id: '15336'
+                order: 12
+                title: Grupos de input
+              - id: '15337'
+                order: 13
+                title: Usando la grid con formularios
+              - id: '15338'
+                order: 14
+                title: Jumbotron
+              - id: '15339'
+                order: 15
+                title: List groups
+              - id: '15340'
+                order: 16
+                title: Mostrando y ocultando contenido con list groups
+              - id: '15341'
+                order: 17
+                title: Modales
+              - id: '15342'
+                order: 18
+                title: Navs
+              - id: '15343'
+                order: 19
+                title: Tabs y Pills
+              - id: '15344'
+                order: 20
+                title: Navbars
+              - id: '15345'
+                order: 21
+                title: Paginación
+              - id: '15346'
+                order: 22
+                title: Popovers
+              - id: '15347'
+                order: 23
+                title: Progress bars o barras de progreso
+              - id: '15348'
+                order: 24
+                title: Scrollspy
+              - id: '15349'
+                order: 25
+                title: Tooltips
+            - id: '3553'
+              name: Iniciando HTML de sitio web con Bootstrap 4
+              order: 6
+              videos:
+              - id: '15350'
+                order: 1
+                title: Iniciando estructura de archivos y carpetas de sitio web
+              - id: '15351'
+                order: 2
+                title: Escribiendo estructura base de archivo HTML
+              - id: '15352'
+                order: 3
+                title: Aprendiendo conceptos basicos de Sass para empezar
+              - id: '15353'
+                order: 4
+                title: Personalizando colores base de Bootstrap con Sass
+              - id: '15354'
+                order: 5
+                title: Realizando encabezado de sitio web
+              - id: '15355'
+                order: 6
+                title: Iniciando nuestro carousel destacado
+              - id: '15356'
+                order: 7
+                title: Terminando nuestro carousel destacado
+              - id: '15357'
+                order: 8
+                title: Realizando tabs para filtrar entre productos
+              - id: '15358'
+                order: 9
+                title: Agregando nuestros productos y haciendo funcionar nuestros tabs
+              - id: '15359'
+                order: 10
+                title: Realizando botón de llamada a la acción
+              - id: '15360'
+                order: 11
+                title: Iniciando nuestra sección de artículos del blog
+              - id: '15361'
+                order: 12
+                title: Terminando nuestra sección de artículos del blog
+              - id: '15362'
+                order: 13
+                title: Realizando sección de contacto
+              - id: '15363'
+                order: 14
+                title: Realizando pie de página
+            - id: '3554'
+              name: Aplicando estilos CSS a sitios web con Bootstrap 4
+              order: 7
+              videos:
+              - id: '15364'
+                order: 1
+                title: Aplicando estilos CSS con Sass
+              - id: '15365'
+                order: 2
+                title: Terminando la aplicación de estilos CSS con Sass
+            - id: '3555'
+              name: Cierre
+              order: 8
+              videos:
+              - id: '15366'
+                order: 1
+                title: Subiendo nuestro proyecto final a Surge
+              - id: '15367'
+                order: 2
+                title: Cierre
+            image_url: https://crehana-public-catalog.imgix.net//images/courses/promo-images/44bc6c76/91e71ac9.png
+            description: <p>En el desarrollo Front-end de sitios web y aplicaciones móviles es importante utilizar herramientas que permitan ser más eficiente y rápido en la maquetación, por ello utilizamos Bootstrap 4. Es uno de los Framework más populares en todo el mundo, utilizado para crear sitios web y aplicaciones adaptables a diferentes tamaños de pantalla.<br /><br />Mi nombre es Sergio Agámez y soy desarrollador web. He trabajado con clientes de Europa&nbsp; y América Latina con más de 2 años de experiencia creando sitios web y aplicaciones móviles, lo cual me ha permitido conocer distintos tipos de personas y tener grandes resultados, utilizando herramientas que facilitan el desarrollo como Bootstrap 4.<br /><br />Este curso de Bootstrap 4 te permitirá conocer desde cero lo que es un Framework, cómo instalar Bootstrap 4 y cómo usarlo para crear un sitio web, aún si nunca has utilizado un Framework. Durante las clases aprenderemos paso a paso los diferentes componentes de bootstrap, de forma completamente práctica y realizaremos un sitio web desde cero adaptable a todos los dispositivos.<br /><br /><br /><br /><strong>¿Qué incluye este curso?</strong><br /><br />En este curso de Bootstrap 4 aprenderás:<br /><br />- Qué es un Framework y por qué elegir Bootstrap 4<br />- Cómo desarrollar con el sistema de Rejilla<br />- Elementos generales de Bootstrap 4<br />- Componentes y utilidades que podemos utilizar<br />- Cómo desarrollar un sitio web desde cero utilizando Bootstrap 4&nbsp;<br /><br /><br /><br /><strong>¿Qué proyecto vas a realizar?</strong><br /><br />Durante el curso aprenderemos a realizar un sitio web desde cero con Bootstrap 4. Al finalizar deberás realizar un sitio web desde cero o desde un diseño que tengas, utilizando el sistema de rejilla de Bootstrap y aplicando clases de color y texto; también podrás usar componentes aprendidos.</p><p><br /><br /><strong>¿Qué vas a lograr con este curso?</strong><br /><br />Al finalizar el curso Bootstrap 4&nbsp;podrás empezar a desarrollar sitios web y perfeccionarlos para trabajar con clientes.</p><p>&nbsp;</p>
+            course_level:
+              name: Introductorio
+    Course:
+      title: Course
+      required:
+      - id
+      - relevance_score
+      - course
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        relevance_score:
+          type: number
+        course:
+          $ref: '#/components/schemas/Course1'
+      example:
+        id: 8987
+        relevance_score: 0.675
+        course:
+          id: '8987'
+          slug: introduccion-al-desarrollo-web-front-end-html-y-css-desde-cero
+          image: https://crehana-public-catalog.imgix.net//images/courses/promo-images/140c642e/3b1da355.jpg
+          title: 'Introducción al Desarrollo Web front end: HTML y CSS desde cero'
+          modules:
+          - id: '2155'
+            name: Introducción
+            order: 1
+            videos:
+            - id: '8045'
+              order: 1
+              title: Introducción al curso
+          - id: '2156'
+            name: ¿Cómo funciona el navegador?
+            order: 2
+            videos:
+            - id: '8046'
+              order: 2
+              title: Cómo funciona la web
+            - id: '8047'
+              order: 3
+              title: Cómo funciona el navegador
+          - id: '2157'
+            name: Introducción a HTML
+            order: 3
+            videos:
+            - id: '8048'
+              order: 4
+              title: Definición de HTML
+            - id: '8049'
+              order: 5
+              title: Renderizado HTML
+          - id: '2158'
+            name: ¿Qué necesito para empezar?
+            order: 4
+            videos:
+            - id: '8050'
+              order: 6
+              title: Organización de archivos y programas a utilizar
+          - id: '2159'
+            name: Etiquetas y atributos
+            order: 5
+            videos:
+            - id: '8051'
+              order: 7
+              title: Estructura del documento base, etiquetas y atributos
+            - id: '8052'
+              order: 8
+              title: Etiqueta meta
+            - id: '8053'
+              order: 9
+              title: Etiquetas para títulos y párrafos
+            - id: '8054'
+              order: 10
+              title: Etiquetas para listas
+            - id: '8055'
+              order: 11
+              title: Etiquetas de imágenes
+            - id: '8056'
+              order: 12
+              title: Etiquetas de tablas
+          - id: '2160'
+            name: Formularios web
+            order: 6
+            videos:
+            - id: '8057'
+              order: 13
+              title: Etiquetas de formularios
+            - id: '8058'
+              order: 14
+              title: Captura de datos
+            - id: '8059'
+              order: 15
+              title: Más etiquetas de captura de datos
+            - id: '8060'
+              order: 16
+              title: Atributos en formularios
+          - id: '2161'
+            name: Otras etiquetas
+            order: 7
+            videos:
+            - id: '8061'
+              order: 17
+              title: Etiqueta de enlaces
+            - id: '8062'
+              order: 18
+              title: Continuando con enlaces en HTML
+            - id: '8063'
+              order: 19
+              title: Enlaces con imágenes y de descarga
+            - id: '8064'
+              order: 20
+              title: Etiquetas contenedoras y semánticas
+            - id: '8065'
+              order: 21
+              title: Ejemplo de uso de etiquetas
+            - id: '8066'
+              order: 22
+              title: Terminando maquetado básico
+          - id: '2162'
+            name: Etiquetas multimedia
+            order: 8
+            videos:
+            - id: '8067'
+              order: 23
+              title: Implementación de audio en una página web
+            - id: '8068'
+              order: 24
+              title: Implementación de video en una página web
+            - id: '8069'
+              order: 25
+              title: Etiqueta iframe
+          - id: '2163'
+            name: HTML Gráfico
+            order: 9
+            videos:
+            - id: '8070'
+              order: 26
+              title: Utilización de archivos SVG
+            - id: '8071'
+              order: 27
+              title: Figuras básicas, etiquetas y atributos
+            - id: '8072'
+              order: 28
+              title: Etiquetas adicionales para SVG
+            - id: '8073'
+              order: 29
+              title: Herramientas para crear imágenes SVG
+          - id: '2164'
+            name: Introducción a CSS
+            order: 10
+            videos:
+            - id: '8074'
+              order: 30
+              title: Qué es CSS
+            - id: '8075'
+              order: 31
+              title: Utilización de CSS como atributo, etiqueta y archivo externo
+            - id: '8076'
+              order: 32
+              title: Cómo funciona la herencia en CSS
+            - id: '8077'
+              order: 33
+              title: Cómo funciona la cascada en CSS
+          image_url: https://crehana-public-catalog.imgix.net//images/courses/promo-images/140c642e/3b1da355.jpg
+          description: '<p>Conocer los fundamentos de HTML y de CSS te permitirá estructurar y definir el estilo de cualquier página web. Es el paso inicial de todo desarrollador Front End y el paso siguiente a la entrega de un diseño web, convirtiendo este último en código HTML.</p><p>Este <strong>curso de HTML y CSS</strong> te llevará desde cero a un nivel en el que podrás convertir cualquier diseño, ya sea una imagen o un .psd, a código HTML. Descubrirás temas como la funcionalidad de un navegador, introducción a HTML, etiquetas y atributos, formularios web, HTML gráfico, introducción a CSS, selectores, diseño web responsivo, animaciones y mucho más.</p><p>Soy Sergio Agamez, diseñador y desarrollador web con más de 9 años de experiencia. Soy amante de la tecnología desde niño y me especializo en áreas que me permiten brindar soluciones flexibles, ágiles y del más alto nivel.</p><p><strong>¿QUÉ INCLUYE ESTE CURSO?</strong></p><p>En este <strong>curso de HTML y CSS</strong>, descubrirás:</p><p>- Funcionalidad de un navegador<br>- Introducción a HTML<br>- Organización de archivos y programas a utilizar<br>- Etiquetas y atributos<br>- Formularios web<br>- Otras etiquetas<br>- Etiquetas multimedia<br>- HTML Gráfico<br>- Introducción a CSS<br>- Selectores<br>- Pseudoclases y pseudoelementos<br>- Modelo de caja, su flujo y posicionamiento<br>- Propiedades para texto y fuente<br>- Propiedades de visualización<br>- Diseño web responsivo<br>- Patrones de diseño adaptativo<br>- Transformaciones<br>- Animaciones<br>- Filtros<br>- Creación y presentación de tu propia página web</p><p><strong>¿QUÉ PROYECTO VAS A REALIZAR?</strong></p><p>Al finalizar este <strong>curso de HTML y CSS</strong> podrás crear tu propio proyecto final, compartiéndolo en la galería de proyectos para recibir feedback del profesor, staff de Crehana y compañeros del curso. En esta ocasión, deberás de aplicar todo lo aprendido para maquetar una página web utilizando código Front End: HTML y los estilos en cascada o CSS. Podrás convertir un archivo psd descargado del curso o uno propio.</p><p><strong>¿QUÉ VAS A LOGRAR CON ESTE CURSO?</strong></p><p>Al finalizar este <strong>curso de HTML y CSS</strong> podrás iniciar tu carrera como desarrollador Front End, manejando a nivel intermedio el lenguaje HTML y CSS. Con un poco de práctica e investigación podrás especializarte y desarrollar páginas web como un experto. ¡Inicia ya!</p>'
+          course_level:
+            name: Completo
+    Course1:
+      title: Course1
+      required:
+      - id
+      - slug
+      - image
+      - title
+      - modules
+      - image_url
+      - description
+      - course_level
+      type: object
+      properties:
+        id:
+          type: string
+        slug:
+          type: string
+        image:
+          type: string
+        title:
+          type: string
+        modules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Module'
+          description: ''
+        image_url:
+          type: string
+        description:
+          type: string
+        course_level:
+          $ref: '#/components/schemas/CourseLevel'
+      example:
+        id: '8987'
+        slug: introduccion-al-desarrollo-web-front-end-html-y-css-desde-cero
+        image: https://crehana-public-catalog.imgix.net//images/courses/promo-images/140c642e/3b1da355.jpg
+        title: 'Introducción al Desarrollo Web front end: HTML y CSS desde cero'
+        modules:
+        - id: '2155'
+          name: Introducción
+          order: 1
+          videos:
+          - id: '8045'
+            order: 1
+            title: Introducción al curso
+        - id: '2156'
+          name: ¿Cómo funciona el navegador?
+          order: 2
+          videos:
+          - id: '8046'
+            order: 2
+            title: Cómo funciona la web
+          - id: '8047'
+            order: 3
+            title: Cómo funciona el navegador
+        - id: '2157'
+          name: Introducción a HTML
+          order: 3
+          videos:
+          - id: '8048'
+            order: 4
+            title: Definición de HTML
+          - id: '8049'
+            order: 5
+            title: Renderizado HTML
+        - id: '2158'
+          name: ¿Qué necesito para empezar?
+          order: 4
+          videos:
+          - id: '8050'
+            order: 6
+            title: Organización de archivos y programas a utilizar
+        - id: '2159'
+          name: Etiquetas y atributos
+          order: 5
+          videos:
+          - id: '8051'
+            order: 7
+            title: Estructura del documento base, etiquetas y atributos
+          - id: '8052'
+            order: 8
+            title: Etiqueta meta
+          - id: '8053'
+            order: 9
+            title: Etiquetas para títulos y párrafos
+          - id: '8054'
+            order: 10
+            title: Etiquetas para listas
+          - id: '8055'
+            order: 11
+            title: Etiquetas de imágenes
+          - id: '8056'
+            order: 12
+            title: Etiquetas de tablas
+        - id: '2160'
+          name: Formularios web
+          order: 6
+          videos:
+          - id: '8057'
+            order: 13
+            title: Etiquetas de formularios
+          - id: '8058'
+            order: 14
+            title: Captura de datos
+          - id: '8059'
+            order: 15
+            title: Más etiquetas de captura de datos
+          - id: '8060'
+            order: 16
+            title: Atributos en formularios
+        - id: '2161'
+          name: Otras etiquetas
+          order: 7
+          videos:
+          - id: '8061'
+            order: 17
+            title: Etiqueta de enlaces
+          - id: '8062'
+            order: 18
+            title: Continuando con enlaces en HTML
+          - id: '8063'
+            order: 19
+            title: Enlaces con imágenes y de descarga
+          - id: '8064'
+            order: 20
+            title: Etiquetas contenedoras y semánticas
+          - id: '8065'
+            order: 21
+            title: Ejemplo de uso de etiquetas
+          - id: '8066'
+            order: 22
+            title: Terminando maquetado básico
+        - id: '2162'
+          name: Etiquetas multimedia
+          order: 8
+          videos:
+          - id: '8067'
+            order: 23
+            title: Implementación de audio en una página web
+          - id: '8068'
+            order: 24
+            title: Implementación de video en una página web
+          - id: '8069'
+            order: 25
+            title: Etiqueta iframe
+        - id: '2163'
+          name: HTML Gráfico
+          order: 9
+          videos:
+          - id: '8070'
+            order: 26
+            title: Utilización de archivos SVG
+          - id: '8071'
+            order: 27
+            title: Figuras básicas, etiquetas y atributos
+          - id: '8072'
+            order: 28
+            title: Etiquetas adicionales para SVG
+          - id: '8073'
+            order: 29
+            title: Herramientas para crear imágenes SVG
+        - id: '2164'
+          name: Introducción a CSS
+          order: 10
+          videos:
+          - id: '8074'
+            order: 30
+            title: Qué es CSS
+          - id: '8075'
+            order: 31
+            title: Utilización de CSS como atributo, etiqueta y archivo externo
+          - id: '8076'
+            order: 32
+            title: Cómo funciona la herencia en CSS
+          - id: '8077'
+            order: 33
+            title: Cómo funciona la cascada en CSS
+        image_url: https://crehana-public-catalog.imgix.net//images/courses/promo-images/140c642e/3b1da355.jpg
+        description: '<p>Conocer los fundamentos de HTML y de CSS te permitirá estructurar y definir el estilo de cualquier página web. Es el paso inicial de todo desarrollador Front End y el paso siguiente a la entrega de un diseño web, convirtiendo este último en código HTML.</p><p>Este <strong>curso de HTML y CSS</strong> te llevará desde cero a un nivel en el que podrás convertir cualquier diseño, ya sea una imagen o un .psd, a código HTML. Descubrirás temas como la funcionalidad de un navegador, introducción a HTML, etiquetas y atributos, formularios web, HTML gráfico, introducción a CSS, selectores, diseño web responsivo, animaciones y mucho más.</p><p>Soy Sergio Agamez, diseñador y desarrollador web con más de 9 años de experiencia. Soy amante de la tecnología desde niño y me especializo en áreas que me permiten brindar soluciones flexibles, ágiles y del más alto nivel.</p><p><strong>¿QUÉ INCLUYE ESTE CURSO?</strong></p><p>En este <strong>curso de HTML y CSS</strong>, descubrirás:</p><p>- Funcionalidad de un navegador<br>- Introducción a HTML<br>- Organización de archivos y programas a utilizar<br>- Etiquetas y atributos<br>- Formularios web<br>- Otras etiquetas<br>- Etiquetas multimedia<br>- HTML Gráfico<br>- Introducción a CSS<br>- Selectores<br>- Pseudoclases y pseudoelementos<br>- Modelo de caja, su flujo y posicionamiento<br>- Propiedades para texto y fuente<br>- Propiedades de visualización<br>- Diseño web responsivo<br>- Patrones de diseño adaptativo<br>- Transformaciones<br>- Animaciones<br>- Filtros<br>- Creación y presentación de tu propia página web</p><p><strong>¿QUÉ PROYECTO VAS A REALIZAR?</strong></p><p>Al finalizar este <strong>curso de HTML y CSS</strong> podrás crear tu propio proyecto final, compartiéndolo en la galería de proyectos para recibir feedback del profesor, staff de Crehana y compañeros del curso. En esta ocasión, deberás de aplicar todo lo aprendido para maquetar una página web utilizando código Front End: HTML y los estilos en cascada o CSS. Podrás convertir un archivo psd descargado del curso o uno propio.</p><p><strong>¿QUÉ VAS A LOGRAR CON ESTE CURSO?</strong></p><p>Al finalizar este <strong>curso de HTML y CSS</strong> podrás iniciar tu carrera como desarrollador Front End, manejando a nivel intermedio el lenguaje HTML y CSS. Con un poco de práctica e investigación podrás especializarte y desarrollar páginas web como un experto. ¡Inicia ya!</p>'
+        course_level:
+          name: Completo
+    Module:
+      title: Module
+      required:
+      - id
+      - name
+      - order
+      - videos
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        order:
+          type: integer
+          format: int32
+        videos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Video'
+          description: ''
+      example:
+        id: '2155'
+        name: Introducción
+        order: 1
+        videos:
+        - id: '8045'
+          order: 1
+          title: Introducción al curso
+    Video:
+      title: Video
+      required:
+      - id
+      - order
+      - title
+      type: object
+      properties:
+        id:
+          type: string
+        order:
+          type: integer
+          format: int32
+        title:
+          type: string
+      example:
+        id: '8045'
+        order: 1
+        title: Introducción al curso
+    CourseLevel:
+      title: CourseLevel
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+      example:
+        name: Completo
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+security:
+- bearer: []
+tags:
+- name: Transversal
+  description: ''
