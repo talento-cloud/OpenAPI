@@ -1,0 +1,1053 @@
+openapi: 3.0.0
+info:
+  title: Artes Desempenio Consolidado
+  description: >-
+    Contiene endpoints utilizados para personalizar reporte pdf consolidado de desempeño
+
+    ## Manejo de errores
+
+
+        Los errores habituales pueden incluir:
+
+
+        - `400 Bad Request`: Parámetros requeridos faltantes o con formato
+        inválido.
+            
+        - `401 Unauthorized`: Token JWT inválido, expirado o ausente.
+            
+        - `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.
+            
+        - `404 Not Found`: El recurso solicitado no existe.
+            
+        - `500 Internal Server Error`: Error inesperado en el servidor.
+            
+
+        Cuando sea posible, cada endpoint detallará sus códigos de error
+        específicos y estructura de respuesta en su propia descripción.
+  contact: {}
+  version: '1.0'
+servers:
+- url: https://clientex.talento.cloud/api/html
+  description: Servidor de producción     
+- url: https://clientex.talento-dev.cloud/api/html
+  description: Servidor de pruebas
+  variables: {}
+paths:
+  /mapatalento/modelosmapatalento.json:
+    get:
+      tags:
+      - PDF
+      summary: Modelos Mapa Talento
+      description: Lista los modelos de mapa de talento que se han creado en la plataforma
+      operationId: ModelosMapaTalento
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/modelosMapaTalento'
+      deprecated: false
+  /mapatalento/pdf/elementosPDF/{codModeloMapaTalento}.json:
+    get:
+      tags:
+      - PDF
+      summary: Elementos PDF
+      description: Lista los elementos que puede tener un reporte pdf de consolidado desempeño
+      operationId: ElementosPDF
+      parameters: 
+        - name: codModeloMapaTalento
+          in: path
+          required: true
+          description: Codigo del modelo de mapa de talento
+          schema:
+            type: string
+            example: 1
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Set-Cookie:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: JSESSIONID=18yy7namgjafl1dxz7mqumxaxo;Path=/
+            Expires:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Thu, 01 Jan 1970 00:00:00 GMT
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/elementosPDF'
+                - example:
+                    success: true
+                    elementos:
+                    - conMembrete: true
+                      conTextoPersonalizable: false
+                      id: CONSOLIDADO_DESEMPENIO_INDV_GRAL
+                      nombre: Hoja general
+                    - conMembrete: true
+                      conTextoPersonalizable: false
+                      id: CONSOLIDADO_DESEMPENIO_INDV_PORTADA
+                      nombre: Portada
+                    - conMembrete: true
+                      conTextoPersonalizable: false
+                      id: CONSOLIDADO_DESEMPENIO_INDV_CONTRAPORTADA
+                      nombre: Contra portada
+                    - textoPersonalizable: "<div class=\"introduccion-text\">\nEstimado [nombre_colaborador],\n<br/><br/>\nTe presentamos tu <b>REPORTE INDIVIDUAL CONSOLIDADO DE DESEMPEÑO</b>. \n<br/><br/>\nDurante este periodo, analizaste con tu líder tus <b>RESULTADOS</b> según tu evaluación de objetivos y tus <b>HABILIDADES</b> a partir en la evaluación de competencias. Estos datos nos permiten evaluar tu <b>PARTICIPACIÓN</b> y diseñar un plan de crecimiento para aprovechar tus <b>FORTALEZAS</b> y enfrentar los desafíos de la compañía.\n<br/><br/>\nCada acción de desarrollo que acuerdes con tu líder durante la retroalimentación debe centrarse en mejorar tus habilidades y alinear tu contribución con los objetivos de tu equipo, con el fin de alcanzar los mejores resultados posibles.\n<br/><br/>\nCordialmente,\n<br/><br/>\n[nombre_empresa].\n</div>"
+                      conMembrete: true
+                      conTextoPersonalizable: true
+                      id: CONSOLIDADO_DESEMPENIO_INDV_INTRODUCCION
+                      nombre: Introducción
+                    - notas: Este membrete puede no existir, y de ser así esta hoja no se imprime en el pdf
+                      conMembrete: true
+                      conTextoPersonalizable: false
+                      id: CONSOLIDADO_DESEMPENIO_INDV_EXPLICACION
+                      nombre: Hoja explicación
+                    - textoPersonalizable: ''
+                      conMembrete: true
+                      conTextoPersonalizable: true
+                      id: CONSOLIDADO_DESEMPENIO_INDV_FORTALEZAS
+                      nombre: Fortalezas
+                    - textoPersonalizable: >-
+                        <div class="resultado-competencias-text">
+
+                        A continuación, te presentamos los resultados de tu evaluación de competencias. Te invitamos a revisar y analizar detalladamente cada punto del informe.
+
+                        <br/><br/>
+
+                        Es importante que tengas en cuenta que el propósito principal de este ejercicio es obtener una retroalimentación completa sobre tu gestión diaria. Esta retroalimentación será la base para elaborar planes de trabajo y definir acciones en colaboración con tu líder, con el objetivo de impulsar tu desarrollo y crecimiento.
+
+                        <br/><br/>
+
+                        Te recomendamos recibir esta información con objetividad y disposición para aprender, ya que solo al identificar tus fortalezas y áreas de mejora podrás definir acciones que impulsen tu desarrollo integral y te ayuden a alcanzar las metas establecidas.
+
+                        </div>
+                      conMembrete: true
+                      conTextoPersonalizable: true
+                      id: CONSOLIDADO_DESEMPENIO_RESULTADO_COMPETENCIAS
+                      nombre: Resultado general de competencias
+                    - textoPersonalizable: >-
+                        <div class="resumen-resultado-competencias-text">
+
+                        Te presentamos el resumen de las competencias evaluadas para tu rol y resultado obtenido por rol evaluador.<br/>
+
+                        Podrás ver un comparativo por:
+
+                        <ul>
+                            <li><b>Promedio del Cargo: </b> Promedio del resultado de la evaluación para todos los cargos de tu mismo nivel organizacional.</li>
+                            <li><b>Valor Logrado: </b> Promedio total del resultado de la evaluación realizada por todos tus evaluadores.</li>
+                        </ul>
+
+                        </div>
+                      conMembrete: true
+                      conTextoPersonalizable: true
+                      id: CONSOLIDADO_DESEMPENIO_RESUMEN_RESULTADO_COMPETENCIAS
+                      nombre: Resumen resultado de competencias
+                    - textoPersonalizable: >-
+                        <div class="comentarios-competencias-text">
+
+                        <b>A continuación encontrarás cada uno de los comentarios de las personas que te evaluaron:</b>
+
+                        </div>
+                      conMembrete: true
+                      conTextoPersonalizable: true
+                      id: CONSOLIDADO_DESEMPENIO_COMENTARIOS_COMPETENCIAS
+                      nombre: Comentarios del proceso de evaluación competencias
+                    - textoPersonalizable: "<div class=\"indicadores-objetivos-text\">\nEn esta sección se detallan los objetivos establecidos para el periodo evaluado, los cuales fueron monitoreados junto con tu líder a lo largo del año para garantizar su logro. \n<br/><br/>\nLa información que se tiene en cuenta para el cálculo de tus <b>indicadores</b>, corresponde a los datos registrados en la fase evaluativa, de acuerdo con el cumplimiento y cierre total de año de cada objetivo.\n</div>"
+                      conMembrete: true
+                      conTextoPersonalizable: true
+                      id: CONSOLIDADO_DESEMPENIO_INDICADORES_OBJETIVOS
+                      nombre: Indicadores objetivos
+                    - conMembrete: true
+                      conTextoPersonalizable: false
+                      id: CONSOLIDADO_DESEMPENIO_INDV_RESULTADOGRAL
+                      nombre: Resultado general consolidado desempeño
+                    - jsonColores:
+                        colorTextoTituloPpal: '#2C86D4'
+                        colorFondoTituloPpal: '#011826'
+                        colorTextoTituloSecond: '#2C86D4'
+                        colorTextoGeneral: '#444444'
+                        colorTextoPortada: '#ff4444'
+                      conMembrete: false
+                      conTextoPersonalizable: false
+                      id: CONSOLIDADO_DESEMPENIO_COLORES_TEXTO
+                      nombre: Indicadores objetivos
+              example:
+                success: true
+                elementos:
+                - conMembrete: true
+                  conTextoPersonalizable: false
+                  id: CONSOLIDADO_DESEMPENIO_INDV_GRAL
+                  nombre: Hoja general
+                - conMembrete: true
+                  conTextoPersonalizable: false
+                  id: CONSOLIDADO_DESEMPENIO_INDV_PORTADA
+                  nombre: Portada
+                - conMembrete: true
+                  conTextoPersonalizable: false
+                  id: CONSOLIDADO_DESEMPENIO_INDV_CONTRAPORTADA
+                  nombre: Contra portada
+                - textoPersonalizable: "<div class=\"introduccion-text\">\nEstimado [nombre_colaborador],\n<br/><br/>\nTe presentamos tu <b>REPORTE INDIVIDUAL CONSOLIDADO DE DESEMPEÑO</b>. \n<br/><br/>\nDurante este periodo, analizaste con tu líder tus <b>RESULTADOS</b> según tu evaluación de objetivos y tus <b>HABILIDADES</b> a partir en la evaluación de competencias. Estos datos nos permiten evaluar tu <b>PARTICIPACIÓN</b> y diseñar un plan de crecimiento para aprovechar tus <b>FORTALEZAS</b> y enfrentar los desafíos de la compañía.\n<br/><br/>\nCada acción de desarrollo que acuerdes con tu líder durante la retroalimentación debe centrarse en mejorar tus habilidades y alinear tu contribución con los objetivos de tu equipo, con el fin de alcanzar los mejores resultados posibles.\n<br/><br/>\nCordialmente,\n<br/><br/>\n[nombre_empresa].\n</div>"
+                  conMembrete: true
+                  conTextoPersonalizable: true
+                  id: CONSOLIDADO_DESEMPENIO_INDV_INTRODUCCION
+                  nombre: Introducción
+                - notas: Este membrete puede no existir, y de ser así esta hoja no se imprime en el pdf
+                  conMembrete: true
+                  conTextoPersonalizable: false
+                  id: CONSOLIDADO_DESEMPENIO_INDV_EXPLICACION
+                  nombre: Hoja explicación
+                - textoPersonalizable: ''
+                  conMembrete: true
+                  conTextoPersonalizable: true
+                  id: CONSOLIDADO_DESEMPENIO_INDV_FORTALEZAS
+                  nombre: Fortalezas
+                - textoPersonalizable: >-
+                    <div class="resultado-competencias-text">
+
+                    A continuación, te presentamos los resultados de tu evaluación de competencias. Te invitamos a revisar y analizar detalladamente cada punto del informe.
+
+                    <br/><br/>
+
+                    Es importante que tengas en cuenta que el propósito principal de este ejercicio es obtener una retroalimentación completa sobre tu gestión diaria. Esta retroalimentación será la base para elaborar planes de trabajo y definir acciones en colaboración con tu líder, con el objetivo de impulsar tu desarrollo y crecimiento.
+
+                    <br/><br/>
+
+                    Te recomendamos recibir esta información con objetividad y disposición para aprender, ya que solo al identificar tus fortalezas y áreas de mejora podrás definir acciones que impulsen tu desarrollo integral y te ayuden a alcanzar las metas establecidas.
+
+                    </div>
+                  conMembrete: true
+                  conTextoPersonalizable: true
+                  id: CONSOLIDADO_DESEMPENIO_RESULTADO_COMPETENCIAS
+                  nombre: Resultado general de competencias
+                - textoPersonalizable: >-
+                    <div class="resumen-resultado-competencias-text">
+
+                    Te presentamos el resumen de las competencias evaluadas para tu rol y resultado obtenido por rol evaluador.<br/>
+
+                    Podrás ver un comparativo por:
+
+                    <ul>
+                        <li><b>Promedio del Cargo: </b> Promedio del resultado de la evaluación para todos los cargos de tu mismo nivel organizacional.</li>
+                        <li><b>Valor Logrado: </b> Promedio total del resultado de la evaluación realizada por todos tus evaluadores.</li>
+                    </ul>
+
+                    </div>
+                  conMembrete: true
+                  conTextoPersonalizable: true
+                  id: CONSOLIDADO_DESEMPENIO_RESUMEN_RESULTADO_COMPETENCIAS
+                  nombre: Resumen resultado de competencias
+                - textoPersonalizable: >-
+                    <div class="comentarios-competencias-text">
+
+                    <b>A continuación encontrarás cada uno de los comentarios de las personas que te evaluaron:</b>
+
+                    </div>
+                  conMembrete: true
+                  conTextoPersonalizable: true
+                  id: CONSOLIDADO_DESEMPENIO_COMENTARIOS_COMPETENCIAS
+                  nombre: Comentarios del proceso de evaluación competencias
+                - textoPersonalizable: "<div class=\"indicadores-objetivos-text\">\nEn esta sección se detallan los objetivos establecidos para el periodo evaluado, los cuales fueron monitoreados junto con tu líder a lo largo del año para garantizar su logro. \n<br/><br/>\nLa información que se tiene en cuenta para el cálculo de tus <b>indicadores</b>, corresponde a los datos registrados en la fase evaluativa, de acuerdo con el cumplimiento y cierre total de año de cada objetivo.\n</div>"
+                  conMembrete: true
+                  conTextoPersonalizable: true
+                  id: CONSOLIDADO_DESEMPENIO_INDICADORES_OBJETIVOS
+                  nombre: Indicadores objetivos
+                - conMembrete: true
+                  conTextoPersonalizable: false
+                  id: CONSOLIDADO_DESEMPENIO_INDV_RESULTADOGRAL
+                  nombre: Resultado general consolidado desempeño
+                - jsonColores:
+                    colorTextoTituloPpal: '#2C86D4'
+                    colorFondoTituloPpal: '#011826'
+                    colorTextoTituloSecond: '#2C86D4'
+                    colorTextoGeneral: '#444444'
+                    colorTextoPortada: '#ff4444'
+                  conMembrete: false
+                  conTextoPersonalizable: false
+                  id: CONSOLIDADO_DESEMPENIO_COLORES_TEXTO
+                  nombre: Indicadores objetivos
+      deprecated: false
+  /mapatalento/pdf/editarElementosPDF/{codModeloMapaTalento}/{idElemento}/json:
+    post:
+      tags:
+      - PDF
+      summary: Editar Elemento PDF
+      description: Para personalizar los elementos del pdf, los cuales encuentras en endpoint anterior, tener cuidado especial con CONSOLIDADO_DESEMPENIO_COLORES_TEXTO que recibe un json y no necesita membrete y tambien con CONSOLIDADO_DESEMPENIO_INDV_EXPLICACION que cuando no existe significa que esa hoja no se imprimirá en el pdf
+      operationId: EditarElementoPDF
+      parameters: 
+        - name: codModeloMapaTalento
+          in: path
+          required: true
+          description: Codigo del modelo de mapa de talento
+          schema:
+            type: string
+            example: 1
+        - name: idElemento
+          in: path
+          required: true
+          description: Clave elemento a editar
+          schema:
+            type: string
+            example: CONSOLIDADO_DESEMPENIO_INDV_INTRODUCCION    
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding: {}
+            schema:
+              required:
+              - archivoMembrete
+              - textoPersonalizable
+              - jsonColores
+              type: object
+              properties:
+                archivoMembrete:
+                  type: string
+                  description: archivo png para membrete de hoja pdf, debe ser de 850x1100px, solo no requerido cuando es CONSOLIDADO_DESEMPENIO_COLORES_TEXTO
+                  format: binary
+                textoPersonalizable:
+                  type: string
+                  description: html simple de texto personalizado a usar en esa sección del pdf, requerido solo en algunos elementos que tienen personalizable el texto como CONSOLIDADO_DESEMPENIO_INDV_INTRODUCCION
+                  example: <div class=\"introduccion-text\">Estimado [nombre_colaborador],<br/><br/>Te presentamos tu <b>REPORTE INDIVIDUAL CONSOLIDADO DE DESEMPEÑO editdo</b>. <br/><br/>Durante este periodo, analizaste con tu líder tus <b>RESULTADOS</b> según tu evaluación de objetivos y tus <b>HABILIDADES</b> a partir en la evaluación de competencias. Estos datos nos permiten evaluar tu <b>PARTICIPACIÓN</b> y diseñar un plan de crecimiento para aprovechar tus <b>FORTALEZAS</b> y enfrentar los desafíos de la compañía.<br/><br/>Cada acción de desarrollo que acuerdes con tu líder durante la retroalimentación debe centrarse en mejorar tus habilidades y alinear tu contribución con los objetivos de tu equipo, con el fin de alcanzar los mejores resultados posibles.<br/><br/>Cordialmente,<br/><br/>[nombre_empresa].</div>
+                jsonColores:
+                  allOf:
+                  - $ref: '#/components/schemas/JsonColores'
+                  - description: json usado en elemento CONSOLIDADO_DESEMPENIO_COLORES_TEXTO y solo es requerido en ese momento
+                    example:
+                      colorTextoTituloPpal: '#2C86D4'
+                      colorFondoTituloPpal: '#011826'
+                      colorTextoTituloSecond: '#2C86D4'
+                      colorTextoGeneral: '#444444'
+                      colorTextoPortada: '#ffffff'
+        required: false
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/EditarElementoPDF'
+                - example:
+                    message: Los datos se almacenaron correctamente.
+                    success: true
+              example:
+                message: Los datos se almacenaron correctamente.
+                success: true
+      deprecated: false
+  /mapatalento/pdf/membrete/descargar/CONSOLIDADO_DESEMPENIO_INDV_INTRODUCCION/{codModeloMapaTalento}.png:
+    get:
+      tags:
+      - PDF
+      summary: Descargar Membrete
+      description: Usado internamente por el generador de PDFs
+      operationId: DescargarMembrete
+      parameters: 
+        - name: codModeloMapaTalento
+          in: path
+          required: true
+          description: Codigo del modelo de mapa de talento
+          schema:
+            type: string
+            example: 1
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+components:
+  schemas:
+    modelosMapaTalento:
+      title: modelosMapaTalento
+      required:
+      - datos
+      - cantidad
+      type: object
+      properties:
+        datos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dato'
+          description: ''
+        cantidad:
+          type: integer
+          format: int32
+    Dato:
+      title: Dato
+      required:
+      - activo
+      - codigo
+      - anioDesempenio
+      - desempenioTerminado
+      - evaluaciones
+      - anios
+      - nombre
+      - escalaConsolidado
+      - visibleFicha
+      - ordenVisualizacion
+      - intervalo1Filas
+      - intervalo2Filas
+      - intervalo3Filas
+      - intervalo1Columnas
+      - intervalo2Columnas
+      - intervalo3Columnas
+      - temporadaDesempenio
+      - okrAnio
+      - paraDEC
+      - visibilidadPublica
+      - paraGraficaPotencial
+      - pbiResultadoWorkspace
+      - pbiResultadoReporte
+      - pbiResultadoProfile
+      - pesoProceso1
+      - pesoProceso2
+      - tipo
+      - mapaDesempeno
+      - modeloParaFicha
+      - extra
+      - enProcceso
+      - label
+      type: object
+      properties:
+        activo:
+          type: string
+        codigo:
+          type: integer
+          format: int32
+        anioDesempenio:
+          type: integer
+          format: int32
+        desempenioTerminado:
+          oneOf:
+          - type: string
+            nullable: true
+          - type: boolean
+          - nullable: true
+        evaluaciones:
+          type: string
+          nullable: true
+        anios:
+          type: string
+          nullable: true
+        nombre:
+          type: string
+        escalaConsolidado:
+          type: integer
+          format: int32
+        visibleFicha:
+          type: boolean
+        ordenVisualizacion:
+          type: integer
+          format: int32
+        intervalo1Filas:
+          type: integer
+          format: int32
+        intervalo2Filas:
+          type: integer
+          format: int32
+        intervalo3Filas:
+          type: integer
+          format: int32
+        intervalo1Columnas:
+          type: integer
+          format: int32
+        intervalo2Columnas:
+          type: integer
+          format: int32
+        intervalo3Columnas:
+          type: integer
+          format: int32
+        temporadaDesempenio:
+          oneOf:
+          - allOf:
+            - oneOf:
+              - nullable: true
+              - $ref: '#/components/schemas/TemporadaDesempenio'
+            - {}
+          - allOf:
+            - $ref: '#/components/schemas/TemporadaDesempenio1'
+            - example:
+                accion: null
+                idActor: null
+                codigo: 550
+                temporada: 4
+                anio: 202200
+                estado: n
+                negocios:
+                  codigo: -1
+                  nombre: Todos los negocios
+                  activo: n
+                fechaAviso: null
+                fechaCierre: 1738386000000
+                fechaApertura: 1577854800000
+                notificadoAviso: null
+                notificadoCierre: s
+                reporte: null
+                plan: null
+                temporadaAbierta: null
+                label: 550Temporada
+                idEntidad: 550
+          - nullable: true
+        okrAnio:
+          type: string
+          nullable: true
+        paraDEC:
+          type: boolean
+        visibilidadPublica:
+          oneOf:
+          - type: boolean
+            nullable: true
+          - type: string
+            nullable: true
+          - nullable: true
+        paraGraficaPotencial:
+          type: boolean
+        pbiResultadoWorkspace:
+          type: string
+          nullable: true
+        pbiResultadoReporte:
+          type: string
+          nullable: true
+        pbiResultadoProfile:
+          type: string
+          nullable: true
+        pesoProceso1:
+          type: integer
+          format: int32
+        pesoProceso2:
+          type: integer
+          format: int32
+        tipo:
+          type: string
+        mapaDesempeno:
+          type: string
+          nullable: true
+        modeloParaFicha:
+          oneOf:
+          - type: boolean
+            nullable: true
+          - type: string
+            nullable: true
+          - nullable: true
+        extra:
+          type: string
+          nullable: true
+        enProcceso:
+          type: boolean
+        label:
+          type: string
+    TemporadaDesempenio:
+      title: TemporadaDesempenio
+      type: object
+      properties:
+        accion:
+          type: string
+          nullable: true
+        idActor:
+          type: string
+          nullable: true
+        codigo:
+          type: integer
+          format: int32
+        temporada:
+          type: integer
+          format: int32
+        anio:
+          type: integer
+          format: int32
+        estado:
+          type: string
+        negocios:
+          $ref: '#/components/schemas/Negocios'
+        fechaAviso:
+          type: string
+          nullable: true
+        fechaCierre:
+          type: integer
+          format: int64
+        fechaApertura:
+          type: integer
+          format: int64
+        notificadoAviso:
+          type: string
+          nullable: true
+        notificadoCierre:
+          type: string
+        reporte:
+          type: string
+          nullable: true
+        plan:
+          type: string
+          nullable: true
+        temporadaAbierta:
+          type: string
+          nullable: true
+        label:
+          type: string
+        idEntidad:
+          type: integer
+          format: int32
+    Negocios:
+      title: Negocios
+      required:
+      - codigo
+      - nombre
+      - activo
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int32
+        nombre:
+          type: string
+        activo:
+          type: string
+      example:
+        codigo: -1
+        nombre: Todos los negocios
+        activo: n
+    TemporadaDesempenio1:
+      title: TemporadaDesempenio1
+      required:
+      - accion
+      - idActor
+      - codigo
+      - temporada
+      - anio
+      - estado
+      - negocios
+      - fechaAviso
+      - fechaCierre
+      - fechaApertura
+      - notificadoAviso
+      - notificadoCierre
+      - reporte
+      - plan
+      - temporadaAbierta
+      - label
+      - idEntidad
+      type: object
+      properties:
+        accion:
+          type: string
+          nullable: true
+        idActor:
+          type: string
+          nullable: true
+        codigo:
+          type: integer
+          format: int32
+        temporada:
+          type: integer
+          format: int32
+        anio:
+          type: integer
+          format: int32
+        estado:
+          type: string
+        negocios:
+          $ref: '#/components/schemas/Negocios'
+        fechaAviso:
+          type: string
+          nullable: true
+        fechaCierre:
+          type: integer
+          format: int64
+        fechaApertura:
+          type: integer
+          format: int64
+        notificadoAviso:
+          type: string
+          nullable: true
+        notificadoCierre:
+          type: string
+        reporte:
+          type: string
+          nullable: true
+        plan:
+          type: string
+          nullable: true
+        temporadaAbierta:
+          type: string
+          nullable: true
+        label:
+          type: string
+        idEntidad:
+          type: integer
+          format: int32
+      example:
+        accion: null
+        idActor: null
+        codigo: 550
+        temporada: 4
+        anio: 202200
+        estado: n
+        negocios:
+          codigo: -1
+          nombre: Todos los negocios
+          activo: n
+        fechaAviso: null
+        fechaCierre: 1738386000000
+        fechaApertura: 1577854800000
+        notificadoAviso: null
+        notificadoCierre: s
+        reporte: null
+        plan: null
+        temporadaAbierta: null
+        label: 550Temporada
+        idEntidad: 550
+    elementosPDF:
+      title: elementosPDF
+      required:
+      - success
+      - elementos
+      type: object
+      properties:
+        success:
+          type: boolean
+        elementos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Elemento'
+          description: ''
+      example:
+        success: true
+        elementos:
+        - conMembrete: true
+          conTextoPersonalizable: false
+          id: CONSOLIDADO_DESEMPENIO_INDV_GRAL
+          nombre: Hoja general
+        - conMembrete: true
+          conTextoPersonalizable: false
+          id: CONSOLIDADO_DESEMPENIO_INDV_PORTADA
+          nombre: Portada
+        - conMembrete: true
+          conTextoPersonalizable: false
+          id: CONSOLIDADO_DESEMPENIO_INDV_CONTRAPORTADA
+          nombre: Contra portada
+        - textoPersonalizable: "<div class=\"introduccion-text\">\nEstimado [nombre_colaborador],\n<br/><br/>\nTe presentamos tu <b>REPORTE INDIVIDUAL CONSOLIDADO DE DESEMPEÑO</b>. \n<br/><br/>\nDurante este periodo, analizaste con tu líder tus <b>RESULTADOS</b> según tu evaluación de objetivos y tus <b>HABILIDADES</b> a partir en la evaluación de competencias. Estos datos nos permiten evaluar tu <b>PARTICIPACIÓN</b> y diseñar un plan de crecimiento para aprovechar tus <b>FORTALEZAS</b> y enfrentar los desafíos de la compañía.\n<br/><br/>\nCada acción de desarrollo que acuerdes con tu líder durante la retroalimentación debe centrarse en mejorar tus habilidades y alinear tu contribución con los objetivos de tu equipo, con el fin de alcanzar los mejores resultados posibles.\n<br/><br/>\nCordialmente,\n<br/><br/>\n[nombre_empresa].\n</div>"
+          conMembrete: true
+          conTextoPersonalizable: true
+          id: CONSOLIDADO_DESEMPENIO_INDV_INTRODUCCION
+          nombre: Introducción
+        - notas: Este membrete puede no existir, y de ser así esta hoja no se imprime en el pdf
+          conMembrete: true
+          conTextoPersonalizable: false
+          id: CONSOLIDADO_DESEMPENIO_INDV_EXPLICACION
+          nombre: Hoja explicación
+        - textoPersonalizable: ''
+          conMembrete: true
+          conTextoPersonalizable: true
+          id: CONSOLIDADO_DESEMPENIO_INDV_FORTALEZAS
+          nombre: Fortalezas
+        - textoPersonalizable: >-
+            <div class="resultado-competencias-text">
+
+            A continuación, te presentamos los resultados de tu evaluación de competencias. Te invitamos a revisar y analizar detalladamente cada punto del informe.
+
+            <br/><br/>
+
+            Es importante que tengas en cuenta que el propósito principal de este ejercicio es obtener una retroalimentación completa sobre tu gestión diaria. Esta retroalimentación será la base para elaborar planes de trabajo y definir acciones en colaboración con tu líder, con el objetivo de impulsar tu desarrollo y crecimiento.
+
+            <br/><br/>
+
+            Te recomendamos recibir esta información con objetividad y disposición para aprender, ya que solo al identificar tus fortalezas y áreas de mejora podrás definir acciones que impulsen tu desarrollo integral y te ayuden a alcanzar las metas establecidas.
+
+            </div>
+          conMembrete: true
+          conTextoPersonalizable: true
+          id: CONSOLIDADO_DESEMPENIO_RESULTADO_COMPETENCIAS
+          nombre: Resultado general de competencias
+        - textoPersonalizable: >-
+            <div class="resumen-resultado-competencias-text">
+
+            Te presentamos el resumen de las competencias evaluadas para tu rol y resultado obtenido por rol evaluador.<br/>
+
+            Podrás ver un comparativo por:
+
+            <ul>
+                <li><b>Promedio del Cargo: </b> Promedio del resultado de la evaluación para todos los cargos de tu mismo nivel organizacional.</li>
+                <li><b>Valor Logrado: </b> Promedio total del resultado de la evaluación realizada por todos tus evaluadores.</li>
+            </ul>
+
+            </div>
+          conMembrete: true
+          conTextoPersonalizable: true
+          id: CONSOLIDADO_DESEMPENIO_RESUMEN_RESULTADO_COMPETENCIAS
+          nombre: Resumen resultado de competencias
+        - textoPersonalizable: >-
+            <div class="comentarios-competencias-text">
+
+            <b>A continuación encontrarás cada uno de los comentarios de las personas que te evaluaron:</b>
+
+            </div>
+          conMembrete: true
+          conTextoPersonalizable: true
+          id: CONSOLIDADO_DESEMPENIO_COMENTARIOS_COMPETENCIAS
+          nombre: Comentarios del proceso de evaluación competencias
+        - textoPersonalizable: "<div class=\"indicadores-objetivos-text\">\nEn esta sección se detallan los objetivos establecidos para el periodo evaluado, los cuales fueron monitoreados junto con tu líder a lo largo del año para garantizar su logro. \n<br/><br/>\nLa información que se tiene en cuenta para el cálculo de tus <b>indicadores</b>, corresponde a los datos registrados en la fase evaluativa, de acuerdo con el cumplimiento y cierre total de año de cada objetivo.\n</div>"
+          conMembrete: true
+          conTextoPersonalizable: true
+          id: CONSOLIDADO_DESEMPENIO_INDICADORES_OBJETIVOS
+          nombre: Indicadores objetivos
+        - conMembrete: true
+          conTextoPersonalizable: false
+          id: CONSOLIDADO_DESEMPENIO_INDV_RESULTADOGRAL
+          nombre: Resultado general consolidado desempeño
+        - jsonColores:
+            colorTextoTituloPpal: '#2C86D4'
+            colorFondoTituloPpal: '#011826'
+            colorTextoTituloSecond: '#2C86D4'
+            colorTextoGeneral: '#444444'
+            colorTextoPortada: '#ff4444'
+          conMembrete: false
+          conTextoPersonalizable: false
+          id: CONSOLIDADO_DESEMPENIO_COLORES_TEXTO
+          nombre: Indicadores objetivos
+    Elemento:
+      title: Elemento
+      required:
+      - conMembrete
+      - conTextoPersonalizable
+      - id
+      - nombre
+      type: object
+      properties:
+        conMembrete:
+          type: boolean
+        conTextoPersonalizable:
+          type: boolean
+        id:
+          type: string
+        nombre:
+          type: string
+        textoPersonalizable:
+          type: string
+        notas:
+          type: string
+        jsonColores:
+          $ref: '#/components/schemas/JsonColores'
+      example:
+        conMembrete: true
+        conTextoPersonalizable: false
+        id: CONSOLIDADO_DESEMPENIO_INDV_GRAL
+        nombre: Hoja general
+    JsonColores:
+      title: JsonColores
+      required:
+      - colorTextoTituloPpal
+      - colorFondoTituloPpal
+      - colorTextoTituloSecond
+      - colorTextoGeneral
+      - colorTextoPortada
+      type: object
+      properties:
+        colorTextoTituloPpal:
+          type: string
+        colorFondoTituloPpal:
+          type: string
+        colorTextoTituloSecond:
+          type: string
+        colorTextoGeneral:
+          type: string
+        colorTextoPortada:
+          type: string
+      example:
+        colorTextoTituloPpal: '#2C86D4'
+        colorFondoTituloPpal: '#011826'
+        colorTextoTituloSecond: '#2C86D4'
+        colorTextoGeneral: '#444444'
+        colorTextoPortada: '#ff4444'
+    EditarElementoPDF:
+      title: EditarElementoPDF
+      required:
+      - message
+      - success
+      type: object
+      properties:
+        message:
+          type: string
+        success:
+          type: boolean
+      example:
+        message: Los datos se almacenaron correctamente.
+        success: true
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+security:
+- bearer: []
+tags:
+- name: PDF
+  description: ''
