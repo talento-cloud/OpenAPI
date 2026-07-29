@@ -4,6 +4,10 @@ info:
   description: >-
     Contiene endpoints utilizados para manejo de módulo de Sucesión y Matriz de criticidad
 
+    
+    Ejemplos en Postman: https://booscloud.sharepoint.com/:u:/s/Talento/IQAH9MXP-F6KQIwfql9gnO4-AR8rixtrMZzlD2iGnDXA4uc?e=YCkctY 
+
+
     ## Manejo de errores
 
 
@@ -25,7 +29,7 @@ info:
         Cuando sea posible, cada endpoint detallará sus códigos de error
         específicos y estructura de respuesta en su propia descripción.
 
-        Ejemplos en Postman: https://booscloud.sharepoint.com/:u:/s/Talento/IQAH9MXP-F6KQIwfql9gnO4-AR8rixtrMZzlD2iGnDXA4uc?e=YCkctY 
+        
   contact: {}
   version: '1.0'
 servers:
@@ -175,6 +179,10 @@ paths:
                 cargos_criticos_sin_sucesor: 1
                 success: true
                 empleados_clave: 5
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /cargo/criticidad/getMatrizCriticidad.json:
     get:
@@ -284,6 +292,10 @@ paths:
             application/json;charset=UTF-8:
               schema:
                 $ref: '#/components/schemas/getMatrizCriticidad'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /cargo/criticidad/listarUsuariosCriticidad.json:
     get:
@@ -501,6 +513,10 @@ paths:
                   cargo: Analista Desarrollador
                 total: 7
                 success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /plan-sucesion/cuestionario/forms/listarFormulariosCriticidadConRespuesta.json:
     get:
@@ -1338,6 +1354,10 @@ paths:
                   nroPreguntas: 4
                 message: OK
                 success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /cargo/criticidad/calificarCriticidad.json:
     post:
@@ -1452,6 +1472,10 @@ paths:
               example:
                 message: Se ha guardado la calificación de criticidad del cargo correctamente
                 success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /UsuariosXCargo/{codCargo}.json:
     get:
@@ -1557,6 +1581,10 @@ paths:
             application/json;charset=UTF-8:
               schema:
                 $ref: '#/components/schemas/getOcupantesCargo'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /plan-sucesion/get-usuarios-suplentes-por-cargo/{codCargo}/SUCESOR.json:
     get:
@@ -2307,6 +2335,10 @@ paths:
                   codJefe: 132
                   nombreJefe: Javier Hurtado Jaramillo
                 success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /plan-sucesion/agregar-sucesor-usaurio/{codCargo}/SUCESOR/139.json:
     post:
@@ -2407,6 +2439,10 @@ paths:
               example:
                 message: Se ha agregado el candidato satisfactoriamente
                 success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /plan-sucesion/get-usuarios-suplentes-por-cargo/{codCargo}/SUPLENTE.json:
     get:
@@ -5105,6 +5141,10 @@ paths:
                   codJefe: 69
                   nombreJefe: Julian Andres Osorio Restrepo
                 success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /plan-sucesion/get-usuarios-suplentes-por-cargo/{codCargo}/CANDIDATO.json:
     get:
@@ -5853,6 +5893,10 @@ paths:
                   codJefe: 78
                   nombreJefe: Juan Guillermo Jimenez Pérez
                 success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /plan-sucesion/move-user/{codCargo}/{codUsuario}/{catOrigen}/{catDestino}/false/false.json:
     post:
@@ -5976,6 +6020,10 @@ paths:
                 message: Los usuarios se movieron exitosamente
                 success: true
                 movido: false
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /plan-sucesion/move-all-users/{codCargo}/{catOrigen}/{catDestino}.json:
     post:
@@ -6090,6 +6138,10 @@ paths:
               example:
                 message: Los usuarios se movieron exitosamente
                 success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /plan-sucesion/remove-user/{codCargo}/{codUsuario}/{categoria}.json:
     delete:
@@ -6189,6 +6241,10 @@ paths:
               example:
                 message: Los usuarios fueron eliminados exitosamente
                 success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /plan-sucesion/remove-all-users/{codCargo}/{categoria}.json:
     delete:
@@ -6281,6 +6337,10 @@ paths:
               example:
                 message: Los usuarios fueron eliminados exitosamente
                 success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /plan-sucesion/cuestionario/forms/listarFormulariosConRespuesta/TALENTO_CLAVE.json:
     get:
@@ -6610,6 +6670,10 @@ paths:
                   nroPreguntas: 1
                 message: OK
                 success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /plan-sucesion/cuestionario/forms/evaluacionSucesionColaborador/TALENTO_CLAVE.json:
     post:
@@ -6740,6 +6804,10 @@ paths:
                   criticoObservaciones: null
                 message: OK
                 success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /plan-sucesion/cuestionario/forms/listarFormulariosConRespuesta/RIESGO_PERDIDA.json:
     get:
@@ -7037,6 +7105,10 @@ paths:
                   nroPreguntas: 1
                 message: OK
                 success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /plan-sucesion/cuestionario/forms/evaluacionSucesionColaborador/RIESGO_PERDIDA.json:
     post:
@@ -7166,6 +7238,10 @@ paths:
                   criticoObservaciones: null
                 message: OK
                 success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /formacion/tipificadores/getByTipo/TIPO_INICIATIVA_RETENCION.json:
     get:
@@ -7284,6 +7360,10 @@ paths:
                   extra: null
                 message: OK
                 success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /plan-sucesion/cuestionario/forms/getListRetencion/126.json:
     get:
@@ -7420,6 +7500,10 @@ paths:
                   fechaRetencion: 1785301200000
                 message: 'true'
                 success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /plan-sucesion/cuestionario/forms/guardarIniciativaRetencio/126.json:
     post:
@@ -7556,6 +7640,10 @@ paths:
               example:
                 message: Formulario actualizado correctamente
                 success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /plan-sucesion/cuestionario/forms/deleteRetencion/2.json:
     delete:
@@ -7634,6 +7722,10 @@ paths:
               example:
                 message: 'true'
                 success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /trv/documentos/listarDocumentosCriticidad/126/Pruebas.json:
     get:
@@ -7935,6 +8027,10 @@ paths:
                   label: DOC_1777_691_4a075235f438b0a6b8357620553173d7682c8574_V2_EstudioSeguridad.pdf
                 success: true
                 cantidad: 1
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
 components:
   schemas:
@@ -16572,10 +16668,43 @@ components:
         variacionPatron: null
         valor: null
         extra: null
+    ErrorResponse:
+      title: ErrorResponse
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Token JWT inválido, expirado o ausente.
+  responses:
+    UnauthorizedError:
+      description: Token JWT inválido, expirado o ausente.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            message: Token JWT inválido, expirado o ausente.
+    ForbiddenError:
+      description: El usuario autenticado no tiene permisos suficientes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            message: El usuario autenticado no tiene permisos suficientes.
   securitySchemes:
     bearer:
       type: http
       scheme: bearer
+      bearerFormat: JWT
+      description: >-
+        Ingrese el token JWT con el prefijo 'Bearer '.
+        El token se obtiene a través del servicio de autenticación/OAuth2 de Talento Cloud.
 security:
 - bearer: []
 tags:
