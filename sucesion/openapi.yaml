@@ -67,33 +67,18 @@ paths:
           example: Asistente
       - name: cmbArea
         in: query
-        description: Si se quiere filtrar por codigos de areas los cargos; no aplica en modoLider
+        description: Cadena en formato JSON array con codigos de áreas para filtrar cargos (ej. "[19,17]"); no aplica en modoLider
         required: false
-        style: form
-        explode: true
         schema:
-          type: array
-          items:
-            type: integer
-            format: int32
-          example:
-          - 19
-          - 17
+          type: string
+          example: '[19,17]'
       - name: cmbNiveles
         in: query
-        description: Si se quiere filtrar por codigos de niveles organizaciones los cargos; no aplica en modoLider
+        description: Cadena en formato JSON array con codigos de niveles organizacionales para filtrar cargos (ej. "[5,6,7]"); no aplica en modoLider
         required: false
-        style: form
-        explode: true
         schema:
-          type: array
-          items:
-            type: integer
-            format: int32
-          example:
-          - 5
-          - 6
-          - 7
+          type: string
+          example: '[5,6,7]'
       - name: cmbUsuarioActivo
         in: query
         description: Si se quiere solo el cargo del usuario indicado; no aplica en modoLider
@@ -345,33 +330,18 @@ paths:
           example: CLAVE
       - name: cmbArea
         in: query
-        description: Si se quiere filtrar por codigos de areas los cargos; no aplica en modoLider
-        required: true
-        style: form
-        explode: true
+        description: Cadena en formato JSON array con codigos de áreas para filtrar cargos (ej. "[19,17]"); no aplica en modoLider
+        required: false
         schema:
-          type: array
-          items:
-            type: integer
-            format: int32
-          example:
-          - 19
-          - 17
+          type: string
+          example: '[19,17]'
       - name: cmbNiveles
         in: query
-        description: Si se quiere filtrar por codigos de niveles organizaciones los cargos; no aplica en modoLider
+        description: Cadena en formato JSON array con codigos de niveles organizacionales para filtrar cargos (ej. "[5,6,7]"); no aplica en modoLider
         required: false
-        style: form
-        explode: true
         schema:
-          type: array
-          items:
-            type: integer
-            format: int32
-          example:
-          - 5
-          - 6
-          - 7
+          type: string
+          example: '[5,6,7]'
       responses:
         '200':
           description: OK
@@ -1364,7 +1334,23 @@ paths:
       tags:
       - MatrizCriticidad
       summary: calificarCriticidadCargo
-      description: Para guardar respuestas a preguntas de criticidad de un cargo dado
+      description: |
+        Para guardar respuestas a preguntas de criticidad de un cargo dado.
+
+        ### Ejemplo cURL
+
+        ```bash
+        curl --location 'https://clientex.talento.cloud/api/html/cargo/criticidad/calificarCriticidad.json' \
+          -H "Authorization: Bearer <TU_TOKEN_JWT>" \
+          --form 'respuestas="[{\"cargo\":81,\"pregunta\":34,\"respuesta\":35,\"respuesta_txt\":\"Desconocido\",\"cod_respuesta\":34},{\"cargo\":81,\"pregunta\":35,\"respuesta\":35,\"respuesta_txt\":\"Desconocido\",\"cod_respuesta\":35},{\"cargo\":81,\"pregunta\":36,\"respuesta\":34,\"respuesta_txt\":\"Desconocido\",\"cod_respuesta\":36},{\"cargo\":81,\"pregunta\":37,\"respuesta\":35,\"respuesta_txt\":\"Desconocido\",\"cod_respuesta\":37}]"'
+        ```
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento.cloud/api/html/cargo/criticidad/calificarCriticidad.json' \
+              -H "Authorization: Bearer <TU_TOKEN_JWT>" \
+              --form 'respuestas="[{\"cargo\":81,\"pregunta\":34,\"respuesta\":35,\"respuesta_txt\":\"Desconocido\",\"cod_respuesta\":34},{\"cargo\":81,\"pregunta\":35,\"respuesta\":35,\"respuesta_txt\":\"Desconocido\",\"cod_respuesta\":35},{\"cargo\":81,\"pregunta\":36,\"respuesta\":34,\"respuesta_txt\":\"Desconocido\",\"cod_respuesta\":36},{\"cargo\":81,\"pregunta\":37,\"respuesta\":35,\"respuesta_txt\":\"Desconocido\",\"cod_respuesta\":37}]"'
       operationId: calificarCriticidadCargo
       parameters: []
       requestBody:
@@ -2346,6 +2332,13 @@ paths:
       - PlanSucesión
       summary: agregarSucesorUsuarioCargo
       description: Para agregar un usuario como sucesor a un cargo dado
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento.cloud/api/html/plan-sucesion/agregar-sucesor-usaurio/81/SUCESOR/139.json' \
+              -H "Authorization: Bearer <TU_TOKEN_JWT>" \
+              --form 'horizonteTiempo="2"'
       operationId: agregarSucesorUsuarioCargo
       parameters: 
       - name: codCargo
@@ -6680,7 +6673,29 @@ paths:
       tags:
       - PlanSucesión
       summary: guardarRespuestasCuestionarioTalentoClave
-      description: Para guardar las respuestas de la evaluación de si el usuario es un talento clave
+      description: |
+        Para guardar las respuestas de la evaluación de si el usuario es un talento clave.
+
+        ### Ejemplo cURL
+
+        ```bash
+        curl --location 'https://clientex.talento.cloud/api/html/plan-sucesion/cuestionario/forms/evaluacionSucesionColaborador/TALENTO_CLAVE.json' \
+          -H "Authorization: Bearer <TU_TOKEN_JWT>" \
+          --form 'respuestaformulario="[{\"idPregunta\":\"1\",\"respuesta\":2}]"' \
+          --form 'colaboradorEvaluado="126"' \
+          --form 'tipo_entidad="USUARIO"' \
+          --form 'codFormularioMaestro="2"'
+        ```
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento.cloud/api/html/plan-sucesion/cuestionario/forms/evaluacionSucesionColaborador/TALENTO_CLAVE.json' \
+              -H "Authorization: Bearer <TU_TOKEN_JWT>" \
+              --form 'respuestaformulario="[{\"idPregunta\":\"1\",\"respuesta\":2}]"' \
+              --form 'colaboradorEvaluado="126"' \
+              --form 'tipo_entidad="USUARIO"' \
+              --form 'codFormularioMaestro="2"'
       operationId: guardarRespuestasCuestionarioTalentoClave
       parameters: []
       requestBody:
@@ -7115,6 +7130,29 @@ paths:
       tags:
       - PlanSucesión
       summary: guardarRespuestasCuestionarioRiesgoPerdida
+      description: |
+        Para guardar las respuestas de la evaluación de si el usuario está en riesgo de pérdida.
+
+        ### Ejemplo cURL
+
+        ```bash
+        curl --location 'https://clientex.talento.cloud/api/html/plan-sucesion/cuestionario/forms/evaluacionSucesionColaborador/RIESGO_PERDIDA.json' \
+          -H "Authorization: Bearer <TU_TOKEN_JWT>" \
+          --form 'respuestaformulario="[{\"idPregunta\":\"2\",\"respuesta\":4}]"' \
+          --form 'colaboradorEvaluado="126"' \
+          --form 'tipo_entidad="USUARIO"' \
+          --form 'codFormularioMaestro="1"'
+        ```
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento.cloud/api/html/plan-sucesion/cuestionario/forms/evaluacionSucesionColaborador/RIESGO_PERDIDA.json' \
+              -H "Authorization: Bearer <TU_TOKEN_JWT>" \
+              --form 'respuestaformulario="[{\"idPregunta\":\"2\",\"respuesta\":4}]"' \
+              --form 'colaboradorEvaluado="126"' \
+              --form 'tipo_entidad="USUARIO"' \
+              --form 'codFormularioMaestro="1"'
       operationId: guardarRespuestasCuestionarioRiesgoPerdida
       parameters: []
       requestBody:
@@ -7511,6 +7549,21 @@ paths:
       - PlanSucesión
       summary: guardarIniciativaRetencionUsuario
       description: Guardar una iniciativa de retención sobre un usuario dado
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento.cloud/api/html/plan-sucesion/cuestionario/forms/guardarIniciativaRetencio/126.json' \
+              -H "Authorization: Bearer <TU_TOKEN_JWT>" \
+              --form 'cmbTipoIniciativaRetencion="1577"' \
+              --form 'txtNombreIniciativa="Manipulacion de beneficios"' \
+              --form 'numValor="500000"' \
+              --form 'dateFecha="1785301200000"' \
+              --form 'tipoIniciativaRetencion="1577"' \
+              --form 'nombreRetencion="Manipulacion de beneficios"' \
+              --form 'valorRetencion="500000"' \
+              --form 'codigoRetencion=""' \
+              --form 'fechaRetencion="29.07.2026_00.00.00"'
       operationId: guardarIniciativaRetencionUsuario
       parameters: []
       requestBody:
