@@ -92,61 +92,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -218,61 +163,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -345,61 +235,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -514,61 +349,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -1392,61 +1172,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -1508,61 +1233,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -1599,61 +1269,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -2366,61 +1981,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -2464,61 +2024,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -5166,61 +4671,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -5945,61 +5395,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -6065,61 +5460,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -6168,61 +5508,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -6264,61 +5549,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -6361,61 +5591,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -6735,61 +5910,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -6850,61 +5970,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -7192,61 +6257,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -7292,61 +6302,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -7434,61 +6389,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -7627,61 +6527,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -7709,61 +6554,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -7798,61 +6588,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Content-Language:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -16761,5 +15496,7 @@ components:
 security:
 - bearer: []
 tags:
-- name: MatrizCriticidad
-- name: PlanSucesión
+  - name: MatrizCriticidad
+    description: Operaciones relacionadas con el cálculo, resumen y calificación de la matriz de criticidad de cargos.
+  - name: PlanSucesión
+    description: Gestión de sucesores, suplentes, candidatos e iniciativas de retención de colaboradores.
