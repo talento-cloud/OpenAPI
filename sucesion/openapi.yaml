@@ -5943,11 +5943,11 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '403':
           $ref: '#/components/responses/ForbiddenError'
-      deprecated: false
+      deprecated: true
   /plan-sucesion/cuestionario/forms/listarFormulariosConRespuesta/RIESGO_PERDIDA.json:
     get:
       tags:
-      - PlanSucesión
+      - Deprecados
       summary: getCuestionarioRiesgoPerdida
       description: >-
         ```
@@ -6189,11 +6189,11 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '403':
           $ref: '#/components/responses/ForbiddenError'
-      deprecated: false
+      deprecated: true
   /plan-sucesion/cuestionario/forms/evaluacionSucesionColaborador/RIESGO_PERDIDA.json:
     post:
       tags:
-      - PlanSucesión
+      - Deprecados
       summary: guardarRespuestasCuestionarioRiesgoPerdida
       description: |
         Para guardar las respuestas de la evaluación de si el usuario está en riesgo de pérdida.
@@ -6290,7 +6290,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '403':
           $ref: '#/components/responses/ForbiddenError'
-      deprecated: false
+      deprecated: true
   /formacion/tipificadores/getByTipo/TIPO_INICIATIVA_RETENCION.json:
     get:
       tags:
@@ -15500,3 +15500,5 @@ tags:
     description: Operaciones relacionadas con el cálculo, resumen y calificación de la matriz de criticidad de cargos.
   - name: PlanSucesión
     description: Gestión de sucesores, suplentes, candidatos e iniciativas de retención de colaboradores.
+  - name: Deprecados
+    description: Endpoints deprecados del módulo de sucesión.
