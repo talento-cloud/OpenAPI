@@ -5943,7 +5943,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '403':
           $ref: '#/components/responses/ForbiddenError'
-      deprecated: true
+      deprecated: false
   /plan-sucesion/cuestionario/forms/listarFormulariosConRespuesta/RIESGO_PERDIDA.json:
     get:
       tags:
@@ -6291,6 +6291,77 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: true
+  /plan-sucesion/guardar/criticidadAndRiesgo.json:
+    post:
+      tags:
+      - PlanSucesión
+      summary: guardarRiesgoPerdidaUsuario
+      description: |
+        Endpoint para guardar si hay riesgo de pérdida del usuario/empleado.
+
+        ### Ejemplo cURL
+
+        ```bash
+        curl --location 'https://clientex.talento.cloud/api/html/plan-sucesion/guardar/criticidadAndRiesgo.json' \
+          -H "Authorization: Bearer <TU_TOKEN_JWT>" \
+          --form 'usuario="102"' \
+          --form 'riesgoPerdidaBandera="true"' \
+          --form 'riesgoPerdidaObservaciones="Tiene conocimientos clave y le llegan ofertas de trabajo"'
+        ```
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento.cloud/api/html/plan-sucesion/guardar/criticidadAndRiesgo.json' \
+              -H "Authorization: Bearer <TU_TOKEN_JWT>" \
+              --form 'usuario="102"' \
+              --form 'riesgoPerdidaBandera="true"' \
+              --form 'riesgoPerdidaObservaciones="Tiene conocimientos clave y le llegan ofertas de trabajo"'
+      operationId: guardarCriticidadAndRiesgo
+      parameters: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            encoding: {}
+            schema:
+              required:
+              - usuario
+              - riesgoPerdidaBandera
+              type: object
+              properties:
+                usuario:
+                  type: integer
+                  description: Codigo del usuario
+                  format: int32
+                  example: 102
+                riesgoPerdidaBandera:
+                  type: boolean
+                  description: True para indicar que el usuario tiene riesgo de perdida, false en caso contrario
+                  example: true
+                riesgoPerdidaObservaciones:
+                  type: string
+                  description: Observaciones sobre el riesgo de perdida
+                  example: Tiene conocimientos clave y le llegan ofertas de trabajo
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/guardarCriticidadAndRiesgo'
+                - example:
+                    message: Se ha actualizado la información del usuario
+                    success: true
+              example:
+                message: Se ha actualizado la información del usuario
+                success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
   /formacion/tipificadores/getByTipo/TIPO_INICIATIVA_RETENCION.json:
     get:
       tags:
@@ -15456,6 +15527,20 @@ components:
         variacionPatron: null
         valor: null
         extra: null
+    guardarCriticidadAndRiesgo:
+      title: guardarCriticidadAndRiesgo
+      required:
+      - message
+      - success
+      type: object
+      properties:
+        message:
+          type: string
+        success:
+          type: boolean
+      example:
+        message: OK
+        success: true
     ErrorResponse:
       title: ErrorResponse
       type: object
