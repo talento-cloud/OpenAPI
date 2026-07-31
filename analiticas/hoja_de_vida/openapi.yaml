@@ -71,7 +71,7 @@ paths:
                   usuario_nombre: Juan Carlos Pérez Gómez
                   idioma: Inglés
                   nivel_lenguaje: Avanzado
-                  nivel: '85'
+                  nivel: 85
       deprecated: false
   /pbi/data/demograficas/estudios.json:
     get:
@@ -108,7 +108,7 @@ paths:
                   fecha_graduacion: 2015
                   titulo: Ingeniero de Sistemas
                   estado_educacion: Graduado
-                  niveles_cursados: Profesional
+                  niveles_cursados: 4
                   nivel_escolaridad: Universitario
                   nombre_institucion_educativa: Universidad Nacional
       deprecated: false
@@ -239,7 +239,7 @@ components:
           type: string
           description: Escala/nivel del idioma (ej. Básico, Intermedio, Avanzado)
         nivel:
-          type: string
+          type: number
           description: Promedio general obtenido para el idioma
     EstudioFormal:
       title: EstudioFormal
@@ -264,8 +264,8 @@ components:
           type: string
           description: Estado del estudio (ej. Graduado, En curso)
         niveles_cursados:
-          type: string
-          description: Nivel educativo cursado
+          type: integer
+          description: Código del nivel educativo cursado (valor crudo, sin resolver a texto en la consulta)
         nivel_escolaridad:
           type: string
           description: Escolaridad asociada al título académico
@@ -347,7 +347,7 @@ components:
           type: string
           description: Nivel de escolaridad
         anios_para_jubilacion:
-          type: integer
+          type: number
           description: Años restantes para la edad de jubilación, según país y género
         tiempo_experiencia:
           type: number

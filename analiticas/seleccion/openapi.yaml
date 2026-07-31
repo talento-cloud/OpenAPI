@@ -1,0 +1,795 @@
+openapi: 3.0.0
+info:
+  title: API Analíticas - Selección (PowerBI)
+  contact: {}
+  version: '1.0'
+  description: >-
+    Esta API permite acceder a la información analítica del módulo de
+    Selección (procesos de requisición, candidatos, etapas, encuestas de
+    satisfacción y maestros de apoyo) de una empresa, consumida por PowerBI
+    para la construcción de reportes analíticos.
+
+    ## Manejo de errores
+
+
+        Los errores habituales pueden incluir:
+
+
+        - `400 Bad Request`: Parámetros requeridos faltantes o con formato
+        inválido.
+
+        - `401 Unauthorized`: Token JWT inválido, expirado o ausente.
+
+        - `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.
+
+        - `404 Not Found`: El recurso solicitado no existe.
+
+        - `500 Internal Server Error`: Error inesperado en el servidor.
+
+
+        Cuando sea posible, cada endpoint detallará sus códigos de error
+        específicos y estructura de respuesta en su propia descripción.
+
+        ## Autenticación
+
+        Estos servicios están pensados para ser consumidos por PowerBI y se
+        protegen con autenticación básica HTTP (usuario y contraseña), las
+        cuales son provistas por talento cloud para la integración.
+servers:
+  - url: https://clientex.talento.cloud/html
+    description: Servidor de producción
+    variables: {}
+security:
+  - basicAuth: []
+paths:
+  /pbi/data/seleccion/informacionProcesos.json:
+    get:
+      tags:
+        - Seleccion
+      summary: informacionProcesos
+      description: >-
+        Retorna la información detallada de los procesos de requisición de
+        selección: datos generales (fechas, estado, vacantes, salario,
+        duración), clasificadores organizacionales (cargo, área, negocio,
+        empresa, UEN, vicepresidencia, sede), responsables del proceso,
+        idioma/nivel requerido y el tiempo transcurrido calculado según el
+        calendario laboral configurado. Pensado para ser consumido como
+        fuente de datos de PowerBI.
+      operationId: informacionProcesos
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InformacionProceso'
+              example:
+                - id_requisicion: 458
+                  compensacion_variable: 'n'
+                  disponibilidad_viajar: false
+                  duracion_dias: '30'
+                  edad_desde: 25
+                  edad_hasta: 45
+                  estado_proceso: PUBLICADA
+                  fecha_aprobacion: '2026-06-02'
+                  fecha_cierre_proceso: null
+                  fecha_creacion: '2026-05-28'
+                  fecha_estimada: '2026-07-01'
+                  fecha_modificacion: '2026-06-10'
+                  genero: Indiferente
+                  justificacion: Nueva vacante por expansión de equipo
+                  nro_dias_duracion_proceso: 30
+                  nro_vacantes: 1
+                  recibe_compensacion: false
+                  rotacion_turnos: false
+                  salario_mensual: '3500000'
+                  tipo_convocatoria: Externa
+                  vehiculo: 'n'
+                  cargo: 210
+                  cargo_jefe: 87
+                  cargo_vacante: Analista de Selección
+                  cargo_jefe_vacante: Jefe de Gestión Humana
+                  empresa: Empresa Demo S.A.S.
+                  etapa_actual: Entrevista con jefe
+                  jefeinmediato: María Fernanda Ríos López
+                  jornada_laboral: Diurna
+                  motivo: Expansión de planta
+                  negocio: Corporativo
+                  tipo_requisicion: Ordinaria
+                  responsable_proceso: Juan Carlos Pérez Gómez
+                  sede: Sede Principal
+                  tipo_vinculacion: Término indefinido
+                  uen: UEN Servicios
+                  solicitante: María Fernanda Ríos López
+                  vicepresidencia: Vicepresidencia Administrativa
+                  vicepresidencia_codigo: 3
+                  area_nombre: Gestión Humana
+                  area_codigo: 12
+                  experiencia: 24
+                  cliente: null
+                  codigo_proyecto: null
+                  estado_escolaridad: Graduado
+                  escolaridad: 5
+                  descripcion_requisicion: Se requiere analista de selección con experiencia en procesos masivos
+                  tiempo_minimo_permanencia: 12
+                  empresa_solicitante: Empresa Demo S.A.S.
+                  perfil_aspirante: Profesional en Psicología o afines
+                  fecha_ocupacion_cargo: '2026-07-15'
+                  fecha_publicacion: '2026-06-03'
+                  idioma: Inglés
+                  nivel_idioma: Básico
+                  fecha_cancelacion_proceso: null
+                  observaciones_cancelacion: null
+                  usuario_cancelador: null
+                  usuario_cierre: null
+                  calendario: COLOMBIA
+                  tiempo_transcurrido: 12
+      deprecated: false
+  /pbi/data/seleccion/informacionAns.json:
+    get:
+      tags:
+        - Seleccion
+      summary: informacionAns
+      description: >-
+        Retorna el Acuerdo de Nivel de Servicio (ANS, en días) calculado para
+        cada cargo, según la configuración general de origen del ANS
+        (`trv_configuracion_general.origen_ans`): puede tomarse del propio
+        cargo, del nivel organizacional (tipo de cargo) o de la categoría del
+        cargo. Pensado para ser consumido como fuente de datos de PowerBI.
+
+
+        Si no existen cargos configurados, el servicio retorna igualmente un
+        arreglo con un único registro cuyos campos vienen vacíos
+        (comportamiento explícito del backend, no es un error).
+      operationId: informacionAns
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InformacionAns'
+              example:
+                - codigo: 210
+                  cargo: Analista de Selección
+                  nivel_organizacional: Profesional
+                  area: Gestión Humana
+                  categoria: Administrativo
+                  ans_cargo_calculado: 30
+      deprecated: false
+  /pbi/data/seleccion/informacionCandidatos.json:
+    get:
+      tags:
+        - Seleccion
+      summary: informacionCandidatos
+      description: >-
+        Retorna el listado de candidatos que participan en al menos un
+        proceso de requisición activo, con su información básica y el número
+        de procesos actuales y anteriores en los que ha participado. Pensado
+        para ser consumido como fuente de datos de PowerBI.
+
+
+        Si no existen candidatos en procesos activos, el servicio retorna
+        igualmente un arreglo con un único registro cuyos campos vienen
+        vacíos (comportamiento explícito del backend, no es un error).
+      operationId: informacionCandidatos
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InformacionCandidato'
+              example:
+                - codigo: 3021
+                  nombre: Laura Camila Gómez Restrepo
+                  cedula: '1035678900'
+                  email: laura.gomez@correo.com
+                  nro_procesos_actuales: 1
+                  nro_procesos_anteriores: 2
+                  tipo_candidato: Externo
+      deprecated: false
+  /pbi/data/seleccion/informacionCandidatosProcesos.json:
+    get:
+      tags:
+        - Seleccion
+      summary: informacionCandidatosProcesos
+      description: >-
+        Retorna el detalle del avance de cada candidato por cada etapa de los
+        procesos de selección en los que participa: estado de la etapa,
+        observaciones, motivo de descarte (si aplica), días que tomó el
+        candidato en la etapa, días laborales y el cumplimiento de
+        requisitos. Pensado para ser consumido como fuente de datos de
+        PowerBI.
+
+
+        Si no existen etapas de candidatos registradas, el servicio retorna
+        igualmente un arreglo con un único registro cuyos campos vienen
+        vacíos (comportamiento explícito del backend, no es un error).
+      operationId: informacionCandidatosProcesos
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InformacionCandidatoProceso'
+              example:
+                - estado_etapa: Finalizada
+                  observaciones: Candidato con buen desempeño en la entrevista
+                  candidato: 3021
+                  etapa: Entrevista con jefe
+                  proceso: 458
+                  fecha_fin: '2026-06-15'
+                  fecha_inicio: '2026-06-10'
+                  motivo_descarte_candidato: null
+                  dias_candidato_etapa: 5
+                  dias_laborales: 4
+                  fecha_fin_ans: '2026-06-17'
+                  cumplimiento_requisitos: 90
+      deprecated: false
+  /pbi/data/seleccion/maestroAreas.json:
+    get:
+      tags:
+        - Seleccion
+      summary: maestroAreas
+      description: >-
+        Retorna el maestro de áreas, deduplicadas por nombre (normalizado con
+        `str_simple`) dando prelación al registro activo cuando existen
+        nombres repetidos. Pensado para ser consumido como fuente de datos de
+        PowerBI (catálogo/dimensión de apoyo).
+
+
+        Si no existen áreas registradas, el servicio retorna igualmente un
+        arreglo con un único registro cuyos campos vienen vacíos
+        (comportamiento explícito del backend, no es un error).
+      operationId: maestroAreas
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MaestroCatalogo'
+              example:
+                - codigo: 12
+                  nombre: Gestión Humana
+                  estado: s
+      deprecated: false
+  /pbi/data/seleccion/maestroVicepresidencias.json:
+    get:
+      tags:
+        - Seleccion
+      summary: maestroVicepresidencias
+      description: >-
+        Retorna el maestro de vicepresidencias, deduplicadas por nombre
+        (normalizado con `str_simple`) dando prelación al registro activo
+        cuando existen nombres repetidos. Pensado para ser consumido como
+        fuente de datos de PowerBI (catálogo/dimensión de apoyo).
+
+
+        Si no existen vicepresidencias registradas, el servicio retorna
+        igualmente un arreglo con un único registro cuyos campos vienen
+        vacíos (comportamiento explícito del backend, no es un error).
+      operationId: maestroVicepresidencias
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MaestroCatalogo'
+              example:
+                - codigo: 3
+                  nombre: Vicepresidencia Administrativa
+                  estado: s
+      deprecated: false
+  /pbi/data/seleccion/informacionEtapasRequisicion.json:
+    get:
+      tags:
+        - Seleccion
+      summary: informacionEtapasRequisicion
+      description: >-
+        Retorna la información general de las etapas configuradas para cada
+        proceso de requisición: orden de la etapa, fechas reales de inicio y
+        fin (calculadas a partir de los candidatos que pasaron por la etapa),
+        el ANS de la etapa y los días mínimo, máximo y promedio observados.
+        Pensado para ser consumido como fuente de datos de PowerBI.
+
+
+        Si no existen etapas configuradas, el servicio retorna igualmente un
+        arreglo con un único registro cuyos campos vienen vacíos
+        (comportamiento explícito del backend, no es un error).
+      operationId: informacionEtapasRequisicion
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InformacionEtapaRequisicion'
+              example:
+                - proceso: 458
+                  orden: 2
+                  etapa: Entrevista con jefe
+                  fecha_fin_real: '2026-06-15'
+                  fecha_inicio_real: '2026-06-10'
+                  ans: 5
+                  dias_min: 3
+                  dias_max: 7
+                  dias_prom: 5
+      deprecated: false
+  /pbi/data/seleccion/informacionEncuestasSatisfaccion.json:
+    get:
+      tags:
+        - Seleccion
+      summary: informacionEncuestasSatisfaccion
+      description: >-
+        Retorna las respuestas registradas de las encuestas de satisfacción
+        del proceso de selección, con la calificación dada por cada
+        evaluador a cada pregunta y la fecha de calificación. Pensado para
+        ser consumido como fuente de datos de PowerBI.
+
+
+        Si no existen encuestas diligenciadas, el servicio retorna igualmente
+        un arreglo con un único registro cuyos campos vienen vacíos
+        (comportamiento explícito del backend, no es un error).
+      operationId: informacionEncuestasSatisfaccion
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InformacionEncuestaSatisfaccion'
+              example:
+                - fecha_calificacion: '2026-06-16'
+                  calificacion: 5
+                  proceso: 458
+                  pregunta: '¿Cómo calificaría la comunicación durante el proceso?'
+                  cod_evaluador: 87
+                  evaluador: Jefe de Gestión Humana
+      deprecated: false
+  /pbi/data/seleccion/responsablesProcesos.json:
+    get:
+      tags:
+        - Seleccion
+      summary: responsablesProcesos
+      description: >-
+        Retorna el listado de usuarios responsables asignados a cada proceso
+        de requisición activo. Pensado para ser consumido como fuente de
+        datos de PowerBI.
+
+
+        Si no existen responsables asignados, el servicio retorna igualmente
+        un arreglo con un único registro cuyos campos vienen vacíos
+        (comportamiento explícito del backend, no es un error).
+      operationId: datosResponsablesProcesosSeleccion
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResponsableProceso'
+              example:
+                - requisicion: 458
+                  cod_responsable: 87
+                  responsable: María Fernanda Ríos López
+      deprecated: false
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: >-
+        Usuario y contraseña provistos por talento cloud para la integración
+        con PowerBI.
+  schemas:
+    InformacionProceso:
+      title: InformacionProceso
+      type: object
+      properties:
+        id_requisicion:
+          type: integer
+          description: Código interno del proceso de requisición
+        compensacion_variable:
+          type: string
+          description: Indica si el proceso maneja compensación variable
+        disponibilidad_viajar:
+          type: boolean
+          description: Indica si el cargo requiere disponibilidad para viajar
+        duracion_dias:
+          type: string
+          description: Duración configurada del proceso, en días
+        edad_desde:
+          type: integer
+          description: Edad mínima solicitada para el aspirante
+        edad_hasta:
+          type: integer
+          description: Edad máxima solicitada para el aspirante
+        estado_proceso:
+          type: string
+          description: >-
+            Estado del proceso: SOLICITADA, APROBADA, ASIGNADA, PUBLICADA,
+            RECHAZADA, CANCELADA, TERMINADA o DESCONOCIDO
+          enum:
+            - SOLICITADA
+            - APROBADA
+            - ASIGNADA
+            - PUBLICADA
+            - RECHAZADA
+            - CANCELADA
+            - TERMINADA
+            - DESCONOCIDO
+        fecha_aprobacion:
+          type: string
+          description: Fecha de aprobación del proceso (YYYY-MM-DD)
+        fecha_cierre_proceso:
+          type: string
+          nullable: true
+          description: Fecha de cierre del proceso (YYYY-MM-DD)
+        fecha_creacion:
+          type: string
+          description: Fecha de creación del proceso (YYYY-MM-DD)
+        fecha_estimada:
+          type: string
+          description: Fecha estimada de cierre del proceso (YYYY-MM-DD)
+        fecha_modificacion:
+          type: string
+          description: Fecha de última modificación del proceso (YYYY-MM-DD)
+        genero:
+          type: string
+          description: Género solicitado para el aspirante
+        justificacion:
+          type: string
+          description: Justificación de la requisición
+        nro_dias_duracion_proceso:
+          type: integer
+          description: Número de días configurado para la duración del proceso
+        nro_vacantes:
+          type: integer
+          description: Número de vacantes solicitadas
+        recibe_compensacion:
+          type: boolean
+          description: Indica si el cargo recibe algún tipo de compensación
+        rotacion_turnos:
+          type: boolean
+          description: Indica si el cargo maneja rotación de turnos
+        salario_mensual:
+          type: string
+          description: Salario mensual ofrecido para el cargo
+        tipo_convocatoria:
+          type: string
+          description: Tipo de convocatoria del proceso (interna/externa)
+        vehiculo:
+          type: string
+          description: Indica si el cargo requiere vehículo propio
+        cargo:
+          type: integer
+          description: Código del cargo de la vacante
+        cargo_jefe:
+          type: integer
+          description: Código del cargo del jefe inmediato de la vacante
+        cargo_vacante:
+          type: string
+          description: >-
+            Nombre del cargo de la vacante; si el proceso tiene un cargo
+            externo, se usa ese valor en su lugar
+        cargo_jefe_vacante:
+          type: string
+          description: Nombre del cargo del jefe inmediato de la vacante
+        empresa:
+          type: string
+          description: Empresa dueña del proceso
+        etapa_actual:
+          type: string
+          description: Nombre de la etapa de selección en la que está el proceso
+        jefeinmediato:
+          type: string
+          description: Nombre completo del jefe inmediato de la vacante
+        jornada_laboral:
+          type: string
+          description: Horario laboral configurado para la vacante
+        motivo:
+          type: string
+          description: Motivo de la requisición
+        negocio:
+          type: string
+          description: Negocio al que pertenece la vacante
+        tipo_requisicion:
+          type: string
+          description: Tipo/regla de aprobación de la requisición
+        responsable_proceso:
+          type: string
+          description: >-
+            Nombres de los usuarios responsables del proceso, concatenados
+            separados por coma
+        sede:
+          type: string
+          description: Sede de la vacante
+        tipo_vinculacion:
+          type: string
+          description: Tipo de vinculación ofrecida
+        uen:
+          type: string
+          description: Unidad estratégica de negocio de la vacante
+        solicitante:
+          type: string
+          description: Nombre completo del usuario solicitante del proceso
+        vicepresidencia:
+          type: string
+          description: Vicepresidencia de la vacante
+        vicepresidencia_codigo:
+          type: integer
+          description: Código de la vicepresidencia de la vacante
+        area_nombre:
+          type: string
+          description: >-
+            Nombre del área de la vacante; "Externa" si el proceso tiene un
+            cargo externo configurado
+        area_codigo:
+          type: integer
+          description: Código del área de la vacante (-999 si el cargo es externo)
+        experiencia:
+          type: integer
+          description: Experiencia requerida para el cargo
+        cliente:
+          type: string
+          nullable: true
+          description: Cliente asociado al proceso, si aplica
+        codigo_proyecto:
+          type: string
+          nullable: true
+          description: Código del proyecto asociado al proceso, si aplica
+        estado_escolaridad:
+          type: string
+          description: Estado de escolaridad requerido para el aspirante
+        escolaridad:
+          type: integer
+          description: Código de escolaridad requerida para el aspirante
+        descripcion_requisicion:
+          type: string
+          description: Descripción del proceso de requisición
+        tiempo_minimo_permanencia:
+          type: integer
+          description: Tiempo mínimo de permanencia esperado en el cargo
+        empresa_solicitante:
+          type: string
+          description: Empresa que solicita el proceso
+        perfil_aspirante:
+          type: string
+          description: Perfil solicitado para el aspirante
+        fecha_ocupacion_cargo:
+          type: string
+          description: Fecha estimada/real de ocupación del cargo (YYYY-MM-DD)
+        fecha_publicacion:
+          type: string
+          description: Fecha de publicación de la vacante (YYYY-MM-DD)
+        idioma:
+          type: string
+          description: Idioma requerido para el cargo
+        nivel_idioma:
+          type: string
+          description: Nivel de idioma requerido para el cargo
+        fecha_cancelacion_proceso:
+          type: string
+          nullable: true
+          description: Fecha de cancelación del proceso, si aplica (YYYY-MM-DD)
+        observaciones_cancelacion:
+          type: string
+          nullable: true
+          description: Observaciones de cancelación del proceso, si aplica
+        usuario_cancelador:
+          type: string
+          nullable: true
+          description: Nombre completo del usuario que canceló el proceso, si aplica
+        usuario_cierre:
+          type: string
+          nullable: true
+          description: Nombre completo del usuario que cerró el proceso, si aplica
+        calendario:
+          type: string
+          description: Calendario laboral usado para el cálculo de días (ej. COLOMBIA)
+        tiempo_transcurrido:
+          type: integer
+          description: >-
+            Días hábiles transcurridos entre el inicio (creación o
+            aprobación, según configuración) y el cierre del proceso (o la
+            fecha actual si aún no ha cerrado)
+    InformacionAns:
+      title: InformacionAns
+      type: object
+      properties:
+        codigo:
+          type: integer
+          description: Código del cargo
+        cargo:
+          type: string
+          description: Nombre del cargo
+        nivel_organizacional:
+          type: string
+          description: Nivel organizacional (tipo de cargo)
+        area:
+          type: string
+          description: Área a la que pertenece el cargo
+        categoria:
+          type: string
+          description: Categoría del cargo
+        ans_cargo_calculado:
+          type: integer
+          description: >-
+            ANS en días calculado según el origen configurado (cargo, nivel
+            organizacional o categoría)
+    InformacionCandidato:
+      title: InformacionCandidato
+      type: object
+      properties:
+        codigo:
+          type: integer
+          description: Código interno del candidato
+        nombre:
+          type: string
+          description: Nombre completo del candidato (concatenación de nombres y apellidos)
+        cedula:
+          type: string
+          description: Número de documento del candidato
+        email:
+          type: string
+          description: Correo electrónico del candidato
+        nro_procesos_actuales:
+          type: integer
+          description: Número de procesos activos en los que participa actualmente
+        nro_procesos_anteriores:
+          type: integer
+          description: Número de procesos anteriores en los que ha participado
+        tipo_candidato:
+          type: string
+          description: Tipo de candidato (ej. interno, externo)
+    InformacionCandidatoProceso:
+      title: InformacionCandidatoProceso
+      type: object
+      properties:
+        estado_etapa:
+          type: string
+          description: Estado del candidato en la etapa
+        observaciones:
+          type: string
+          description: Observaciones registradas para el candidato en la etapa
+        candidato:
+          type: integer
+          description: Código del candidato
+        etapa:
+          type: string
+          description: Nombre de la etapa de selección
+        proceso:
+          type: integer
+          description: Código del proceso de requisición
+        fecha_fin:
+          type: string
+          description: Fecha de fin del candidato en la etapa (YYYY-MM-DD)
+        fecha_inicio:
+          type: string
+          description: Fecha de inicio del candidato en la etapa (YYYY-MM-DD)
+        motivo_descarte_candidato:
+          type: string
+          nullable: true
+          description: Motivo de descarte del candidato en la etapa, si aplica
+        dias_candidato_etapa:
+          type: integer
+          description: Total de días que tomó el candidato en la etapa
+        dias_laborales:
+          type: integer
+          description: Días laborales transcurridos en la etapa
+        fecha_fin_ans:
+          type: string
+          description: Fecha límite de ANS para la etapa (YYYY-MM-DD)
+        cumplimiento_requisitos:
+          type: number
+          description: Porcentaje de cumplimiento de requisitos del candidato para el proceso
+    MaestroCatalogo:
+      title: MaestroCatalogo
+      type: object
+      properties:
+        codigo:
+          type: integer
+          description: Código del registro del catálogo
+        nombre:
+          type: string
+          description: Nombre del registro, deduplicado por nombre normalizado
+        estado:
+          type: string
+          description: "Estado del registro: 's' activo, 'n' inactivo"
+    InformacionEtapaRequisicion:
+      title: InformacionEtapaRequisicion
+      type: object
+      properties:
+        proceso:
+          type: integer
+          description: Código del proceso de requisición
+        orden:
+          type: integer
+          description: Orden de la etapa dentro del proceso
+        etapa:
+          type: string
+          description: Nombre de la etapa de selección
+        fecha_fin_real:
+          type: string
+          description: Fecha real de fin de la etapa, calculada a partir de los candidatos (YYYY-MM-DD)
+        fecha_inicio_real:
+          type: string
+          description: Fecha real de inicio de la etapa, calculada a partir de los candidatos (YYYY-MM-DD)
+        ans:
+          type: integer
+          description: ANS configurado para la etapa, en días
+        dias_min:
+          type: integer
+          description: Mínimo de días observado para la etapa
+        dias_max:
+          type: integer
+          description: Máximo de días observado para la etapa
+        dias_prom:
+          type: integer
+          description: Promedio de días observado para la etapa
+    InformacionEncuestaSatisfaccion:
+      title: InformacionEncuestaSatisfaccion
+      type: object
+      properties:
+        fecha_calificacion:
+          type: string
+          description: Fecha en que se registró la calificación (YYYY-MM-DD)
+        calificacion:
+          type: integer
+          description: Valor numérico de la calificación otorgada, según la escala configurada
+        proceso:
+          type: integer
+          description: Código del proceso de requisición evaluado
+        pregunta:
+          type: string
+          description: Texto de la pregunta de la encuesta
+        cod_evaluador:
+          type: integer
+          description: Código del usuario evaluador
+        evaluador:
+          type: string
+          description: Nombre completo del usuario evaluador
+    ResponsableProceso:
+      title: ResponsableProceso
+      type: object
+      properties:
+        requisicion:
+          type: integer
+          description: Código del proceso de requisición
+        cod_responsable:
+          type: integer
+          description: Código del usuario responsable
+        responsable:
+          type: string
+          description: Nombre completo del usuario responsable
