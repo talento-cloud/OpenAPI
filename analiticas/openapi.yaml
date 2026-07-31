@@ -1,13 +1,14 @@
 openapi: 3.0.0
 info:
-  title: API Analíticas - Selección (PowerBI)
+  title: API Analíticas (PowerBI)
   contact: {}
   version: '1.0'
   description: >-
-    Esta API permite acceder a la información analítica del módulo de
-    Selección (procesos de requisición, candidatos, etapas, encuestas de
-    satisfacción y maestros de apoyo) de una empresa, consumida por PowerBI
-    para la construcción de reportes analíticos.
+    Esta API permite acceder a la información analítica de talento cloud
+    consumida por PowerBI para la construcción de reportes. Cada módulo de
+    negocio se agrupa bajo su propio tag (ej. Hoja de Vida, Selección); a
+    medida que se documenten nuevos módulos de analíticas se agregarán como
+    tags adicionales dentro de esta misma especificación.
 
     ## Manejo de errores
 
@@ -42,6 +43,177 @@ servers:
 security:
   - basicAuth: []
 paths:
+  /pbi/data/demograficas/idiomas.json:
+    get:
+      tags:
+        - HojaDeVida
+      summary: pbiIdiomas
+      description: >-
+        Retorna el listado de idiomas registrados en la hoja de vida de cada
+        colaborador activo, con su nivel de lenguaje y el promedio general
+        obtenido. Pensado para ser consumido como fuente de datos de PowerBI.
+
+
+        Si no existen registros de idiomas para ningún colaborador, el
+        servicio retorna igualmente un arreglo con un único registro cuyos
+        campos vienen vacíos (comportamiento explícito del backend, no es un
+        error).
+      operationId: pbiIdiomas
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Idioma'
+              example:
+                - usuario_codigo: 125
+                  usuario_numero_documento: '1020304050'
+                  usuario_nombre: Juan Carlos Pérez Gómez
+                  idioma: Inglés
+                  nivel_lenguaje: Avanzado
+                  nivel: 85
+      deprecated: false
+  /pbi/data/demograficas/estudios.json:
+    get:
+      tags:
+        - HojaDeVida
+      summary: pbiEstudiosFormales
+      description: >-
+        Retorna el listado de estudios formales registrados en la hoja de
+        vida de cada colaborador activo: título obtenido, año de graduación,
+        estado del estudio, niveles cursados, nivel de escolaridad e
+        institución educativa. Pensado para ser consumido como fuente de
+        datos de PowerBI.
+
+
+        Si no existen registros de estudios formales para ningún colaborador,
+        el servicio retorna igualmente un arreglo con un único registro cuyos
+        campos vienen vacíos (comportamiento explícito del backend, no es un
+        error).
+      operationId: pbiEstudiosFormales
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EstudioFormal'
+              example:
+                - usuario_codigo: 125
+                  usuario_numero_documento: '1020304050'
+                  usuario_nombre: Juan Carlos Pérez Gómez
+                  fecha_graduacion: 2015
+                  titulo: Ingeniero de Sistemas
+                  estado_educacion: Graduado
+                  niveles_cursados: 4
+                  nivel_escolaridad: Universitario
+                  nombre_institucion_educativa: Universidad Nacional
+      deprecated: false
+  /pbi/data/demograficas/conocimientos.json:
+    get:
+      tags:
+        - HojaDeVida
+      summary: pbiConocimientos
+      description: >-
+        Retorna el listado de conocimientos y habilidades registrados en la
+        hoja de vida de cada colaborador activo, junto con el nivel asociado
+        a cada conocimiento. Pensado para ser consumido como fuente de datos
+        de PowerBI.
+
+
+        Si no existen registros de conocimientos para ningún colaborador, el
+        servicio retorna igualmente un arreglo con un único registro cuyos
+        campos vienen vacíos (comportamiento explícito del backend, no es un
+        error).
+      operationId: pbiConocimientos
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Conocimiento'
+              example:
+                - usuario_codigo: 125
+                  usuario_numero_documento: '1020304050'
+                  usuario_nombre: Juan Carlos Pérez Gómez
+                  conocimiento: Excel avanzado
+                  nivel: Alto
+      deprecated: false
+  /pbi/data/demograficas/reporte.json:
+    get:
+      tags:
+        - HojaDeVida
+      summary: pbiDemograficas
+      description: >-
+        Retorna el reporte demográfico completo de los colaboradores activos
+        con hoja de vida activa: datos básicos de usuario, fechas de ingreso
+        e inicio de cargo, información de residencia, tipo de vivienda,
+        estado civil, género, escolaridad, años para jubilación, años de
+        experiencia general, clasificadores organizacionales (área, negocio,
+        empresa, UEN, vicepresidencia, sede, ciudad, regional) y datos del
+        jefe directo. Pensado para ser consumido como fuente de datos de
+        PowerBI.
+
+
+        A diferencia de los demás endpoints de este módulo, si no hay
+        resultados este servicio retorna un arreglo vacío (no agrega un
+        registro con campos vacíos).
+      operationId: pbiDemograficas
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReporteDemografico'
+              example:
+                - usuario_codigo: 125
+                  usuario_tipo_documento: CC
+                  usuario_numero_documento: '1020304050'
+                  usuario_nombre: Juan Carlos Pérez Gómez
+                  usuario_email: juan.perez@empresa.com
+                  usuario_cargo: Analista de Talento Humano
+                  fecha_ingreso: '2018-03-05'
+                  fecha_inicio_cargo: '2018-03-05'
+                  fecha_nacimiento: '1990-07-14'
+                  direccion_residencia: Calle 123 # 45-67
+                  barrio_residencia: El Poblado
+                  ciudad_residencia: Medellín
+                  tipo_vivienda: Arrendada
+                  perimetro: Urbano
+                  estado_civil: Soltero
+                  genero: M
+                  escolaridad: Universitario
+                  anios_para_jubilacion: 5
+                  tiempo_experiencia: 10
+                  usuario_area: Gestión Humana
+                  usuario_nivel: Profesional
+                  usuario_negocio: Corporativo
+                  usuario_empresa: Empresa Demo S.A.S.
+                  usuario_uen: UEN Servicios
+                  usuario_vicepresidencia: Vicepresidencia Administrativa
+                  usuario_sede: Sede Principal
+                  usuario_ciudad: Medellín
+                  usuario_regional: Antioquia
+                  usuario_tipo: Administrativo
+                  jefe_codigo: 42
+                  jefe_documento: '900100200'
+                  jefe_nombre: María Fernanda Ríos López
+      deprecated: false
   /pbi/data/seleccion/informacionProcesos.json:
     get:
       tags:
@@ -413,6 +585,178 @@ components:
         Usuario y contraseña provistos por talento cloud para la integración
         con PowerBI.
   schemas:
+    Idioma:
+      title: Idioma
+      type: object
+      properties:
+        usuario_codigo:
+          type: integer
+          description: Código interno del usuario
+        usuario_numero_documento:
+          type: string
+          description: Número de documento del usuario
+        usuario_nombre:
+          type: string
+          description: Nombre completo del usuario
+        idioma:
+          type: string
+          description: Nombre del idioma registrado en la hoja de vida
+        nivel_lenguaje:
+          type: string
+          description: Escala/nivel del idioma (ej. Básico, Intermedio, Avanzado)
+        nivel:
+          type: number
+          description: Promedio general obtenido para el idioma
+    EstudioFormal:
+      title: EstudioFormal
+      type: object
+      properties:
+        usuario_codigo:
+          type: integer
+          description: Código interno del usuario
+        usuario_numero_documento:
+          type: string
+          description: Número de documento del usuario
+        usuario_nombre:
+          type: string
+          description: Nombre completo del usuario
+        fecha_graduacion:
+          type: integer
+          description: Año de graduación
+        titulo:
+          type: string
+          description: Título académico obtenido
+        estado_educacion:
+          type: string
+          description: Estado del estudio (ej. Graduado, En curso)
+        niveles_cursados:
+          type: integer
+          description: Código del nivel educativo cursado (valor crudo, sin resolver a texto en la consulta)
+        nivel_escolaridad:
+          type: string
+          description: Escolaridad asociada al título académico
+        nombre_institucion_educativa:
+          type: string
+          description: Nombre de la institución educativa
+    Conocimiento:
+      title: Conocimiento
+      type: object
+      properties:
+        usuario_codigo:
+          type: integer
+          description: Código interno del usuario
+        usuario_numero_documento:
+          type: string
+          description: Número de documento del usuario
+        usuario_nombre:
+          type: string
+          description: Nombre completo del usuario
+        conocimiento:
+          type: string
+          description: Conocimiento o habilidad registrada en la hoja de vida
+        nivel:
+          type: string
+          description: Nivel del conocimiento/habilidad
+    ReporteDemografico:
+      title: ReporteDemografico
+      type: object
+      properties:
+        usuario_codigo:
+          type: integer
+          description: Código interno del usuario
+        usuario_tipo_documento:
+          type: string
+          description: Tipo de documento de identidad
+        usuario_numero_documento:
+          type: string
+          description: Número de documento del usuario
+        usuario_nombre:
+          type: string
+          description: Nombre completo del usuario
+        usuario_email:
+          type: string
+          description: Correo electrónico del usuario
+        usuario_cargo:
+          type: string
+          description: Cargo actual del usuario
+        fecha_ingreso:
+          type: string
+          description: Fecha de ingreso a la empresa (YYYY-MM-DD)
+        fecha_inicio_cargo:
+          type: string
+          description: Fecha de inicio en el cargo actual (YYYY-MM-DD)
+        fecha_nacimiento:
+          type: string
+          description: Fecha de nacimiento (YYYY-MM-DD)
+        direccion_residencia:
+          type: string
+          description: Dirección de residencia
+        barrio_residencia:
+          type: string
+          description: Barrio de residencia
+        ciudad_residencia:
+          type: string
+          description: Ciudad de residencia
+        tipo_vivienda:
+          type: string
+          description: Tipo de vivienda (propia, arrendada, etc.)
+        perimetro:
+          type: string
+          description: Perímetro de residencia (urbano/rural)
+        estado_civil:
+          type: string
+          description: Estado civil del usuario
+        genero:
+          type: string
+          description: Género del usuario
+        escolaridad:
+          type: string
+          description: Nivel de escolaridad
+        anios_para_jubilacion:
+          type: number
+          description: Años restantes para la edad de jubilación, según país y género
+        tiempo_experiencia:
+          type: number
+          description: Años de experiencia general registrados en la hoja de vida
+        usuario_area:
+          type: string
+          description: Área a la que pertenece el usuario
+        usuario_nivel:
+          type: string
+          description: Nivel organizacional del cargo
+        usuario_negocio:
+          type: string
+          description: Negocio al que pertenece el usuario
+        usuario_empresa:
+          type: string
+          description: Empresa a la que pertenece el usuario
+        usuario_uen:
+          type: string
+          description: Unidad estratégica de negocio
+        usuario_vicepresidencia:
+          type: string
+          description: Vicepresidencia a la que pertenece el usuario
+        usuario_sede:
+          type: string
+          description: Sede del usuario
+        usuario_ciudad:
+          type: string
+          description: Ciudad de la sede del usuario
+        usuario_regional:
+          type: string
+          description: Regional de la sede del usuario
+        usuario_tipo:
+          type: string
+          description: 'Operativo o Administrativo, según el campo operario del usuario'
+        jefe_codigo:
+          type: integer
+          description: Código interno del jefe directo
+        jefe_documento:
+          type: string
+          description: Número de documento del jefe directo
+        jefe_nombre:
+          type: string
+          description: Nombre completo del jefe directo
     InformacionProceso:
       title: InformacionProceso
       type: object
@@ -793,3 +1137,12 @@ components:
         responsable:
           type: string
           description: Nombre completo del usuario responsable
+tags:
+  - name: HojaDeVida
+    description: >-
+      Datos demográficos y de hoja de vida de los colaboradores (idiomas,
+      estudios formales, conocimientos y reporte demográfico completo).
+  - name: Seleccion
+    description: >-
+      Datos analíticos del módulo de Selección: procesos de requisición,
+      candidatos, etapas, encuestas de satisfacción y maestros de apoyo.
