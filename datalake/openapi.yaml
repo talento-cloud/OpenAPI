@@ -127,60 +127,12 @@ paths:
         '200':
           description: OK
           headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
             Content-Language:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: es-CO
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-store
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -217,67 +169,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Cache-Control:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-cache, no-store, max-age=0, must-revalidate
-            Pragma:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: no-cache
-            Expires:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: '0'
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 1; mode=block
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            Content-Security-Policy:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
-            Transfer-Encoding:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: chunked
-            Server:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Jetty(8.y.z-SNAPSHOT)
           content:
             application/json;charset=UTF-8:
               schema:
@@ -809,6 +700,10 @@ paths:
                   tipo_contrato: Contrato a término indefinido
                   fecha_ingreso: 2022-11-29
                 success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'        
       deprecated: false
 components:
   schemas:
@@ -1422,6 +1317,35 @@ components:
         discapacidad: null
         tipo_contrato: null
         fecha_ingreso: 2026-05-12
+    ErrorResponse:
+      title: ErrorResponse
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Token JWT inválido, expirado o ausente.    
+  responses:
+    UnauthorizedError:
+      description: Token JWT inválido, expirado o ausente.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            message: Token JWT inválido, expirado o ausente.
+    ForbiddenError:
+      description: El usuario autenticado no tiene permisos suficientes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            message: El usuario autenticado no tiene permisos suficientes.      
   securitySchemes:
     oauth2:
       type: oauth2
