@@ -3,6 +3,18 @@ info:
   title: Datalake - API publica de talento cloud
   description: >-
     API REST para entregar info a datalake.
+
+
+    En la documentación se mencionan 2 urls:
+
+    - Producción: https://[tenant].talento.cloud/
+
+    - Pruebas: https://[tenant].talento-dev.cloud/
+
+
+    El client_id y client_secret son suministrados por talento cloud al cliente.
+
+
     Maneja autenticación Oauth 2.0 y se podria consultar los siguientes informes en formato application/json:
       - HojaVida - Información de nómina - OK
       - HojaVida - Reporte datos básicos usuario interno - Pendiente
