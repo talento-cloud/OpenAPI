@@ -169,7 +169,7 @@ paths:
       tags:
       - Datalake
       summary: HojaVida - Información de nómina
-      description: Endpoint donde se lista la información de nómina de las hojas de vida de usuarios activos de talento cloud
+      description: Endpoint donde se lista la información de nómina de las hojas de vida de usuarios activos de talento cloud. Las fechas se entregan en formato yyyy-mm-dd
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -188,529 +188,505 @@ paths:
                 - $ref: '#/components/schemas/HV_informacionNomina'
                 - example:
                     data:
-                    - regimen_pension: null
-                      centros_costos: null
-                      vicepresidencia: Financiera
-                      jefe: Alvaro Cardenas
-                      nivel_organizacional: Analistas
-                      corresponde_a_salario: null
-                      nomina: ''
-                      correo: null
-                      pension: null
-                      cargo: Analista Desarrollador
-                      telefono: null
-                      tipo_usuario: Administrativo
-                      area: TI
-                      cesantias: null
-                      nombres_conceptos: null
-                      tipo_documento_beneficiario: null
-                      direccion: null
-                      banco: null
-                      eps: null
-                      negocio: Calidad de software
-                      relacion_seguridad_social: null
+                    - usuario: ADRIANA PEREZ PEREZCORTES
+                      tipo_documento: CEDULA
                       documento_usuario: '8587647000'
-                      ciudad_nacimiento: null
-                      beneficiario_caja_compensacion: null
-                      centro_costo: null
-                      porcentaje_riesgo_arl: ''
-                      ciudad: Cartagena
-                      parentesco: null
-                      numero_cuenta: null
-                      usuario: ADRIANA PEREZ PEREZCORTES
-                      documento_beneficiario: null
-                      empresa: Soluciones Estratégicas Integrales para el Desarrollo Empresarial y Tecnológico S.A.S
-                      nombre_beneficiario: null
-                      documento_jefe: '29498498195'
-                      fecha_expedicion_documento: null
-                      fecha_nacimiento_colaborador: null
-                      fecha_terminacion_contrato: null
-                      regional: Costa Atlántica
-                      fecha_nacimiento: null
-                      forma_pago: null
-                      municipio_residencia: null
-                      valores_conceptos: null
-                      cod_usuario: 373
-                      centro_trabajo_arl: ''
-                      ciudad_beneficiario: ''
-                      tipo_salario: null
-                      celular: null
-                      arl: ''
+                      tipo_usuario: Administrativo
                       email: basura_talpostobon790@unmail.edu
-                      labora_sabado: No
-                      uen: Nexa Digital Solutions
-                      tipo_cuenta: null
-                      beneficiario_eps: null
-                      barrio: null
-                      sede: Cartagena
-                      salario: null
-                      lugar_expedicion: null
-                      pais: Colombia
-                      cod_cargo: 81
-                      cupo_beneficios: null
-                      tipo_documento: CEDULA
-                      modalidad: null
-                      discapacidad: null
-                      tipo_contrato: null
-                      fecha_ingreso: 2026-05-12
-                    - regimen_pension: null
-                      centros_costos: null
-                      vicepresidencia: TI
-                      jefe: Andres Mauricio Jaramillo Salazar
-                      nivel_organizacional: Analistas
-                      corresponde_a_salario: null
-                      nomina: ''
-                      correo: null
-                      pension: null
-                      cargo: Desarrollador Senior
-                      telefono: null
-                      tipo_usuario: Administrativo
-                      area: TI
-                      cesantias: null
-                      nombres_conceptos: null
-                      tipo_documento_beneficiario: null
-                      direccion: null
-                      banco: null
-                      eps: null
-                      negocio: Desarrollo de Software
-                      relacion_seguridad_social: null
-                      documento_usuario: '29498498195'
-                      ciudad_nacimiento: null
-                      beneficiario_caja_compensacion: null
-                      centro_costo: null
-                      porcentaje_riesgo_arl: ''
-                      ciudad: Medellin
-                      parentesco: null
-                      numero_cuenta: null
-                      usuario: Alvaro Cardenas
-                      documento_beneficiario: null
-                      empresa: Corporación Internacional de.
-                      nombre_beneficiario: null
-                      documento_jefe: '1117123456'
-                      fecha_expedicion_documento: null
-                      fecha_nacimiento_colaborador: null
-                      fecha_terminacion_contrato: null
-                      regional: Antioquia
-                      fecha_nacimiento: null
-                      forma_pago: null
-                      municipio_residencia: null
-                      valores_conceptos: null
-                      cod_usuario: 360
-                      centro_trabajo_arl: ''
-                      ciudad_beneficiario: ''
-                      tipo_salario: null
-                      celular: null
-                      arl: ''
-                      email: 360_360_360_prueba5@basura.com
-                      labora_sabado: No
-                      uen: UEN Desarrollo e innovación
-                      tipo_cuenta: null
-                      beneficiario_eps: null
-                      barrio: null
-                      sede: Medellín
-                      salario: null
-                      lugar_expedicion: null
-                      pais: Colombia
-                      cod_cargo: 93
-                      cupo_beneficios: null
-                      tipo_documento: CEDULA
-                      modalidad: null
-                      discapacidad: null
-                      tipo_contrato: null
-                      fecha_ingreso: 2025-04-13
-                    - regimen_pension: null
-                      centros_costos: ''
-                      vicepresidencia: Gestión Humana
-                      jefe: Deissy Echeverry Seleccion
-                      nivel_organizacional: Analistas
-                      corresponde_a_salario: null
-                      nomina: ''
-                      correo: null
-                      pension: null
-                      cargo: Arquitecto TI
-                      telefono: '987564859680'
-                      tipo_usuario: Administrativo
-                      area: TI
-                      cesantias: null
-                      nombres_conceptos: null
-                      tipo_documento_beneficiario: null
-                      direccion: 'Bulevar 55AD  # 66AC Este 66'
-                      banco: null
-                      eps: null
                       negocio: Calidad de software
-                      relacion_seguridad_social: null
-                      documento_usuario: '29866304'
-                      ciudad_nacimiento: ABINGDON DOWNS
-                      beneficiario_caja_compensacion: null
-                      centro_costo: ''
-                      porcentaje_riesgo_arl: ''
-                      ciudad: Medellin
-                      parentesco: null
-                      numero_cuenta: ''
-                      usuario: Amparo Echeverry
-                      documento_beneficiario: null
-                      empresa: Nexa Solutions
-                      nombre_beneficiario: null
-                      documento_jefe: '42793011'
-                      fecha_expedicion_documento: 1989-01-10
-                      fecha_nacimiento_colaborador: 1986-06-06
-                      fecha_terminacion_contrato: null
-                      regional: Antioquia
-                      fecha_nacimiento: null
-                      forma_pago: null
-                      municipio_residencia: AEROGLEN
-                      valores_conceptos: null
-                      cod_usuario: 353
-                      centro_trabajo_arl: ''
-                      ciudad_beneficiario: ''
-                      tipo_salario: null
-                      celular: '257372572'
-                      arl: ''
-                      email: 353_353_353_text@gmail.com
-                      labora_sabado: No
+                      empresa: Soluciones Estratégicas Integrales para el Desarrollo Empresarial y Tecnológico S.A.S
                       uen: Nexa Digital Solutions
-                      tipo_cuenta: null
-                      beneficiario_eps: null
-                      barrio: gyyyyy
-                      sede: Medellín
-                      salario: '3200000'
-                      lugar_expedicion: ABINGDON DOWNS
+                      vicepresidencia: Financiera
                       pais: Colombia
-                      cod_cargo: 82
-                      cupo_beneficios: null
-                      tipo_documento: CEDULA
-                      modalidad: Casa
-                      discapacidad: null
-                      tipo_contrato: Contrato por prestación de servicios
-                      fecha_ingreso: 2025-06-10
-                    - regimen_pension: null
-                      centros_costos: ''
-                      vicepresidencia: financiera
-                      jefe: Blanca Ruiz Suarez
-                      nivel_organizacional: Gerencial
-                      corresponde_a_salario: null
-                      nomina: ''
-                      correo: null
-                      pension: Colfondos
-                      cargo: Gerente de Calidad y Soporte
-                      telefono: null
-                      tipo_usuario: Administrativo
-                      area: Sistemas
-                      cesantias: Protección S.A
-                      nombres_conceptos: null
-                      tipo_documento_beneficiario: null
-                      direccion: ''
-                      banco: Bancolombia
-                      eps: COMFAMILIAR DE NARIÑO EPS - CCF
-                      negocio: Desarrollo de Software
-                      relacion_seguridad_social: null
-                      documento_usuario: '43609065'
-                      ciudad_nacimiento: null
-                      beneficiario_caja_compensacion: null
-                      centro_costo: ''
-                      porcentaje_riesgo_arl: ''
-                      ciudad: Medellin
-                      parentesco: null
-                      numero_cuenta: '650000005145'
-                      usuario: Ana Maria Gomez Ramirez
-                      documento_beneficiario: null
-                      empresa: talento cloud
-                      nombre_beneficiario: null
-                      documento_jefe: '21897678'
-                      fecha_expedicion_documento: null
-                      fecha_nacimiento_colaborador: null
+                      ciudad: Cartagena
+                      regional: Costa Atlántica
+                      sede: Cartagena
+                      cargo: Analista Desarrollador
+                      nivel_organizacional: Analistas
+                      area: TI
+                      documento_jefe: '29498498195'
+                      jefe: Alvaro Cardenas
+                      fecha_ingreso: 2026-05-12
+                      tipo_contrato: null
                       fecha_terminacion_contrato: null
-                      regional: Antioquia
-                      fecha_nacimiento: null
                       forma_pago: null
-                      municipio_residencia: null
-                      valores_conceptos: null
-                      cod_usuario: 238
-                      centro_trabajo_arl: ''
-                      ciudad_beneficiario: ''
                       tipo_salario: null
-                      celular: 3215554444xxx
-                      arl: ARL Positiva
-                      email: 238_xxxisrael.fonseca@talento.cloud
-                      labora_sabado: No
-                      uen: UEN App Moviles
-                      tipo_cuenta: Cuenta de ahorros
-                      beneficiario_eps: null
-                      barrio: ''
-                      sede: Medellín
+                      nomina: ''
+                      regimen_pension: null
+                      tipo_cuenta: null
+                      banco: null
+                      numero_cuenta: null
                       salario: null
-                      lugar_expedicion: Ricaurte
-                      pais: Colombia
-                      cod_cargo: 62
                       cupo_beneficios: null
-                      tipo_documento: CEDULA
-                      modalidad: Casa
+                      centros_costos: null
+                      modalidad: null
+                      labora_sabado: No
+                      nombres_conceptos: null
+                      valores_conceptos: null
+                      corresponde_a_salario: null
+                      eps: null
+                      pension: null
+                      cesantias: null
+                      arl: ''
+                      centro_trabajo_arl: ''
+                      porcentaje_riesgo_arl: ''
+                      lugar_expedicion: null
+                      fecha_expedicion_documento: null
+                      municipio_residencia: null
+                      fecha_nacimiento_colaborador: null
+                      ciudad_nacimiento: null
+                      direccion: null
+                      barrio: null
+                      telefono: null
+                      celular: null
+                      correo: null
+                      tipo_documento_beneficiario: null
+                      documento_beneficiario: null
+                      nombre_beneficiario: null
+                      fecha_nacimiento: null
+                      parentesco: null
+                      ciudad_beneficiario: ''
+                      relacion_seguridad_social: null
                       discapacidad: null
-                      tipo_contrato: Contrato a término indefinido
+                      beneficiario_eps: null
+                      beneficiario_caja_compensacion: null
+                    - usuario: Alvaro Cardenas
+                      tipo_documento: CEDULA
+                      documento_usuario: '29498498195'
+                      tipo_usuario: Administrativo
+                      email: 360_360_360_prueba5@basura.com
+                      negocio: Desarrollo de Software
+                      empresa: Corporación Internacional de.
+                      uen: UEN Desarrollo e innovación
+                      vicepresidencia: TI
+                      pais: Colombia
+                      ciudad: Medellin
+                      regional: Antioquia
+                      sede: Medellín
+                      cargo: Desarrollador Senior
+                      nivel_organizacional: Analistas
+                      area: TI
+                      documento_jefe: '1117123456'
+                      jefe: Andres Mauricio Jaramillo Salazar
+                      fecha_ingreso: 2025-04-13
+                      tipo_contrato: null
+                      fecha_terminacion_contrato: null
+                      forma_pago: null
+                      tipo_salario: null
+                      nomina: ''
+                      regimen_pension: null
+                      tipo_cuenta: null
+                      banco: null
+                      numero_cuenta: null
+                      salario: null
+                      cupo_beneficios: null
+                      centros_costos: null
+                      modalidad: null
+                      labora_sabado: No
+                      nombres_conceptos: null
+                      valores_conceptos: null
+                      corresponde_a_salario: null
+                      eps: null
+                      pension: null
+                      cesantias: null
+                      arl: ''
+                      centro_trabajo_arl: ''
+                      porcentaje_riesgo_arl: ''
+                      lugar_expedicion: null
+                      fecha_expedicion_documento: null
+                      municipio_residencia: null
+                      fecha_nacimiento_colaborador: null
+                      ciudad_nacimiento: null
+                      direccion: null
+                      barrio: null
+                      telefono: null
+                      celular: null
+                      correo: null
+                      tipo_documento_beneficiario: null
+                      documento_beneficiario: null
+                      nombre_beneficiario: null
+                      fecha_nacimiento: null
+                      parentesco: null
+                      ciudad_beneficiario: ''
+                      relacion_seguridad_social: null
+                      discapacidad: null
+                      beneficiario_eps: null
+                      beneficiario_caja_compensacion: null
+                    - usuario: Amparo Echeverry
+                      tipo_documento: CEDULA
+                      documento_usuario: '29866304'
+                      tipo_usuario: Administrativo
+                      email: 353_353_353_text@gmail.com
+                      negocio: Calidad de software
+                      empresa: Nexa Solutions
+                      uen: Nexa Digital Solutions
+                      vicepresidencia: Gestión Humana
+                      pais: Colombia
+                      ciudad: Medellin
+                      regional: Antioquia
+                      sede: Medellín
+                      cargo: Arquitecto TI
+                      nivel_organizacional: Analistas
+                      area: TI
+                      documento_jefe: '42793011'
+                      jefe: Deissy Echeverry Seleccion
+                      fecha_ingreso: 2025-06-10
+                      tipo_contrato: Contrato por prestación de servicios
+                      fecha_terminacion_contrato: null
+                      forma_pago: null
+                      tipo_salario: null
+                      nomina: ''
+                      regimen_pension: null
+                      tipo_cuenta: null
+                      banco: null
+                      numero_cuenta: ''
+                      salario: '3200000'
+                      cupo_beneficios: null
+                      centros_costos: ''
+                      modalidad: Casa
+                      labora_sabado: No
+                      nombres_conceptos: null
+                      valores_conceptos: null
+                      corresponde_a_salario: null
+                      eps: null
+                      pension: null
+                      cesantias: null
+                      arl: ''
+                      centro_trabajo_arl: ''
+                      porcentaje_riesgo_arl: ''
+                      lugar_expedicion: ABINGDON DOWNS
+                      fecha_expedicion_documento: 1989-01-10
+                      municipio_residencia: AEROGLEN
+                      fecha_nacimiento_colaborador: 1986-06-06
+                      ciudad_nacimiento: ABINGDON DOWNS
+                      direccion: 'Bulevar 55AD  # 66AC Este 66'
+                      barrio: gyyyyy
+                      telefono: '987564859680'
+                      celular: '257372572'
+                      correo: null
+                      tipo_documento_beneficiario: null
+                      documento_beneficiario: null
+                      nombre_beneficiario: null
+                      fecha_nacimiento: null
+                      parentesco: null
+                      ciudad_beneficiario: ''
+                      relacion_seguridad_social: null
+                      discapacidad: null
+                      beneficiario_eps: null
+                      beneficiario_caja_compensacion: null
+                    - usuario: Ana Maria Gomez Ramirez
+                      tipo_documento: CEDULA
+                      documento_usuario: '43609065'
+                      tipo_usuario: Administrativo
+                      email: 238_xxxisrael.fonseca@talento.cloud
+                      negocio: Desarrollo de Software
+                      empresa: talento cloud
+                      uen: UEN App Moviles
+                      vicepresidencia: financiera
+                      pais: Colombia
+                      ciudad: Medellin
+                      regional: Antioquia
+                      sede: Medellín
+                      cargo: Gerente de Calidad y Soporte
+                      nivel_organizacional: Gerencial
+                      area: Sistemas
+                      documento_jefe: '21897678'
+                      jefe: Blanca Ruiz Suarez
                       fecha_ingreso: 2022-11-29
+                      tipo_contrato: Contrato a término indefinido
+                      fecha_terminacion_contrato: null
+                      forma_pago: null
+                      tipo_salario: null
+                      nomina: ''
+                      regimen_pension: null
+                      tipo_cuenta: Cuenta de ahorros
+                      banco: Bancolombia
+                      numero_cuenta: '650000005145'
+                      salario: null
+                      cupo_beneficios: null
+                      centros_costos: ''
+                      modalidad: Casa
+                      labora_sabado: No
+                      nombres_conceptos: null
+                      valores_conceptos: null
+                      corresponde_a_salario: null
+                      eps: COMFAMILIAR DE NARIÑO EPS - CCF
+                      pension: Colfondos
+                      cesantias: Protección S.A
+                      arl: ARL Positiva
+                      centro_trabajo_arl: ''
+                      porcentaje_riesgo_arl: ''
+                      lugar_expedicion: Ricaurte
+                      fecha_expedicion_documento: null
+                      municipio_residencia: null
+                      fecha_nacimiento_colaborador: null
+                      ciudad_nacimiento: null
+                      direccion: ''
+                      barrio: ''
+                      telefono: null
+                      celular: 3215554444xxx
+                      correo: null
+                      tipo_documento_beneficiario: null
+                      documento_beneficiario: null
+                      nombre_beneficiario: null
+                      fecha_nacimiento: null
+                      parentesco: null
+                      ciudad_beneficiario: ''
+                      relacion_seguridad_social: null
+                      discapacidad: null
+                      beneficiario_eps: null
+                      beneficiario_caja_compensacion: null
                     success: true
               example:
                 data:
-                - regimen_pension: null
-                  centros_costos: null
-                  vicepresidencia: Financiera
-                  jefe: Alvaro Cardenas
-                  nivel_organizacional: Analistas
-                  corresponde_a_salario: null
-                  nomina: ''
-                  correo: null
-                  pension: null
-                  cargo: Analista Desarrollador
-                  telefono: null
-                  tipo_usuario: Administrativo
-                  area: TI
-                  cesantias: null
-                  nombres_conceptos: null
-                  tipo_documento_beneficiario: null
-                  direccion: null
-                  banco: null
-                  eps: null
-                  negocio: Calidad de software
-                  relacion_seguridad_social: null
+                - usuario: ADRIANA PEREZ PEREZCORTES
+                  tipo_documento: CEDULA
                   documento_usuario: '8587647000'
-                  ciudad_nacimiento: null
-                  beneficiario_caja_compensacion: null
-                  centro_costo: null
-                  porcentaje_riesgo_arl: ''
-                  ciudad: Cartagena
-                  parentesco: null
-                  numero_cuenta: null
-                  usuario: ADRIANA PEREZ PEREZCORTES
-                  documento_beneficiario: null
-                  empresa: Soluciones Estratégicas Integrales para el Desarrollo Empresarial y Tecnológico S.A.S
-                  nombre_beneficiario: null
-                  documento_jefe: '29498498195'
-                  fecha_expedicion_documento: null
-                  fecha_nacimiento_colaborador: null
-                  fecha_terminacion_contrato: null
-                  regional: Costa Atlántica
-                  fecha_nacimiento: null
-                  forma_pago: null
-                  municipio_residencia: null
-                  valores_conceptos: null
-                  cod_usuario: 373
-                  centro_trabajo_arl: ''
-                  ciudad_beneficiario: ''
-                  tipo_salario: null
-                  celular: null
-                  arl: ''
+                  tipo_usuario: Administrativo
                   email: basura_talpostobon790@unmail.edu
-                  labora_sabado: No
-                  uen: Nexa Digital Solutions
-                  tipo_cuenta: null
-                  beneficiario_eps: null
-                  barrio: null
-                  sede: Cartagena
-                  salario: null
-                  lugar_expedicion: null
-                  pais: Colombia
-                  cod_cargo: 81
-                  cupo_beneficios: null
-                  tipo_documento: CEDULA
-                  modalidad: null
-                  discapacidad: null
-                  tipo_contrato: null
-                  fecha_ingreso: 2026-05-12
-                - regimen_pension: null
-                  centros_costos: null
-                  vicepresidencia: TI
-                  jefe: Andres Mauricio Jaramillo Salazar
-                  nivel_organizacional: Analistas
-                  corresponde_a_salario: null
-                  nomina: ''
-                  correo: null
-                  pension: null
-                  cargo: Desarrollador Senior
-                  telefono: null
-                  tipo_usuario: Administrativo
-                  area: TI
-                  cesantias: null
-                  nombres_conceptos: null
-                  tipo_documento_beneficiario: null
-                  direccion: null
-                  banco: null
-                  eps: null
-                  negocio: Desarrollo de Software
-                  relacion_seguridad_social: null
-                  documento_usuario: '29498498195'
-                  ciudad_nacimiento: null
-                  beneficiario_caja_compensacion: null
-                  centro_costo: null
-                  porcentaje_riesgo_arl: ''
-                  ciudad: Medellin
-                  parentesco: null
-                  numero_cuenta: null
-                  usuario: Alvaro Cardenas
-                  documento_beneficiario: null
-                  empresa: Corporación Internacional de.
-                  nombre_beneficiario: null
-                  documento_jefe: '1117123456'
-                  fecha_expedicion_documento: null
-                  fecha_nacimiento_colaborador: null
-                  fecha_terminacion_contrato: null
-                  regional: Antioquia
-                  fecha_nacimiento: null
-                  forma_pago: null
-                  municipio_residencia: null
-                  valores_conceptos: null
-                  cod_usuario: 360
-                  centro_trabajo_arl: ''
-                  ciudad_beneficiario: ''
-                  tipo_salario: null
-                  celular: null
-                  arl: ''
-                  email: 360_360_360_prueba5@basura.com
-                  labora_sabado: No
-                  uen: UEN Desarrollo e innovación
-                  tipo_cuenta: null
-                  beneficiario_eps: null
-                  barrio: null
-                  sede: Medellín
-                  salario: null
-                  lugar_expedicion: null
-                  pais: Colombia
-                  cod_cargo: 93
-                  cupo_beneficios: null
-                  tipo_documento: CEDULA
-                  modalidad: null
-                  discapacidad: null
-                  tipo_contrato: null
-                  fecha_ingreso: 2025-04-13
-                - regimen_pension: null
-                  centros_costos: ''
-                  vicepresidencia: Gestión Humana
-                  jefe: Deissy Echeverry Seleccion
-                  nivel_organizacional: Analistas
-                  corresponde_a_salario: null
-                  nomina: ''
-                  correo: null
-                  pension: null
-                  cargo: Arquitecto TI
-                  telefono: '987564859680'
-                  tipo_usuario: Administrativo
-                  area: TI
-                  cesantias: null
-                  nombres_conceptos: null
-                  tipo_documento_beneficiario: null
-                  direccion: 'Bulevar 55AD  # 66AC Este 66'
-                  banco: null
-                  eps: null
                   negocio: Calidad de software
-                  relacion_seguridad_social: null
-                  documento_usuario: '29866304'
-                  ciudad_nacimiento: ABINGDON DOWNS
-                  beneficiario_caja_compensacion: null
-                  centro_costo: ''
-                  porcentaje_riesgo_arl: ''
-                  ciudad: Medellin
-                  parentesco: null
-                  numero_cuenta: ''
-                  usuario: Amparo Echeverry
-                  documento_beneficiario: null
-                  empresa: Nexa Solutions
-                  nombre_beneficiario: null
-                  documento_jefe: '42793011'
-                  fecha_expedicion_documento: 1989-01-10
-                  fecha_nacimiento_colaborador: 1986-06-06
-                  fecha_terminacion_contrato: null
-                  regional: Antioquia
-                  fecha_nacimiento: null
-                  forma_pago: null
-                  municipio_residencia: AEROGLEN
-                  valores_conceptos: null
-                  cod_usuario: 353
-                  centro_trabajo_arl: ''
-                  ciudad_beneficiario: ''
-                  tipo_salario: null
-                  celular: '257372572'
-                  arl: ''
-                  email: 353_353_353_text@gmail.com
-                  labora_sabado: No
+                  empresa: Soluciones Estratégicas Integrales para el Desarrollo Empresarial y Tecnológico S.A.S
                   uen: Nexa Digital Solutions
-                  tipo_cuenta: null
-                  beneficiario_eps: null
-                  barrio: gyyyyy
-                  sede: Medellín
-                  salario: '3200000'
-                  lugar_expedicion: ABINGDON DOWNS
+                  vicepresidencia: Financiera
                   pais: Colombia
-                  cod_cargo: 82
-                  cupo_beneficios: null
-                  tipo_documento: CEDULA
-                  modalidad: Casa
-                  discapacidad: null
-                  tipo_contrato: Contrato por prestación de servicios
-                  fecha_ingreso: 2025-06-10
-                - regimen_pension: null
-                  centros_costos: ''
-                  vicepresidencia: financiera
-                  jefe: Blanca Ruiz Suarez
-                  nivel_organizacional: Gerencial
-                  corresponde_a_salario: null
-                  nomina: ''
-                  correo: null
-                  pension: Colfondos
-                  cargo: Gerente de Calidad y Soporte
-                  telefono: null
-                  tipo_usuario: Administrativo
-                  area: Sistemas
-                  cesantias: Protección S.A
-                  nombres_conceptos: null
-                  tipo_documento_beneficiario: null
-                  direccion: ''
-                  banco: Bancolombia
-                  eps: COMFAMILIAR DE NARIÑO EPS - CCF
-                  negocio: Desarrollo de Software
-                  relacion_seguridad_social: null
-                  documento_usuario: '43609065'
-                  ciudad_nacimiento: null
-                  beneficiario_caja_compensacion: null
-                  centro_costo: ''
-                  porcentaje_riesgo_arl: ''
-                  ciudad: Medellin
-                  parentesco: null
-                  numero_cuenta: '650000005145'
-                  usuario: Ana Maria Gomez Ramirez
-                  documento_beneficiario: null
-                  empresa: talento cloud
-                  nombre_beneficiario: null
-                  documento_jefe: '21897678'
-                  fecha_expedicion_documento: null
-                  fecha_nacimiento_colaborador: null
+                  ciudad: Cartagena
+                  regional: Costa Atlántica
+                  sede: Cartagena
+                  cargo: Analista Desarrollador
+                  nivel_organizacional: Analistas
+                  area: TI
+                  documento_jefe: '29498498195'
+                  jefe: Alvaro Cardenas
+                  fecha_ingreso: 2026-05-12
+                  tipo_contrato: null
                   fecha_terminacion_contrato: null
-                  regional: Antioquia
-                  fecha_nacimiento: null
                   forma_pago: null
-                  municipio_residencia: null
-                  valores_conceptos: null
-                  cod_usuario: 238
-                  centro_trabajo_arl: ''
-                  ciudad_beneficiario: ''
                   tipo_salario: null
-                  celular: 3215554444xxx
-                  arl: ARL Positiva
-                  email: 238_xxxisrael.fonseca@talento.cloud
-                  labora_sabado: No
-                  uen: UEN App Moviles
-                  tipo_cuenta: Cuenta de ahorros
-                  beneficiario_eps: null
-                  barrio: ''
-                  sede: Medellín
+                  nomina: ''
+                  regimen_pension: null
+                  tipo_cuenta: null
+                  banco: null
+                  numero_cuenta: null
                   salario: null
-                  lugar_expedicion: Ricaurte
-                  pais: Colombia
-                  cod_cargo: 62
                   cupo_beneficios: null
-                  tipo_documento: CEDULA
-                  modalidad: Casa
+                  centros_costos: null
+                  modalidad: null
+                  labora_sabado: No
+                  nombres_conceptos: null
+                  valores_conceptos: null
+                  corresponde_a_salario: null
+                  eps: null
+                  pension: null
+                  cesantias: null
+                  arl: ''
+                  centro_trabajo_arl: ''
+                  porcentaje_riesgo_arl: ''
+                  lugar_expedicion: null
+                  fecha_expedicion_documento: null
+                  municipio_residencia: null
+                  fecha_nacimiento_colaborador: null
+                  ciudad_nacimiento: null
+                  direccion: null
+                  barrio: null
+                  telefono: null
+                  celular: null
+                  correo: null
+                  tipo_documento_beneficiario: null
+                  documento_beneficiario: null
+                  nombre_beneficiario: null
+                  fecha_nacimiento: null
+                  parentesco: null
+                  ciudad_beneficiario: ''
+                  relacion_seguridad_social: null
                   discapacidad: null
-                  tipo_contrato: Contrato a término indefinido
+                  beneficiario_eps: null
+                  beneficiario_caja_compensacion: null
+                - usuario: Alvaro Cardenas
+                  tipo_documento: CEDULA
+                  documento_usuario: '29498498195'
+                  tipo_usuario: Administrativo
+                  email: 360_360_360_prueba5@basura.com
+                  negocio: Desarrollo de Software
+                  empresa: Corporación Internacional de.
+                  uen: UEN Desarrollo e innovación
+                  vicepresidencia: TI
+                  pais: Colombia
+                  ciudad: Medellin
+                  regional: Antioquia
+                  sede: Medellín
+                  cargo: Desarrollador Senior
+                  nivel_organizacional: Analistas
+                  area: TI
+                  documento_jefe: '1117123456'
+                  jefe: Andres Mauricio Jaramillo Salazar
+                  fecha_ingreso: 2025-04-13
+                  tipo_contrato: null
+                  fecha_terminacion_contrato: null
+                  forma_pago: null
+                  tipo_salario: null
+                  nomina: ''
+                  regimen_pension: null
+                  tipo_cuenta: null
+                  banco: null
+                  numero_cuenta: null
+                  salario: null
+                  cupo_beneficios: null
+                  centros_costos: null
+                  modalidad: null
+                  labora_sabado: No
+                  nombres_conceptos: null
+                  valores_conceptos: null
+                  corresponde_a_salario: null
+                  eps: null
+                  pension: null
+                  cesantias: null
+                  arl: ''
+                  centro_trabajo_arl: ''
+                  porcentaje_riesgo_arl: ''
+                  lugar_expedicion: null
+                  fecha_expedicion_documento: null
+                  municipio_residencia: null
+                  fecha_nacimiento_colaborador: null
+                  ciudad_nacimiento: null
+                  direccion: null
+                  barrio: null
+                  telefono: null
+                  celular: null
+                  correo: null
+                  tipo_documento_beneficiario: null
+                  documento_beneficiario: null
+                  nombre_beneficiario: null
+                  fecha_nacimiento: null
+                  parentesco: null
+                  ciudad_beneficiario: ''
+                  relacion_seguridad_social: null
+                  discapacidad: null
+                  beneficiario_eps: null
+                  beneficiario_caja_compensacion: null
+                - usuario: Amparo Echeverry
+                  tipo_documento: CEDULA
+                  documento_usuario: '29866304'
+                  tipo_usuario: Administrativo
+                  email: 353_353_353_text@gmail.com
+                  negocio: Calidad de software
+                  empresa: Nexa Solutions
+                  uen: Nexa Digital Solutions
+                  vicepresidencia: Gestión Humana
+                  pais: Colombia
+                  ciudad: Medellin
+                  regional: Antioquia
+                  sede: Medellín
+                  cargo: Arquitecto TI
+                  nivel_organizacional: Analistas
+                  area: TI
+                  documento_jefe: '42793011'
+                  jefe: Deissy Echeverry Seleccion
+                  fecha_ingreso: 2025-06-10
+                  tipo_contrato: Contrato por prestación de servicios
+                  fecha_terminacion_contrato: null
+                  forma_pago: null
+                  tipo_salario: null
+                  nomina: ''
+                  regimen_pension: null
+                  tipo_cuenta: null
+                  banco: null
+                  numero_cuenta: ''
+                  salario: '3200000'
+                  cupo_beneficios: null
+                  centros_costos: ''
+                  modalidad: Casa
+                  labora_sabado: No
+                  nombres_conceptos: null
+                  valores_conceptos: null
+                  corresponde_a_salario: null
+                  eps: null
+                  pension: null
+                  cesantias: null
+                  arl: ''
+                  centro_trabajo_arl: ''
+                  porcentaje_riesgo_arl: ''
+                  lugar_expedicion: ABINGDON DOWNS
+                  fecha_expedicion_documento: 1989-01-10
+                  municipio_residencia: AEROGLEN
+                  fecha_nacimiento_colaborador: 1986-06-06
+                  ciudad_nacimiento: ABINGDON DOWNS
+                  direccion: 'Bulevar 55AD  # 66AC Este 66'
+                  barrio: gyyyyy
+                  telefono: '987564859680'
+                  celular: '257372572'
+                  correo: null
+                  tipo_documento_beneficiario: null
+                  documento_beneficiario: null
+                  nombre_beneficiario: null
+                  fecha_nacimiento: null
+                  parentesco: null
+                  ciudad_beneficiario: ''
+                  relacion_seguridad_social: null
+                  discapacidad: null
+                  beneficiario_eps: null
+                  beneficiario_caja_compensacion: null
+                - usuario: Ana Maria Gomez Ramirez
+                  tipo_documento: CEDULA
+                  documento_usuario: '43609065'
+                  tipo_usuario: Administrativo
+                  email: 238_xxxisrael.fonseca@talento.cloud
+                  negocio: Desarrollo de Software
+                  empresa: talento cloud
+                  uen: UEN App Moviles
+                  vicepresidencia: financiera
+                  pais: Colombia
+                  ciudad: Medellin
+                  regional: Antioquia
+                  sede: Medellín
+                  cargo: Gerente de Calidad y Soporte
+                  nivel_organizacional: Gerencial
+                  area: Sistemas
+                  documento_jefe: '21897678'
+                  jefe: Blanca Ruiz Suarez
                   fecha_ingreso: 2022-11-29
+                  tipo_contrato: Contrato a término indefinido
+                  fecha_terminacion_contrato: null
+                  forma_pago: null
+                  tipo_salario: null
+                  nomina: ''
+                  regimen_pension: null
+                  tipo_cuenta: Cuenta de ahorros
+                  banco: Bancolombia
+                  numero_cuenta: '650000005145'
+                  salario: null
+                  cupo_beneficios: null
+                  centros_costos: ''
+                  modalidad: Casa
+                  labora_sabado: No
+                  nombres_conceptos: null
+                  valores_conceptos: null
+                  corresponde_a_salario: null
+                  eps: COMFAMILIAR DE NARIÑO EPS - CCF
+                  pension: Colfondos
+                  cesantias: Protección S.A
+                  arl: ARL Positiva
+                  centro_trabajo_arl: ''
+                  porcentaje_riesgo_arl: ''
+                  lugar_expedicion: Ricaurte
+                  fecha_expedicion_documento: null
+                  municipio_residencia: null
+                  fecha_nacimiento_colaborador: null
+                  ciudad_nacimiento: null
+                  direccion: ''
+                  barrio: ''
+                  telefono: null
+                  celular: 3215554444xxx
+                  correo: null
+                  tipo_documento_beneficiario: null
+                  documento_beneficiario: null
+                  nombre_beneficiario: null
+                  fecha_nacimiento: null
+                  parentesco: null
+                  ciudad_beneficiario: ''
+                  relacion_seguridad_social: null
+                  discapacidad: null
+                  beneficiario_eps: null
+                  beneficiario_caja_compensacion: null
                 success: true
         '401':
           $ref: '#/components/responses/UnauthorizedError'
@@ -762,573 +738,546 @@ components:
           type: boolean
       example:
         data:
-        - regimen_pension: null
-          centros_costos: null
-          vicepresidencia: Financiera
-          jefe: Alvaro Cardenas
-          nivel_organizacional: Analistas
-          corresponde_a_salario: null
-          nomina: ''
-          correo: null
-          pension: null
-          cargo: Analista Desarrollador
-          telefono: null
-          tipo_usuario: Administrativo
-          area: TI
-          cesantias: null
-          nombres_conceptos: null
-          tipo_documento_beneficiario: null
-          direccion: null
-          banco: null
-          eps: null
-          negocio: Calidad de software
-          relacion_seguridad_social: null
+        - usuario: ADRIANA PEREZ PEREZCORTES
+          tipo_documento: CEDULA
           documento_usuario: '8587647000'
-          ciudad_nacimiento: null
-          beneficiario_caja_compensacion: null
-          centro_costo: null
-          porcentaje_riesgo_arl: ''
-          ciudad: Cartagena
-          parentesco: null
-          numero_cuenta: null
-          usuario: ADRIANA PEREZ PEREZCORTES
-          documento_beneficiario: null
-          empresa: Soluciones Estratégicas Integrales para el Desarrollo Empresarial y Tecnológico S.A.S
-          nombre_beneficiario: null
-          documento_jefe: '29498498195'
-          fecha_expedicion_documento: null
-          fecha_nacimiento_colaborador: null
-          fecha_terminacion_contrato: null
-          regional: Costa Atlántica
-          fecha_nacimiento: null
-          forma_pago: null
-          municipio_residencia: null
-          valores_conceptos: null
-          cod_usuario: 373
-          centro_trabajo_arl: ''
-          ciudad_beneficiario: ''
-          tipo_salario: null
-          celular: null
-          arl: ''
+          tipo_usuario: Administrativo
           email: basura_talpostobon790@unmail.edu
-          labora_sabado: No
-          uen: Nexa Digital Solutions
-          tipo_cuenta: null
-          beneficiario_eps: null
-          barrio: null
-          sede: Cartagena
-          salario: null
-          lugar_expedicion: null
-          pais: Colombia
-          cod_cargo: 81
-          cupo_beneficios: null
-          tipo_documento: CEDULA
-          modalidad: null
-          discapacidad: null
-          tipo_contrato: null
-          fecha_ingreso: 2026-05-12
-        - regimen_pension: null
-          centros_costos: null
-          vicepresidencia: TI
-          jefe: Andres Mauricio Jaramillo Salazar
-          nivel_organizacional: Analistas
-          corresponde_a_salario: null
-          nomina: ''
-          correo: null
-          pension: null
-          cargo: Desarrollador Senior
-          telefono: null
-          tipo_usuario: Administrativo
-          area: TI
-          cesantias: null
-          nombres_conceptos: null
-          tipo_documento_beneficiario: null
-          direccion: null
-          banco: null
-          eps: null
-          negocio: Desarrollo de Software
-          relacion_seguridad_social: null
-          documento_usuario: '29498498195'
-          ciudad_nacimiento: null
-          beneficiario_caja_compensacion: null
-          centro_costo: null
-          porcentaje_riesgo_arl: ''
-          ciudad: Medellin
-          parentesco: null
-          numero_cuenta: null
-          usuario: Alvaro Cardenas
-          documento_beneficiario: null
-          empresa: Corporación Internacional de.
-          nombre_beneficiario: null
-          documento_jefe: '1117123456'
-          fecha_expedicion_documento: null
-          fecha_nacimiento_colaborador: null
-          fecha_terminacion_contrato: null
-          regional: Antioquia
-          fecha_nacimiento: null
-          forma_pago: null
-          municipio_residencia: null
-          valores_conceptos: null
-          cod_usuario: 360
-          centro_trabajo_arl: ''
-          ciudad_beneficiario: ''
-          tipo_salario: null
-          celular: null
-          arl: ''
-          email: 360_360_360_prueba5@basura.com
-          labora_sabado: No
-          uen: UEN Desarrollo e innovación
-          tipo_cuenta: null
-          beneficiario_eps: null
-          barrio: null
-          sede: Medellín
-          salario: null
-          lugar_expedicion: null
-          pais: Colombia
-          cod_cargo: 93
-          cupo_beneficios: null
-          tipo_documento: CEDULA
-          modalidad: null
-          discapacidad: null
-          tipo_contrato: null
-          fecha_ingreso: 2025-04-13
-        - regimen_pension: null
-          centros_costos: ''
-          vicepresidencia: Gestión Humana
-          jefe: Deissy Echeverry Seleccion
-          nivel_organizacional: Analistas
-          corresponde_a_salario: null
-          nomina: ''
-          correo: null
-          pension: null
-          cargo: Arquitecto TI
-          telefono: '987564859680'
-          tipo_usuario: Administrativo
-          area: TI
-          cesantias: null
-          nombres_conceptos: null
-          tipo_documento_beneficiario: null
-          direccion: 'Bulevar 55AD  # 66AC Este 66'
-          banco: null
-          eps: null
           negocio: Calidad de software
-          relacion_seguridad_social: null
-          documento_usuario: '29866304'
-          ciudad_nacimiento: ABINGDON DOWNS
-          beneficiario_caja_compensacion: null
-          centro_costo: ''
-          porcentaje_riesgo_arl: ''
-          ciudad: Medellin
-          parentesco: null
-          numero_cuenta: ''
-          usuario: Amparo Echeverry
-          documento_beneficiario: null
-          empresa: Nexa Solutions
-          nombre_beneficiario: null
-          documento_jefe: '42793011'
-          fecha_expedicion_documento: 1989-01-10
-          fecha_nacimiento_colaborador: 1986-06-06
-          fecha_terminacion_contrato: null
-          regional: Antioquia
-          fecha_nacimiento: null
-          forma_pago: null
-          municipio_residencia: AEROGLEN
-          valores_conceptos: null
-          cod_usuario: 353
-          centro_trabajo_arl: ''
-          ciudad_beneficiario: ''
-          tipo_salario: null
-          celular: '257372572'
-          arl: ''
-          email: 353_353_353_text@gmail.com
-          labora_sabado: No
+          empresa: Soluciones Estratégicas Integrales para el Desarrollo Empresarial y Tecnológico S.A.S
           uen: Nexa Digital Solutions
-          tipo_cuenta: null
-          beneficiario_eps: null
-          barrio: gyyyyy
-          sede: Medellín
-          salario: '3200000'
-          lugar_expedicion: ABINGDON DOWNS
+          vicepresidencia: Financiera
           pais: Colombia
-          cod_cargo: 82
-          cupo_beneficios: null
-          tipo_documento: CEDULA
-          modalidad: Casa
-          discapacidad: null
-          tipo_contrato: Contrato por prestación de servicios
-          fecha_ingreso: 2025-06-10
-        - regimen_pension: null
-          centros_costos: ''
-          vicepresidencia: financiera
-          jefe: Blanca Ruiz Suarez
-          nivel_organizacional: Gerencial
-          corresponde_a_salario: null
-          nomina: ''
-          correo: null
-          pension: Colfondos
-          cargo: Gerente de Calidad y Soporte
-          telefono: null
-          tipo_usuario: Administrativo
-          area: Sistemas
-          cesantias: Protección S.A
-          nombres_conceptos: null
-          tipo_documento_beneficiario: null
-          direccion: ''
-          banco: Bancolombia
-          eps: COMFAMILIAR DE NARIÑO EPS - CCF
-          negocio: Desarrollo de Software
-          relacion_seguridad_social: null
-          documento_usuario: '43609065'
-          ciudad_nacimiento: null
-          beneficiario_caja_compensacion: null
-          centro_costo: ''
-          porcentaje_riesgo_arl: ''
-          ciudad: Medellin
-          parentesco: null
-          numero_cuenta: '650000005145'
-          usuario: Ana Maria Gomez Ramirez
-          documento_beneficiario: null
-          empresa: talento cloud
-          nombre_beneficiario: null
-          documento_jefe: '21897678'
-          fecha_expedicion_documento: null
-          fecha_nacimiento_colaborador: null
+          ciudad: Cartagena
+          regional: Costa Atlántica
+          sede: Cartagena
+          cargo: Analista Desarrollador
+          nivel_organizacional: Analistas
+          area: TI
+          documento_jefe: '29498498195'
+          jefe: Alvaro Cardenas
+          fecha_ingreso: 2026-05-12
+          tipo_contrato: null
           fecha_terminacion_contrato: null
-          regional: Antioquia
-          fecha_nacimiento: null
           forma_pago: null
-          municipio_residencia: null
-          valores_conceptos: null
-          cod_usuario: 238
-          centro_trabajo_arl: ''
-          ciudad_beneficiario: ''
           tipo_salario: null
-          celular: 3215554444xxx
-          arl: ARL Positiva
-          email: 238_xxxisrael.fonseca@talento.cloud
-          labora_sabado: No
-          uen: UEN App Moviles
-          tipo_cuenta: Cuenta de ahorros
-          beneficiario_eps: null
-          barrio: ''
-          sede: Medellín
+          nomina: ''
+          regimen_pension: null
+          tipo_cuenta: null
+          banco: null
+          numero_cuenta: null
           salario: null
-          lugar_expedicion: Ricaurte
-          pais: Colombia
-          cod_cargo: 62
           cupo_beneficios: null
-          tipo_documento: CEDULA
-          modalidad: Casa
+          centros_costos: null
+          modalidad: null
+          labora_sabado: No
+          nombres_conceptos: null
+          valores_conceptos: null
+          corresponde_a_salario: null
+          eps: null
+          pension: null
+          cesantias: null
+          arl: ''
+          centro_trabajo_arl: ''
+          porcentaje_riesgo_arl: ''
+          lugar_expedicion: null
+          fecha_expedicion_documento: null
+          municipio_residencia: null
+          fecha_nacimiento_colaborador: null
+          ciudad_nacimiento: null
+          direccion: null
+          barrio: null
+          telefono: null
+          celular: null
+          correo: null
+          tipo_documento_beneficiario: null
+          documento_beneficiario: null
+          nombre_beneficiario: null
+          fecha_nacimiento: null
+          parentesco: null
+          ciudad_beneficiario: ''
+          relacion_seguridad_social: null
           discapacidad: null
-          tipo_contrato: Contrato a término indefinido
+          beneficiario_eps: null
+          beneficiario_caja_compensacion: null
+        - usuario: Alvaro Cardenas
+          tipo_documento: CEDULA
+          documento_usuario: '29498498195'
+          tipo_usuario: Administrativo
+          email: 360_360_360_prueba5@basura.com
+          negocio: Desarrollo de Software
+          empresa: Corporación Internacional de.
+          uen: UEN Desarrollo e innovación
+          vicepresidencia: TI
+          pais: Colombia
+          ciudad: Medellin
+          regional: Antioquia
+          sede: Medellín
+          cargo: Desarrollador Senior
+          nivel_organizacional: Analistas
+          area: TI
+          documento_jefe: '1117123456'
+          jefe: Andres Mauricio Jaramillo Salazar
+          fecha_ingreso: 2025-04-13
+          tipo_contrato: null
+          fecha_terminacion_contrato: null
+          forma_pago: null
+          tipo_salario: null
+          nomina: ''
+          regimen_pension: null
+          tipo_cuenta: null
+          banco: null
+          numero_cuenta: null
+          salario: null
+          cupo_beneficios: null
+          centros_costos: null
+          modalidad: null
+          labora_sabado: No
+          nombres_conceptos: null
+          valores_conceptos: null
+          corresponde_a_salario: null
+          eps: null
+          pension: null
+          cesantias: null
+          arl: ''
+          centro_trabajo_arl: ''
+          porcentaje_riesgo_arl: ''
+          lugar_expedicion: null
+          fecha_expedicion_documento: null
+          municipio_residencia: null
+          fecha_nacimiento_colaborador: null
+          ciudad_nacimiento: null
+          direccion: null
+          barrio: null
+          telefono: null
+          celular: null
+          correo: null
+          tipo_documento_beneficiario: null
+          documento_beneficiario: null
+          nombre_beneficiario: null
+          fecha_nacimiento: null
+          parentesco: null
+          ciudad_beneficiario: ''
+          relacion_seguridad_social: null
+          discapacidad: null
+          beneficiario_eps: null
+          beneficiario_caja_compensacion: null
+        - usuario: Amparo Echeverry
+          tipo_documento: CEDULA
+          documento_usuario: '29866304'
+          tipo_usuario: Administrativo
+          email: 353_353_353_text@gmail.com
+          negocio: Calidad de software
+          empresa: Nexa Solutions
+          uen: Nexa Digital Solutions
+          vicepresidencia: Gestión Humana
+          pais: Colombia
+          ciudad: Medellin
+          regional: Antioquia
+          sede: Medellín
+          cargo: Arquitecto TI
+          nivel_organizacional: Analistas
+          area: TI
+          documento_jefe: '42793011'
+          jefe: Deissy Echeverry Seleccion
+          fecha_ingreso: 2025-06-10
+          tipo_contrato: Contrato por prestación de servicios
+          fecha_terminacion_contrato: null
+          forma_pago: null
+          tipo_salario: null
+          nomina: ''
+          regimen_pension: null
+          tipo_cuenta: null
+          banco: null
+          numero_cuenta: ''
+          salario: '3200000'
+          cupo_beneficios: null
+          centros_costos: ''
+          modalidad: Casa
+          labora_sabado: No
+          nombres_conceptos: null
+          valores_conceptos: null
+          corresponde_a_salario: null
+          eps: null
+          pension: null
+          cesantias: null
+          arl: ''
+          centro_trabajo_arl: ''
+          porcentaje_riesgo_arl: ''
+          lugar_expedicion: ABINGDON DOWNS
+          fecha_expedicion_documento: 1989-01-10
+          municipio_residencia: AEROGLEN
+          fecha_nacimiento_colaborador: 1986-06-06
+          ciudad_nacimiento: ABINGDON DOWNS
+          direccion: 'Bulevar 55AD  # 66AC Este 66'
+          barrio: gyyyyy
+          telefono: '987564859680'
+          celular: '257372572'
+          correo: null
+          tipo_documento_beneficiario: null
+          documento_beneficiario: null
+          nombre_beneficiario: null
+          fecha_nacimiento: null
+          parentesco: null
+          ciudad_beneficiario: ''
+          relacion_seguridad_social: null
+          discapacidad: null
+          beneficiario_eps: null
+          beneficiario_caja_compensacion: null
+        - usuario: Ana Maria Gomez Ramirez
+          tipo_documento: CEDULA
+          documento_usuario: '43609065'
+          tipo_usuario: Administrativo
+          email: 238_xxxisrael.fonseca@talento.cloud
+          negocio: Desarrollo de Software
+          empresa: talento cloud
+          uen: UEN App Moviles
+          vicepresidencia: financiera
+          pais: Colombia
+          ciudad: Medellin
+          regional: Antioquia
+          sede: Medellín
+          cargo: Gerente de Calidad y Soporte
+          nivel_organizacional: Gerencial
+          area: Sistemas
+          documento_jefe: '21897678'
+          jefe: Blanca Ruiz Suarez
           fecha_ingreso: 2022-11-29
+          tipo_contrato: Contrato a término indefinido
+          fecha_terminacion_contrato: null
+          forma_pago: null
+          tipo_salario: null
+          nomina: ''
+          regimen_pension: null
+          tipo_cuenta: Cuenta de ahorros
+          banco: Bancolombia
+          numero_cuenta: '650000005145'
+          salario: null
+          cupo_beneficios: null
+          centros_costos: ''
+          modalidad: Casa
+          labora_sabado: No
+          nombres_conceptos: null
+          valores_conceptos: null
+          corresponde_a_salario: null
+          eps: COMFAMILIAR DE NARIÑO EPS - CCF
+          pension: Colfondos
+          cesantias: Protección S.A
+          arl: ARL Positiva
+          centro_trabajo_arl: ''
+          porcentaje_riesgo_arl: ''
+          lugar_expedicion: Ricaurte
+          fecha_expedicion_documento: null
+          municipio_residencia: null
+          fecha_nacimiento_colaborador: null
+          ciudad_nacimiento: null
+          direccion: ''
+          barrio: ''
+          telefono: null
+          celular: 3215554444xxx
+          correo: null
+          tipo_documento_beneficiario: null
+          documento_beneficiario: null
+          nombre_beneficiario: null
+          fecha_nacimiento: null
+          parentesco: null
+          ciudad_beneficiario: ''
+          relacion_seguridad_social: null
+          discapacidad: null
+          beneficiario_eps: null
+          beneficiario_caja_compensacion: null
         success: true
     Datum:
       title: Datum
       required:
-      - regimen_pension
-      - centros_costos
-      - vicepresidencia
-      - jefe
-      - nivel_organizacional
-      - corresponde_a_salario
-      - nomina
-      - correo
-      - pension
-      - cargo
-      - telefono
-      - tipo_usuario
-      - area
-      - cesantias
-      - nombres_conceptos
-      - tipo_documento_beneficiario
-      - direccion
-      - banco
-      - eps
-      - negocio
-      - relacion_seguridad_social
-      - documento_usuario
-      - ciudad_nacimiento
-      - beneficiario_caja_compensacion
-      - centro_costo
-      - porcentaje_riesgo_arl
-      - ciudad
-      - parentesco
-      - numero_cuenta
       - usuario
-      - documento_beneficiario
-      - empresa
-      - nombre_beneficiario
-      - documento_jefe
-      - fecha_expedicion_documento
-      - fecha_nacimiento_colaborador
-      - fecha_terminacion_contrato
-      - regional
-      - fecha_nacimiento
-      - forma_pago
-      - municipio_residencia
-      - valores_conceptos
-      - cod_usuario
-      - centro_trabajo_arl
-      - ciudad_beneficiario
-      - tipo_salario
-      - celular
-      - arl
-      - email
-      - labora_sabado
-      - uen
-      - tipo_cuenta
-      - beneficiario_eps
-      - barrio
-      - sede
-      - salario
-      - lugar_expedicion
-      - pais
-      - cod_cargo
-      - cupo_beneficios
       - tipo_documento
-      - modalidad
-      - discapacidad
-      - tipo_contrato
+      - documento_usuario
+      - tipo_usuario
+      - email
+      - negocio
+      - empresa
+      - uen
+      - vicepresidencia
+      - pais
+      - ciudad
+      - regional
+      - sede
+      - cargo
+      - nivel_organizacional
+      - area
+      - documento_jefe
+      - jefe
       - fecha_ingreso
+      - tipo_contrato
+      - fecha_terminacion_contrato
+      - forma_pago
+      - tipo_salario
+      - nomina
+      - regimen_pension
+      - tipo_cuenta
+      - banco
+      - numero_cuenta
+      - salario
+      - cupo_beneficios
+      - centros_costos
+      - modalidad
+      - labora_sabado
+      - nombres_conceptos
+      - valores_conceptos
+      - corresponde_a_salario
+      - eps
+      - pension
+      - cesantias
+      - arl
+      - centro_trabajo_arl
+      - porcentaje_riesgo_arl
+      - lugar_expedicion
+      - fecha_expedicion_documento
+      - municipio_residencia
+      - fecha_nacimiento_colaborador
+      - ciudad_nacimiento
+      - direccion
+      - barrio
+      - telefono
+      - celular
+      - correo
+      - tipo_documento_beneficiario
+      - documento_beneficiario
+      - nombre_beneficiario
+      - fecha_nacimiento
+      - parentesco
+      - ciudad_beneficiario
+      - relacion_seguridad_social
+      - discapacidad
+      - beneficiario_eps
+      - beneficiario_caja_compensacion
       type: object
       properties:
-        regimen_pension:
+        usuario:
           type: string
-          nullable: true
-        centros_costos:
+        tipo_documento:
           type: string
-          nullable: true
-        vicepresidencia:
-          type: string
-        jefe:
-          type: string
-        nivel_organizacional:
-          type: string
-        corresponde_a_salario:
-          type: string
-          nullable: true
-        nomina:
-          type: string
-        correo:
-          type: string
-          nullable: true
-        pension:
-          type: string
-          nullable: true
-        cargo:
-          type: string
-        telefono:
-          type: string
-          nullable: true
-        tipo_usuario:
-          type: string
-        area:
-          type: string
-        cesantias:
-          type: string
-          nullable: true
-        nombres_conceptos:
-          type: string
-          nullable: true
-        tipo_documento_beneficiario:
-          type: string
-          nullable: true
-        direccion:
-          type: string
-          nullable: true
-        banco:
-          type: string
-          nullable: true
-        eps:
-          type: string
-          nullable: true
-        negocio:
-          type: string
-        relacion_seguridad_social:
-          type: string
-          nullable: true
         documento_usuario:
           type: string
-        ciudad_nacimiento:
+        tipo_usuario:
           type: string
-          nullable: true
-        beneficiario_caja_compensacion:
+        email:
           type: string
-          nullable: true
-        centro_costo:
+        negocio:
           type: string
-          nullable: true
-        porcentaje_riesgo_arl:
+        empresa:
+          type: string
+        uen:
+          type: string
+        vicepresidencia:
+          type: string
+        pais:
           type: string
         ciudad:
           type: string
-        parentesco:
+        regional:
           type: string
-          nullable: true
-        numero_cuenta:
+        sede:
           type: string
-          nullable: true
-        usuario:
+        cargo:
           type: string
-        documento_beneficiario:
+        nivel_organizacional:
           type: string
-          nullable: true
-        empresa:
+        area:
           type: string
-        nombre_beneficiario:
-          type: string
-          nullable: true
         documento_jefe:
           type: string
-        fecha_expedicion_documento:
+        jefe:
           type: string
-          nullable: true
-        fecha_nacimiento_colaborador:
+        fecha_ingreso:
+          type: string
+        tipo_contrato:
           type: string
           nullable: true
         fecha_terminacion_contrato:
           type: string
           nullable: true
-        regional:
-          type: string
-        fecha_nacimiento:
-          type: string
-          nullable: true
         forma_pago:
           type: string
           nullable: true
-        municipio_residencia:
+        tipo_salario:
+          type: string
+          nullable: true
+        nomina:
+          type: string
+        regimen_pension:
+          type: string
+          nullable: true
+        tipo_cuenta:
+          type: string
+          nullable: true
+        banco:
+          type: string
+          nullable: true
+        numero_cuenta:
+          type: string
+          nullable: true
+        salario:
+          type: string
+          nullable: true
+        cupo_beneficios:
+          type: string
+          nullable: true
+        centros_costos:
+          type: string
+          nullable: true
+        modalidad:
+          type: string
+          nullable: true
+        labora_sabado:
+          type: string
+        nombres_conceptos:
           type: string
           nullable: true
         valores_conceptos:
           type: string
           nullable: true
-        cod_usuario:
-          type: integer
-          format: int32
-        centro_trabajo_arl:
-          type: string
-        ciudad_beneficiario:
-          type: string
-        tipo_salario:
+        corresponde_a_salario:
           type: string
           nullable: true
-        celular:
+        eps:
+          type: string
+          nullable: true
+        pension:
+          type: string
+          nullable: true
+        cesantias:
           type: string
           nullable: true
         arl:
           type: string
-        email:
+        centro_trabajo_arl:
           type: string
-        labora_sabado:
+        porcentaje_riesgo_arl:
           type: string
-        uen:
-          type: string
-        tipo_cuenta:
+        lugar_expedicion:
           type: string
           nullable: true
-        beneficiario_eps:
+        fecha_expedicion_documento:
+          type: string
+          nullable: true
+        municipio_residencia:
+          type: string
+          nullable: true
+        fecha_nacimiento_colaborador:
+          type: string
+          nullable: true
+        ciudad_nacimiento:
+          type: string
+          nullable: true
+        direccion:
           type: string
           nullable: true
         barrio:
           type: string
           nullable: true
-        sede:
-          type: string
-        salario:
+        telefono:
           type: string
           nullable: true
-        lugar_expedicion:
+        celular:
           type: string
           nullable: true
-        pais:
-          type: string
-        cod_cargo:
-          type: integer
-          format: int32
-        cupo_beneficios:
+        correo:
           type: string
           nullable: true
-        tipo_documento:
+        tipo_documento_beneficiario:
           type: string
-        modalidad:
+          nullable: true
+        documento_beneficiario:
+          type: string
+          nullable: true
+        nombre_beneficiario:
+          type: string
+          nullable: true
+        fecha_nacimiento:
+          type: string
+          nullable: true
+        parentesco:
+          type: string
+          nullable: true
+        ciudad_beneficiario:
+          type: string
+        relacion_seguridad_social:
           type: string
           nullable: true
         discapacidad:
           type: string
           nullable: true
-        tipo_contrato:
+        beneficiario_eps:
           type: string
           nullable: true
-        fecha_ingreso:
+        beneficiario_caja_compensacion:
           type: string
+          nullable: true
       example:
-        regimen_pension: null
-        centros_costos: null
-        vicepresidencia: Financiera
-        jefe: Alvaro Cardenas
-        nivel_organizacional: Analistas
-        corresponde_a_salario: null
-        nomina: ''
-        correo: null
-        pension: null
-        cargo: Analista Desarrollador
-        telefono: null
-        tipo_usuario: Administrativo
-        area: TI
-        cesantias: null
-        nombres_conceptos: null
-        tipo_documento_beneficiario: null
-        direccion: null
-        banco: null
-        eps: null
-        negocio: Calidad de software
-        relacion_seguridad_social: null
-        documento_usuario: '8587647000'
-        ciudad_nacimiento: null
-        beneficiario_caja_compensacion: null
-        centro_costo: null
-        porcentaje_riesgo_arl: ''
-        ciudad: Cartagena
-        parentesco: null
-        numero_cuenta: null
         usuario: ADRIANA PEREZ PEREZCORTES
-        documento_beneficiario: null
-        empresa: Soluciones Estratégicas Integrales para el Desarrollo Empresarial y Tecnológico S.A.S
-        nombre_beneficiario: null
-        documento_jefe: '29498498195'
-        fecha_expedicion_documento: null
-        fecha_nacimiento_colaborador: null
-        fecha_terminacion_contrato: null
-        regional: Costa Atlántica
-        fecha_nacimiento: null
-        forma_pago: null
-        municipio_residencia: null
-        valores_conceptos: null
-        cod_usuario: 373
-        centro_trabajo_arl: ''
-        ciudad_beneficiario: ''
-        tipo_salario: null
-        celular: null
-        arl: ''
-        email: basura_talpostobon790@unmail.edu
-        labora_sabado: No
-        uen: Nexa Digital Solutions
-        tipo_cuenta: null
-        beneficiario_eps: null
-        barrio: null
-        sede: Cartagena
-        salario: null
-        lugar_expedicion: null
-        pais: Colombia
-        cod_cargo: 81
-        cupo_beneficios: null
         tipo_documento: CEDULA
-        modalidad: null
-        discapacidad: null
-        tipo_contrato: null
+        documento_usuario: '8587647000'
+        tipo_usuario: Administrativo
+        email: basura_talpostobon790@unmail.edu
+        negocio: Calidad de software
+        empresa: Soluciones Estratégicas Integrales para el Desarrollo Empresarial y Tecnológico S.A.S
+        uen: Nexa Digital Solutions
+        vicepresidencia: Financiera
+        pais: Colombia
+        ciudad: Cartagena
+        regional: Costa Atlántica
+        sede: Cartagena
+        cargo: Analista Desarrollador
+        nivel_organizacional: Analistas
+        area: TI
+        documento_jefe: '29498498195'
+        jefe: Alvaro Cardenas
         fecha_ingreso: 2026-05-12
+        tipo_contrato: null
+        fecha_terminacion_contrato: null
+        forma_pago: null
+        tipo_salario: null
+        nomina: ''
+        regimen_pension: null
+        tipo_cuenta: null
+        banco: null
+        numero_cuenta: null
+        salario: null
+        cupo_beneficios: null
+        centros_costos: null
+        modalidad: null
+        labora_sabado: No
+        nombres_conceptos: null
+        valores_conceptos: null
+        corresponde_a_salario: null
+        eps: null
+        pension: null
+        cesantias: null
+        arl: ''
+        centro_trabajo_arl: ''
+        porcentaje_riesgo_arl: ''
+        lugar_expedicion: null
+        fecha_expedicion_documento: null
+        municipio_residencia: null
+        fecha_nacimiento_colaborador: null
+        ciudad_nacimiento: null
+        direccion: null
+        barrio: null
+        telefono: null
+        celular: null
+        correo: null
+        tipo_documento_beneficiario: null
+        documento_beneficiario: null
+        nombre_beneficiario: null
+        fecha_nacimiento: null
+        parentesco: null
+        ciudad_beneficiario: ''
+        relacion_seguridad_social: null
+        discapacidad: null
+        beneficiario_eps: null
+        beneficiario_caja_compensacion: null
     ErrorResponse:
       title: ErrorResponse
       type: object
