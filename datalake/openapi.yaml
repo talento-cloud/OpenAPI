@@ -17,6 +17,7 @@ info:
 
     Maneja autenticación Oauth 2.0 y se podria consultar los siguientes informes en formato application/json:
       - HojaVida - Información de nómina - OK
+      - HojaVida - Conceptos de nómina - OK
       - HojaVida - Reporte datos básicos usuario interno - Pendiente
       - Selección - Reporte de selección detallado - Pendiente
       - Selección - Seguimiento por etapas - Pendiente
@@ -694,6 +695,48 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '403':
           $ref: '#/components/responses/ForbiddenError'        
+      deprecated: false
+  /v1/datalake/hojavida/conceptosNomina.json:
+    get:
+      tags:
+      - Datalake
+      summary: HojaVida - Conceptos de nómina
+      description: Endpoint donde se listan los conceptos de nómina de las hojas de vida de usuarios en talento cloud. Las fechas se entregan en formato yyyy-mm-dd.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://somostalentoalianza.talento-dev.cloud/html/v1/datalake/hojavida/conceptosNomina.json' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: HojaVida-Conceptosdenomina
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/HV_conceptosNomina'
+                - example:
+                    data:
+                    - tipo_documento: Cédula de ciudadanía
+                      documento: '1020987654'
+                      concepto: Auxilio de Transporte
+                      valor: '50000'
+                      fecha_inicial: '2026-03-10'
+                      fecha_final: '2026-03-17'
+                    - tipo_documento: Cédula de ciudadanía
+                      documento: '1020987654'
+                      concepto: SALARIO
+                      valor: '7863000'
+                      fecha_inicial: '2026-03-11'
+                      fecha_final: ''
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
   /v1/datalake/transversal/todosUsuarios/{tipo_usuario}.json:
     get:
@@ -1639,6 +1682,70 @@ components:
         motivo_retiro: ''
         genero: ''
         dias_vacaciones_disponibles: '0'
+    HV_conceptosNomina:
+      title: HV_conceptosNomina
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/HV_conceptoNomina'
+        success:
+          type: boolean
+      example:
+        data:
+        - tipo_documento: Cédula de ciudadanía
+          documento: '1020987654'
+          concepto: Auxilio de Transporte
+          valor: '50000'
+          fecha_inicial: '2026-03-10'
+          fecha_final: '2026-03-17'
+        - tipo_documento: Cédula de ciudadanía
+          documento: '1020987654'
+          concepto: SALARIO
+          valor: '7863000'
+          fecha_inicial: '2026-03-11'
+          fecha_final: ''
+        success: true
+    HV_conceptoNomina:
+      title: HV_conceptoNomina
+      required:
+      - tipo_documento
+      - documento
+      - concepto
+      - valor
+      - fecha_inicial
+      - fecha_final
+      type: object
+      properties:
+        tipo_documento:
+          type: string
+          example: Cédula de ciudadanía
+        documento:
+          type: string
+          example: '1020987654'
+        concepto:
+          type: string
+          example: Auxilio de Transporte
+        valor:
+          type: string
+          example: '50000'
+        fecha_inicial:
+          type: string
+          example: '2026-03-10'
+        fecha_final:
+          type: string
+          example: '2026-03-17'
+      example:
+        tipo_documento: Cédula de ciudadanía
+        documento: '1020987654'
+        concepto: Auxilio de Transporte
+        valor: '50000'
+        fecha_inicial: '2026-03-10'
+        fecha_final: '2026-03-17'
     ErrorResponse:
       title: ErrorResponse
       type: object
