@@ -54,9 +54,9 @@ info:
   contact: {}
   version: '1.0'
 servers:
-- url: https://somostalentoalianza.talento.cloud/api/html
+- url: https://somostalentoalianza.talento.cloud/html
   description: Servidor de producción     
-- url: https://somostalentoalianza.talento-dev.cloud/api/html
+- url: https://somostalentoalianza.talento-dev.cloud/html
   description: Servidor de pruebas
   variables: {}
 paths:
@@ -66,13 +66,13 @@ paths:
       - Datalake
       summary: OAuth2 - Obtener token      
       description: >-
-        Para obtener el token que autoriza uso de los otros servicios, el client_id y client_secret son suministrados por talento cloud al cliente, según el tenant la url cambia, por ejemplo para la empresa Alianza sería https://somostalentoalianza.talento.cloud/api/html/oauth2/token/somostalentoalianza.json
+        Para obtener el token que autoriza uso de los otros servicios, el client_id y client_secret son suministrados por talento cloud al cliente, según el tenant la url cambia, por ejemplo para la empresa Alianza sería https://somostalentoalianza.talento.cloud/html/oauth2/token/somostalentoalianza.json
 
         ## Ejemplo petición con curl:
 
         ```bash
 
-        curl -X POST https://somostalentoalianza.talento.cloud/api/html/oauth2/token/somostalentoalianza.json \
+        curl -X POST https://somostalentoalianza.talento.cloud/html/oauth2/token/somostalentoalianza.json \
           -H "Content-Type: application/x-www-form-urlencoded" \          
           -d "grant_type=client_credentials" \
           -d "client_id=webhook-servicio" \
@@ -93,7 +93,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl -X POST https://somostalentoalianza.talento.cloud/api/html/oauth2/token/somostalentoalianza.json \
+            curl -X POST https://somostalentoalianza.talento.cloud/html/oauth2/token/somostalentoalianza.json \
               -H "Content-Type: application/x-www-form-urlencoded" \          
               -d "grant_type=client_credentials" \
               -d "client_id=webhook-servicio" \
@@ -176,7 +176,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://somostalentoalianza.talento-dev.cloud/api/html/v1/datalake/hojavida/informacionNomina.json' \
+            curl --location 'https://somostalentoalianza.talento-dev.cloud/html/v1/datalake/hojavida/informacionNomina.json' \
               -H "Authorization: Bearer <TU_TOKEN_JWT>" 
       operationId: HojaVida-Informaciondenomina
       parameters: []
@@ -705,7 +705,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://somostalentoalianza.talento-dev.cloud/api/html/v1/datalake/transversal/todosUsuarios/Todos.json' \
+            curl --location 'https://somostalentoalianza.talento-dev.cloud/html/v1/datalake/transversal/todosUsuarios/Todos.json' \
               --header 'Accept-Language: es' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Transversal-Reportedetodoslosusuariosdelsistema
@@ -1673,7 +1673,7 @@ components:
       type: oauth2
       flows:
         clientCredentials:
-          tokenUrl: https://clientex.talento.cloud/api/html/oauth2/token/demo.json
+          tokenUrl: https://clientex.talento.cloud/html/oauth2/token/demo.json
           scopes:
             talento.read: "Permiso para leer datos de talento"
 security:
