@@ -27,7 +27,7 @@ info:
       - Objetivos Smart - Modelo mapa de desempeño - Pendiente
       - Competencias - Detalle valoración de competencias (de todo el grupo) - Pendiente
       - Operativos (Dec) - Reporte operativos - Pendiente
-      - Transversal - Reporte de todos los usuarios del sistema - Pendiente
+      - Transversal - Reporte de todos los usuarios del sistema - OK
       - Transversal - Reporte de los usuarios activos - Pendiente
       - Transversal - Novedades - Pendiente
 
@@ -122,9 +122,11 @@ paths:
               properties:
                 client_id:
                   type: string
+                  description: Suministrado por talento cloud
                   example: 389f8c63f55d48aee6da5f7517db3dcf
                 client_secret:
                   type: string
+                  description: Suministrado por talento cloud
                   example: 7df40e8c97a1c2d689a11d3cb34d5e5bb8245d9074b1efcb02eda1ce05a190a6
                 grant_type:
                   type: string
@@ -176,7 +178,7 @@ paths:
           source: |
             curl --location 'https://somostalentoalianza.talento-dev.cloud/api/html/v1/datalake/hojavida/informacionNomina.json' \
               -H "Authorization: Bearer <TU_TOKEN_JWT>" 
-      operationId: HojaVida-Informacióndenómina
+      operationId: HojaVida-Informaciondenomina
       parameters: []
       responses:
         '200':
@@ -692,6 +694,127 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '403':
           $ref: '#/components/responses/ForbiddenError'        
+      deprecated: false
+  /v1/datalake/transversal/todosUsuarios/{tipo_usuario}.json:
+    get:
+      tags:
+      - Datalake
+      summary: Transversal - Reporte de todos los usuarios del sistema
+      description: Endpoint donde se lista la información de todos los usuarios del sistema para Datalake. Permite filtrar por tipo de usuario (Todos, Administrativo u Operativo). Las fechas se entregan en formato yyyy-mm-dd.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://somostalentoalianza.talento-dev.cloud/api/html/v1/datalake/transversal/todosUsuarios/Todos.json' \
+              --header 'Accept-Language: es' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: Transversal-Reportedetodoslosusuariosdelsistema
+      parameters:
+      - name: tipo_usuario
+        in: path
+        required: true
+        description: Tipo de usuario a consultar (Todos, Administrativo u Operativo).
+        schema:
+          type: string
+          enum:
+          - Todos
+          - Administrativo
+          - Operativo
+          example: Todos
+      - name: Accept-Language
+        in: header
+        required: false
+        description: Idioma de las alertas de error (por ejemplo 'es').
+        schema:
+          type: string
+          example: es
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Transversal_todosUsuarios'
+                - example:
+                    data:
+                    - usuario: ADRIANA PEREZ PEREZCORTES
+                      tipo_documento: Cédula de ciudadanía
+                      documento: '8587647000'
+                      tipo_usuario: Administrativo
+                      email: basura_talpostobon790@unmail.edu
+                      negocio: Calidad de software
+                      empresa: Soluciones Estratégicas Integrales para el Desarrollo Empresarial y Tecnológico S.A.S
+                      uen: Nexa Digital Solutions
+                      vicepresidencia: Financiera
+                      pais: Colombia
+                      ciudad: Cartagena
+                      regional: Costa Atlántica
+                      sede: Cartagena
+                      cargo: Analista Desarrollador
+                      nivel_organizacional: Analistas
+                      area: TI
+                      documento_jefe: '29498498195'
+                      nombre_jefe: Alvaro Cardenas
+                      documento_jefe_funcional: ''
+                      nombre_jefe_funcional: ''
+                      etiquetas: 'Frameworks java:Gwt'
+                      centro_costo: ''
+                      modalidad_trabajo: ''
+                      fecha_expedicion_documento: ''
+                      ciudad_expedicion_documento: ''
+                      escolaridad: 'Técnico                       '
+                      fecha_ingreso_empresa: '2026-05-19'
+                      fecha_inicio_cargo: '2026-05-12'
+                      fecha_creacion_usuario: '2026-05-12'
+                      fecha_primer_login: '2026-05-12'
+                      fecha_ultimo_login: '2026-05-12'
+                      estado: Activo
+                      fecha_retiro: ''
+                      motivo_retiro: ''
+                      genero: ''
+                      dias_vacaciones_disponibles: '0'
+                    - usuario: Alberto de jesus Osorio Peña
+                      tipo_documento: Cédula de ciudadanía
+                      documento: '21528623'
+                      tipo_usuario: Operativo
+                      email: 55_55_55_basura_55@unmail.edu
+                      negocio: Desarrollo de Software
+                      empresa: talento cloud
+                      uen: UEN Dirección General
+                      vicepresidencia: Producción
+                      pais: Colombia
+                      ciudad: Medellin
+                      regional: Antioquia
+                      sede: Medellín
+                      cargo: Operario de planta
+                      nivel_organizacional: Operativo
+                      area: Operaciones
+                      documento_jefe: '1000830965'
+                      nombre_jefe: Gonzalo Perez
+                      documento_jefe_funcional: ''
+                      nombre_jefe_funcional: ''
+                      etiquetas: ''
+                      centro_costo: ''
+                      modalidad_trabajo: ''
+                      fecha_expedicion_documento: ''
+                      ciudad_expedicion_documento: ''
+                      escolaridad: 'Maestria                      '
+                      fecha_ingreso_empresa: '2013-02-01'
+                      fecha_inicio_cargo: '2013-02-01'
+                      fecha_creacion_usuario: '2000-01-01'
+                      fecha_primer_login: ''
+                      fecha_ultimo_login: ''
+                      estado: Retirado
+                      fecha_retiro: '2020-07-23'
+                      motivo_retiro: ''
+                      genero: ''
+                      dias_vacaciones_disponibles: '0'
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
       deprecated: false
 components:
   schemas:
@@ -1278,6 +1401,244 @@ components:
         discapacidad: null
         beneficiario_eps: null
         beneficiario_caja_compensacion: null
+    Transversal_todosUsuarios:
+      title: Transversal_todosUsuarios
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UsuarioTransversal'
+        success:
+          type: boolean
+      example:
+        data:
+        - usuario: ADRIANA PEREZ PEREZCORTES
+          tipo_documento: Cédula de ciudadanía
+          documento: '8587647000'
+          tipo_usuario: Administrativo
+          email: basura_talpostobon790@unmail.edu
+          negocio: Calidad de software
+          empresa: Soluciones Estratégicas Integrales para el Desarrollo Empresarial y Tecnológico S.A.S
+          uen: Nexa Digital Solutions
+          vicepresidencia: Financiera
+          pais: Colombia
+          ciudad: Cartagena
+          regional: Costa Atlántica
+          sede: Cartagena
+          cargo: Analista Desarrollador
+          nivel_organizacional: Analistas
+          area: TI
+          documento_jefe: '29498498195'
+          nombre_jefe: Alvaro Cardenas
+          documento_jefe_funcional: ''
+          nombre_jefe_funcional: ''
+          etiquetas: 'Frameworks java:Gwt'
+          centro_costo: ''
+          modalidad_trabajo: ''
+          fecha_expedicion_documento: ''
+          ciudad_expedicion_documento: ''
+          escolaridad: 'Técnico                       '
+          fecha_ingreso_empresa: '2026-05-19'
+          fecha_inicio_cargo: '2026-05-12'
+          fecha_creacion_usuario: '2026-05-12'
+          fecha_primer_login: '2026-05-12'
+          fecha_ultimo_login: '2026-05-12'
+          estado: Activo
+          fecha_retiro: ''
+          motivo_retiro: ''
+          genero: ''
+          dias_vacaciones_disponibles: '0'
+        - usuario: Alberto de jesus Osorio Peña
+          tipo_documento: Cédula de ciudadanía
+          documento: '21528623'
+          tipo_usuario: Operativo
+          email: 55_55_55_basura_55@unmail.edu
+          negocio: Desarrollo de Software
+          empresa: talento cloud
+          uen: UEN Dirección General
+          vicepresidencia: Producción
+          pais: Colombia
+          ciudad: Medellin
+          regional: Antioquia
+          sede: Medellín
+          cargo: Operario de planta
+          nivel_organizacional: Operativo
+          area: Operaciones
+          documento_jefe: '1000830965'
+          nombre_jefe: Gonzalo Perez
+          documento_jefe_funcional: ''
+          nombre_jefe_funcional: ''
+          etiquetas: ''
+          centro_costo: ''
+          modalidad_trabajo: ''
+          fecha_expedicion_documento: ''
+          ciudad_expedicion_documento: ''
+          escolaridad: 'Maestria                      '
+          fecha_ingreso_empresa: '2013-02-01'
+          fecha_inicio_cargo: '2013-02-01'
+          fecha_creacion_usuario: '2000-01-01'
+          fecha_primer_login: ''
+          fecha_ultimo_login: ''
+          estado: Retirado
+          fecha_retiro: '2020-07-23'
+          motivo_retiro: ''
+          genero: ''
+          dias_vacaciones_disponibles: '0'
+        success: true
+    UsuarioTransversal:
+      title: UsuarioTransversal
+      required:
+      - usuario
+      - tipo_documento
+      - documento
+      - tipo_usuario
+      - email
+      - negocio
+      - empresa
+      - uen
+      - vicepresidencia
+      - pais
+      - ciudad
+      - regional
+      - sede
+      - cargo
+      - nivel_organizacional
+      - area
+      - documento_jefe
+      - nombre_jefe
+      - documento_jefe_funcional
+      - nombre_jefe_funcional
+      - etiquetas
+      - centro_costo
+      - modalidad_trabajo
+      - fecha_expedicion_documento
+      - ciudad_expedicion_documento
+      - escolaridad
+      - fecha_ingreso_empresa
+      - fecha_inicio_cargo
+      - fecha_creacion_usuario
+      - fecha_primer_login
+      - fecha_ultimo_login
+      - estado
+      - fecha_retiro
+      - motivo_retiro
+      - genero
+      - dias_vacaciones_disponibles
+      type: object
+      properties:
+        usuario:
+          type: string
+        tipo_documento:
+          type: string
+        documento:
+          type: string
+        tipo_usuario:
+          type: string
+        email:
+          type: string
+        negocio:
+          type: string
+        empresa:
+          type: string
+        uen:
+          type: string
+        vicepresidencia:
+          type: string
+        pais:
+          type: string
+        ciudad:
+          type: string
+        regional:
+          type: string
+        sede:
+          type: string
+        cargo:
+          type: string
+        nivel_organizacional:
+          type: string
+        area:
+          type: string
+        documento_jefe:
+          type: string
+        nombre_jefe:
+          type: string
+        documento_jefe_funcional:
+          type: string
+        nombre_jefe_funcional:
+          type: string
+        etiquetas:
+          type: string
+        centro_costo:
+          type: string
+        modalidad_trabajo:
+          type: string
+        fecha_expedicion_documento:
+          type: string
+        ciudad_expedicion_documento:
+          type: string
+        escolaridad:
+          type: string
+        fecha_ingreso_empresa:
+          type: string
+        fecha_inicio_cargo:
+          type: string
+        fecha_creacion_usuario:
+          type: string
+        fecha_primer_login:
+          type: string
+        fecha_ultimo_login:
+          type: string
+        estado:
+          type: string
+        fecha_retiro:
+          type: string
+        motivo_retiro:
+          type: string
+        genero:
+          type: string
+        dias_vacaciones_disponibles:
+          type: string
+      example:
+        usuario: ADRIANA PEREZ PEREZCORTES
+        tipo_documento: Cédula de ciudadanía
+        documento: '8587647000'
+        tipo_usuario: Administrativo
+        email: basura_talpostobon790@unmail.edu
+        negocio: Calidad de software
+        empresa: Soluciones Estratégicas Integrales para el Desarrollo Empresarial y Tecnológico S.A.S
+        uen: Nexa Digital Solutions
+        vicepresidencia: Financiera
+        pais: Colombia
+        ciudad: Cartagena
+        regional: Costa Atlántica
+        sede: Cartagena
+        cargo: Analista Desarrollador
+        nivel_organizacional: Analistas
+        area: TI
+        documento_jefe: '29498498195'
+        nombre_jefe: Alvaro Cardenas
+        documento_jefe_funcional: ''
+        nombre_jefe_funcional: ''
+        etiquetas: 'Frameworks java:Gwt'
+        centro_costo: ''
+        modalidad_trabajo: ''
+        fecha_expedicion_documento: ''
+        ciudad_expedicion_documento: ''
+        escolaridad: 'Técnico                       '
+        fecha_ingreso_empresa: '2026-05-19'
+        fecha_inicio_cargo: '2026-05-12'
+        fecha_creacion_usuario: '2026-05-12'
+        fecha_primer_login: '2026-05-12'
+        fecha_ultimo_login: '2026-05-12'
+        estado: Activo
+        fecha_retiro: ''
+        motivo_retiro: ''
+        genero: ''
+        dias_vacaciones_disponibles: '0'
     ErrorResponse:
       title: ErrorResponse
       type: object
@@ -1320,4 +1681,4 @@ security:
       - talento.read
 tags:
 - name: Datalake
-  description: ''
+  description: Endpoints para integración con Datalake

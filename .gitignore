@@ -1,0 +1,6 @@
+.idea/
+.claude/
+.vscode/
+*.log
+
+datalake/tarea.md
