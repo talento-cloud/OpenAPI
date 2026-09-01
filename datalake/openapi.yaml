@@ -22,7 +22,7 @@ info:
       - Selección - Reporte de selección detallado - Pendiente
       - Selección - Seguimiento por etapas - Pendiente
       - Formación - Avance por tema - Pendiente
-      - Bienestar - reporte detallado beneficios/reconocimientos - Pendiente
+      - Bienestar - reporte detallado beneficios/reconocimientos - OK
       - Bienestar - reporte transacciones puntos beneficios/reconocimientos  - Pendiente    
       - Objetivos Smart - Resultados consolidados de gestión (Todo el grupo) - Pendiente
       - Objetivos Smart - Modelo mapa de desempeño - Pendiente
@@ -853,6 +853,94 @@ paths:
                       motivo_retiro: ''
                       genero: ''
                       dias_vacaciones_disponibles: '0'
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
+  /bienestar/reporteDetallado.json:
+    get:
+      tags:
+      - Datalake
+      summary: Bienestar - Reporte detallado beneficios/reconocimientos
+      description: Endpoint donde se lista el reporte detallado de beneficios y reconocimientos de los usuarios en talento cloud. Las fechas se entregan en formato yyyy-mm-dd.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://somostalentoalianza.talento-dev.cloud/html/bienestar/reporteDetallado.json' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: Bienestar-Reportedetalladobeneficiosreconocimientos
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Bienestar_reporteDetallado'
+                - example:
+                    data:
+                    - usuario: Alvaro Cardenas
+                      tipo_documento: CEDULA
+                      documento: '29498498195'
+                      tipo_usuario: Administrativo
+                      correo: prueba5@basura.com
+                      negocio: Desarrollo de Software
+                      empresa: Corporación Internacional de.
+                      uen: UEN Desarrollo e innovación
+                      vicepresidencia: TI
+                      pais: Colombia
+                      ciudad: Medellin
+                      regional: Antioquia
+                      sede: Medellín
+                      cargo: Desarrollador Senior
+                      nivel_organizacional: Analistas
+                      area: TI
+                      centro_costo: null
+                      documento_jefe: '1117123456'
+                      nombre_jefe: Andres Mauricio Jaramillo Salazar
+                      tipo: Beneficio
+                      bienestar: Bono Alimentación
+                      categoria_beneficio: General
+                      costo: 0
+                      estado: SINAPROBAR
+                      fecha_solicitud: '2025-06-24'
+                      fecha_utilizar: null
+                      aprobadores: null
+                      observaciones: null
+                      campos_adicionales: null
+                    - usuario: Ana Maria Gomez Ramirez
+                      tipo_documento: CEDULA
+                      documento: '43609065'
+                      tipo_usuario: Administrativo
+                      correo: 238_xxxisrael.fonseca@talento.cloud
+                      negocio: Desarrollo de Software
+                      empresa: talento cloud
+                      uen: UEN App Moviles
+                      vicepresidencia: financiera
+                      pais: Colombia
+                      ciudad: Medellin
+                      regional: Antioquia
+                      sede: Medellín
+                      cargo: Gerente de Calidad y Soporte
+                      nivel_organizacional: Gerencial
+                      area: Sistemas
+                      centro_costo: ''
+                      documento_jefe: '21897678'
+                      nombre_jefe: Blanca Ruiz Suarez
+                      tipo: Beneficio
+                      bienestar: Entradas Cine
+                      categoria_beneficio: General
+                      costo: 0
+                      estado: SINAPROBAR
+                      fecha_solicitud: '2025-06-13'
+                      fecha_utilizar: null
+                      aprobadores: null
+                      observaciones: null
+                      campos_adicionales: null
                     success: true
         '401':
           $ref: '#/components/responses/UnauthorizedError'
@@ -1746,6 +1834,207 @@ components:
         valor: '50000'
         fecha_inicial: '2026-03-10'
         fecha_final: '2026-03-17'
+    Bienestar_reporteDetallado:
+      title: Bienestar_reporteDetallado
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/BienestarDetalladoItem'
+        success:
+          type: boolean
+      example:
+        data:
+        - usuario: Alvaro Cardenas
+          tipo_documento: CEDULA
+          documento: '29498498195'
+          tipo_usuario: Administrativo
+          correo: prueba5@basura.com
+          negocio: Desarrollo de Software
+          empresa: Corporación Internacional de.
+          uen: UEN Desarrollo e innovación
+          vicepresidencia: TI
+          pais: Colombia
+          ciudad: Medellin
+          regional: Antioquia
+          sede: Medellín
+          cargo: Desarrollador Senior
+          nivel_organizacional: Analistas
+          area: TI
+          centro_costo: null
+          documento_jefe: '1117123456'
+          nombre_jefe: Andres Mauricio Jaramillo Salazar
+          tipo: Beneficio
+          bienestar: Bono Alimentación
+          categoria_beneficio: General
+          costo: 0
+          estado: SINAPROBAR
+          fecha_solicitud: '2025-06-24'
+          fecha_utilizar: null
+          aprobadores: null
+          observaciones: null
+          campos_adicionales: null
+        - usuario: Ana Maria Gomez Ramirez
+          tipo_documento: CEDULA
+          documento: '43609065'
+          tipo_usuario: Administrativo
+          correo: 238_xxxisrael.fonseca@talento.cloud
+          negocio: Desarrollo de Software
+          empresa: talento cloud
+          uen: UEN App Moviles
+          vicepresidencia: financiera
+          pais: Colombia
+          ciudad: Medellin
+          regional: Antioquia
+          sede: Medellín
+          cargo: Gerente de Calidad y Soporte
+          nivel_organizacional: Gerencial
+          area: Sistemas
+          centro_costo: ''
+          documento_jefe: '21897678'
+          nombre_jefe: Blanca Ruiz Suarez
+          tipo: Beneficio
+          bienestar: Entradas Cine
+          categoria_beneficio: General
+          costo: 0
+          estado: SINAPROBAR
+          fecha_solicitud: '2025-06-13'
+          fecha_utilizar: null
+          aprobadores: null
+          observaciones: null
+          campos_adicionales: null
+        success: true
+    BienestarDetalladoItem:
+      title: BienestarDetalladoItem
+      required:
+      - usuario
+      - tipo_documento
+      - documento
+      - tipo_usuario
+      - correo
+      - negocio
+      - empresa
+      - uen
+      - vicepresidencia
+      - pais
+      - ciudad
+      - regional
+      - sede
+      - cargo
+      - nivel_organizacional
+      - area
+      - centro_costo
+      - documento_jefe
+      - nombre_jefe
+      - tipo
+      - bienestar
+      - categoria_beneficio
+      - costo
+      - estado
+      - fecha_solicitud
+      - fecha_utilizar
+      - aprobadores
+      - observaciones
+      - campos_adicionales
+      type: object
+      properties:
+        usuario:
+          type: string
+        tipo_documento:
+          type: string
+        documento:
+          type: string
+        tipo_usuario:
+          type: string
+        correo:
+          type: string
+        negocio:
+          type: string
+        empresa:
+          type: string
+        uen:
+          type: string
+        vicepresidencia:
+          type: string
+        pais:
+          type: string
+        ciudad:
+          type: string
+        regional:
+          type: string
+        sede:
+          type: string
+        cargo:
+          type: string
+        nivel_organizacional:
+          type: string
+        area:
+          type: string
+        centro_costo:
+          type: string
+          nullable: true
+        documento_jefe:
+          type: string
+        nombre_jefe:
+          type: string
+        tipo:
+          type: string
+        bienestar:
+          type: string
+        categoria_beneficio:
+          type: string
+        costo:
+          type: integer
+        estado:
+          type: string
+        fecha_solicitud:
+          type: string
+        fecha_utilizar:
+          type: string
+          nullable: true
+        aprobadores:
+          type: string
+          nullable: true
+        observaciones:
+          type: string
+          nullable: true
+        campos_adicionales:
+          type: string
+          nullable: true
+      example:
+        usuario: Alvaro Cardenas
+        tipo_documento: CEDULA
+        documento: '29498498195'
+        tipo_usuario: Administrativo
+        correo: prueba5@basura.com
+        negocio: Desarrollo de Software
+        empresa: Corporación Internacional de.
+        uen: UEN Desarrollo e innovación
+        vicepresidencia: TI
+        pais: Colombia
+        ciudad: Medellin
+        regional: Antioquia
+        sede: Medellín
+        cargo: Desarrollador Senior
+        nivel_organizacional: Analistas
+        area: TI
+        centro_costo: null
+        documento_jefe: '1117123456'
+        nombre_jefe: Andres Mauricio Jaramillo Salazar
+        tipo: Beneficio
+        bienestar: Bono Alimentación
+        categoria_beneficio: General
+        costo: 0
+        estado: SINAPROBAR
+        fecha_solicitud: '2025-06-24'
+        fecha_utilizar: null
+        aprobadores: null
+        observaciones: null
+        campos_adicionales: null
     ErrorResponse:
       title: ErrorResponse
       type: object
