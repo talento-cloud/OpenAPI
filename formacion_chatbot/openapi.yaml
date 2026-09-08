@@ -1,0 +1,509 @@
+openapi: 3.0.0
+info:
+  title: Formacion_Chatbot
+  description: >-
+    Microservicio para gestión en talento cloud del módulo de Formación, pensado para ser consultado por chatbot ClaudIA.
+
+    ## Manejo de errores
+
+
+        Los errores habituales pueden incluir:
+
+
+        - `400 Bad Request`: Parámetros requeridos faltantes o con formato
+        inválido.
+
+        - `401 Unauthorized`: Token JWT inválido, expirado o ausente.
+
+        - `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.
+
+        - `404 Not Found`: El recurso solicitado no existe.
+
+        - `500 Internal Server Error`: Error inesperado en el servidor.
+
+
+        Cuando sea posible, cada endpoint detallará sus códigos de error
+        específicos y estructura de respuesta en su propia descripción.
+  termsOfService: Uso privado
+  contact:
+    name: API Support
+    email: soporte@talento.cloud
+    url: https://talento.cloud/contact
+  license:
+    name: Privado
+    url: https://talento.cloud/licenses
+  version: '1.0'
+servers:
+  - url: https://clientex.talento.cloud/api
+    description: Servidor de producción
+  - url: https://clientex.talento-dev.cloud/api
+    description: Servidor de pruebas
+paths:
+  /html/formacion/chatbot/temas.json:
+    get:
+      tags:
+      - Formacion
+      summary: temasPorAnio
+      description: >-
+        Lista los temas de formación programados que el usuario autenticado (identificado por el token
+        de sesión, nunca por parámetro) tiene asignados para un año determinado. Solo lectura: no crea,
+        modifica ni elimina información.
+
+
+        Visibilidad: un tema aparece únicamente si el usuario tiene fila activa en `frm_plan` (usuario,
+        tema, año) y en `frm_usuario_tema` (usuario, tema) — es decir, solo se listan los temas propios
+        del usuario en sesión, nunca los de otro usuario.
+
+
+        El campo `fecha` de cada tema es el rango `mesInicial/mesFinal` del año de formación consultado
+        (`frm_anio`), en formato `YYYY-MM-DD/YYYY-MM-DD`; es el mismo valor para todos los temas de un
+        mismo año.
+
+
+        Si el año consultado no tiene temas (o no existe como año de formación activo), la respuesta es
+        `200 OK` con `data.temas` vacío y un `message` explicativo — la ausencia de temas no es un error.
+      operationId: temasPorAnio
+      parameters:
+        - name: anio
+          in: query
+          required: false
+          description: >-
+            Nombre del año de formación a consultar (`frm_anio.nombre`) — no es necesariamente un número
+            de 4 dígitos: puede ser texto libre como `"Plan Aprendizaje 2025"` o `"Otras formaciones 2026"`,
+            según cómo lo haya configurado cada cliente. La comparación es insensible a mayúsculas/minúsculas
+            y a tildes (`"formación 2026"`, `"FORMACION 2026"` y `"Formacion 2026"` resuelven igual). Si no
+            se envía, se usa el año calendario actual (p. ej. `"2026"`). No se valida ningún formato
+            particular — si el valor no coincide con ningún año de formación activo, la respuesta es
+            `200 OK` con `data.temas` vacío, no un error.
+          schema:
+            type: string
+            example: "2026"
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Set-Cookie:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: JSESSIONID=19ree07ze9nl01652vhe2qjmry;Path=/
+            Expires:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Thu, 01 Jan 1970 00:00:00 GMT
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/temasPorAnio'
+                - example:
+                    data:
+                      anio: "2026"
+                      temas:
+                      - id: 101
+                        nombre: Liderazgo y gestión de equipos
+                        fecha: 2026-01-01/2026-12-01
+                      - id: 102
+                        nombre: Comunicación efectiva
+                        fecha: 2026-01-01/2026-12-01
+                    success: true
+              example:
+                data:
+                  anio: "2026"
+                  temas:
+                  - id: 101
+                    nombre: Liderazgo y gestión de equipos
+                    fecha: 2026-01-01/2026-12-01
+                  - id: 102
+                    nombre: Comunicación efectiva
+                    fecha: 2026-01-01/2026-12-01
+                success: true
+          x-examples:
+            Sin temas para el año:
+              data:
+                anio: "2027"
+                temas: []
+              message: No existen temas de formación disponibles para el año consultado.
+              success: true
+      deprecated: false
+  /html/formacion/chatbot/temas/pendientes.json:
+    get:
+      tags:
+      - Formacion
+      summary: temasPendientes
+      description: >-
+        Lista los temas de formación pendientes del usuario autenticado (identificado por el token de
+        sesión, nunca por parámetro) para un año determinado. Solo lectura.
+
+
+        Un tema se considera pendiente cuando: (1) está asignado al usuario (`frm_plan` + `frm_usuario_tema`
+        activos), (2) no ha completado todas sus acciones (`chuleado=true` en `frm_acciones_usuario` para
+        cada `frm_acciones_tema` del tema — completado equivale a aprobado, no hay umbral de nota separado),
+        y (3) el año de formación consultado sigue vigente (`frm_anio.mes_final >= hoy`).
+
+
+        `evaluacionPendiente` indica si, entre las acciones sin completar del tema, hay al menos una marcada
+        como evaluación (`frm_acciones_tema.es_evaluacion=true`).
+
+
+        `fechaLimite` = fecha de asignación del tema al usuario (`frm_plan.creado`) + `frm_tema.tiempo_limite`
+        días; `null` si el tema no tiene tiempo límite configurado.
+
+
+        Si no hay pendientes (o el año consultado ya no está vigente), la respuesta es `200 OK` con
+        `data.temas` vacío y un `message` explicativo — no es un error.
+      operationId: temasPendientes
+      parameters:
+        - name: anio
+          in: query
+          required: false
+          description: >-
+            Nombre del año de formación a consultar (`frm_anio.nombre`) — no es necesariamente un número
+            de 4 dígitos: puede ser texto libre como `"Plan Aprendizaje 2025"` o `"Otras formaciones 2026"`,
+            según cómo lo haya configurado cada cliente. La comparación es insensible a mayúsculas/minúsculas
+            y a tildes (`"formación 2026"`, `"FORMACION 2026"` y `"Formacion 2026"` resuelven igual). Si no
+            se envía, se usa el año calendario actual (p. ej. `"2026"`). No se valida ningún formato
+            particular — si el valor no coincide con ningún año de formación activo, la respuesta es
+            `200 OK` con `data.temas` vacío, no un error.
+          schema:
+            type: string
+            example: "2026"
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Set-Cookie:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: JSESSIONID=19ree07ze9nl01652vhe2qjmry;Path=/
+            Expires:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Thu, 01 Jan 1970 00:00:00 GMT
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/temasPendientes'
+                - example:
+                    data:
+                      temas:
+                      - id: 101
+                        anio: "2026"
+                        nombre: Liderazgo y gestión de equipos
+                        fechaLimite: 2026-09-30
+                        evaluacionPendiente: true
+                      - id: 105
+                        anio: "2026"
+                        nombre: Comunicación efectiva
+                        fechaLimite: null
+                        evaluacionPendiente: false
+                    success: true
+              example:
+                data:
+                  temas:
+                  - id: 101
+                    anio: "2026"
+                    nombre: Liderazgo y gestión de equipos
+                    fechaLimite: 2026-09-30
+                    evaluacionPendiente: true
+                  - id: 105
+                    anio: "2026"
+                    nombre: Comunicación efectiva
+                    fechaLimite: null
+                    evaluacionPendiente: false
+                success: true
+          x-examples:
+            Sin temas pendientes:
+              data:
+                temas: []
+              message: No tienes temas de formación pendientes.
+              success: true
+      deprecated: false
+components:
+  schemas:
+    temasPorAnio:
+      title: temasPorAnio
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Data'
+        message:
+          type: string
+          description: Presente únicamente cuando `data.temas` viene vacío.
+        success:
+          type: boolean
+      example:
+        data:
+          anio: "2026"
+          temas:
+          - id: 101
+            nombre: Liderazgo y gestión de equipos
+            fecha: 2026-01-01/2026-12-01
+          - id: 102
+            nombre: Comunicación efectiva
+            fecha: 2026-01-01/2026-12-01
+        success: true
+    Data:
+      title: Data
+      required:
+      - anio
+      - temas
+      type: object
+      properties:
+        anio:
+          type: string
+          description: >-
+            Nombre del año de formación resuelto (frm_anio.nombre) — no siempre es un número de 4
+            dígitos, ver el parámetro `anio` del endpoint.
+        temas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tema'
+          description: ''
+      example:
+        anio: "2026"
+        temas:
+        - id: 101
+          nombre: Liderazgo y gestión de equipos
+          fecha: 2026-01-01/2026-12-01
+        - id: 102
+          nombre: Comunicación efectiva
+          fecha: 2026-01-01/2026-12-01
+    Tema:
+      title: Tema
+      required:
+      - id
+      - nombre
+      - fecha
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Código del tema de formación (frm_tema.codigo).
+        nombre:
+          type: string
+        fecha:
+          type: string
+          description: >-
+            Rango mesInicial/mesFinal del año de formación consultado, formato
+            YYYY-MM-DD/YYYY-MM-DD. Igual para todos los temas del mismo año.
+      example:
+        id: 101
+        nombre: Liderazgo y gestión de equipos
+        fecha: 2026-01-01/2026-12-01
+    temasPendientes:
+      title: temasPendientes
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/DataPendientes'
+        message:
+          type: string
+          description: Presente únicamente cuando `data.temas` viene vacío.
+        success:
+          type: boolean
+      example:
+        data:
+          temas:
+          - id: 101
+            anio: "2026"
+            nombre: Liderazgo y gestión de equipos
+            fechaLimite: 2026-09-30
+            evaluacionPendiente: true
+          - id: 105
+            anio: "2026"
+            nombre: Comunicación efectiva
+            fechaLimite: null
+            evaluacionPendiente: false
+        success: true
+    DataPendientes:
+      title: DataPendientes
+      required:
+      - temas
+      type: object
+      properties:
+        temas:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemaPendiente'
+          description: ''
+      example:
+        temas:
+        - id: 101
+          anio: "2026"
+          nombre: Liderazgo y gestión de equipos
+          fechaLimite: 2026-09-30
+          evaluacionPendiente: true
+        - id: 105
+          anio: "2026"
+          nombre: Comunicación efectiva
+          fechaLimite: null
+          evaluacionPendiente: false
+    TemaPendiente:
+      title: TemaPendiente
+      required:
+      - id
+      - anio
+      - nombre
+      - evaluacionPendiente
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Código del tema de formación (frm_tema.codigo).
+        anio:
+          type: string
+          description: >-
+            Nombre del año de formación resuelto (frm_anio.nombre) — no siempre es un número de 4
+            dígitos, ver el parámetro `anio` del endpoint.
+        nombre:
+          type: string
+        fechaLimite:
+          type: string
+          nullable: true
+          description: >-
+            frm_plan.creado + frm_tema.tiempo_limite días, formato YYYY-MM-DD. Null si el tema no
+            tiene tiempo límite configurado.
+        evaluacionPendiente:
+          type: boolean
+          description: >-
+            true si el tema tiene al menos una acción de evaluación (es_evaluacion=true) sin completar.
+      example:
+        id: 101
+        anio: "2026"
+        nombre: Liderazgo y gestión de equipos
+        fechaLimite: 2026-09-30
+        evaluacionPendiente: true
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+security:
+- bearer: []
+tags:
+- name: Formacion
+  description: ''
