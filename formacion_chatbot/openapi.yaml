@@ -71,10 +71,11 @@ paths:
             Nombre del año de formación a consultar (`frm_anio.nombre`) — no es necesariamente un número
             de 4 dígitos: puede ser texto libre como `"Plan Aprendizaje 2025"` o `"Otras formaciones 2026"`,
             según cómo lo haya configurado cada cliente. La comparación es insensible a mayúsculas/minúsculas
-            y a tildes (`"formación 2026"`, `"FORMACION 2026"` y `"Formacion 2026"` resuelven igual). Si no
-            se envía, se usa el año calendario actual (p. ej. `"2026"`). No se valida ningún formato
-            particular — si el valor no coincide con ningún año de formación activo, la respuesta es
-            `200 OK` con `data.temas` vacío, no un error.
+            y a tildes (`"formación 2026"`, `"FORMACION 2026"` y `"Formacion 2026"` resuelven igual). **Si no
+            se envía, se usa el año de formación activo más reciente** (el de código más alto entre los
+            `frm_anio` activos) — no se asume que ese año se llame igual que el año calendario actual, ya
+            que no siempre es así. No se valida ningún formato particular — si el valor enviado no coincide
+            con ningún año de formación activo, la respuesta es `200 OK` con `data.temas` vacío, no un error.
           schema:
             type: string
             example: "2026"
@@ -218,10 +219,11 @@ paths:
             Nombre del año de formación a consultar (`frm_anio.nombre`) — no es necesariamente un número
             de 4 dígitos: puede ser texto libre como `"Plan Aprendizaje 2025"` o `"Otras formaciones 2026"`,
             según cómo lo haya configurado cada cliente. La comparación es insensible a mayúsculas/minúsculas
-            y a tildes (`"formación 2026"`, `"FORMACION 2026"` y `"Formacion 2026"` resuelven igual). Si no
-            se envía, se usa el año calendario actual (p. ej. `"2026"`). No se valida ningún formato
-            particular — si el valor no coincide con ningún año de formación activo, la respuesta es
-            `200 OK` con `data.temas` vacío, no un error.
+            y a tildes (`"formación 2026"`, `"FORMACION 2026"` y `"Formacion 2026"` resuelven igual). **Si no
+            se envía, se usa el año de formación activo más reciente** (el de código más alto entre los
+            `frm_anio` activos) — no se asume que ese año se llame igual que el año calendario actual, ya
+            que no siempre es así. No se valida ningún formato particular — si el valor enviado no coincide
+            con ningún año de formación activo, la respuesta es `200 OK` con `data.temas` vacío, no un error.
           schema:
             type: string
             example: "2026"
