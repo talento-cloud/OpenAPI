@@ -762,6 +762,13 @@ paths:
 
         Si no hay sesiones programadas dentro del rango consultado, la respuesta es `200 OK` con
         `data.sesiones` vacío, `data.tieneSesiones=false` y un `message` explicativo — no es un error.
+
+
+        `dias` se valida explícitamente: debe ser un número entero no negativo (`0` es válido). Si se
+        envía texto no numérico, un decimal, o un número negativo, la respuesta es `400 Bad Request`
+        con `success=false` y un mensaje explicativo — no se asume un valor por defecto en ese caso, a
+        diferencia de cuando el parámetro simplemente no se envía (ahí sí se usa 7). No se valida un
+        máximo.
       operationId: sesionesProgramadas
       parameters:
         - name: dias
@@ -769,12 +776,14 @@ paths:
           required: false
           description: >-
             Rango de días hacia adelante a consultar, contados desde el instante de la petición. Por
-            defecto 7. Valores menores o iguales a 0 se tratan igual que el valor por defecto (no
-            producen error). No se valida un máximo.
+            defecto 7 si no se envía. Debe ser un entero no negativo (`0` es válido); si es texto no
+            numérico, un decimal, o negativo, la respuesta es `400 Bad Request` (ver descripción del
+            endpoint). No se valida un máximo.
           schema:
             type: integer
             format: int32
             default: 7
+            minimum: 0
             example: 7
       responses:
         '200':
@@ -897,6 +906,22 @@ paths:
                   hora: "08:00"
                   modalidad: Virtual
               success: true
+        '400':
+          description: El parámetro "dias" no es un entero no negativo válido (texto, decimal o negativo).
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/errorSesionesProgramadas'
+              example:
+                success: false
+                message: El parámetro "dias" debe ser un número entero no negativo.
+          x-examples:
+            dias=abc (texto):
+              success: false
+              message: El parámetro "dias" debe ser un número entero no negativo.
+            dias=-5 (negativo):
+              success: false
+              message: El parámetro "dias" debe ser un número entero no negativo.
       deprecated: false
 components:
   schemas:
@@ -1277,6 +1302,20 @@ components:
         fecha: "2026-09-14"
         hora: "08:00"
         modalidad: Virtual
+    errorSesionesProgramadas:
+      title: errorSesionesProgramadas
+      required:
+      - success
+      - message
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+      example:
+        success: false
+        message: El parámetro "dias" debe ser un número entero no negativo.
   securitySchemes:
     bearer:
       type: http
