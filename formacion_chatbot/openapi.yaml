@@ -337,6 +337,155 @@ paths:
               message: No tienes temas de formación pendientes.
               success: true
       deprecated: false
+  /html/formacion/chatbot/tema-info.json:
+    get:
+      tags:
+      - Formacion
+      summary: temaInfo
+      description: >-
+        Retorna detalles puntuales de un tema de formación del usuario autenticado (identificado por
+        el token de sesión, nunca por parámetro): su fecha límite de aprendizaje/tutoría, y si tiene una
+        evaluación asociada. Solo lectura.
+
+
+        El tema se identifica únicamente por nombre exacto (`frm_tema.nombre`, sensible a
+        mayúsculas/tildes — sin normalización, mismo comportamiento que `/nota-general`); no se admite
+        búsqueda por id. A diferencia de los demás endpoints del chatbot, este no recibe parámetro
+        `anio` — no filtra por año de formación, solo busca si el usuario tiene una fila
+        `frm_usuario_tema` para ese nombre de tema, sin importar el año.
+
+
+        `fechaLimite` = `frm_usuario_tema.fecha_limite_aprendizaje_tutoria`, formato `YYYY-MM-DD`;
+        `null` si no está configurada.
+
+
+        `evaluacionPendiente`: **atención**, pese al nombre, este campo no verifica si la evaluación
+        está realmente pendiente de completar — solo indica si el tema tiene alguna evaluación general
+        asociada (`frm_usuario_tema.evaluacion` no nulo), sin importar si esa evaluación ya tiene
+        resultado o no. Es un criterio más simple que el que usa `/temas/pendientes`
+        (`evaluacionPendiente` allá sí verifica acciones de evaluación sin completar) y que
+        `/nota-general` (que si el usuario ya tiene nota, la evaluación existe pero no está
+        "pendiente"). No se debe interpretar como equivalente a esos otros dos campos aunque compartan
+        nombre.
+
+
+        Si el tema no existe o no está asignado al usuario, la respuesta es `404 Not Found` con
+        `success=false` y un mensaje fijo en español (a diferencia del resto de endpoints del chatbot,
+        este mensaje de error no pasa por el mecanismo de i18n del tenant — es un texto embebido en el
+        servicio, no traducible por idioma/cliente).
+      operationId: temaInfo
+      parameters:
+        - name: nombreTema
+          in: query
+          required: true
+          description: Nombre exacto del tema de formación a consultar (`frm_tema.nombre`).
+          schema:
+            type: string
+            example: Liderazgo y gestión de equipos
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Set-Cookie:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: JSESSIONID=19ree07ze9nl01652vhe2qjmry;Path=/
+            Expires:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Thu, 01 Jan 1970 00:00:00 GMT
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/temaInfo'
+                - example:
+                    data:
+                      nombreTema: Liderazgo y gestión de equipos
+                      fechaLimite: "2026-09-30"
+                      evaluacionPendiente: true
+                    success: true
+              example:
+                data:
+                  nombreTema: Liderazgo y gestión de equipos
+                  fechaLimite: "2026-09-30"
+                  evaluacionPendiente: true
+                success: true
+          x-examples:
+            Sin fecha límite configurada:
+              data:
+                nombreTema: Liderazgo y gestión de equipos
+                fechaLimite: null
+                evaluacionPendiente: false
+              success: true
+        '404':
+          description: Tema no encontrado o no asignado al usuario
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/errorTemaInfo'
+              example:
+                success: false
+                message: El tema no fue encontrado o no está asignado a tu usuario.
+      deprecated: false
   /html/formacion/chatbot/nota-general.json:
     get:
       tags:
@@ -572,6 +721,183 @@ paths:
               success: false
               message: El tema no fue encontrado o no está asignado a tu usuario.
       deprecated: false
+  /html/formacion/chatbot/sesiones-programadas.json:
+    get:
+      tags:
+      - Formacion
+      summary: sesionesProgramadas
+      description: >-
+        Lista las sesiones de formación (fecha, hora y modalidad) programadas para el usuario
+        autenticado (identificado por el token de sesión, nunca por parámetro) dentro de un rango de
+        días hacia adelante. Solo lectura.
+
+
+        **¿Cómo se determina qué sesiones son del usuario?** Una sesión de clase no pertenece
+        directamente a un usuario: pertenece a un grupo, y un grupo es una convocatoria concreta de un
+        tema en un año. Un mismo tema, en el mismo año, puede tener más de un grupo abierto al mismo
+        tiempo (confirmado con datos reales) — cada uno con sus propias sesiones. Por eso, saber que el
+        usuario tiene un tema asignado no basta para saber a cuáles sesiones le corresponde ir: se
+        necesita la invitación específica del usuario a ese grupo. El listado se arma a partir de esas
+        invitaciones (`frm_invitado_grupo`), no del plan de formación general del usuario.
+
+
+        Se excluyen las sesiones de grupos a los que el usuario fue invitado pero **rechazó**
+        explícitamente esa invitación — no tendría sentido mostrarlas como algo pendiente en su agenda.
+        Se incluyen las demás invitaciones sin importar su estado (pendientes, aceptadas, o marcadas
+        para registrar asistencia), y se incluyen todos los tipos de sesión (programada, no programada,
+        tutoría, evento) — el criterio de "programada" aquí es simplemente que tenga fecha dentro del
+        rango consultado, no un tipo particular de sesión.
+
+
+        El rango se cuenta desde el instante exacto de la consulta (no desde la medianoche de hoy):
+        una sesión de hoy que ya pasó de hora no aparece en el listado, porque ya no es algo para lo que
+        el usuario deba "organizar su agenda".
+
+
+        **Modalidad**: no es un dato de la sesión en sí, sino de la actividad específica del tema con la
+        que la sesión está relacionada. Cuando ninguna actividad vinculada a la sesión tiene una
+        modalidad configurada (caso real observado en datos de producción), se retorna el texto
+        `"No definida"` en vez de omitir el campo.
+
+
+        Si no hay sesiones programadas dentro del rango consultado, la respuesta es `200 OK` con
+        `data.sesiones` vacío, `data.tieneSesiones=false` y un `message` explicativo — no es un error.
+      operationId: sesionesProgramadas
+      parameters:
+        - name: dias
+          in: query
+          required: false
+          description: >-
+            Rango de días hacia adelante a consultar, contados desde el instante de la petición. Por
+            defecto 7. Valores menores o iguales a 0 se tratan igual que el valor por defecto (no
+            producen error). No se valida un máximo.
+          schema:
+            type: integer
+            format: int32
+            default: 7
+            example: 7
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Set-Cookie:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: JSESSIONID=19ree07ze9nl01652vhe2qjmry;Path=/
+            Expires:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Thu, 01 Jan 1970 00:00:00 GMT
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/sesionesProgramadas'
+                - example:
+                    data:
+                      dias: 7
+                      tieneSesiones: true
+                      sesiones:
+                      - tema: Inducción Corporativa
+                        fecha: "2026-09-14"
+                        hora: "08:00"
+                        modalidad: Virtual
+                      - tema: Seguridad de la Información
+                        fecha: "2026-09-17"
+                        hora: "14:00"
+                        modalidad: No definida
+                    success: true
+              example:
+                data:
+                  dias: 7
+                  tieneSesiones: true
+                  sesiones:
+                  - tema: Inducción Corporativa
+                    fecha: "2026-09-14"
+                    hora: "08:00"
+                    modalidad: Virtual
+                  - tema: Seguridad de la Información
+                    fecha: "2026-09-17"
+                    hora: "14:00"
+                    modalidad: No definida
+                success: true
+          x-examples:
+            Sin sesiones programadas en el rango:
+              data:
+                dias: 7
+                tieneSesiones: false
+                sesiones: []
+              message: No tienes sesiones de formación programadas en el rango de días consultado.
+              success: true
+            Consulta con rango parametrizado (dias=30):
+              data:
+                dias: 30
+                tieneSesiones: true
+                sesiones:
+                - tema: 2. Reinducción en SST
+                  fecha: "2026-12-17"
+                  hora: "08:00"
+                  modalidad: Virtual
+              success: true
+      deprecated: false
 components:
   schemas:
     temasPorAnio:
@@ -735,6 +1061,64 @@ components:
         nombre: Liderazgo y gestión de equipos
         fechaLimite: 2026-09-30
         evaluacionPendiente: true
+    temaInfo:
+      title: temaInfo
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/DataTemaInfo'
+        success:
+          type: boolean
+      example:
+        data:
+          nombreTema: Liderazgo y gestión de equipos
+          fechaLimite: "2026-09-30"
+          evaluacionPendiente: true
+        success: true
+    DataTemaInfo:
+      title: DataTemaInfo
+      required:
+      - nombreTema
+      - fechaLimite
+      - evaluacionPendiente
+      type: object
+      properties:
+        nombreTema:
+          type: string
+          description: Nombre del tema de formación (frm_tema.nombre).
+        fechaLimite:
+          type: string
+          nullable: true
+          description: >-
+            frm_usuario_tema.fecha_limite_aprendizaje_tutoria, formato YYYY-MM-DD. Null si no está
+            configurada.
+        evaluacionPendiente:
+          type: boolean
+          description: >-
+            true si frm_usuario_tema.evaluacion no es nulo (el tema tiene alguna evaluación general
+            asociada). No verifica si esa evaluación ya tiene resultado ni si está realmente pendiente
+            de completar — ver advertencia en la descripción del endpoint.
+      example:
+        nombreTema: Liderazgo y gestión de equipos
+        fechaLimite: "2026-09-30"
+        evaluacionPendiente: true
+    errorTemaInfo:
+      title: errorTemaInfo
+      required:
+      - success
+      - message
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+      example:
+        success: false
+        message: El tema no fue encontrado o no está asignado a tu usuario.
     notaGeneralTema:
       title: notaGeneralTema
       required:
@@ -811,6 +1195,88 @@ components:
       example:
         success: false
         message: El tema no fue encontrado o no está asignado a tu usuario.
+    sesionesProgramadas:
+      title: sesionesProgramadas
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/DataSesionesProgramadas'
+        message:
+          type: string
+          description: Presente únicamente cuando `data.sesiones` viene vacío.
+        success:
+          type: boolean
+      example:
+        data:
+          dias: 7
+          tieneSesiones: true
+          sesiones:
+          - tema: Inducción Corporativa
+            fecha: "2026-09-14"
+            hora: "08:00"
+            modalidad: Virtual
+        success: true
+    DataSesionesProgramadas:
+      title: DataSesionesProgramadas
+      required:
+      - dias
+      - tieneSesiones
+      - sesiones
+      type: object
+      properties:
+        dias:
+          type: integer
+          format: int32
+          description: Rango de días efectivamente usado en la consulta (el enviado, o 7 por defecto).
+        tieneSesiones:
+          type: boolean
+          description: false si `sesiones` viene vacío.
+        sesiones:
+          type: array
+          items:
+            $ref: '#/components/schemas/SesionProgramada'
+          description: ''
+      example:
+        dias: 7
+        tieneSesiones: true
+        sesiones:
+        - tema: Inducción Corporativa
+          fecha: "2026-09-14"
+          hora: "08:00"
+          modalidad: Virtual
+    SesionProgramada:
+      title: SesionProgramada
+      required:
+      - tema
+      - fecha
+      - hora
+      - modalidad
+      type: object
+      properties:
+        tema:
+          type: string
+          description: Nombre del tema de formación al que pertenece la sesión (frm_tema.nombre).
+        fecha:
+          type: string
+          format: date
+          description: Fecha de la sesión, formato YYYY-MM-DD.
+        hora:
+          type: string
+          description: Hora de la sesión, formato HH:mm (24h).
+        modalidad:
+          type: string
+          description: >-
+            Nombre de la modalidad (ej. "Presencial", "Virtual"), resuelta desde la actividad del tema
+            vinculada a la sesión. "No definida" si ninguna actividad vinculada tiene modalidad
+            configurada.
+      example:
+        tema: Inducción Corporativa
+        fecha: "2026-09-14"
+        hora: "08:00"
+        modalidad: Virtual
   securitySchemes:
     bearer:
       type: http
