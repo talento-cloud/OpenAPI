@@ -18,7 +18,7 @@ info:
     Maneja autenticación Oauth 2.0 y se podria consultar los siguientes informes en formato application/json:
       - HojaVida - Información de nómina - OK
       - HojaVida - Conceptos de nómina - OK
-      - HojaVida - Reporte datos básicos usuario interno - Pendiente
+      - HojaVida - Datos basicos - OK
       - Selección - Reporte de selección detallado - Pendiente
       - Selección - Seguimiento por etapas - Pendiente
       - Formación - Avance por tema - Pendiente
@@ -738,6 +738,99 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
+  /v1/datalake/hojavida/datosBasicosInternos.json:
+    get:
+      tags:
+      - Datalake
+      summary: HojaVida - Datos basicos
+      description: Endpoint donde se listan los datos básicos de la hoja de vida de usuarios internos en talento cloud. Las fechas se entregan en formato yyyy-mm-dd.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://somostalentoalianza.talento-dev.cloud/html/v1/datalake/hojavida/datosBasicosInternos.json' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: HojaVida-Datosbasicos
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/HV_datosBasicos'
+                - example:
+                    data:
+                    - nrodocumento: '1035430368'
+                      fecha_expedicion_documento: null
+                      lugar_expedicion_documento: Medellin, Antioquia, Colombia
+                      primer_nombre: Andres
+                      otros_nombres: Felipe
+                      primer_apellido: Hurtado
+                      segundo_apellido: Alvarez
+                      fecha_nacimiento: '1986-03-03'
+                      lugar_nacimiento: Medellin, Antioquia, Colombia
+                      sexo: Hombre
+                      estado_civil: Casado
+                      estatura: 160.0
+                      peso: 65.0
+                      grupo_sanguineo_rh: A-
+                      etnia: No aplica
+                      tiene_foto: Si
+                      ciudad_residencia: Medellin, Antioquia, Colombia
+                      barrio_residencia: Belén
+                      direccion_residencia: Carrera 84 # 37 65
+                      informacion_adicional_residencia: ''
+                      tipo_residencia: Propia
+                      estrato: null
+                      perimetro: Urbano
+                      tiempo_casa_trabajo: ' 40 minutos'
+                      tiempo_trabajo_casa: ' 40 minutos'
+                      tipo_transporte: Moto
+                      transportes_por_trayecto: 1
+                      frecuencia_visita_sede: ''
+                      tipo_correo: Trabajo
+                      direccion_correo: talentosoporte@gmail.com
+                      habeas_data_correo: Si
+                      tipo_telefono: Celular
+                      telefono: 3147654321xxx
+                      extension_telefono: null
+                      habeas_data_telefono: Si
+                      camisa: M
+                      pantalon: '32'
+                      zapatos: '42'
+                      eps: EPS Sura
+                      arl: Riesgos Laborales Colmena
+                      pension: Colpensiones
+                      cesantias: Fondo Nacional del Ahorro
+                      caja_compensacion: Comfama
+                      facebook: Andres Hurtado
+                      twitter: ''
+                      instagram: ''
+                      linkedin: ''
+                      suenio: Estudiar
+                      otros_suenios: ''
+                      nombre_mascota: null
+                      especie_mascota: null
+                      pasatiempo: Leer
+                      otras_actividades: ''
+                      computador_casa: null
+                      internet_casa: null
+                      celular_con_wifi: Si
+                      plan_datos: Si
+                      tipo_contrato: null
+                      banco: null
+                      tipo_cuenta: null
+                      nro_cuenta_banco: null
+                      auxilio_movilidad: null
+                      turno_trabajo: null
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
   /v1/datalake/transversal/todosUsuarios/{tipo_usuario}.json:
     get:
       tags:
@@ -859,7 +952,7 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
-  /bienestar/reporteDetallado.json:
+  /v1/datalake/bienestar/reporteDetallado.json:
     get:
       tags:
       - Datalake
@@ -869,7 +962,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://somostalentoalianza.talento-dev.cloud/html/bienestar/reporteDetallado.json' \
+            curl --location 'https://somostalentoalianza.talento-dev.cloud/html/v1/datalake/bienestar/reporteDetallado.json' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Bienestar-Reportedetalladobeneficiosreconocimientos
       parameters: []
@@ -1834,6 +1927,403 @@ components:
         valor: '50000'
         fecha_inicial: '2026-03-10'
         fecha_final: '2026-03-17'
+    HV_datosBasicos:
+      title: HV_datosBasicos
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/HV_datoBasicoInterno'
+        success:
+          type: boolean
+      example:
+        data:
+        - nrodocumento: '1035430368'
+          fecha_expedicion_documento: null
+          lugar_expedicion_documento: Medellin, Antioquia, Colombia
+          primer_nombre: Andres
+          otros_nombres: Felipe
+          primer_apellido: Hurtado
+          segundo_apellido: Alvarez
+          fecha_nacimiento: '1986-03-03'
+          lugar_nacimiento: Medellin, Antioquia, Colombia
+          sexo: Hombre
+          estado_civil: Casado
+          estatura: 160.0
+          peso: 65.0
+          grupo_sanguineo_rh: A-
+          etnia: No aplica
+          tiene_foto: Si
+          ciudad_residencia: Medellin, Antioquia, Colombia
+          barrio_residencia: Belén
+          direccion_residencia: Carrera 84 # 37 65
+          informacion_adicional_residencia: ''
+          tipo_residencia: Propia
+          estrato: null
+          perimetro: Urbano
+          tiempo_casa_trabajo: ' 40 minutos'
+          tiempo_trabajo_casa: ' 40 minutos'
+          tipo_transporte: Moto
+          transportes_por_trayecto: 1
+          frecuencia_visita_sede: ''
+          tipo_correo: Trabajo
+          direccion_correo: talentosoporte@gmail.com
+          habeas_data_correo: Si
+          tipo_telefono: Celular
+          telefono: 3147654321xxx
+          extension_telefono: null
+          habeas_data_telefono: Si
+          camisa: M
+          pantalon: '32'
+          zapatos: '42'
+          eps: EPS Sura
+          arl: Riesgos Laborales Colmena
+          pension: Colpensiones
+          cesantias: Fondo Nacional del Ahorro
+          caja_compensacion: Comfama
+          facebook: Andres Hurtado
+          twitter: ''
+          instagram: ''
+          linkedin: ''
+          suenio: Estudiar
+          otros_suenios: ''
+          nombre_mascota: null
+          especie_mascota: null
+          pasatiempo: Leer
+          otras_actividades: ''
+          computador_casa: null
+          internet_casa: null
+          celular_con_wifi: Si
+          plan_datos: Si
+          tipo_contrato: null
+          banco: null
+          tipo_cuenta: null
+          nro_cuenta_banco: null
+          auxilio_movilidad: null
+          turno_trabajo: null
+        success: true
+    HV_datoBasicoInterno:
+      title: HV_datoBasicoInterno
+      required:
+      - nrodocumento
+      - fecha_expedicion_documento
+      - lugar_expedicion_documento
+      - primer_nombre
+      - otros_nombres
+      - primer_apellido
+      - segundo_apellido
+      - fecha_nacimiento
+      - lugar_nacimiento
+      - sexo
+      - estado_civil
+      - estatura
+      - peso
+      - grupo_sanguineo_rh
+      - etnia
+      - tiene_foto
+      - ciudad_residencia
+      - barrio_residencia
+      - direccion_residencia
+      - informacion_adicional_residencia
+      - tipo_residencia
+      - estrato
+      - perimetro
+      - tiempo_casa_trabajo
+      - tiempo_trabajo_casa
+      - tipo_transporte
+      - transportes_por_trayecto
+      - frecuencia_visita_sede
+      - tipo_correo
+      - direccion_correo
+      - habeas_data_correo
+      - tipo_telefono
+      - telefono
+      - extension_telefono
+      - habeas_data_telefono
+      - camisa
+      - pantalon
+      - zapatos
+      - eps
+      - arl
+      - pension
+      - cesantias
+      - caja_compensacion
+      - facebook
+      - twitter
+      - instagram
+      - linkedin
+      - suenio
+      - otros_suenios
+      - nombre_mascota
+      - especie_mascota
+      - pasatiempo
+      - otras_actividades
+      - computador_casa
+      - internet_casa
+      - celular_con_wifi
+      - plan_datos
+      - tipo_contrato
+      - banco
+      - tipo_cuenta
+      - nro_cuenta_banco
+      - auxilio_movilidad
+      - turno_trabajo
+      type: object
+      properties:
+        nrodocumento:
+          type: string
+        fecha_expedicion_documento:
+          type: string
+          nullable: true
+        lugar_expedicion_documento:
+          type: string
+          nullable: true
+        primer_nombre:
+          type: string
+        otros_nombres:
+          type: string
+          nullable: true
+        primer_apellido:
+          type: string
+        segundo_apellido:
+          type: string
+          nullable: true
+        fecha_nacimiento:
+          type: string
+          nullable: true
+        lugar_nacimiento:
+          type: string
+          nullable: true
+        sexo:
+          type: string
+          nullable: true
+        estado_civil:
+          type: string
+          nullable: true
+        estatura:
+          type: number
+          nullable: true
+        peso:
+          type: number
+          nullable: true
+        grupo_sanguineo_rh:
+          type: string
+          nullable: true
+        etnia:
+          type: string
+          nullable: true
+        tiene_foto:
+          type: string
+          nullable: true
+        ciudad_residencia:
+          type: string
+          nullable: true
+        barrio_residencia:
+          type: string
+          nullable: true
+        direccion_residencia:
+          type: string
+          nullable: true
+        informacion_adicional_residencia:
+          type: string
+          nullable: true
+        tipo_residencia:
+          type: string
+          nullable: true
+        estrato:
+          type: string
+          nullable: true
+        perimetro:
+          type: string
+          nullable: true
+        tiempo_casa_trabajo:
+          type: string
+          nullable: true
+        tiempo_trabajo_casa:
+          type: string
+          nullable: true
+        tipo_transporte:
+          type: string
+          nullable: true
+        transportes_por_trayecto:
+          type: integer
+          nullable: true
+        frecuencia_visita_sede:
+          type: string
+          nullable: true
+        tipo_correo:
+          type: string
+          nullable: true
+        direccion_correo:
+          type: string
+          nullable: true
+        habeas_data_correo:
+          type: string
+          nullable: true
+        tipo_telefono:
+          type: string
+          nullable: true
+        telefono:
+          type: string
+          nullable: true
+        extension_telefono:
+          type: string
+          nullable: true
+        habeas_data_telefono:
+          type: string
+          nullable: true
+        camisa:
+          type: string
+          nullable: true
+        pantalon:
+          type: string
+          nullable: true
+        zapatos:
+          type: string
+          nullable: true
+        eps:
+          type: string
+          nullable: true
+        arl:
+          type: string
+          nullable: true
+        pension:
+          type: string
+          nullable: true
+        cesantias:
+          type: string
+          nullable: true
+        caja_compensacion:
+          type: string
+          nullable: true
+        facebook:
+          type: string
+          nullable: true
+        twitter:
+          type: string
+          nullable: true
+        instagram:
+          type: string
+          nullable: true
+        linkedin:
+          type: string
+          nullable: true
+        suenio:
+          type: string
+          nullable: true
+        otros_suenios:
+          type: string
+          nullable: true
+        nombre_mascota:
+          type: string
+          nullable: true
+        especie_mascota:
+          type: string
+          nullable: true
+        pasatiempo:
+          type: string
+          nullable: true
+        otras_actividades:
+          type: string
+          nullable: true
+        computador_casa:
+          type: string
+          nullable: true
+        internet_casa:
+          type: string
+          nullable: true
+        celular_con_wifi:
+          type: string
+          nullable: true
+        plan_datos:
+          type: string
+          nullable: true
+        tipo_contrato:
+          type: string
+          nullable: true
+        banco:
+          type: string
+          nullable: true
+        tipo_cuenta:
+          type: string
+          nullable: true
+        nro_cuenta_banco:
+          type: string
+          nullable: true
+        auxilio_movilidad:
+          type: string
+          nullable: true
+        turno_trabajo:
+          type: string
+          nullable: true
+      example:
+        nrodocumento: '1035430368'
+        fecha_expedicion_documento: null
+        lugar_expedicion_documento: Medellin, Antioquia, Colombia
+        primer_nombre: Andres
+        otros_nombres: Felipe
+        primer_apellido: Hurtado
+        segundo_apellido: Alvarez
+        fecha_nacimiento: '1986-03-03'
+        lugar_nacimiento: Medellin, Antioquia, Colombia
+        sexo: Hombre
+        estado_civil: Casado
+        estatura: 160.0
+        peso: 65.0
+        grupo_sanguineo_rh: A-
+        etnia: No aplica
+        tiene_foto: Si
+        ciudad_residencia: Medellin, Antioquia, Colombia
+        barrio_residencia: Belén
+        direccion_residencia: Carrera 84 # 37 65
+        informacion_adicional_residencia: ''
+        tipo_residencia: Propia
+        estrato: null
+        perimetro: Urbano
+        tiempo_casa_trabajo: ' 40 minutos'
+        tiempo_trabajo_casa: ' 40 minutos'
+        tipo_transporte: Moto
+        transportes_por_trayecto: 1
+        frecuencia_visita_sede: ''
+        tipo_correo: Trabajo
+        direccion_correo: talentosoporte@gmail.com
+        habeas_data_correo: Si
+        tipo_telefono: Celular
+        telefono: 3147654321xxx
+        extension_telefono: null
+        habeas_data_telefono: Si
+        camisa: M
+        pantalon: '32'
+        zapatos: '42'
+        eps: EPS Sura
+        arl: Riesgos Laborales Colmena
+        pension: Colpensiones
+        cesantias: Fondo Nacional del Ahorro
+        caja_compensacion: Comfama
+        facebook: Andres Hurtado
+        twitter: ''
+        instagram: ''
+        linkedin: ''
+        suenio: Estudiar
+        otros_suenios: ''
+        nombre_mascota: null
+        especie_mascota: null
+        pasatiempo: Leer
+        otras_actividades: ''
+        computador_casa: null
+        internet_casa: null
+        celular_con_wifi: Si
+        plan_datos: Si
+        tipo_contrato: null
+        banco: null
+        tipo_cuenta: null
+        nro_cuenta_banco: null
+        auxilio_movilidad: null
+        turno_trabajo: null
     Bienestar_reporteDetallado:
       title: Bienestar_reporteDetallado
       required:
