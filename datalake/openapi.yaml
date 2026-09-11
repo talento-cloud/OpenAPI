@@ -19,6 +19,7 @@ info:
       - HojaVida - Información de nómina - OK
       - HojaVida - Conceptos de nómina - OK
       - HojaVida - Datos basicos - OK
+      - HojaVida - Novedades de nómina - OK
       - Selección - Reporte de selección detallado - Pendiente
       - Selección - Seguimiento por etapas - Pendiente
       - Formación - Avance por tema - Pendiente
@@ -825,6 +826,86 @@ paths:
                       nro_cuenta_banco: null
                       auxilio_movilidad: null
                       turno_trabajo: null
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
+  /v1/datalake/hojavida/novedadesNomina/{fecha_inicial}/{fecha_final}.json:
+    get:
+      tags:
+      - Datalake
+      summary: HojaVida - Novedades de nómina
+      description: Endpoint donde se listan las novedades de nómina de las hojas de vida en un rango de fechas. Las fechas se entregan en formato yyyy-mm-dd.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://somostalentoalianza.talento-dev.cloud/html/v1/datalake/hojavida/novedadesNomina/2026-01-01/2026-09-10.json' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: HojaVida-Novedadesdenomina
+      parameters:
+      - name: fecha_inicial
+        in: path
+        required: true
+        description: Fecha inicial del rango de consulta en formato YYYY-MM-DD.
+        schema:
+          type: string
+          example: '2026-01-01'
+      - name: fecha_final
+        in: path
+        required: true
+        description: Fecha final del rango de consulta en formato YYYY-MM-DD.
+        schema:
+          type: string
+          example: '2026-09-10'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/HV_novedadesNomina'
+                - example:
+                    data:
+                    - usuario: PEPITO JOSE ROJAS MARTINEZ
+                      tipo_documento: CEDULA
+                      documento: '414199980'
+                      tipo_usuario: Operativo
+                      correo: xxxrojas@alianza.com.co
+                      negocio: FIDUCIA
+                      empresa: ALIANZA FIDUCIARIA S.A.
+                      uen: FRONT SOPORTE
+                      vicepresidencia: PRESIDENCIA AF
+                      pais: Colombia
+                      ciudad: Barranquilla
+                      regional: ATLANTICO
+                      sede: BARRANQUILLA
+                      cargo: ASISTENTE NEGOCIOS FIDUCIARIOS SENIOR
+                      nivel_organizacional: ASISTENTE ALIANZA
+                      area: GERENCIA GESTION NEGOCIOS FIDUCIARIOS
+                      centro_costo: No aplica
+                      documento_jefe: '2222447084'
+                      nombre_jefe: MENGANO SOLANO LONDONO
+                      tipo_novedad: Modificación de información laboral
+                      fecha_envio: '2026-02-06 16:35:13.772567'
+                      estado_envio: Exitoso
+                      mensaje: No aplica
+                      centro_costo_enviado: No aplica
+                      salario_enviado: No aplica
+                      cargo_enviado: No aplica
+                      identificacion_familiar: No aplica
+                      nomina: No aplica
+                      nombre_concepto_fijo: No aplica
+                      fecha_inicial: No aplica
+                      fecha_final: No aplica
+                      usuario_reporta: PERANO HERNANDEZ CULMA
+                      tipo_afiliacion: No aplica
+                      nit_entidad_afiliacion: No aplica
+                      nombre_entidad_afiliacion: No aplica
+                      fecha_desvinculacion: No aplica
                     success: true
         '401':
           $ref: '#/components/responses/UnauthorizedError'
@@ -2525,6 +2606,208 @@ components:
         aprobadores: null
         observaciones: null
         campos_adicionales: null
+    HV_novedadesNomina:
+      title: HV_novedadesNomina
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/HV_novedadNomina'
+        success:
+          type: boolean
+      example:
+        data:
+        - usuario: PEPITO JOSE ROJAS MARTINEZ
+          tipo_documento: CEDULA
+          documento: '414199980'
+          tipo_usuario: Operativo
+          correo: xxxrojas@alianza.com.co
+          negocio: FIDUCIA
+          empresa: ALIANZA FIDUCIARIA S.A.
+          uen: FRONT SOPORTE
+          vicepresidencia: PRESIDENCIA AF
+          pais: Colombia
+          ciudad: Barranquilla
+          regional: ATLANTICO
+          sede: BARRANQUILLA
+          cargo: ASISTENTE NEGOCIOS FIDUCIARIOS SENIOR
+          nivel_organizacional: ASISTENTE ALIANZA
+          area: GERENCIA GESTION NEGOCIOS FIDUCIARIOS
+          centro_costo: No aplica
+          documento_jefe: '2222447084'
+          nombre_jefe: MENGANO SOLANO LONDONO
+          tipo_novedad: Modificación de información laboral
+          fecha_envio: '2026-02-06 16:35:13.772567'
+          estado_envio: Exitoso
+          mensaje: No aplica
+          centro_costo_enviado: No aplica
+          salario_enviado: No aplica
+          cargo_enviado: No aplica
+          identificacion_familiar: No aplica
+          nomina: No aplica
+          nombre_concepto_fijo: No aplica
+          fecha_inicial: No aplica
+          fecha_final: No aplica
+          usuario_reporta: PERANO HERNANDEZ CULMA
+          tipo_afiliacion: No aplica
+          nit_entidad_afiliacion: No aplica
+          nombre_entidad_afiliacion: No aplica
+          fecha_desvinculacion: No aplica
+        success: true
+    HV_novedadNomina:
+      title: HV_novedadNomina
+      required:
+      - usuario
+      - tipo_documento
+      - documento
+      - tipo_usuario
+      - correo
+      - negocio
+      - empresa
+      - uen
+      - vicepresidencia
+      - pais
+      - ciudad
+      - regional
+      - sede
+      - cargo
+      - nivel_organizacional
+      - area
+      - centro_costo
+      - documento_jefe
+      - nombre_jefe
+      - tipo_novedad
+      - fecha_envio
+      - estado_envio
+      - mensaje
+      - centro_costo_enviado
+      - salario_enviado
+      - cargo_enviado
+      - identificacion_familiar
+      - nomina
+      - nombre_concepto_fijo
+      - fecha_inicial
+      - fecha_final
+      - usuario_reporta
+      - tipo_afiliacion
+      - nit_entidad_afiliacion
+      - nombre_entidad_afiliacion
+      - fecha_desvinculacion
+      type: object
+      properties:
+        usuario:
+          type: string
+        tipo_documento:
+          type: string
+        documento:
+          type: string
+        tipo_usuario:
+          type: string
+        correo:
+          type: string
+        negocio:
+          type: string
+        empresa:
+          type: string
+        uen:
+          type: string
+        vicepresidencia:
+          type: string
+        pais:
+          type: string
+        ciudad:
+          type: string
+        regional:
+          type: string
+        sede:
+          type: string
+        cargo:
+          type: string
+        nivel_organizacional:
+          type: string
+        area:
+          type: string
+        centro_costo:
+          type: string
+        documento_jefe:
+          type: string
+        nombre_jefe:
+          type: string
+        tipo_novedad:
+          type: string
+        fecha_envio:
+          type: string
+        estado_envio:
+          type: string
+        mensaje:
+          type: string
+        centro_costo_enviado:
+          type: string
+        salario_enviado:
+          type: string
+        cargo_enviado:
+          type: string
+        identificacion_familiar:
+          type: string
+        nomina:
+          type: string
+        nombre_concepto_fijo:
+          type: string
+        fecha_inicial:
+          type: string
+        fecha_final:
+          type: string
+        usuario_reporta:
+          type: string
+        tipo_afiliacion:
+          type: string
+        nit_entidad_afiliacion:
+          type: string
+        nombre_entidad_afiliacion:
+          type: string
+        fecha_desvinculacion:
+          type: string
+      example:
+        usuario: PEPITO JOSE ROJAS MARTINEZ
+        tipo_documento: CEDULA
+        documento: '414199980'
+        tipo_usuario: Operativo
+        correo: xxxrojas@alianza.com.co
+        negocio: FIDUCIA
+        empresa: ALIANZA FIDUCIARIA S.A.
+        uen: FRONT SOPORTE
+        vicepresidencia: PRESIDENCIA AF
+        pais: Colombia
+        ciudad: Barranquilla
+        regional: ATLANTICO
+        sede: BARRANQUILLA
+        cargo: ASISTENTE NEGOCIOS FIDUCIARIOS SENIOR
+        nivel_organizacional: ASISTENTE ALIANZA
+        area: GERENCIA GESTION NEGOCIOS FIDUCIARIOS
+        centro_costo: No aplica
+        documento_jefe: '2222447084'
+        nombre_jefe: MENGANO SOLANO LONDONO
+        tipo_novedad: Modificación de información laboral
+        fecha_envio: '2026-02-06 16:35:13.772567'
+        estado_envio: Exitoso
+        mensaje: No aplica
+        centro_costo_enviado: No aplica
+        salario_enviado: No aplica
+        cargo_enviado: No aplica
+        identificacion_familiar: No aplica
+        nomina: No aplica
+        nombre_concepto_fijo: No aplica
+        fecha_inicial: No aplica
+        fecha_final: No aplica
+        usuario_reporta: PERANO HERNANDEZ CULMA
+        tipo_afiliacion: No aplica
+        nit_entidad_afiliacion: No aplica
+        nombre_entidad_afiliacion: No aplica
+        fecha_desvinculacion: No aplica
     ErrorResponse:
       title: ErrorResponse
       type: object
