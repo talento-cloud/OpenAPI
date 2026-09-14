@@ -227,6 +227,12 @@ paths:
         idioma/nivel requerido y el tiempo transcurrido calculado según el
         calendario laboral configurado. Pensado para ser consumido como
         fuente de datos de PowerBI.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://prebel.talento.cloud/html/pbi/data/seleccion/informacionProcesos.json' \              
+              --header 'Authorization: BASIC <base64usuario:contrasenia>'  
       operationId: informacionProcesos
       parameters: []
       responses:
@@ -275,6 +281,7 @@ paths:
                   sede: Sede Principal
                   tipo_vinculacion: Término indefinido
                   uen: UEN Servicios
+                  centro_costo:	001 Presidencia
                   solicitante: María Fernanda Ríos López
                   vicepresidencia: Vicepresidencia Administrativa
                   vicepresidencia_codigo: 3
@@ -902,6 +909,9 @@ components:
         area_codigo:
           type: integer
           description: Código del área de la vacante (-999 si el cargo es externo)
+        centro_costo:
+          type: string          
+          description: Centro de costo de la vacante 
         experiencia:
           type: integer
           description: Experiencia requerida para el cargo
