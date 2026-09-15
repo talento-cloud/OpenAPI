@@ -1,4 +1,4 @@
-# API de talento cloud para webhook para Magneto365 
+# API de talento cloud para webhook para Secofa 
 
 En este proyecto se documenta API REST para recibe info en webhook
 
