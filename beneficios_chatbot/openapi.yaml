@@ -1,0 +1,312 @@
+openapi: 3.0.0
+info:
+  title: Beneficios_Chatbot
+  description: >-
+    Microservicio para gestión en talento cloud del módulo de Beneficios, pensado para ser consultado por chatbot ClaudIA.
+
+    ## Manejo de errores
+
+
+        Los errores habituales pueden incluir:
+
+
+        - `401 Unauthorized`: Token JWT inválido, expirado o ausente.
+
+        - `403 Forbidden`: El usuario autenticado no tiene la licencia necesaria para el módulo de Beneficios.
+
+        - `500 Internal Server Error`: Error inesperado en el servidor.
+
+
+        Cuando sea posible, cada endpoint detallará sus códigos de error
+        específicos y estructura de respuesta en su propia descripción.
+  termsOfService: Uso privado
+  contact:
+    name: API Support
+    email: soporte@talento.cloud
+    url: https://talento.cloud/contact
+  license:
+    name: Privado
+    url: https://talento.cloud/licenses
+  version: '1.0'
+servers:
+  - url: https://clientex.talento.cloud/api
+    description: Servidor de producción
+  - url: https://clientex.talento-dev.cloud/api
+    description: Servidor de pruebas
+paths:
+  /html/beneficios/chatbot/saldo-puntos.json:
+    get:
+      tags:
+      - Beneficios
+      summary: saldoPuntos
+      description: >-
+        Retorna el saldo de puntos de beneficios disponible para el usuario autenticado (identificado
+        por el token de sesión, nunca por parámetro) en el año calendario actual. Solo lectura: no crea,
+        modifica ni elimina información, y no admite ningún parámetro.
+
+
+        **Disponibilidad del esquema de puntos**: si el cliente no tiene habilitada la propiedad
+        `BNE_MANEJO_BENEFICIO_PUNTOS`, el endpoint no consulta ningún saldo — responde
+        `data.disponible=false` con un mensaje explicativo. Esto es distinto de un saldo en cero: un
+        cliente sin el esquema habilitado nunca debe interpretarse como un usuario con 0 puntos.
+
+
+        **Desglose por categoría**: cuando el esquema de puntos sí está habilitado, la respuesta siempre
+        trae `data.puntos` con **las dos categorías** (`Beneficio` y `Reconocimiento`), nunca un número
+        suelto ni una categoría omitida. Cada elemento es `{categoria, activo, saldoPuntos}`: `Beneficio`
+        siempre viene con `activo=true` (ya se validó que el cliente maneja puntos). `Reconocimiento`
+        viene con `activo=true` y su propio `saldoPuntos` solo si el cliente tiene activa la propiedad
+        `BNE_RECONOCIMIENTOS_ACTIVO`; si no la tiene, viene con `activo=false` y **sin** el campo
+        `saldoPuntos` — nunca se consulta ni se muestra un saldo para una categoría inactiva, ni se
+        suman los saldos de ambas categorías en un solo total. El nombre de la categoría viene
+        traducido según el idioma del cliente/empresa (i18n).
+
+
+        El saldo de una categoría es `bne_consolidado_transaciones_beneficios_usuario.saldo_puntos` para
+        el usuario, el año actual y esa categoría; si el usuario no tiene fila de transacción registrada
+        para esa combinación (por ejemplo, aún no se le han asignado puntos ese año), el saldo se
+        responde en `0`, no como un error.
+      operationId: saldoPuntos
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Set-Cookie:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: JSESSIONID=19ree07ze9nl01652vhe2qjmry;Path=/
+            Expires:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Thu, 01 Jan 1970 00:00:00 GMT
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/saldoPuntos'
+                - example:
+                    data:
+                      disponible: true
+                      puntos:
+                      - categoria: Beneficio
+                        activo: true
+                        saldoPuntos: 150
+                      - categoria: Reconocimiento
+                        activo: true
+                        saldoPuntos: 40
+                    success: true
+              example:
+                data:
+                  disponible: true
+                  puntos:
+                  - categoria: Beneficio
+                    activo: true
+                    saldoPuntos: 150
+                  - categoria: Reconocimiento
+                    activo: true
+                    saldoPuntos: 40
+                success: true
+          x-examples:
+            Cliente sin reconocimientos activos (categoría Reconocimiento inactiva, sin saldoPuntos):
+              data:
+                disponible: true
+                puntos:
+                - categoria: Beneficio
+                  activo: true
+                  saldoPuntos: 150
+                - categoria: Reconocimiento
+                  activo: false
+              success: true
+            Usuario sin puntos asignados este año (saldo 0):
+              data:
+                disponible: true
+                puntos:
+                - categoria: Beneficio
+                  activo: true
+                  saldoPuntos: 0
+                - categoria: Reconocimiento
+                  activo: false
+              success: true
+            Cliente sin esquema de puntos habilitado:
+              data:
+                disponible: false
+              message: Este cliente no maneja beneficios por puntos.
+              success: true
+        '403':
+          description: >-
+            El usuario autenticado no tiene la licencia necesaria para el módulo de Beneficios
+            (Usuarios.getLicenciaTieneBeneficios() falsy).
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/errorSaldoPuntos'
+              example:
+                success: false
+                message: No dispones de la licencia necesaria para hacer uso de los beneficios!
+      deprecated: false
+components:
+  schemas:
+    saldoPuntos:
+      title: saldoPuntos
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Data'
+        message:
+          type: string
+          description: Presente únicamente cuando `data.disponible` es `false`.
+        success:
+          type: boolean
+      example:
+        data:
+          disponible: true
+          puntos:
+          - categoria: Beneficio
+            activo: true
+            saldoPuntos: 150
+          - categoria: Reconocimiento
+            activo: true
+            saldoPuntos: 40
+        success: true
+    Data:
+      title: Data
+      required:
+      - disponible
+      type: object
+      properties:
+        disponible:
+          type: boolean
+          description: >-
+            false si el cliente no tiene habilitada la propiedad BNE_MANEJO_BENEFICIO_PUNTOS — en ese
+            caso no viene el campo `puntos`. No debe interpretarse como equivalente a un saldo en 0.
+        puntos:
+          type: array
+          items:
+            $ref: '#/components/schemas/PuntosCategoria'
+          description: >-
+            Presente únicamente cuando `disponible=true`. Siempre trae las dos categorías (Beneficio y
+            Reconocimiento) — nunca se omite una categoría ni se suman sus saldos en un solo total; ver
+            `PuntosCategoria.activo` para saber cuál de las dos trae saldo real.
+      example:
+        disponible: true
+        puntos:
+        - categoria: Beneficio
+          activo: true
+          saldoPuntos: 150
+        - categoria: Reconocimiento
+          activo: true
+          saldoPuntos: 40
+    PuntosCategoria:
+      title: PuntosCategoria
+      required:
+      - categoria
+      - activo
+      type: object
+      properties:
+        categoria:
+          type: string
+          description: >-
+            Nombre de la categoría de puntos, traducido según el idioma del cliente/empresa (i18n).
+            Valores posibles: "Beneficio" o "Reconocimiento" (o su equivalente traducido).
+        activo:
+          type: boolean
+          description: >-
+            true si esta categoría está activa para el cliente ("Beneficio" siempre lo está, dado que
+            ya se validó que el cliente maneja puntos; "Reconocimiento" depende de la propiedad
+            BNE_RECONOCIMIENTOS_ACTIVO). Si es false, el campo `saldoPuntos` no viene en el objeto.
+        saldoPuntos:
+          type: integer
+          format: int32
+          description: >-
+            Saldo de puntos disponible del usuario en esta categoría para el año actual
+            (bne_consolidado_transaciones_beneficios_usuario.saldo_puntos). Presente únicamente cuando
+            `activo=true`. 0 si el usuario no tiene fila de transacción registrada para esa combinación
+            de año y categoría.
+      example:
+        categoria: Beneficio
+        activo: true
+        saldoPuntos: 150
+    errorSaldoPuntos:
+      title: errorSaldoPuntos
+      required:
+      - success
+      - message
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+      example:
+        success: false
+        message: No dispones de la licencia necesaria para hacer uso de los beneficios!
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+security:
+- bearer: []
+tags:
+- name: Beneficios
+  description: ''
