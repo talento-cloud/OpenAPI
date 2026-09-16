@@ -14,6 +14,9 @@ info:
 
         - `403 Forbidden`: El usuario autenticado no tiene la licencia necesaria para el módulo de Beneficios.
 
+        - `405 Method Not Allowed`: Se usó un verbo HTTP distinto de GET/HEAD/OPTIONS contra esta
+        ruta — todos los endpoints de este chatbot son de solo lectura.
+
         - `500 Internal Server Error`: Error inesperado en el servidor.
 
 
