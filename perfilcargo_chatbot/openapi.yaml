@@ -1,0 +1,509 @@
+openapi: 3.0.0
+info:
+  title: PerfilCargo_Chatbot
+  description: >-
+    Microservicio para gestión en talento cloud del módulo de Perfil de Cargo, pensado para ser
+    consultado por chatbot ClaudIA.
+
+    ## Manejo de errores
+
+
+        Los errores habituales pueden incluir:
+
+
+        - `401 Unauthorized`: Token JWT inválido, expirado o ausente.
+
+        - `405 Method Not Allowed`: Se usó un verbo HTTP distinto de GET/HEAD/OPTIONS contra esta
+        ruta — todos los endpoints de este chatbot son de solo lectura.
+
+        - `500 Internal Server Error`: Error inesperado en el servidor.
+
+
+        Cuando sea posible, cada endpoint detallará sus códigos de error
+        específicos y estructura de respuesta en su propia descripción.
+  termsOfService: Uso privado
+  contact:
+    name: API Support
+    email: soporte@talento.cloud
+    url: https://talento.cloud/contact
+  license:
+    name: Privado
+    url: https://talento.cloud/licenses
+  version: '1.0'
+servers:
+  - url: https://clientex.talento.cloud/api
+    description: Servidor de producción
+  - url: https://clientex.talento-dev.cloud/api
+    description: Servidor de pruebas
+paths:
+  /html/perfilcargo/chatbot/mi-perfil.json:
+    get:
+      tags:
+      - PerfilCargo
+      summary: miPerfil
+      description: >-
+        Retorna la información general del perfil de cargo asociado al usuario autenticado
+        (identificado por el token de sesión, nunca por parámetro): nombre del cargo, área, misión,
+        funciones principales, formación requerida, experiencia requerida y competencias asociadas.
+        Solo lectura: no crea, modifica ni elimina información, y no admite ningún parámetro.
+
+
+        **Usuario sin perfil de cargo**: si el usuario autenticado no tiene un cargo asociado
+        (`Usuarios.cargo1` es nulo), la respuesta es `200 OK` con `data.tienePerfilCargo=false` y
+        `data.perfilCargo=null` — no es un error técnico.
+
+
+        **Funciones principales**: cada elemento es únicamente la descripción de la función (el
+        "qué"); no incluye el campo `paraQue` de cada función.
+
+
+        **Formación requerida**: arreglo de objetos `{escolaridad, requerido, titulo}` — una entrada
+        por cada título configurado en el perfil. `requerido` es un booleano real (`true` únicamente
+        cuando el valor configurado en el perfil es exactamente `"Requerido"`; cualquier otro valor,
+        incluido vacío, es `false`) — no un texto traducido, para que el consumidor pueda filtrar sin
+        depender del idioma.
+
+
+        **Experiencia requerida**: arreglo de objetos `{area, funciones, meses}` — una entrada por
+        cada combinación configurada en el perfil, sin resumir ni promediar. `meses` es el entero real.
+
+
+        **Competencias asociadas**: **un único arreglo** de objetos `{tipo, nombre}`, combinando las
+        tres fuentes de competencias del cargo — corporativas, funcionales y técnicas — en vez de tres
+        arreglos separados que el consumidor tendría que correlacionar por nombre de campo. `tipo` va
+        traducido según el idioma de la empresa (`Corporativa`/`Funcional`/`Técnica`, o su equivalente
+        en inglés); `nombre` es el dato real de la competencia, sin traducir. Las competencias
+        corporativas son **globales al cliente**, no específicas del cargo: son las mismas para todos
+        los cargos del tenant.
+
+
+        `area` y `mision` pueden venir `null` si el cargo no las tiene configuradas — no es un error.
+        `funciones`, `formacion`, `experiencia` y `competencias` vienen `[]` (vacíos) si el cargo no
+        tiene esa información configurada, nunca se omiten ni vienen `null`.
+      operationId: miPerfil
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Set-Cookie:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: JSESSIONID=19ree07ze9nl01652vhe2qjmry;Path=/
+            Expires:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Thu, 01 Jan 1970 00:00:00 GMT
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/miPerfil'
+                - example:
+                    data:
+                      tienePerfilCargo: true
+                      perfilCargo:
+                        nombreCargo: Analista de Selección
+                        area: Gestión Humana
+                        mision: Gestionar los procesos de selección de la compañía, asegurando la vinculación de talento idóneo.
+                        funciones:
+                        - Ejecutar procesos de selección.
+                        - Realizar seguimiento a candidatos.
+                        - Apoyar la gestión de entrevistas.
+                        formacion:
+                        - escolaridad: Profesional
+                          requerido: true
+                          titulo: Psicología
+                        - escolaridad: Profesional
+                          requerido: true
+                          titulo: Áreas relacionadas
+                        - escolaridad: Especialización
+                          requerido: false
+                          titulo: Gestión Humana
+                        experiencia:
+                        - area: Selección de personal
+                          funciones: Procesos de selección
+                          meses: 24
+                        competencias:
+                        - tipo: Corporativa
+                          nombre: Comunicación
+                        - tipo: Corporativa
+                          nombre: Trabajo en equipo
+                        - tipo: Funcional
+                          nombre: Orientación al logro
+                        - tipo: Técnica
+                          nombre: Manejo de ATS
+                    success: true
+              example:
+                data:
+                  tienePerfilCargo: true
+                  perfilCargo:
+                    nombreCargo: Analista de Selección
+                    area: Gestión Humana
+                    mision: Gestionar los procesos de selección de la compañía, asegurando la vinculación de talento idóneo.
+                    funciones:
+                    - Ejecutar procesos de selección.
+                    - Realizar seguimiento a candidatos.
+                    - Apoyar la gestión de entrevistas.
+                    formacion:
+                    - escolaridad: Profesional
+                      requerido: true
+                      titulo: Psicología
+                    - escolaridad: Profesional
+                      requerido: true
+                      titulo: Áreas relacionadas
+                    - escolaridad: Especialización
+                      requerido: false
+                      titulo: Gestión Humana
+                    experiencia:
+                    - area: Selección de personal
+                      funciones: Procesos de selección
+                      meses: 24
+                    competencias:
+                    - tipo: Corporativa
+                      nombre: Comunicación
+                    - tipo: Corporativa
+                      nombre: Trabajo en equipo
+                    - tipo: Funcional
+                      nombre: Orientación al logro
+                    - tipo: Técnica
+                      nombre: Manejo de ATS
+                success: true
+          x-examples:
+            Usuario sin perfil de cargo asociado:
+              data:
+                tienePerfilCargo: false
+                perfilCargo: null
+              message: El usuario no tiene un perfil de cargo asociado.
+              success: true
+            Cargo con datos parciales (sin misión ni área configuradas):
+              data:
+                tienePerfilCargo: true
+                perfilCargo:
+                  nombreCargo: Auxiliar Administrativo
+                  area: null
+                  mision: null
+                  funciones: []
+                  formacion: []
+                  experiencia: []
+                  competencias:
+                  - tipo: Corporativa
+                    nombre: Comunicación
+              success: true
+            Respuesta en inglés (Content-Language en-US, "tipo" traducido, datos reales sin traducir):
+              data:
+                tienePerfilCargo: true
+                perfilCargo:
+                  nombreCargo: Selection Analyst
+                  area: Human Resources
+                  mision: Manage the company's selection processes.
+                  funciones:
+                  - Execute selection processes.
+                  formacion:
+                  - escolaridad: Profesional
+                    requerido: true
+                    titulo: Psicología
+                  experiencia:
+                  - area: Selección de personal
+                    funciones: Procesos de selección
+                    meses: 24
+                  competencias:
+                  - tipo: Corporate
+                    nombre: Comunicación
+                  - tipo: Functional
+                    nombre: Orientación al logro
+                  - tipo: Technical
+                    nombre: Manejo de ATS
+              success: true
+      deprecated: false
+components:
+  schemas:
+    miPerfil:
+      title: miPerfil
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Data'
+        message:
+          type: string
+          description: Presente únicamente cuando `data.tienePerfilCargo` es `false`.
+        success:
+          type: boolean
+      example:
+        data:
+          tienePerfilCargo: true
+          perfilCargo:
+            nombreCargo: Analista de Selección
+            area: Gestión Humana
+            mision: Gestionar los procesos de selección de la compañía, asegurando la vinculación de talento idóneo.
+            funciones:
+            - Ejecutar procesos de selección.
+            formacion:
+            - escolaridad: Profesional
+              requerido: true
+              titulo: Psicología
+            experiencia:
+            - area: Selección de personal
+              funciones: Procesos de selección
+              meses: 24
+            competencias:
+            - tipo: Corporativa
+              nombre: Comunicación
+            - tipo: Funcional
+              nombre: Orientación al logro
+            - tipo: Técnica
+              nombre: Manejo de ATS
+        success: true
+    Data:
+      title: Data
+      required:
+      - tienePerfilCargo
+      - perfilCargo
+      type: object
+      properties:
+        tienePerfilCargo:
+          type: boolean
+          description: false si el usuario autenticado no tiene cargo asociado (Usuarios.cargo1 nulo).
+        perfilCargo:
+          type: object
+          nullable: true
+          allOf:
+          - $ref: '#/components/schemas/PerfilCargo'
+          description: null cuando `tienePerfilCargo` es false.
+      example:
+        tienePerfilCargo: true
+        perfilCargo:
+          nombreCargo: Analista de Selección
+          area: Gestión Humana
+          mision: Gestionar los procesos de selección de la compañía, asegurando la vinculación de talento idóneo.
+          funciones:
+          - Ejecutar procesos de selección.
+          formacion:
+          - escolaridad: Profesional
+            requerido: true
+            titulo: Psicología
+          experiencia:
+          - area: Selección de personal
+            funciones: Procesos de selección
+            meses: 24
+          competencias:
+          - tipo: Corporativa
+            nombre: Comunicación
+          - tipo: Funcional
+            nombre: Orientación al logro
+          - tipo: Técnica
+            nombre: Manejo de ATS
+    PerfilCargo:
+      title: PerfilCargo
+      required:
+      - nombreCargo
+      - funciones
+      - formacion
+      - experiencia
+      - competencias
+      type: object
+      properties:
+        nombreCargo:
+          type: string
+          description: Nombre del cargo (Cargo.nombre).
+        area:
+          type: string
+          nullable: true
+          description: Nombre del área a la que pertenece el cargo (Cargo.area.nombre). Null si el cargo no tiene área configurada.
+        mision:
+          type: string
+          nullable: true
+          description: Misión del cargo (Cargo.mision). Null si no está configurada.
+        funciones:
+          type: array
+          items:
+            type: string
+          description: >-
+            Descripción de cada función principal del cargo (FuncionCargo.descripcion, el "qué"). No
+            incluye el campo paraQue de cada función. [] si el cargo no tiene funciones configuradas.
+        formacion:
+          type: array
+          items:
+            $ref: '#/components/schemas/FormacionItem'
+          description: >-
+            Formación requerida: un objeto por cada título configurado (no agrupa varios títulos de
+            la misma escolaridad en una sub-lista). [] si el cargo no tiene formación configurada.
+        experiencia:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExperienciaItem'
+          description: >-
+            Experiencia requerida: una entrada por cada combinación área + función + meses
+            configurada. [] si el cargo no tiene experiencia configurada.
+        competencias:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompetenciaItem'
+          description: >-
+            Competencias asociadas al cargo, en un único arreglo — combina las competencias
+            corporativas (globales al cliente, iguales para todos los cargos), funcionales y técnicas
+            (ambas específicas de este cargo). [] si el cargo no tiene competencias configuradas ni
+            existen corporativas.
+      example:
+        nombreCargo: Analista de Selección
+        area: Gestión Humana
+        mision: Gestionar los procesos de selección de la compañía, asegurando la vinculación de talento idóneo.
+        funciones:
+        - Ejecutar procesos de selección.
+        - Realizar seguimiento a candidatos.
+        formacion:
+        - escolaridad: Profesional
+          requerido: true
+          titulo: Psicología
+        - escolaridad: Especialización
+          requerido: false
+          titulo: Gestión Humana
+        experiencia:
+        - area: Selección de personal
+          funciones: Procesos de selección
+          meses: 24
+        competencias:
+        - tipo: Corporativa
+          nombre: Comunicación
+        - tipo: Funcional
+          nombre: Orientación al logro
+        - tipo: Técnica
+          nombre: Manejo de ATS
+    FormacionItem:
+      title: FormacionItem
+      required:
+      - escolaridad
+      - requerido
+      - titulo
+      type: object
+      properties:
+        escolaridad:
+          type: string
+          nullable: true
+          description: Nombre del nivel de escolaridad (EducacionPerfilCargo.escolaridad.nombre).
+        requerido:
+          type: boolean
+          description: >-
+            true únicamente cuando el valor configurado es exactamente "Requerido"; cualquier otro
+            valor (incluido vacío) es false (opcional). Booleano real, no una etiqueta traducida.
+        titulo:
+          type: string
+          nullable: true
+          description: Título asociado a esta escolaridad (EducacionPerfilCargo.titulo.nombre).
+      example:
+        escolaridad: Profesional
+        requerido: true
+        titulo: Psicología
+    ExperienciaItem:
+      title: ExperienciaItem
+      required:
+      - area
+      - funciones
+      - meses
+      type: object
+      properties:
+        area:
+          type: string
+          nullable: true
+          description: Área de experiencia requerida (ExperienciaCargo.area).
+        funciones:
+          type: string
+          nullable: true
+          description: Descripción de las funciones en las que se requiere la experiencia (ExperienciaCargo.funciones).
+        meses:
+          type: integer
+          format: int32
+          nullable: true
+          description: Meses de experiencia requeridos (ExperienciaCargo.meses). Entero real, no un texto formateado.
+      example:
+        area: Selección de personal
+        funciones: Procesos de selección
+        meses: 24
+    CompetenciaItem:
+      title: CompetenciaItem
+      required:
+      - tipo
+      - nombre
+      type: object
+      properties:
+        tipo:
+          type: string
+          description: >-
+            Tipo de competencia, traducido según el idioma del cliente/empresa (i18n). Valores
+            posibles: "Corporativa" (global al tenant), "Funcional" o "Técnica" (ambas específicas
+            del cargo) — o su equivalente traducido.
+        nombre:
+          type: string
+          description: Nombre de la competencia (TiposPreguntas.nombre). Dato real, sin traducir.
+      example:
+        tipo: Corporativa
+        nombre: Comunicación
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+security:
+- bearer: []
+tags:
+- name: PerfilCargo
+  description: ''
