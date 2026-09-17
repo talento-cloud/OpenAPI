@@ -1,6 +1,6 @@
-# API de talento cloud para Autogestión
+# API de talento cloud para Selección
 
-En este proyecto se documenta API REST para módulo de Disciplinarios del proyecto talento cloud
+En este proyecto se documenta API REST para módulo de Selección
 
 ## Documentación de la API de talento cloud generado con redoc
 Para generar documento html

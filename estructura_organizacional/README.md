@@ -17,3 +17,19 @@ La API de Estructura Organizacional permite a los clientes construir y gestionar
 La especificación completa de los endpoints, incluyendo parámetros, cuerpos de solicitud y esquemas de respuesta, se encuentra en el archivo [openapi.yaml](openapi.yaml).
 
 Este archivo sigue el estándar OpenAPI 3.0.3 y puede ser utilizado con herramientas como Swagger UI o Postman para interactuar con la API.
+
+## Documentación de la API de talento cloud generado con redoc
+Para generar documento html
+```bash
+npx @redocly/cli build-docs openapi.yaml -t ../custom-template.hbs -o index.html
+```
+
+Para validar un archivo openai
+```bash
+redocly lint --extends=minimal .\openapi.yaml
+```
+
+Para encriptar html previamente generado reemplazando el anterior
+```bash
+npx staticrypt index.html -p "TalentoCloud." --short -t ../login-template.html --template-title "Talento Cloud - Acceso a Documentación" --template-instructions "Ingresa la contraseña para ver la documentación de la API" --template-placeholder "Contraseña de acceso" --template-button "Desbloquear" --template-remember "Recordar contraseña" --remember 30 -d .
+```

@@ -42,6 +42,13 @@ Or for modules with their own template:
 npx @redocly/cli build-docs openapi.yaml -t custom-template.hbs -o index.html
 ```
 
+### Encrypt HTML Documentation with StatiCrypt
+
+From a module directory:
+```bash
+npx staticrypt index.html -p "TalentoCloud." --short -t ../login-template.html --template-title "Talento Cloud - Acceso a Documentación" --template-instructions "Ingresa la contraseña para ver la documentación de la API" --template-placeholder "Contraseña de acceso" --template-button "Desbloquear" --template-remember "Recordar contraseña" --remember 30 -d .
+```
+
 ### Validate OpenAPI Specification
 
 ```bash
