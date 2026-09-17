@@ -125,11 +125,11 @@ paths:
                 client_id:
                   type: string
                   description: Suministrado por talento cloud
-                  example: 389f8c63f55d48aee6da5f7517db3dcf
+                  example: 00000000000000000000000000000000
                 client_secret:
                   type: string
                   description: Suministrado por talento cloud
-                  example: 7df40e8c97a1c2d689a11d3cb34d5e5bb8245d9074b1efcb02eda1ce05a190a6
+                  example: 0000000000000000000000000000000000000000000000000000000000000000
                 grant_type:
                   type: string
                   description: Por defecto client_credentials
@@ -155,13 +155,13 @@ paths:
                 allOf:
                 - $ref: '#/components/schemas/oauth2'
                 - example:
-                    acces_token: eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ...
+                    acces_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IlVzdWFyaW8gRWplbXBsbyIsImlhdCI6MTUxNjIzOTAyMn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
                     token_type: Bearer
                     expires_in: 900
                     success: true
                     scope: talento.read
               example:
-                acces_token: eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOi...
+                acces_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IlVzdWFyaW8gRWplbXBsbyIsImlhdCI6MTUxNjIzOTAyMn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
                 token_type: Bearer
                 expires_in: 900
                 success: true
@@ -192,24 +192,24 @@ paths:
                 - $ref: '#/components/schemas/HV_informacionNomina'
                 - example:
                     data:
-                    - usuario: ADRIANA PEREZ PEREZCORTES
+                    - usuario: CARLOS ANDRES PEREZ GOMEZ
                       tipo_documento: CEDULA
-                      documento_usuario: '8587647000'
+                      documento_usuario: '1000000001'
                       tipo_usuario: Administrativo
-                      email: basura_talpostobon790@unmail.edu
-                      negocio: Calidad de software
-                      empresa: Soluciones Estratégicas Integrales para el Desarrollo Empresarial y Tecnológico S.A.S
-                      uen: Nexa Digital Solutions
+                      email: carlos.perez@empresa-ejemplo.com
+                      negocio: Servicios Corporativos
+                      empresa: Empresa Ejemplo S.A.S.
+                      uen: UEN Tecnología y Desarrollo
                       vicepresidencia: Financiera
                       pais: Colombia
-                      ciudad: Cartagena
-                      regional: Costa Atlántica
-                      sede: Cartagena
+                      ciudad: Bogotá
+                      regional: Central
+                      sede: Bogotá Principal
                       cargo: Analista Desarrollador
                       nivel_organizacional: Analistas
                       area: TI
-                      documento_jefe: '29498498195'
-                      jefe: Alvaro Cardenas
+                      documento_jefe: '1000000010'
+                      jefe: MARIA FERNANDA RODRIGUEZ LOPEZ
                       fecha_ingreso: 2026-05-12
                       tipo_contrato: null
                       fecha_terminacion_contrato: null
@@ -254,14 +254,14 @@ paths:
                       discapacidad: null
                       beneficiario_eps: null
                       beneficiario_caja_compensacion: null
-                    - usuario: Alvaro Cardenas
+                    - usuario: MARIA FERNANDA RODRIGUEZ LOPEZ
                       tipo_documento: CEDULA
-                      documento_usuario: '29498498195'
+                      documento_usuario: '1000000010'
                       tipo_usuario: Administrativo
-                      email: 360_360_360_prueba5@basura.com
+                      email: maria.rodriguez@empresa-ejemplo.com
                       negocio: Desarrollo de Software
-                      empresa: Corporación Internacional de.
-                      uen: UEN Desarrollo e innovación
+                      empresa: Empresa Ejemplo S.A.S.
+                      uen: UEN Desarrollo e Innovación
                       vicepresidencia: TI
                       pais: Colombia
                       ciudad: Medellin
@@ -270,8 +270,8 @@ paths:
                       cargo: Desarrollador Senior
                       nivel_organizacional: Analistas
                       area: TI
-                      documento_jefe: '1117123456'
-                      jefe: Andres Mauricio Jaramillo Salazar
+                      documento_jefe: '1000000020'
+                      jefe: JORGE EDUARDO RAMIREZ DUQUE
                       fecha_ingreso: 2025-04-13
                       tipo_contrato: null
                       fecha_terminacion_contrato: null
@@ -316,14 +316,14 @@ paths:
                       discapacidad: null
                       beneficiario_eps: null
                       beneficiario_caja_compensacion: null
-                    - usuario: Amparo Echeverry
+                    - usuario: LAURA SOFIA MEJIA RESTREPO
                       tipo_documento: CEDULA
-                      documento_usuario: '29866304'
+                      documento_usuario: '1000000003'
                       tipo_usuario: Administrativo
-                      email: 353_353_353_text@gmail.com
+                      email: laura.mejia@empresa-ejemplo.com
                       negocio: Calidad de software
-                      empresa: Nexa Solutions
-                      uen: Nexa Digital Solutions
+                      empresa: Empresa Ejemplo S.A.S.
+                      uen: UEN Consultoría
                       vicepresidencia: Gestión Humana
                       pais: Colombia
                       ciudad: Medellin
@@ -332,8 +332,8 @@ paths:
                       cargo: Arquitecto TI
                       nivel_organizacional: Analistas
                       area: TI
-                      documento_jefe: '42793011'
-                      jefe: Deissy Echeverry Seleccion
+                      documento_jefe: '1000000030'
+                      jefe: DIANA MARCELA CASTRO OSORIO
                       fecha_ingreso: 2025-06-10
                       tipo_contrato: Contrato por prestación de servicios
                       fecha_terminacion_contrato: null
@@ -344,7 +344,7 @@ paths:
                       tipo_cuenta: null
                       banco: null
                       numero_cuenta: ''
-                      salario: '3200000'
+                      salario: '3500000'
                       cupo_beneficios: null
                       centros_costos: ''
                       modalidad: Casa
@@ -358,15 +358,15 @@ paths:
                       arl: ''
                       centro_trabajo_arl: ''
                       porcentaje_riesgo_arl: ''
-                      lugar_expedicion: ABINGDON DOWNS
+                      lugar_expedicion: Bogotá D.C.
                       fecha_expedicion_documento: 1989-01-10
-                      municipio_residencia: AEROGLEN
+                      municipio_residencia: Medellín
                       fecha_nacimiento_colaborador: 1986-06-06
-                      ciudad_nacimiento: ABINGDON DOWNS
-                      direccion: 'Bulevar 55AD  # 66AC Este 66'
-                      barrio: gyyyyy
-                      telefono: '987564859680'
-                      celular: '257372572'
+                      ciudad_nacimiento: Bogotá D.C.
+                      direccion: 'Calle 100 # 15 - 20'
+                      barrio: Centro
+                      telefono: '6015550123'
+                      celular: '3001234567'
                       correo: null
                       tipo_documento_beneficiario: null
                       documento_beneficiario: null
@@ -378,15 +378,15 @@ paths:
                       discapacidad: null
                       beneficiario_eps: null
                       beneficiario_caja_compensacion: null
-                    - usuario: Ana Maria Gomez Ramirez
+                    - usuario: ANA MARIA TORRES SANCHEZ
                       tipo_documento: CEDULA
-                      documento_usuario: '43609065'
+                      documento_usuario: '1000000004'
                       tipo_usuario: Administrativo
-                      email: 238_xxxisrael.fonseca@talento.cloud
+                      email: ana.torres@empresa-ejemplo.com
                       negocio: Desarrollo de Software
-                      empresa: talento cloud
-                      uen: UEN App Moviles
-                      vicepresidencia: financiera
+                      empresa: Empresa Ejemplo S.A.S.
+                      uen: UEN Soluciones Móviles
+                      vicepresidencia: Financiera
                       pais: Colombia
                       ciudad: Medellin
                       regional: Antioquia
@@ -394,8 +394,8 @@ paths:
                       cargo: Gerente de Calidad y Soporte
                       nivel_organizacional: Gerencial
                       area: Sistemas
-                      documento_jefe: '21897678'
-                      jefe: Blanca Ruiz Suarez
+                      documento_jefe: '1000000040'
+                      jefe: BLANCA CECILIA RUIZ SUAREZ
                       fecha_ingreso: 2022-11-29
                       tipo_contrato: Contrato a término indefinido
                       fecha_terminacion_contrato: null
@@ -404,8 +404,8 @@ paths:
                       nomina: ''
                       regimen_pension: null
                       tipo_cuenta: Cuenta de ahorros
-                      banco: Bancolombia
-                      numero_cuenta: '650000005145'
+                      banco: Banco Demo
+                      numero_cuenta: '123456789012'
                       salario: null
                       cupo_beneficios: null
                       centros_costos: ''
@@ -414,13 +414,13 @@ paths:
                       nombres_conceptos: null
                       valores_conceptos: null
                       corresponde_a_salario: null
-                      eps: COMFAMILIAR DE NARIÑO EPS - CCF
-                      pension: Colfondos
-                      cesantias: Protección S.A
-                      arl: ARL Positiva
+                      eps: EPS Demo
+                      pension: Fondo Pensiones Demo
+                      cesantias: Fondo Cesantías Demo
+                      arl: ARL Demo
                       centro_trabajo_arl: ''
                       porcentaje_riesgo_arl: ''
-                      lugar_expedicion: Ricaurte
+                      lugar_expedicion: Medellín
                       fecha_expedicion_documento: null
                       municipio_residencia: null
                       fecha_nacimiento_colaborador: null
@@ -428,7 +428,7 @@ paths:
                       direccion: ''
                       barrio: ''
                       telefono: null
-                      celular: 3215554444xxx
+                      celular: '3007654321'
                       correo: null
                       tipo_documento_beneficiario: null
                       documento_beneficiario: null
@@ -443,24 +443,24 @@ paths:
                     success: true
               example:
                 data:
-                - usuario: ADRIANA PEREZ PEREZCORTES
+                - usuario: CARLOS ANDRES PEREZ GOMEZ
                   tipo_documento: CEDULA
-                  documento_usuario: '8587647000'
+                  documento_usuario: '1000000001'
                   tipo_usuario: Administrativo
-                  email: basura_talpostobon790@unmail.edu
-                  negocio: Calidad de software
-                  empresa: Soluciones Estratégicas Integrales para el Desarrollo Empresarial y Tecnológico S.A.S
-                  uen: Nexa Digital Solutions
+                  email: carlos.perez@empresa-ejemplo.com
+                  negocio: Servicios Corporativos
+                  empresa: Empresa Ejemplo S.A.S.
+                  uen: UEN Tecnología y Desarrollo
                   vicepresidencia: Financiera
                   pais: Colombia
-                  ciudad: Cartagena
-                  regional: Costa Atlántica
-                  sede: Cartagena
+                  ciudad: Bogotá
+                  regional: Central
+                  sede: Bogotá Principal
                   cargo: Analista Desarrollador
                   nivel_organizacional: Analistas
                   area: TI
-                  documento_jefe: '29498498195'
-                  jefe: Alvaro Cardenas
+                  documento_jefe: '1000000010'
+                  jefe: MARIA FERNANDA RODRIGUEZ LOPEZ
                   fecha_ingreso: 2026-05-12
                   tipo_contrato: null
                   fecha_terminacion_contrato: null
@@ -505,14 +505,14 @@ paths:
                   discapacidad: null
                   beneficiario_eps: null
                   beneficiario_caja_compensacion: null
-                - usuario: Alvaro Cardenas
+                - usuario: MARIA FERNANDA RODRIGUEZ LOPEZ
                   tipo_documento: CEDULA
-                  documento_usuario: '29498498195'
+                  documento_usuario: '1000000010'
                   tipo_usuario: Administrativo
-                  email: 360_360_360_prueba5@basura.com
+                  email: maria.rodriguez@empresa-ejemplo.com
                   negocio: Desarrollo de Software
-                  empresa: Corporación Internacional de.
-                  uen: UEN Desarrollo e innovación
+                  empresa: Empresa Ejemplo S.A.S.
+                  uen: UEN Desarrollo e Innovación
                   vicepresidencia: TI
                   pais: Colombia
                   ciudad: Medellin
@@ -521,8 +521,8 @@ paths:
                   cargo: Desarrollador Senior
                   nivel_organizacional: Analistas
                   area: TI
-                  documento_jefe: '1117123456'
-                  jefe: Andres Mauricio Jaramillo Salazar
+                  documento_jefe: '1000000020'
+                  jefe: JORGE EDUARDO RAMIREZ DUQUE
                   fecha_ingreso: 2025-04-13
                   tipo_contrato: null
                   fecha_terminacion_contrato: null
@@ -567,14 +567,14 @@ paths:
                   discapacidad: null
                   beneficiario_eps: null
                   beneficiario_caja_compensacion: null
-                - usuario: Amparo Echeverry
+                - usuario: LAURA SOFIA MEJIA RESTREPO
                   tipo_documento: CEDULA
-                  documento_usuario: '29866304'
+                  documento_usuario: '1000000003'
                   tipo_usuario: Administrativo
-                  email: 353_353_353_text@gmail.com
+                  email: laura.mejia@empresa-ejemplo.com
                   negocio: Calidad de software
-                  empresa: Nexa Solutions
-                  uen: Nexa Digital Solutions
+                  empresa: Empresa Ejemplo S.A.S.
+                  uen: UEN Consultoría
                   vicepresidencia: Gestión Humana
                   pais: Colombia
                   ciudad: Medellin
@@ -583,8 +583,8 @@ paths:
                   cargo: Arquitecto TI
                   nivel_organizacional: Analistas
                   area: TI
-                  documento_jefe: '42793011'
-                  jefe: Deissy Echeverry Seleccion
+                  documento_jefe: '1000000030'
+                  jefe: DIANA MARCELA CASTRO OSORIO
                   fecha_ingreso: 2025-06-10
                   tipo_contrato: Contrato por prestación de servicios
                   fecha_terminacion_contrato: null
@@ -595,7 +595,7 @@ paths:
                   tipo_cuenta: null
                   banco: null
                   numero_cuenta: ''
-                  salario: '3200000'
+                  salario: '3500000'
                   cupo_beneficios: null
                   centros_costos: ''
                   modalidad: Casa
@@ -609,15 +609,15 @@ paths:
                   arl: ''
                   centro_trabajo_arl: ''
                   porcentaje_riesgo_arl: ''
-                  lugar_expedicion: ABINGDON DOWNS
+                  lugar_expedicion: Bogotá D.C.
                   fecha_expedicion_documento: 1989-01-10
-                  municipio_residencia: AEROGLEN
+                  municipio_residencia: Medellín
                   fecha_nacimiento_colaborador: 1986-06-06
-                  ciudad_nacimiento: ABINGDON DOWNS
-                  direccion: 'Bulevar 55AD  # 66AC Este 66'
-                  barrio: gyyyyy
-                  telefono: '987564859680'
-                  celular: '257372572'
+                  ciudad_nacimiento: Bogotá D.C.
+                  direccion: 'Calle 100 # 15 - 20'
+                  barrio: Centro
+                  telefono: '6015550123'
+                  celular: '3001234567'
                   correo: null
                   tipo_documento_beneficiario: null
                   documento_beneficiario: null
@@ -629,13 +629,13 @@ paths:
                   discapacidad: null
                   beneficiario_eps: null
                   beneficiario_caja_compensacion: null
-                - usuario: Ana Maria Gomez Ramirez
+                - usuario: ANA MARIA TORRES SANCHEZ
                   tipo_documento: CEDULA
-                  documento_usuario: '43609065'
+                  documento_usuario: '1000000004'
                   tipo_usuario: Administrativo
-                  email: 238_xxxisrael.fonseca@talento.cloud
+                  email: ana.torres@empresa-ejemplo.com
                   negocio: Desarrollo de Software
-                  empresa: talento cloud
+                  empresa: Empresa Ejemplo S.A.S.
                   uen: UEN App Moviles
                   vicepresidencia: financiera
                   pais: Colombia
@@ -645,8 +645,8 @@ paths:
                   cargo: Gerente de Calidad y Soporte
                   nivel_organizacional: Gerencial
                   area: Sistemas
-                  documento_jefe: '21897678'
-                  jefe: Blanca Ruiz Suarez
+                  documento_jefe: '1000000040'
+                  jefe: BLANCA CECILIA RUIZ SUAREZ
                   fecha_ingreso: 2022-11-29
                   tipo_contrato: Contrato a término indefinido
                   fecha_terminacion_contrato: null
@@ -655,8 +655,8 @@ paths:
                   nomina: ''
                   regimen_pension: null
                   tipo_cuenta: Cuenta de ahorros
-                  banco: Bancolombia
-                  numero_cuenta: '650000005145'
+                  banco: Banco Demo
+                  numero_cuenta: '123456789012'
                   salario: null
                   cupo_beneficios: null
                   centros_costos: ''
@@ -665,13 +665,13 @@ paths:
                   nombres_conceptos: null
                   valores_conceptos: null
                   corresponde_a_salario: null
-                  eps: COMFAMILIAR DE NARIÑO EPS - CCF
-                  pension: Colfondos
-                  cesantias: Protección S.A
-                  arl: ARL Positiva
+                  eps: EPS Demo
+                  pension: Fondo Pensiones Demo
+                  cesantias: Fondo Cesantías Demo
+                  arl: ARL Demo
                   centro_trabajo_arl: ''
                   porcentaje_riesgo_arl: ''
-                  lugar_expedicion: Ricaurte
+                  lugar_expedicion: Medellín
                   fecha_expedicion_documento: null
                   municipio_residencia: null
                   fecha_nacimiento_colaborador: null
@@ -679,7 +679,7 @@ paths:
                   direccion: ''
                   barrio: ''
                   telefono: null
-                  celular: 3215554444xxx
+                  celular: '3007654321'
                   correo: null
                   tipo_documento_beneficiario: null
                   documento_beneficiario: null
@@ -722,15 +722,15 @@ paths:
                 - example:
                     data:
                     - tipo_documento: Cédula de ciudadanía
-                      documento: '1020987654'
+                      documento: '1000000001'
                       concepto: Auxilio de Transporte
                       valor: '50000'
                       fecha_inicial: '2026-03-10'
                       fecha_final: '2026-03-17'
                     - tipo_documento: Cédula de ciudadanía
-                      documento: '1020987654'
+                      documento: '1000000001'
                       concepto: SALARIO
-                      valor: '7863000'
+                      valor: '5000000'
                       fecha_inicial: '2026-03-11'
                       fecha_final: ''
                     success: true
@@ -763,25 +763,25 @@ paths:
                 - $ref: '#/components/schemas/HV_datosBasicos'
                 - example:
                     data:
-                    - nrodocumento: '1035430368'
+                    - nrodocumento: '1000000001'
                       fecha_expedicion_documento: null
                       lugar_expedicion_documento: Medellin, Antioquia, Colombia
-                      primer_nombre: Andres
-                      otros_nombres: Felipe
-                      primer_apellido: Hurtado
-                      segundo_apellido: Alvarez
+                      primer_nombre: Carlos
+                      otros_nombres: Andres
+                      primer_apellido: Perez
+                      segundo_apellido: Gomez
                       fecha_nacimiento: '1986-03-03'
                       lugar_nacimiento: Medellin, Antioquia, Colombia
                       sexo: Hombre
                       estado_civil: Casado
                       estatura: 160.0
                       peso: 65.0
-                      grupo_sanguineo_rh: A-
+                      grupo_sanguineo_rh: O+
                       etnia: No aplica
                       tiene_foto: Si
                       ciudad_residencia: Medellin, Antioquia, Colombia
-                      barrio_residencia: Belén
-                      direccion_residencia: Carrera 84 # 37 65
+                      barrio_residencia: Centro
+                      direccion_residencia: 'Calle 100 # 15 - 20'
                       informacion_adicional_residencia: ''
                       tipo_residencia: Propia
                       estrato: null
@@ -792,21 +792,21 @@ paths:
                       transportes_por_trayecto: 1
                       frecuencia_visita_sede: ''
                       tipo_correo: Trabajo
-                      direccion_correo: talentosoporte@gmail.com
+                      direccion_correo: carlos.perez@empresa-ejemplo.com
                       habeas_data_correo: Si
                       tipo_telefono: Celular
-                      telefono: 3147654321xxx
+                      telefono: '3001234567'
                       extension_telefono: null
                       habeas_data_telefono: Si
                       camisa: M
                       pantalon: '32'
                       zapatos: '42'
-                      eps: EPS Sura
-                      arl: Riesgos Laborales Colmena
-                      pension: Colpensiones
-                      cesantias: Fondo Nacional del Ahorro
-                      caja_compensacion: Comfama
-                      facebook: Andres Hurtado
+                      eps: EPS Demo
+                      arl: ARL Demo
+                      pension: Fondo Pensiones Demo
+                      cesantias: Fondo Cesantías Demo
+                      caja_compensacion: Caja Compensación Demo
+                      facebook: Carlos Perez
                       twitter: ''
                       instagram: ''
                       linkedin: ''
@@ -870,25 +870,25 @@ paths:
                 - $ref: '#/components/schemas/HV_novedadesNomina'
                 - example:
                     data:
-                    - usuario: PEPITO JOSE ROJAS MARTINEZ
+                    - usuario: PEPITO PEREZ GOMEZ
                       tipo_documento: CEDULA
-                      documento: '414199980'
+                      documento: '1000000005'
                       tipo_usuario: Operativo
-                      correo: xxxrojas@alianza.com.co
-                      negocio: FIDUCIA
-                      empresa: ALIANZA FIDUCIARIA S.A.
-                      uen: FRONT SOPORTE
-                      vicepresidencia: PRESIDENCIA AF
+                      correo: pepito.perez@empresa-ejemplo.com
+                      negocio: Operaciones y Logística
+                      empresa: Empresa Ejemplo S.A.S.
+                      uen: UEN Soporte Operativo
+                      vicepresidencia: Vicepresidencia de Operaciones
                       pais: Colombia
                       ciudad: Barranquilla
                       regional: ATLANTICO
                       sede: BARRANQUILLA
-                      cargo: ASISTENTE NEGOCIOS FIDUCIARIOS SENIOR
-                      nivel_organizacional: ASISTENTE ALIANZA
-                      area: GERENCIA GESTION NEGOCIOS FIDUCIARIOS
+                      cargo: ASISTENTE OPERATIVO SENIOR
+                      nivel_organizacional: ASISTENTE OPERATIVO
+                      area: GERENCIA DE OPERACIONES
                       centro_costo: No aplica
-                      documento_jefe: '2222447084'
-                      nombre_jefe: MENGANO SOLANO LONDONO
+                      documento_jefe: '1000000050'
+                      nombre_jefe: MENGANO RODRIGUEZ HERNANDEZ
                       tipo_novedad: Modificación de información laboral
                       fecha_envio: '2026-02-06 16:35:13.772567'
                       estado_envio: Exitoso
@@ -901,7 +901,7 @@ paths:
                       nombre_concepto_fijo: No aplica
                       fecha_inicial: No aplica
                       fecha_final: No aplica
-                      usuario_reporta: PERANO HERNANDEZ CULMA
+                      usuario_reporta: FULANO LOPEZ MARTINEZ
                       tipo_afiliacion: No aplica
                       nit_entidad_afiliacion: No aplica
                       nombre_entidad_afiliacion: No aplica
@@ -955,32 +955,32 @@ paths:
                 - $ref: '#/components/schemas/Transversal_todosUsuarios'
                 - example:
                     data:
-                    - usuario: ADRIANA PEREZ PEREZCORTES
+                    - usuario: CARLOS ANDRES PEREZ GOMEZ
                       tipo_documento: Cédula de ciudadanía
-                      documento: '8587647000'
+                      documento: '1000000001'
                       tipo_usuario: Administrativo
-                      email: basura_talpostobon790@unmail.edu
-                      negocio: Calidad de software
-                      empresa: Soluciones Estratégicas Integrales para el Desarrollo Empresarial y Tecnológico S.A.S
-                      uen: Nexa Digital Solutions
+                      email: carlos.perez@empresa-ejemplo.com
+                      negocio: Servicios Corporativos
+                      empresa: Empresa Ejemplo S.A.S.
+                      uen: UEN Tecnología y Desarrollo
                       vicepresidencia: Financiera
                       pais: Colombia
-                      ciudad: Cartagena
-                      regional: Costa Atlántica
-                      sede: Cartagena
+                      ciudad: Bogotá
+                      regional: Central
+                      sede: Bogotá Principal
                       cargo: Analista Desarrollador
                       nivel_organizacional: Analistas
                       area: TI
-                      documento_jefe: '29498498195'
-                      nombre_jefe: Alvaro Cardenas
+                      documento_jefe: '1000000010'
+                      nombre_jefe: MARIA FERNANDA RODRIGUEZ LOPEZ
                       documento_jefe_funcional: ''
                       nombre_jefe_funcional: ''
-                      etiquetas: 'Frameworks java:Gwt'
+                      etiquetas: 'Frameworks java:Spring'
                       centro_costo: ''
                       modalidad_trabajo: ''
                       fecha_expedicion_documento: ''
                       ciudad_expedicion_documento: ''
-                      escolaridad: 'Técnico                       '
+                      escolaridad: 'Profesional                   '
                       fecha_ingreso_empresa: '2026-05-19'
                       fecha_inicio_cargo: '2026-05-12'
                       fecha_creacion_usuario: '2026-05-12'
@@ -991,13 +991,13 @@ paths:
                       motivo_retiro: ''
                       genero: ''
                       dias_vacaciones_disponibles: '0'
-                    - usuario: Alberto de jesus Osorio Peña
+                    - usuario: ALBERTO JESUS OSORIO PENA
                       tipo_documento: Cédula de ciudadanía
-                      documento: '21528623'
+                      documento: '1000000002'
                       tipo_usuario: Operativo
-                      email: 55_55_55_basura_55@unmail.edu
-                      negocio: Desarrollo de Software
-                      empresa: talento cloud
+                      email: alberto.osorio@empresa-ejemplo.com
+                      negocio: Operaciones y Logística
+                      empresa: Empresa Ejemplo S.A.S.
                       uen: UEN Dirección General
                       vicepresidencia: Producción
                       pais: Colombia
@@ -1007,8 +1007,8 @@ paths:
                       cargo: Operario de planta
                       nivel_organizacional: Operativo
                       area: Operaciones
-                      documento_jefe: '1000830965'
-                      nombre_jefe: Gonzalo Perez
+                      documento_jefe: '1000000060'
+                      nombre_jefe: GONZALO PEREZ MEJIA
                       documento_jefe_funcional: ''
                       nombre_jefe_funcional: ''
                       etiquetas: ''
@@ -1016,7 +1016,7 @@ paths:
                       modalidad_trabajo: ''
                       fecha_expedicion_documento: ''
                       ciudad_expedicion_documento: ''
-                      escolaridad: 'Maestria                      '
+                      escolaridad: 'Técnico                       '
                       fecha_ingreso_empresa: '2013-02-01'
                       fecha_inicio_cargo: '2013-02-01'
                       fecha_creacion_usuario: '2000-01-01'
@@ -1057,13 +1057,13 @@ paths:
                 - $ref: '#/components/schemas/Bienestar_reporteDetallado'
                 - example:
                     data:
-                    - usuario: Alvaro Cardenas
+                    - usuario: MARIA FERNANDA RODRIGUEZ LOPEZ
                       tipo_documento: CEDULA
-                      documento: '29498498195'
+                      documento: '1000000010'
                       tipo_usuario: Administrativo
-                      correo: prueba5@basura.com
+                      correo: maria.rodriguez@empresa-ejemplo.com
                       negocio: Desarrollo de Software
-                      empresa: Corporación Internacional de.
+                      empresa: Empresa Ejemplo S.A.S.
                       uen: UEN Desarrollo e innovación
                       vicepresidencia: TI
                       pais: Colombia
@@ -1074,8 +1074,8 @@ paths:
                       nivel_organizacional: Analistas
                       area: TI
                       centro_costo: null
-                      documento_jefe: '1117123456'
-                      nombre_jefe: Andres Mauricio Jaramillo Salazar
+                      documento_jefe: '1000000020'
+                      nombre_jefe: JORGE EDUARDO RAMIREZ DUQUE
                       tipo: Beneficio
                       bienestar: Bono Alimentación
                       categoria_beneficio: General
@@ -1086,13 +1086,13 @@ paths:
                       aprobadores: null
                       observaciones: null
                       campos_adicionales: null
-                    - usuario: Ana Maria Gomez Ramirez
+                    - usuario: ANA MARIA TORRES SANCHEZ
                       tipo_documento: CEDULA
-                      documento: '43609065'
+                      documento: '1000000004'
                       tipo_usuario: Administrativo
-                      correo: 238_xxxisrael.fonseca@talento.cloud
+                      correo: ana.torres@empresa-ejemplo.com
                       negocio: Desarrollo de Software
-                      empresa: talento cloud
+                      empresa: Empresa Ejemplo S.A.S.
                       uen: UEN App Moviles
                       vicepresidencia: financiera
                       pais: Colombia
@@ -1103,8 +1103,8 @@ paths:
                       nivel_organizacional: Gerencial
                       area: Sistemas
                       centro_costo: ''
-                      documento_jefe: '21897678'
-                      nombre_jefe: Blanca Ruiz Suarez
+                      documento_jefe: '1000000040'
+                      nombre_jefe: BLANCA CECILIA RUIZ SUAREZ
                       tipo: Beneficio
                       bienestar: Entradas Cine
                       categoria_beneficio: General
@@ -1166,24 +1166,24 @@ components:
           type: boolean
       example:
         data:
-        - usuario: ADRIANA PEREZ PEREZCORTES
+        - usuario: CARLOS ANDRES PEREZ GOMEZ
           tipo_documento: CEDULA
-          documento_usuario: '8587647000'
+          documento_usuario: '1000000001'
           tipo_usuario: Administrativo
-          email: basura_talpostobon790@unmail.edu
-          negocio: Calidad de software
-          empresa: Soluciones Estratégicas Integrales para el Desarrollo Empresarial y Tecnológico S.A.S
-          uen: Nexa Digital Solutions
+          email: carlos.perez@empresa-ejemplo.com
+          negocio: Servicios Corporativos
+          empresa: Empresa Ejemplo S.A.S.
+          uen: UEN Tecnología y Desarrollo
           vicepresidencia: Financiera
           pais: Colombia
-          ciudad: Cartagena
-          regional: Costa Atlántica
-          sede: Cartagena
+          ciudad: Bogotá
+          regional: Central
+          sede: Bogotá Principal
           cargo: Analista Desarrollador
           nivel_organizacional: Analistas
           area: TI
-          documento_jefe: '29498498195'
-          jefe: Alvaro Cardenas
+          documento_jefe: '1000000010'
+          jefe: MARIA FERNANDA RODRIGUEZ LOPEZ
           fecha_ingreso: 2026-05-12
           tipo_contrato: null
           fecha_terminacion_contrato: null
@@ -1228,14 +1228,14 @@ components:
           discapacidad: null
           beneficiario_eps: null
           beneficiario_caja_compensacion: null
-        - usuario: Alvaro Cardenas
+        - usuario: MARIA FERNANDA RODRIGUEZ LOPEZ
           tipo_documento: CEDULA
-          documento_usuario: '29498498195'
+          documento_usuario: '1000000010'
           tipo_usuario: Administrativo
-          email: 360_360_360_prueba5@basura.com
+          email: maria.rodriguez@empresa-ejemplo.com
           negocio: Desarrollo de Software
-          empresa: Corporación Internacional de.
-          uen: UEN Desarrollo e innovación
+          empresa: Empresa Ejemplo S.A.S.
+          uen: UEN Desarrollo e Innovación
           vicepresidencia: TI
           pais: Colombia
           ciudad: Medellin
@@ -1244,8 +1244,8 @@ components:
           cargo: Desarrollador Senior
           nivel_organizacional: Analistas
           area: TI
-          documento_jefe: '1117123456'
-          jefe: Andres Mauricio Jaramillo Salazar
+          documento_jefe: '1000000020'
+          jefe: JORGE EDUARDO RAMIREZ DUQUE
           fecha_ingreso: 2025-04-13
           tipo_contrato: null
           fecha_terminacion_contrato: null
@@ -1290,14 +1290,14 @@ components:
           discapacidad: null
           beneficiario_eps: null
           beneficiario_caja_compensacion: null
-        - usuario: Amparo Echeverry
+        - usuario: LAURA SOFIA MEJIA RESTREPO
           tipo_documento: CEDULA
-          documento_usuario: '29866304'
+          documento_usuario: '1000000003'
           tipo_usuario: Administrativo
-          email: 353_353_353_text@gmail.com
+          email: laura.mejia@empresa-ejemplo.com
           negocio: Calidad de software
-          empresa: Nexa Solutions
-          uen: Nexa Digital Solutions
+          empresa: Empresa Ejemplo S.A.S.
+          uen: UEN Consultoría
           vicepresidencia: Gestión Humana
           pais: Colombia
           ciudad: Medellin
@@ -1306,8 +1306,8 @@ components:
           cargo: Arquitecto TI
           nivel_organizacional: Analistas
           area: TI
-          documento_jefe: '42793011'
-          jefe: Deissy Echeverry Seleccion
+          documento_jefe: '1000000030'
+          jefe: DIANA MARCELA CASTRO OSORIO
           fecha_ingreso: 2025-06-10
           tipo_contrato: Contrato por prestación de servicios
           fecha_terminacion_contrato: null
@@ -1318,7 +1318,7 @@ components:
           tipo_cuenta: null
           banco: null
           numero_cuenta: ''
-          salario: '3200000'
+          salario: '3500000'
           cupo_beneficios: null
           centros_costos: ''
           modalidad: Casa
@@ -1332,15 +1332,15 @@ components:
           arl: ''
           centro_trabajo_arl: ''
           porcentaje_riesgo_arl: ''
-          lugar_expedicion: ABINGDON DOWNS
+          lugar_expedicion: Bogotá D.C.
           fecha_expedicion_documento: 1989-01-10
-          municipio_residencia: AEROGLEN
+          municipio_residencia: Medellín
           fecha_nacimiento_colaborador: 1986-06-06
-          ciudad_nacimiento: ABINGDON DOWNS
-          direccion: 'Bulevar 55AD  # 66AC Este 66'
-          barrio: gyyyyy
-          telefono: '987564859680'
-          celular: '257372572'
+          ciudad_nacimiento: Bogotá D.C.
+          direccion: 'Calle 100 # 15 - 20'
+          barrio: Centro
+          telefono: '6015550123'
+          celular: '3001234567'
           correo: null
           tipo_documento_beneficiario: null
           documento_beneficiario: null
@@ -1352,13 +1352,13 @@ components:
           discapacidad: null
           beneficiario_eps: null
           beneficiario_caja_compensacion: null
-        - usuario: Ana Maria Gomez Ramirez
+        - usuario: ANA MARIA TORRES SANCHEZ
           tipo_documento: CEDULA
-          documento_usuario: '43609065'
+          documento_usuario: '1000000004'
           tipo_usuario: Administrativo
-          email: 238_xxxisrael.fonseca@talento.cloud
+          email: ana.torres@empresa-ejemplo.com
           negocio: Desarrollo de Software
-          empresa: talento cloud
+          empresa: Empresa Ejemplo S.A.S.
           uen: UEN App Moviles
           vicepresidencia: financiera
           pais: Colombia
@@ -1368,8 +1368,8 @@ components:
           cargo: Gerente de Calidad y Soporte
           nivel_organizacional: Gerencial
           area: Sistemas
-          documento_jefe: '21897678'
-          jefe: Blanca Ruiz Suarez
+          documento_jefe: '1000000040'
+          jefe: BLANCA CECILIA RUIZ SUAREZ
           fecha_ingreso: 2022-11-29
           tipo_contrato: Contrato a término indefinido
           fecha_terminacion_contrato: null
@@ -1378,8 +1378,8 @@ components:
           nomina: ''
           regimen_pension: null
           tipo_cuenta: Cuenta de ahorros
-          banco: Bancolombia
-          numero_cuenta: '650000005145'
+          banco: Banco Demo
+          numero_cuenta: '123456789012'
           salario: null
           cupo_beneficios: null
           centros_costos: ''
@@ -1388,13 +1388,13 @@ components:
           nombres_conceptos: null
           valores_conceptos: null
           corresponde_a_salario: null
-          eps: COMFAMILIAR DE NARIÑO EPS - CCF
-          pension: Colfondos
-          cesantias: Protección S.A
-          arl: ARL Positiva
+          eps: EPS Demo
+          pension: Fondo Pensiones Demo
+          cesantias: Fondo Cesantías Demo
+          arl: ARL Demo
           centro_trabajo_arl: ''
           porcentaje_riesgo_arl: ''
-          lugar_expedicion: Ricaurte
+          lugar_expedicion: Medellín
           fecha_expedicion_documento: null
           municipio_residencia: null
           fecha_nacimiento_colaborador: null
@@ -1402,7 +1402,7 @@ components:
           direccion: ''
           barrio: ''
           telefono: null
-          celular: 3215554444xxx
+          celular: '3007654321'
           correo: null
           tipo_documento_beneficiario: null
           documento_beneficiario: null
@@ -1644,24 +1644,24 @@ components:
           type: string
           nullable: true
       example:
-        usuario: ADRIANA PEREZ PEREZCORTES
+        usuario: CARLOS ANDRES PEREZ GOMEZ
         tipo_documento: CEDULA
-        documento_usuario: '8587647000'
+        documento_usuario: '1000000001'
         tipo_usuario: Administrativo
-        email: basura_talpostobon790@unmail.edu
-        negocio: Calidad de software
-        empresa: Soluciones Estratégicas Integrales para el Desarrollo Empresarial y Tecnológico S.A.S
-        uen: Nexa Digital Solutions
+        email: carlos.perez@empresa-ejemplo.com
+        negocio: Servicios Corporativos
+        empresa: Empresa Ejemplo S.A.S.
+        uen: UEN Tecnología y Desarrollo
         vicepresidencia: Financiera
         pais: Colombia
-        ciudad: Cartagena
-        regional: Costa Atlántica
-        sede: Cartagena
+        ciudad: Bogotá
+        regional: Central
+        sede: Bogotá Principal
         cargo: Analista Desarrollador
         nivel_organizacional: Analistas
         area: TI
-        documento_jefe: '29498498195'
-        jefe: Alvaro Cardenas
+        documento_jefe: '1000000010'
+        jefe: MARIA FERNANDA RODRIGUEZ LOPEZ
         fecha_ingreso: 2026-05-12
         tipo_contrato: null
         fecha_terminacion_contrato: null
@@ -1721,32 +1721,32 @@ components:
           type: boolean
       example:
         data:
-        - usuario: ADRIANA PEREZ PEREZCORTES
+        - usuario: CARLOS ANDRES PEREZ GOMEZ
           tipo_documento: Cédula de ciudadanía
-          documento: '8587647000'
+          documento: '1000000001'
           tipo_usuario: Administrativo
-          email: basura_talpostobon790@unmail.edu
-          negocio: Calidad de software
-          empresa: Soluciones Estratégicas Integrales para el Desarrollo Empresarial y Tecnológico S.A.S
-          uen: Nexa Digital Solutions
+          email: carlos.perez@empresa-ejemplo.com
+          negocio: Servicios Corporativos
+          empresa: Empresa Ejemplo S.A.S.
+          uen: UEN Tecnología y Desarrollo
           vicepresidencia: Financiera
           pais: Colombia
-          ciudad: Cartagena
-          regional: Costa Atlántica
-          sede: Cartagena
+          ciudad: Bogotá
+          regional: Central
+          sede: Bogotá Principal
           cargo: Analista Desarrollador
           nivel_organizacional: Analistas
           area: TI
-          documento_jefe: '29498498195'
-          nombre_jefe: Alvaro Cardenas
+          documento_jefe: '1000000010'
+          nombre_jefe: MARIA FERNANDA RODRIGUEZ LOPEZ
           documento_jefe_funcional: ''
           nombre_jefe_funcional: ''
-          etiquetas: 'Frameworks java:Gwt'
+          etiquetas: 'Frameworks java:Spring'
           centro_costo: ''
           modalidad_trabajo: ''
           fecha_expedicion_documento: ''
           ciudad_expedicion_documento: ''
-          escolaridad: 'Técnico                       '
+          escolaridad: 'Profesional                   '
           fecha_ingreso_empresa: '2026-05-19'
           fecha_inicio_cargo: '2026-05-12'
           fecha_creacion_usuario: '2026-05-12'
@@ -1757,13 +1757,13 @@ components:
           motivo_retiro: ''
           genero: ''
           dias_vacaciones_disponibles: '0'
-        - usuario: Alberto de jesus Osorio Peña
+        - usuario: ALBERTO JESUS OSORIO PENA
           tipo_documento: Cédula de ciudadanía
-          documento: '21528623'
+          documento: '1000000002'
           tipo_usuario: Operativo
-          email: 55_55_55_basura_55@unmail.edu
-          negocio: Desarrollo de Software
-          empresa: talento cloud
+          email: alberto.osorio@empresa-ejemplo.com
+          negocio: Operaciones y Logística
+          empresa: Empresa Ejemplo S.A.S.
           uen: UEN Dirección General
           vicepresidencia: Producción
           pais: Colombia
@@ -1773,8 +1773,8 @@ components:
           cargo: Operario de planta
           nivel_organizacional: Operativo
           area: Operaciones
-          documento_jefe: '1000830965'
-          nombre_jefe: Gonzalo Perez
+          documento_jefe: '1000000060'
+          nombre_jefe: GONZALO PEREZ MEJIA
           documento_jefe_funcional: ''
           nombre_jefe_funcional: ''
           etiquetas: ''
@@ -1782,7 +1782,7 @@ components:
           modalidad_trabajo: ''
           fecha_expedicion_documento: ''
           ciudad_expedicion_documento: ''
-          escolaridad: 'Maestria                      '
+          escolaridad: 'Técnico                       '
           fecha_ingreso_empresa: '2013-02-01'
           fecha_inicio_cargo: '2013-02-01'
           fecha_creacion_usuario: '2000-01-01'
@@ -1908,32 +1908,32 @@ components:
         dias_vacaciones_disponibles:
           type: string
       example:
-        usuario: ADRIANA PEREZ PEREZCORTES
+        usuario: CARLOS ANDRES PEREZ GOMEZ
         tipo_documento: Cédula de ciudadanía
-        documento: '8587647000'
+        documento: '1000000001'
         tipo_usuario: Administrativo
-        email: basura_talpostobon790@unmail.edu
-        negocio: Calidad de software
-        empresa: Soluciones Estratégicas Integrales para el Desarrollo Empresarial y Tecnológico S.A.S
-        uen: Nexa Digital Solutions
+        email: carlos.perez@empresa-ejemplo.com
+        negocio: Servicios Corporativos
+        empresa: Empresa Ejemplo S.A.S.
+        uen: UEN Tecnología y Desarrollo
         vicepresidencia: Financiera
         pais: Colombia
-        ciudad: Cartagena
-        regional: Costa Atlántica
-        sede: Cartagena
+        ciudad: Bogotá
+        regional: Central
+        sede: Bogotá Principal
         cargo: Analista Desarrollador
         nivel_organizacional: Analistas
         area: TI
-        documento_jefe: '29498498195'
-        nombre_jefe: Alvaro Cardenas
+        documento_jefe: '1000000010'
+        nombre_jefe: MARIA FERNANDA RODRIGUEZ LOPEZ
         documento_jefe_funcional: ''
         nombre_jefe_funcional: ''
-        etiquetas: 'Frameworks java:Gwt'
+        etiquetas: 'Frameworks java:Spring'
         centro_costo: ''
         modalidad_trabajo: ''
         fecha_expedicion_documento: ''
         ciudad_expedicion_documento: ''
-        escolaridad: 'Técnico                       '
+        escolaridad: 'Profesional                   '
         fecha_ingreso_empresa: '2026-05-19'
         fecha_inicio_cargo: '2026-05-12'
         fecha_creacion_usuario: '2026-05-12'
@@ -1960,15 +1960,15 @@ components:
       example:
         data:
         - tipo_documento: Cédula de ciudadanía
-          documento: '1020987654'
+          documento: '1000000001'
           concepto: Auxilio de Transporte
           valor: '50000'
           fecha_inicial: '2026-03-10'
           fecha_final: '2026-03-17'
         - tipo_documento: Cédula de ciudadanía
-          documento: '1020987654'
+          documento: '1000000001'
           concepto: SALARIO
-          valor: '7863000'
+          valor: '5000000'
           fecha_inicial: '2026-03-11'
           fecha_final: ''
         success: true
@@ -1988,7 +1988,7 @@ components:
           example: Cédula de ciudadanía
         documento:
           type: string
-          example: '1020987654'
+          example: '1000000001'
         concepto:
           type: string
           example: Auxilio de Transporte
@@ -2003,7 +2003,7 @@ components:
           example: '2026-03-17'
       example:
         tipo_documento: Cédula de ciudadanía
-        documento: '1020987654'
+        documento: '1000000001'
         concepto: Auxilio de Transporte
         valor: '50000'
         fecha_inicial: '2026-03-10'
@@ -2023,25 +2023,25 @@ components:
           type: boolean
       example:
         data:
-        - nrodocumento: '1035430368'
+        - nrodocumento: '1000000001'
           fecha_expedicion_documento: null
           lugar_expedicion_documento: Medellin, Antioquia, Colombia
-          primer_nombre: Andres
-          otros_nombres: Felipe
-          primer_apellido: Hurtado
-          segundo_apellido: Alvarez
+          primer_nombre: Carlos
+          otros_nombres: Andres
+          primer_apellido: Perez
+          segundo_apellido: Gomez
           fecha_nacimiento: '1986-03-03'
           lugar_nacimiento: Medellin, Antioquia, Colombia
           sexo: Hombre
           estado_civil: Casado
           estatura: 160.0
           peso: 65.0
-          grupo_sanguineo_rh: A-
+          grupo_sanguineo_rh: O+
           etnia: No aplica
           tiene_foto: Si
           ciudad_residencia: Medellin, Antioquia, Colombia
-          barrio_residencia: Belén
-          direccion_residencia: Carrera 84 # 37 65
+          barrio_residencia: Centro
+          direccion_residencia: 'Calle 100 # 15 - 20'
           informacion_adicional_residencia: ''
           tipo_residencia: Propia
           estrato: null
@@ -2052,21 +2052,21 @@ components:
           transportes_por_trayecto: 1
           frecuencia_visita_sede: ''
           tipo_correo: Trabajo
-          direccion_correo: talentosoporte@gmail.com
+          direccion_correo: carlos.perez@empresa-ejemplo.com
           habeas_data_correo: Si
           tipo_telefono: Celular
-          telefono: 3147654321xxx
+          telefono: '3001234567'
           extension_telefono: null
           habeas_data_telefono: Si
           camisa: M
           pantalon: '32'
           zapatos: '42'
-          eps: EPS Sura
-          arl: Riesgos Laborales Colmena
-          pension: Colpensiones
-          cesantias: Fondo Nacional del Ahorro
-          caja_compensacion: Comfama
-          facebook: Andres Hurtado
+          eps: EPS Demo
+          arl: ARL Demo
+          pension: Fondo Pensiones Demo
+          cesantias: Fondo Cesantías Demo
+          caja_compensacion: Caja Compensación Demo
+          facebook: Carlos Perez
           twitter: ''
           instagram: ''
           linkedin: ''
@@ -2342,25 +2342,25 @@ components:
           type: string
           nullable: true
       example:
-        nrodocumento: '1035430368'
+        nrodocumento: '1000000001'
         fecha_expedicion_documento: null
         lugar_expedicion_documento: Medellin, Antioquia, Colombia
-        primer_nombre: Andres
-        otros_nombres: Felipe
-        primer_apellido: Hurtado
-        segundo_apellido: Alvarez
+        primer_nombre: Carlos
+        otros_nombres: Andres
+        primer_apellido: Perez
+        segundo_apellido: Gomez
         fecha_nacimiento: '1986-03-03'
         lugar_nacimiento: Medellin, Antioquia, Colombia
         sexo: Hombre
         estado_civil: Casado
         estatura: 160.0
         peso: 65.0
-        grupo_sanguineo_rh: A-
+        grupo_sanguineo_rh: O+
         etnia: No aplica
         tiene_foto: Si
         ciudad_residencia: Medellin, Antioquia, Colombia
-        barrio_residencia: Belén
-        direccion_residencia: Carrera 84 # 37 65
+        barrio_residencia: Centro
+        direccion_residencia: 'Calle 100 # 15 - 20'
         informacion_adicional_residencia: ''
         tipo_residencia: Propia
         estrato: null
@@ -2371,21 +2371,21 @@ components:
         transportes_por_trayecto: 1
         frecuencia_visita_sede: ''
         tipo_correo: Trabajo
-        direccion_correo: talentosoporte@gmail.com
+        direccion_correo: carlos.perez@empresa-ejemplo.com
         habeas_data_correo: Si
         tipo_telefono: Celular
-        telefono: 3147654321xxx
+        telefono: '3001234567'
         extension_telefono: null
         habeas_data_telefono: Si
         camisa: M
         pantalon: '32'
         zapatos: '42'
-        eps: EPS Sura
-        arl: Riesgos Laborales Colmena
-        pension: Colpensiones
-        cesantias: Fondo Nacional del Ahorro
-        caja_compensacion: Comfama
-        facebook: Andres Hurtado
+        eps: EPS Demo
+        arl: ARL Demo
+        pension: Fondo Pensiones Demo
+        cesantias: Fondo Cesantías Demo
+        caja_compensacion: Caja Compensación Demo
+        facebook: Carlos Perez
         twitter: ''
         instagram: ''
         linkedin: ''
@@ -2420,13 +2420,13 @@ components:
           type: boolean
       example:
         data:
-        - usuario: Alvaro Cardenas
+        - usuario: MARIA FERNANDA RODRIGUEZ LOPEZ
           tipo_documento: CEDULA
-          documento: '29498498195'
+          documento: '1000000010'
           tipo_usuario: Administrativo
-          correo: prueba5@basura.com
+          correo: maria.rodriguez@empresa-ejemplo.com
           negocio: Desarrollo de Software
-          empresa: Corporación Internacional de.
+          empresa: Empresa Ejemplo S.A.S.
           uen: UEN Desarrollo e innovación
           vicepresidencia: TI
           pais: Colombia
@@ -2437,8 +2437,8 @@ components:
           nivel_organizacional: Analistas
           area: TI
           centro_costo: null
-          documento_jefe: '1117123456'
-          nombre_jefe: Andres Mauricio Jaramillo Salazar
+          documento_jefe: '1000000020'
+          nombre_jefe: JORGE EDUARDO RAMIREZ DUQUE
           tipo: Beneficio
           bienestar: Bono Alimentación
           categoria_beneficio: General
@@ -2449,13 +2449,13 @@ components:
           aprobadores: null
           observaciones: null
           campos_adicionales: null
-        - usuario: Ana Maria Gomez Ramirez
+        - usuario: ANA MARIA TORRES SANCHEZ
           tipo_documento: CEDULA
-          documento: '43609065'
+          documento: '1000000004'
           tipo_usuario: Administrativo
-          correo: 238_xxxisrael.fonseca@talento.cloud
+          correo: ana.torres@empresa-ejemplo.com
           negocio: Desarrollo de Software
-          empresa: talento cloud
+          empresa: Empresa Ejemplo S.A.S.
           uen: UEN App Moviles
           vicepresidencia: financiera
           pais: Colombia
@@ -2466,8 +2466,8 @@ components:
           nivel_organizacional: Gerencial
           area: Sistemas
           centro_costo: ''
-          documento_jefe: '21897678'
-          nombre_jefe: Blanca Ruiz Suarez
+          documento_jefe: '1000000040'
+          nombre_jefe: BLANCA CECILIA RUIZ SUAREZ
           tipo: Beneficio
           bienestar: Entradas Cine
           categoria_beneficio: General
@@ -2577,13 +2577,13 @@ components:
           type: string
           nullable: true
       example:
-        usuario: Alvaro Cardenas
+        usuario: MARIA FERNANDA RODRIGUEZ LOPEZ
         tipo_documento: CEDULA
-        documento: '29498498195'
+        documento: '1000000010'
         tipo_usuario: Administrativo
-        correo: prueba5@basura.com
+        correo: maria.rodriguez@empresa-ejemplo.com
         negocio: Desarrollo de Software
-        empresa: Corporación Internacional de.
+        empresa: Empresa Ejemplo S.A.S.
         uen: UEN Desarrollo e innovación
         vicepresidencia: TI
         pais: Colombia
@@ -2594,8 +2594,8 @@ components:
         nivel_organizacional: Analistas
         area: TI
         centro_costo: null
-        documento_jefe: '1117123456'
-        nombre_jefe: Andres Mauricio Jaramillo Salazar
+        documento_jefe: '1000000020'
+        nombre_jefe: JORGE EDUARDO RAMIREZ DUQUE
         tipo: Beneficio
         bienestar: Bono Alimentación
         categoria_beneficio: General
@@ -2621,25 +2621,25 @@ components:
           type: boolean
       example:
         data:
-        - usuario: PEPITO JOSE ROJAS MARTINEZ
+        - usuario: PEPITO PEREZ GOMEZ
           tipo_documento: CEDULA
-          documento: '414199980'
+          documento: '1000000005'
           tipo_usuario: Operativo
-          correo: xxxrojas@alianza.com.co
-          negocio: FIDUCIA
-          empresa: ALIANZA FIDUCIARIA S.A.
-          uen: FRONT SOPORTE
-          vicepresidencia: PRESIDENCIA AF
+          correo: pepito.perez@empresa-ejemplo.com
+          negocio: Operaciones y Logística
+          empresa: Empresa Ejemplo S.A.S.
+          uen: UEN Soporte Operativo
+          vicepresidencia: Vicepresidencia de Operaciones
           pais: Colombia
           ciudad: Barranquilla
           regional: ATLANTICO
           sede: BARRANQUILLA
-          cargo: ASISTENTE NEGOCIOS FIDUCIARIOS SENIOR
-          nivel_organizacional: ASISTENTE ALIANZA
-          area: GERENCIA GESTION NEGOCIOS FIDUCIARIOS
+          cargo: ASISTENTE OPERATIVO SENIOR
+          nivel_organizacional: ASISTENTE OPERATIVO
+          area: GERENCIA DE OPERACIONES
           centro_costo: No aplica
-          documento_jefe: '2222447084'
-          nombre_jefe: MENGANO SOLANO LONDONO
+          documento_jefe: '1000000050'
+          nombre_jefe: MENGANO RODRIGUEZ HERNANDEZ
           tipo_novedad: Modificación de información laboral
           fecha_envio: '2026-02-06 16:35:13.772567'
           estado_envio: Exitoso
@@ -2652,7 +2652,7 @@ components:
           nombre_concepto_fijo: No aplica
           fecha_inicial: No aplica
           fecha_final: No aplica
-          usuario_reporta: PERANO HERNANDEZ CULMA
+          usuario_reporta: FULANO LOPEZ MARTINEZ
           tipo_afiliacion: No aplica
           nit_entidad_afiliacion: No aplica
           nombre_entidad_afiliacion: No aplica
@@ -2772,25 +2772,25 @@ components:
         fecha_desvinculacion:
           type: string
       example:
-        usuario: PEPITO JOSE ROJAS MARTINEZ
+        usuario: PEPITO PEREZ GOMEZ
         tipo_documento: CEDULA
-        documento: '414199980'
+        documento: '1000000005'
         tipo_usuario: Operativo
-        correo: xxxrojas@alianza.com.co
-        negocio: FIDUCIA
-        empresa: ALIANZA FIDUCIARIA S.A.
-        uen: FRONT SOPORTE
-        vicepresidencia: PRESIDENCIA AF
+        correo: pepito.perez@empresa-ejemplo.com
+        negocio: Operaciones y Logística
+        empresa: Empresa Ejemplo S.A.S.
+        uen: UEN Soporte Operativo
+        vicepresidencia: Vicepresidencia de Operaciones
         pais: Colombia
         ciudad: Barranquilla
         regional: ATLANTICO
         sede: BARRANQUILLA
-        cargo: ASISTENTE NEGOCIOS FIDUCIARIOS SENIOR
-        nivel_organizacional: ASISTENTE ALIANZA
-        area: GERENCIA GESTION NEGOCIOS FIDUCIARIOS
+        cargo: ASISTENTE OPERATIVO SENIOR
+        nivel_organizacional: ASISTENTE OPERATIVO
+        area: GERENCIA DE OPERACIONES
         centro_costo: No aplica
-        documento_jefe: '2222447084'
-        nombre_jefe: MENGANO SOLANO LONDONO
+        documento_jefe: '1000000050'
+        nombre_jefe: MENGANO RODRIGUEZ HERNANDEZ
         tipo_novedad: Modificación de información laboral
         fecha_envio: '2026-02-06 16:35:13.772567'
         estado_envio: Exitoso
@@ -2803,7 +2803,7 @@ components:
         nombre_concepto_fijo: No aplica
         fecha_inicial: No aplica
         fecha_final: No aplica
-        usuario_reporta: PERANO HERNANDEZ CULMA
+        usuario_reporta: FULANO LOPEZ MARTINEZ
         tipo_afiliacion: No aplica
         nit_entidad_afiliacion: No aplica
         nombre_entidad_afiliacion: No aplica
