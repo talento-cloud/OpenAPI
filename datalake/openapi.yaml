@@ -159,13 +159,13 @@ paths:
                     token_type: Bearer
                     expires_in: 900
                     success: true
-                    scope: talento.write.candidato
+                    scope: talento.read
               example:
                 acces_token: eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOi...
                 token_type: Bearer
                 expires_in: 900
                 success: true
-                scope: talento.write.candidato
+                scope: talento.read
       deprecated: false
       security: []
   /v1/datalake/hojavida/informacionNomina.json:
@@ -1149,7 +1149,7 @@ components:
         token_type: Bearer
         expires_in: 900
         success: true
-        scope: talento.write.candidato
+        scope: talento.read
     HV_informacionNomina:
       title: HV_informacionNomina
       required:
