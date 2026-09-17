@@ -21,7 +21,7 @@ info:
       - HojaVida - Datos basicos - OK
       - HojaVida - Novedades de nómina - OK
       - Selección - Reporte de selección detallado - Pendiente
-      - Selección - Seguimiento por etapas - Pendiente
+      - Selección - Seguimiento por etapas - OK
       - Formación - Avance por tema - Pendiente
       - Bienestar - reporte detallado beneficios/reconocimientos - OK
       - Bienestar - reporte transacciones puntos beneficios/reconocimientos  - Pendiente    
@@ -1115,6 +1115,105 @@ paths:
                       aprobadores: null
                       observaciones: null
                       campos_adicionales: null
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
+  /v1/datalake/seleccion/seguimientoPorEtapa/{estado}.json:
+    get:
+      tags:
+      - Datalake
+      summary: Selección - Seguimiento por etapas
+      description: Endpoint donde se lista el seguimiento por etapas de los procesos de selección en talento cloud. Permite filtrar por estado (TODOS, ACTIVOS o CERRADOS). El formato de fecha es yyyy-MM-dd kk:mm.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://somostalentoalianza.talento-dev.cloud/html/v1/datalake/seleccion/seguimientoPorEtapa/TODOS.json' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: Seleccion-Seguimientoporetapas
+      parameters:
+      - name: estado
+        in: path
+        required: true
+        description: Estado de los procesos de selección a consultar (TODOS, ACTIVOS o CERRADOS).
+        schema:
+          type: string
+          enum:
+          - TODOS
+          - ACTIVOS
+          - CERRADOS
+          example: TODOS
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Seleccion_seguimientoPorEtapa'
+                - example:
+                    data:
+                    - proceso: SEL-6
+                      cargo: Analista Desarrollador
+                      empresa: Mali ltda
+                      area: ''
+                      fecha_solicitud: '12/05/17 05:33'
+                      fecha_asignacion_responsable: ''
+                      fecha_cancelacion: ''
+                      fecha_cierre: '06 de junio de 2017'
+                      tipo_convocatoria: MIXTA
+                      responsables_proceso: ''
+                      porcentaje_avance: '100%'
+                      estado_requisicion: Terminada
+                      fecha_aprobacion_final: '12/05/2017 05:35'
+                      etapa_actual_proceso: Cierre
+                      preseleccion_fecha_primer_candidato: ''
+                      preseleccion_fecha_ultimo_candidato: '2017-05-22 14:37'
+                      filtro_telefonico_fecha_primer_candidato: ''
+                      filtro_telefonico_fecha_ultimo_candidato: '2017-05-22 14:44'
+                      entrevista_grupal_fecha_primer_candidato: ''
+                      entrevista_grupal_fecha_ultimo_candidato: '2017-05-22 15:00'
+                      assesment_fecha_primer_candidato: ''
+                      assesment_fecha_ultimo_candidato: '2017-05-22 15:13'
+                      prueba_psicotecnica_fecha_primer_candidato: ''
+                      prueba_psicotecnica_fecha_ultimo_candidato: ''
+                      prueba_tecnica_fecha_primer_candidato: ''
+                      prueba_tecnica_fecha_ultimo_candidato: ''
+                      autoanalisis_fecha_primer_candidato: ''
+                      autoanalisis_fecha_ultimo_candidato: ''
+                      entrevista_individual_fecha_primer_candidato: ''
+                      entrevista_individual_fecha_ultimo_candidato: '2017-05-22 15:39'
+                      entrevista_gh_fecha_primer_candidato: ''
+                      entrevista_gh_fecha_ultimo_candidato: '2017-05-22 16:07'
+                      entrevisata_lider_fecha_primer_candidato: ''
+                      entrevisata_lider_fecha_ultimo_candidato: '2017-05-22 16:10'
+                      referencias_laborales_fecha_primer_candidato: ''
+                      referencias_laborales_fecha_ultimo_candidato: '2017-06-06 14:49'
+                      visita_domiciliaria_fecha_primer_candidato: ''
+                      visita_domiciliaria_fecha_ultimo_candidato: ''
+                      estudio_seguridad_fecha_primer_candidato: ''
+                      estudio_seguridad_fecha_ultimo_candidato: ''
+                      poligrafo_fecha_primer_candidato: ''
+                      poligrafo_fecha_ultimo_candidato: ''
+                      examen_medico_fecha_primer_candidato: ''
+                      examen_medico_fecha_ultimo_candidato: ''
+                      referencias_personales_fecha_primer_candidato: ''
+                      referencias_personales_fecha_ultimo_candidato: ''
+                      cliente_fecha_primer_candidato: ''
+                      cliente_fecha_ultimo_candidato: ''
+                      entrevista_general_fecha_primer_candidato: ''
+                      entrevista_general_fecha_ultimo_candidato: ''
+                      video_entrevista_fecha_primer_candidato: ''
+                      video_entrevista_fecha_ultimo_candidato: ''
+                      validacion_teletrabajo_fecha_primer_candidato: ''
+                      validacion_teletrabajo_fecha_ultimo_candidato: ''
+                      oferta_salarial_fecha_primer_candidato: ''
+                      oferta_salarial_fecha_ultimo_candidato: ''
+                      cierre_fecha_primer_candidato: ''
+                      cierre_fecha_ultimo_candidato: '2017-06-06 24:00'
                     success: true
         '401':
           $ref: '#/components/responses/UnauthorizedError'
@@ -2808,6 +2907,318 @@ components:
         nit_entidad_afiliacion: No aplica
         nombre_entidad_afiliacion: No aplica
         fecha_desvinculacion: No aplica
+    Seleccion_seguimientoPorEtapa:
+      title: Seleccion_seguimientoPorEtapa
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SeleccionSeguimientoPorEtapaItem'
+        success:
+          type: boolean
+      example:
+        data:
+        - proceso: SEL-6
+          cargo: Analista Desarrollador
+          empresa: Mali ltda
+          area: ''
+          fecha_solicitud: '12/05/17 05:33'
+          fecha_asignacion_responsable: ''
+          fecha_cancelacion: ''
+          fecha_cierre: '06 de junio de 2017'
+          tipo_convocatoria: MIXTA
+          responsables_proceso: ''
+          porcentaje_avance: '100%'
+          estado_requisicion: Terminada
+          fecha_aprobacion_final: '12/05/2017 05:35'
+          etapa_actual_proceso: Cierre
+          preseleccion_fecha_primer_candidato: ''
+          preseleccion_fecha_ultimo_candidato: '2017-05-22 14:37'
+          filtro_telefonico_fecha_primer_candidato: ''
+          filtro_telefonico_fecha_ultimo_candidato: '2017-05-22 14:44'
+          entrevista_grupal_fecha_primer_candidato: ''
+          entrevista_grupal_fecha_ultimo_candidato: '2017-05-22 15:00'
+          assesment_fecha_primer_candidato: ''
+          assesment_fecha_ultimo_candidato: '2017-05-22 15:13'
+          prueba_psicotecnica_fecha_primer_candidato: ''
+          prueba_psicotecnica_fecha_ultimo_candidato: ''
+          prueba_tecnica_fecha_primer_candidato: ''
+          prueba_tecnica_fecha_ultimo_candidato: ''
+          autoanalisis_fecha_primer_candidato: ''
+          autoanalisis_fecha_ultimo_candidato: ''
+          entrevista_individual_fecha_primer_candidato: ''
+          entrevista_individual_fecha_ultimo_candidato: '2017-05-22 15:39'
+          entrevista_gh_fecha_primer_candidato: ''
+          entrevista_gh_fecha_ultimo_candidato: '2017-05-22 16:07'
+          entrevisata_lider_fecha_primer_candidato: ''
+          entrevisata_lider_fecha_ultimo_candidato: '2017-05-22 16:10'
+          referencias_laborales_fecha_primer_candidato: ''
+          referencias_laborales_fecha_ultimo_candidato: '2017-06-06 14:49'
+          visita_domiciliaria_fecha_primer_candidato: ''
+          visita_domiciliaria_fecha_ultimo_candidato: ''
+          estudio_seguridad_fecha_primer_candidato: ''
+          estudio_seguridad_fecha_ultimo_candidato: ''
+          poligrafo_fecha_primer_candidato: ''
+          poligrafo_fecha_ultimo_candidato: ''
+          examen_medico_fecha_primer_candidato: ''
+          examen_medico_fecha_ultimo_candidato: ''
+          referencias_personales_fecha_primer_candidato: ''
+          referencias_personales_fecha_ultimo_candidato: ''
+          cliente_fecha_primer_candidato: ''
+          cliente_fecha_ultimo_candidato: ''
+          entrevista_general_fecha_primer_candidato: ''
+          entrevista_general_fecha_ultimo_candidato: ''
+          video_entrevista_fecha_primer_candidato: ''
+          video_entrevista_fecha_ultimo_candidato: ''
+          validacion_teletrabajo_fecha_primer_candidato: ''
+          validacion_teletrabajo_fecha_ultimo_candidato: ''
+          oferta_salarial_fecha_primer_candidato: ''
+          oferta_salarial_fecha_ultimo_candidato: ''
+          cierre_fecha_primer_candidato: ''
+          cierre_fecha_ultimo_candidato: '2017-06-06 24:00'
+        success: true
+    SeleccionSeguimientoPorEtapaItem:
+      title: SeleccionSeguimientoPorEtapaItem
+      required:
+      - proceso
+      - cargo
+      - empresa
+      - area
+      - fecha_solicitud
+      - fecha_asignacion_responsable
+      - fecha_cancelacion
+      - fecha_cierre
+      - tipo_convocatoria
+      - responsables_proceso
+      - porcentaje_avance
+      - estado_requisicion
+      - fecha_aprobacion_final
+      - etapa_actual_proceso
+      - preseleccion_fecha_primer_candidato
+      - preseleccion_fecha_ultimo_candidato
+      - filtro_telefonico_fecha_primer_candidato
+      - filtro_telefonico_fecha_ultimo_candidato
+      - entrevista_grupal_fecha_primer_candidato
+      - entrevista_grupal_fecha_ultimo_candidato
+      - assesment_fecha_primer_candidato
+      - assesment_fecha_ultimo_candidato
+      - prueba_psicotecnica_fecha_primer_candidato
+      - prueba_psicotecnica_fecha_ultimo_candidato
+      - prueba_tecnica_fecha_primer_candidato
+      - prueba_tecnica_fecha_ultimo_candidato
+      - autoanalisis_fecha_primer_candidato
+      - autoanalisis_fecha_ultimo_candidato
+      - entrevista_individual_fecha_primer_candidato
+      - entrevista_individual_fecha_ultimo_candidato
+      - entrevista_gh_fecha_primer_candidato
+      - entrevista_gh_fecha_ultimo_candidato
+      - entrevisata_lider_fecha_primer_candidato
+      - entrevisata_lider_fecha_ultimo_candidato
+      - referencias_laborales_fecha_primer_candidato
+      - referencias_laborales_fecha_ultimo_candidato
+      - visita_domiciliaria_fecha_primer_candidato
+      - visita_domiciliaria_fecha_ultimo_candidato
+      - estudio_seguridad_fecha_primer_candidato
+      - estudio_seguridad_fecha_ultimo_candidato
+      - poligrafo_fecha_primer_candidato
+      - poligrafo_fecha_ultimo_candidato
+      - examen_medico_fecha_primer_candidato
+      - examen_medico_fecha_ultimo_candidato
+      - referencias_personales_fecha_primer_candidato
+      - referencias_personales_fecha_ultimo_candidato
+      - cliente_fecha_primer_candidato
+      - cliente_fecha_ultimo_candidato
+      - entrevista_general_fecha_primer_candidato
+      - entrevista_general_fecha_ultimo_candidato
+      - video_entrevista_fecha_primer_candidato
+      - video_entrevista_fecha_ultimo_candidato
+      - validacion_teletrabajo_fecha_primer_candidato
+      - validacion_teletrabajo_fecha_ultimo_candidato
+      - oferta_salarial_fecha_primer_candidato
+      - oferta_salarial_fecha_ultimo_candidato
+      - cierre_fecha_primer_candidato
+      - cierre_fecha_ultimo_candidato
+      type: object
+      properties:
+        proceso:
+          type: string
+        cargo:
+          type: string
+        empresa:
+          type: string
+        area:
+          type: string
+        fecha_solicitud:
+          type: string
+        fecha_asignacion_responsable:
+          type: string
+        fecha_cancelacion:
+          type: string
+        fecha_cierre:
+          type: string
+        tipo_convocatoria:
+          type: string
+        responsables_proceso:
+          type: string
+        porcentaje_avance:
+          type: string
+        estado_requisicion:
+          type: string
+        fecha_aprobacion_final:
+          type: string
+        etapa_actual_proceso:
+          type: string
+        preseleccion_fecha_primer_candidato:
+          type: string
+        preseleccion_fecha_ultimo_candidato:
+          type: string
+        filtro_telefonico_fecha_primer_candidato:
+          type: string
+        filtro_telefonico_fecha_ultimo_candidato:
+          type: string
+        entrevista_grupal_fecha_primer_candidato:
+          type: string
+        entrevista_grupal_fecha_ultimo_candidato:
+          type: string
+        assesment_fecha_primer_candidato:
+          type: string
+        assesment_fecha_ultimo_candidato:
+          type: string
+        prueba_psicotecnica_fecha_primer_candidato:
+          type: string
+        prueba_psicotecnica_fecha_ultimo_candidato:
+          type: string
+        prueba_tecnica_fecha_primer_candidato:
+          type: string
+        prueba_tecnica_fecha_ultimo_candidato:
+          type: string
+        autoanalisis_fecha_primer_candidato:
+          type: string
+        autoanalisis_fecha_ultimo_candidato:
+          type: string
+        entrevista_individual_fecha_primer_candidato:
+          type: string
+        entrevista_individual_fecha_ultimo_candidato:
+          type: string
+        entrevista_gh_fecha_primer_candidato:
+          type: string
+        entrevista_gh_fecha_ultimo_candidato:
+          type: string
+        entrevisata_lider_fecha_primer_candidato:
+          type: string
+        entrevisata_lider_fecha_ultimo_candidato:
+          type: string
+        referencias_laborales_fecha_primer_candidato:
+          type: string
+        referencias_laborales_fecha_ultimo_candidato:
+          type: string
+        visita_domiciliaria_fecha_primer_candidato:
+          type: string
+        visita_domiciliaria_fecha_ultimo_candidato:
+          type: string
+        estudio_seguridad_fecha_primer_candidato:
+          type: string
+        estudio_seguridad_fecha_ultimo_candidato:
+          type: string
+        poligrafo_fecha_primer_candidato:
+          type: string
+        poligrafo_fecha_ultimo_candidato:
+          type: string
+        examen_medico_fecha_primer_candidato:
+          type: string
+        examen_medico_fecha_ultimo_candidato:
+          type: string
+        referencias_personales_fecha_primer_candidato:
+          type: string
+        referencias_personales_fecha_ultimo_candidato:
+          type: string
+        cliente_fecha_primer_candidato:
+          type: string
+        cliente_fecha_ultimo_candidato:
+          type: string
+        entrevista_general_fecha_primer_candidato:
+          type: string
+        entrevista_general_fecha_ultimo_candidato:
+          type: string
+        video_entrevista_fecha_primer_candidato:
+          type: string
+        video_entrevista_fecha_ultimo_candidato:
+          type: string
+        validacion_teletrabajo_fecha_primer_candidato:
+          type: string
+        validacion_teletrabajo_fecha_ultimo_candidato:
+          type: string
+        oferta_salarial_fecha_primer_candidato:
+          type: string
+        oferta_salarial_fecha_ultimo_candidato:
+          type: string
+        cierre_fecha_primer_candidato:
+          type: string
+        cierre_fecha_ultimo_candidato:
+          type: string
+      example:
+        proceso: SEL-6
+        cargo: Analista Desarrollador
+        empresa: Mali ltda
+        area: ''
+        fecha_solicitud: '12/05/17 05:33'
+        fecha_asignacion_responsable: ''
+        fecha_cancelacion: ''
+        fecha_cierre: '06 de junio de 2017'
+        tipo_convocatoria: MIXTA
+        responsables_proceso: ''
+        porcentaje_avance: '100%'
+        estado_requisicion: Terminada
+        fecha_aprobacion_final: '12/05/2017 05:35'
+        etapa_actual_proceso: Cierre
+        preseleccion_fecha_primer_candidato: ''
+        preseleccion_fecha_ultimo_candidato: '2017-05-22 14:37'
+        filtro_telefonico_fecha_primer_candidato: ''
+        filtro_telefonico_fecha_ultimo_candidato: '2017-05-22 14:44'
+        entrevista_grupal_fecha_primer_candidato: ''
+        entrevista_grupal_fecha_ultimo_candidato: '2017-05-22 15:00'
+        assesment_fecha_primer_candidato: ''
+        assesment_fecha_ultimo_candidato: '2017-05-22 15:13'
+        prueba_psicotecnica_fecha_primer_candidato: ''
+        prueba_psicotecnica_fecha_ultimo_candidato: ''
+        prueba_tecnica_fecha_primer_candidato: ''
+        prueba_tecnica_fecha_ultimo_candidato: ''
+        autoanalisis_fecha_primer_candidato: ''
+        autoanalisis_fecha_ultimo_candidato: ''
+        entrevista_individual_fecha_primer_candidato: ''
+        entrevista_individual_fecha_ultimo_candidato: '2017-05-22 15:39'
+        entrevista_gh_fecha_primer_candidato: ''
+        entrevista_gh_fecha_ultimo_candidato: '2017-05-22 16:07'
+        entrevisata_lider_fecha_primer_candidato: ''
+        entrevisata_lider_fecha_ultimo_candidato: '2017-05-22 16:10'
+        referencias_laborales_fecha_primer_candidato: ''
+        referencias_laborales_fecha_ultimo_candidato: '2017-06-06 14:49'
+        visita_domiciliaria_fecha_primer_candidato: ''
+        visita_domiciliaria_fecha_ultimo_candidato: ''
+        estudio_seguridad_fecha_primer_candidato: ''
+        estudio_seguridad_fecha_ultimo_candidato: ''
+        poligrafo_fecha_primer_candidato: ''
+        poligrafo_fecha_ultimo_candidato: ''
+        examen_medico_fecha_primer_candidato: ''
+        examen_medico_fecha_ultimo_candidato: ''
+        referencias_personales_fecha_primer_candidato: ''
+        referencias_personales_fecha_ultimo_candidato: ''
+        cliente_fecha_primer_candidato: ''
+        cliente_fecha_ultimo_candidato: ''
+        entrevista_general_fecha_primer_candidato: ''
+        entrevista_general_fecha_ultimo_candidato: ''
+        video_entrevista_fecha_primer_candidato: ''
+        video_entrevista_fecha_ultimo_candidato: ''
+        validacion_teletrabajo_fecha_primer_candidato: ''
+        validacion_teletrabajo_fecha_ultimo_candidato: ''
+        oferta_salarial_fecha_primer_candidato: ''
+        oferta_salarial_fecha_ultimo_candidato: ''
+        cierre_fecha_primer_candidato: ''
+        cierre_fecha_ultimo_candidato: '2017-06-06 24:00'
     ErrorResponse:
       title: ErrorResponse
       type: object
