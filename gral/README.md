@@ -37,6 +37,11 @@ redocly lint --extends=minimal .\TalentoPublicoOpenApi3Json.json
 redocly lint --extends=minimal .\dist\openapi.json
 ```
 
+Para encriptar html previamente generado reemplazando el anterior
+```bash
+npx staticrypt index.html -p "TalentoCloud." --short -t ../login-template.html --template-title "Talento Cloud - Acceso a Documentación" --template-instructions "Ingresa la contraseña para ver la documentación de la API" --template-placeholder "Contraseña de acceso" --template-button "Desbloquear" --template-remember "Recordar contraseña" --remember 30 -d .
+```
+
 #### Extras
 Para migrar de postman a redoc primero hay que exportar el archivo de postman en formato json y luego convertirlo a formato openapi lo cual se puede lograr con https://www.apimatic.io/transformer 
 

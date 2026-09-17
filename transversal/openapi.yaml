@@ -26,9 +26,10 @@ info:
         específicos y estructura de respuesta en su propia descripción.  
 servers:
   - url: https://clientex.talento.cloud/html
-    description: Servidor de producción    
-  - url: http://127.0.1.1:8889/html
-    description: Servidor local
+    description: Servidor de producción     
+  - url: https://clientex.talento-dev.cloud/html
+    description: Servidor de pruebas
+    variables: {}
 
 security:
   - bearerAuth: []
