@@ -20,6 +20,7 @@ info:
       - HojaVida - Conceptos de nómina - OK
       - HojaVida - Datos basicos - OK
       - HojaVida - Novedades de nómina - OK
+      - HojaVida - Experiencia laboral - OK
       - Selección - Reporte de selección detallado - Pendiente
       - Selección - Seguimiento por etapas - OK
       - Formación - Avance por tema - Pendiente
@@ -906,6 +907,65 @@ paths:
                       nit_entidad_afiliacion: No aplica
                       nombre_entidad_afiliacion: No aplica
                       fecha_desvinculacion: No aplica
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
+  /v1/datalake/hojavida/experienciaLaboral.json:
+    get:
+      tags:
+      - Datalake
+      summary: HojaVida - Experiencia laboral
+      description: Endpoint donde se listan la experiencia laboral de la hoja de vida de usuarios internos en talento cloud. Las fechas se entregan en formato yyyy-mm-dd.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://somostalentoalianza.talento-dev.cloud/html/v1/datalake/hojavida/experienciaLaboral.json' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: HojaVida-Experiencialaboral
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/HV_experienciaLaboral'
+                - example:
+                    data:
+                    - documento: '1234567890'
+                      usuario: MARIA PEREZ CORTES
+                      empresa: Soluciones Estratégicas Integrales para el Desarrollo Empresarial y Tecnológico S.A.S
+                      cargo: Analista Contable
+                      nivel_cargo: Analista
+                      fecha_inicio: '2025-05-12'
+                      fecha_retiro: '2026-05-15'
+                      personas_a_cargo: '2'
+                      jefe_directo: Alvaro Cardenas
+                      salario: '2000000'
+                      funciones: Gestión de tesorería y de la contabilidad
+                      logros: Cumplir con los objetivos del area
+                      cliente: null
+                      proyecto: Posto ltda
+                      fecha_inicio_proyecto: '2018-06-12'
+                      fecha_fin_proyecto: '2018-06-26'
+                      rol_proyecto: Cuenta
+                      funciones_proyecto: Programar la hoja de vida
+                      ubicacion_proyecto: null
+                      metros_cuadrados_proyecto: null
+                      valor_proyecto: null
+                      tipo_proyecto: null
+                      nombre_obra: null
+                      ubicacion_obra: null
+                      metros_cuadrados_obra: null
+                      duenio_obra: null
+                      valor_obra: null
+                      descripcion_tipo_obra: null
+                      descripcion_sistema_obra: null
                     success: true
         '401':
           $ref: '#/components/responses/UnauthorizedError'
@@ -2907,6 +2967,196 @@ components:
         nit_entidad_afiliacion: No aplica
         nombre_entidad_afiliacion: No aplica
         fecha_desvinculacion: No aplica
+    HV_experienciaLaboral:
+      title: HV_experienciaLaboral
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/HV_experienciaLaboralItem'
+        success:
+          type: boolean
+      example:
+        data:
+        - documento: '1234567890'
+          usuario: MARIA PEREZ CORTES
+          empresa: Soluciones Estratégicas Integrales para el Desarrollo Empresarial y Tecnológico S.A.S
+          cargo: Analista Contable
+          nivel_cargo: Analista
+          fecha_inicio: '2025-05-12'
+          fecha_retiro: '2026-05-15'
+          personas_a_cargo: '2'
+          jefe_directo: Alvaro Cardenas
+          salario: '2000000'
+          funciones: Gestión de tesorería y de la contabilidad
+          logros: Cumplir con los objetivos del area
+          cliente: null
+          proyecto: Posto ltda
+          fecha_inicio_proyecto: '2018-06-12'
+          fecha_fin_proyecto: '2018-06-26'
+          rol_proyecto: Cuenta
+          funciones_proyecto: Programar la hoja de vida
+          ubicacion_proyecto: null
+          metros_cuadrados_proyecto: null
+          valor_proyecto: null
+          tipo_proyecto: null
+          nombre_obra: null
+          ubicacion_obra: null
+          metros_cuadrados_obra: null
+          duenio_obra: null
+          valor_obra: null
+          descripcion_tipo_obra: null
+          descripcion_sistema_obra: null
+        success: true
+    HV_experienciaLaboralItem:
+      title: HV_experienciaLaboralItem
+      required:
+      - documento
+      - usuario
+      - empresa
+      - cargo
+      - nivel_cargo
+      - fecha_inicio
+      - fecha_retiro
+      - personas_a_cargo
+      - jefe_directo
+      - salario
+      - funciones
+      - logros
+      - cliente
+      - proyecto
+      - fecha_inicio_proyecto
+      - fecha_fin_proyecto
+      - rol_proyecto
+      - funciones_proyecto
+      - ubicacion_proyecto
+      - metros_cuadrados_proyecto
+      - valor_proyecto
+      - tipo_proyecto
+      - nombre_obra
+      - ubicacion_obra
+      - metros_cuadrados_obra
+      - duenio_obra
+      - valor_obra
+      - descripcion_tipo_obra
+      - descripcion_sistema_obra
+      type: object
+      properties:
+        documento:
+          type: string
+        usuario:
+          type: string
+        empresa:
+          type: string
+        cargo:
+          type: string
+        nivel_cargo:
+          type: string
+        fecha_inicio:
+          type: string
+        fecha_retiro:
+          type: string
+          nullable: true
+        personas_a_cargo:
+          type: string
+          nullable: true
+        jefe_directo:
+          type: string
+          nullable: true
+        salario:
+          type: string
+          nullable: true
+        funciones:
+          type: string
+          nullable: true
+        logros:
+          type: string
+          nullable: true
+        cliente:
+          type: string
+          nullable: true
+        proyecto:
+          type: string
+          nullable: true
+        fecha_inicio_proyecto:
+          type: string
+          nullable: true
+        fecha_fin_proyecto:
+          type: string
+          nullable: true
+        rol_proyecto:
+          type: string
+          nullable: true
+        funciones_proyecto:
+          type: string
+          nullable: true
+        ubicacion_proyecto:
+          type: string
+          nullable: true
+        metros_cuadrados_proyecto:
+          type: string
+          nullable: true
+        valor_proyecto:
+          type: string
+          nullable: true
+        tipo_proyecto:
+          type: string
+          nullable: true
+        nombre_obra:
+          type: string
+          nullable: true
+        ubicacion_obra:
+          type: string
+          nullable: true
+        metros_cuadrados_obra:
+          type: string
+          nullable: true
+        duenio_obra:
+          type: string
+          nullable: true
+        valor_obra:
+          type: string
+          nullable: true
+        descripcion_tipo_obra:
+          type: string
+          nullable: true
+        descripcion_sistema_obra:
+          type: string
+          nullable: true
+      example:
+        documento: '1234567890'
+        usuario: MARIA PEREZ CORTES
+        empresa: Soluciones Estratégicas Integrales para el Desarrollo Empresarial y Tecnológico S.A.S
+        cargo: Analista Contable
+        nivel_cargo: Analista
+        fecha_inicio: '2025-05-12'
+        fecha_retiro: '2026-05-15'
+        personas_a_cargo: '2'
+        jefe_directo: Alvaro Cardenas
+        salario: '2000000'
+        funciones: Gestión de tesorería y de la contabilidad
+        logros: Cumplir con los objetivos del area
+        cliente: null
+        proyecto: Posto ltda
+        fecha_inicio_proyecto: '2018-06-12'
+        fecha_fin_proyecto: '2018-06-26'
+        rol_proyecto: Cuenta
+        funciones_proyecto: Programar la hoja de vida
+        ubicacion_proyecto: null
+        metros_cuadrados_proyecto: null
+        valor_proyecto: null
+        tipo_proyecto: null
+        nombre_obra: null
+        ubicacion_obra: null
+        metros_cuadrados_obra: null
+        duenio_obra: null
+        valor_obra: null
+        descripcion_tipo_obra: null
+        descripcion_sistema_obra: null
     Seleccion_seguimientoPorEtapa:
       title: Seleccion_seguimientoPorEtapa
       required:
