@@ -57,9 +57,9 @@ info:
   contact: {}
   version: '1.0'
 servers:
-- url: https://somostalentoalianza.talento.cloud/html
+- url: https://clientex.talento.cloud/html
   description: Servidor de producción     
-- url: https://somostalentoalianza.talento-dev.cloud/html
+- url: https://clientex.talento-dev.cloud/html
   description: Servidor de pruebas
   variables: {}
 paths:
@@ -69,13 +69,13 @@ paths:
       - Autenticación
       summary: OAuth2 - Obtener token      
       description: >-
-        Para obtener el token que autoriza uso de los otros servicios, el client_id y client_secret son suministrados por talento cloud al cliente, según el tenant la url cambia, por ejemplo para la empresa Alianza sería https://somostalentoalianza.talento.cloud/html/oauth2/token/somostalentoalianza.json
+        Para obtener el token que autoriza uso de los otros servicios, el client_id y client_secret son suministrados por talento cloud al cliente, según el tenant la url cambia, por ejemplo para la empresa Alianza sería https://clientex.talento.cloud/html/oauth2/token/clientex.json
 
         ## Ejemplo petición con curl:
 
         ```bash
 
-        curl -X POST https://somostalentoalianza.talento.cloud/html/oauth2/token/somostalentoalianza.json \
+        curl -X POST https://clientex.talento.cloud/html/oauth2/token/clientex.json \
           -H "Content-Type: application/x-www-form-urlencoded" \          
           -d "grant_type=client_credentials" \
           -d "client_id=webhook-servicio" \
@@ -88,7 +88,7 @@ paths:
 
         ```bash
 
-        curl -X POST https://somostalentoalianza.talento.cloud/api/v1/datalake/modulox/reportey  \
+        curl -X POST https://clientex.talento.cloud/api/v1/datalake/modulox/reportey  \
           -H "Authorization: Bearer eyJhbGci..."
 
         ```      
@@ -96,7 +96,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl -X POST https://somostalentoalianza.talento.cloud/html/oauth2/token/somostalentoalianza.json \
+            curl -X POST https://clientex.talento.cloud/html/oauth2/token/clientex.json \
               -H "Content-Type: application/x-www-form-urlencoded" \          
               -d "grant_type=client_credentials" \
               -d "client_id=webhook-servicio" \
@@ -107,10 +107,10 @@ paths:
       - name: tenant
         in: path
         required: true
-        description: El tenant de la organización, y para la empresa Alianza sería somostalentoalianza
+        description: El tenant de la organización, y para la empresa Alianza sería clientex
         schema:
           type: string
-          example: somostalentoalianza
+          example: clientex
       requestBody:
         content:
           application/x-www-form-urlencoded:
@@ -179,7 +179,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://somostalentoalianza.talento-dev.cloud/html/v1/datalake/hojavida/informacionNomina.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/hojavida/informacionNomina.json' \
               -H "Authorization: Bearer <TU_TOKEN_JWT>" 
       operationId: HojaVida-Informaciondenomina
       parameters: []
@@ -708,7 +708,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://somostalentoalianza.talento-dev.cloud/html/v1/datalake/hojavida/conceptosNomina.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/hojavida/conceptosNomina.json' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: HojaVida-Conceptosdenomina
       parameters: []
@@ -750,7 +750,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://somostalentoalianza.talento-dev.cloud/html/v1/datalake/hojavida/datosBasicosInternos.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/hojavida/datosBasicosInternos.json' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: HojaVida-Datosbasicos
       parameters: []
@@ -843,7 +843,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://somostalentoalianza.talento-dev.cloud/html/v1/datalake/hojavida/novedadesNomina/2026-01-01/2026-09-10.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/hojavida/novedadesNomina/2026-01-01/2026-09-10.json' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: HojaVida-Novedadesdenomina
       parameters:
@@ -923,7 +923,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://somostalentoalianza.talento-dev.cloud/html/v1/datalake/hojavida/experienciaLaboral.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/hojavida/experienciaLaboral.json' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: HojaVida-Experiencialaboral
       parameters: []
@@ -982,7 +982,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://somostalentoalianza.talento-dev.cloud/html/v1/datalake/transversal/todosUsuarios/Todos.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/transversal/todosUsuarios/Todos.json' \
               --header 'Accept-Language: es' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Transversal-Reportedetodoslosusuariosdelsistema
@@ -1103,7 +1103,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://somostalentoalianza.talento-dev.cloud/html/v1/datalake/bienestar/reporteDetallado.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/bienestar/reporteDetallado.json' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Bienestar-Reportedetalladobeneficiosreconocimientos
       parameters: []
@@ -1191,7 +1191,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://somostalentoalianza.talento-dev.cloud/html/v1/datalake/seleccion/seguimientoPorEtapa/TODOS.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/seleccion/seguimientoPorEtapa/TODOS.json' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Seleccion-Seguimientoporetapas
       parameters:
