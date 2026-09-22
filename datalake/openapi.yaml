@@ -66,7 +66,7 @@ paths:
   /oauth2/token/{tenant}.json:
     post:
       tags:
-      - Datalake
+      - Autenticación
       summary: OAuth2 - Obtener token      
       description: >-
         Para obtener el token que autoriza uso de los otros servicios, el client_id y client_secret son suministrados por talento cloud al cliente, según el tenant la url cambia, por ejemplo para la empresa Alianza sería https://somostalentoalianza.talento.cloud/html/oauth2/token/somostalentoalianza.json
@@ -126,11 +126,11 @@ paths:
                 client_id:
                   type: string
                   description: Suministrado por talento cloud
-                  example: 00000000000000000000000000000000
+                  example: '00000000000000000000000000000000'
                 client_secret:
                   type: string
                   description: Suministrado por talento cloud
-                  example: 0000000000000000000000000000000000000000000000000000000000000000
+                  example: '0000000000000000000000000000000000000000000000000000000000000000'
                 grant_type:
                   type: string
                   description: Por defecto client_credentials
@@ -172,7 +172,7 @@ paths:
   /v1/datalake/hojavida/informacionNomina.json:
     get:
       tags:
-      - Datalake
+      - HojaVida
       summary: HojaVida - Información de nómina
       description: Endpoint donde se lista la información de nómina de las hojas de vida de usuarios activos de talento cloud. Las fechas se entregan en formato yyyy-mm-dd
       x-codeSamples:
@@ -701,7 +701,7 @@ paths:
   /v1/datalake/hojavida/conceptosNomina.json:
     get:
       tags:
-      - Datalake
+      - HojaVida
       summary: HojaVida - Conceptos de nómina
       description: Endpoint donde se listan los conceptos de nómina de las hojas de vida de usuarios en talento cloud. Las fechas se entregan en formato yyyy-mm-dd.
       x-codeSamples:
@@ -743,7 +743,7 @@ paths:
   /v1/datalake/hojavida/datosBasicosInternos.json:
     get:
       tags:
-      - Datalake
+      - HojaVida
       summary: HojaVida - Datos basicos
       description: Endpoint donde se listan los datos básicos de la hoja de vida de usuarios internos en talento cloud. Las fechas se entregan en formato yyyy-mm-dd.
       x-codeSamples:
@@ -836,7 +836,7 @@ paths:
   /v1/datalake/hojavida/novedadesNomina/{fecha_inicial}/{fecha_final}.json:
     get:
       tags:
-      - Datalake
+      - HojaVida
       summary: HojaVida - Novedades de nómina
       description: Endpoint donde se listan las novedades de nómina de las hojas de vida en un rango de fechas. Las fechas se entregan en formato yyyy-mm-dd.
       x-codeSamples:
@@ -916,7 +916,7 @@ paths:
   /v1/datalake/hojavida/experienciaLaboral.json:
     get:
       tags:
-      - Datalake
+      - HojaVida
       summary: HojaVida - Experiencia laboral
       description: Endpoint donde se listan la experiencia laboral de la hoja de vida de usuarios internos en talento cloud. Las fechas se entregan en formato yyyy-mm-dd.
       x-codeSamples:
@@ -975,7 +975,7 @@ paths:
   /v1/datalake/transversal/todosUsuarios/{tipo_usuario}.json:
     get:
       tags:
-      - Datalake
+      - Transversal
       summary: Transversal - Reporte de todos los usuarios del sistema
       description: Endpoint donde se lista la información de todos los usuarios del sistema para Datalake. Permite filtrar por tipo de usuario (Todos, Administrativo u Operativo). Las fechas se entregan en formato yyyy-mm-dd.
       x-codeSamples:
@@ -1096,7 +1096,7 @@ paths:
   /v1/datalake/bienestar/reporteDetallado.json:
     get:
       tags:
-      - Datalake
+      - Bienestar
       summary: Bienestar - Reporte detallado beneficios/reconocimientos
       description: Endpoint donde se lista el reporte detallado de beneficios y reconocimientos de los usuarios en talento cloud. Las fechas se entregan en formato yyyy-mm-dd.
       x-codeSamples:
@@ -1184,7 +1184,7 @@ paths:
   /v1/datalake/seleccion/seguimientoPorEtapa/{estado}.json:
     get:
       tags:
-      - Datalake
+      - Selección
       summary: Selección - Seguimiento por etapas
       description: Endpoint donde se lista el seguimiento por etapas de los procesos de selección en talento cloud. Permite filtrar por estado (TODOS, ACTIVOS o CERRADOS). El formato de fecha es yyyy-MM-dd kk:mm.
       x-codeSamples:
@@ -3510,5 +3510,13 @@ security:
 - oauth2:
       - talento.read
 tags:
-- name: Datalake
-  description: Endpoints para integración con Datalake
+- name: Autenticación
+  description: Endpoints para autenticación y obtención de tokens de acceso OAuth 2.0.
+- name: HojaVida
+  description: Endpoints para consulta de información laboral, nómina y hojas de vida.
+- name: Transversal
+  description: Endpoints para consulta de datos transversales de usuarios del sistema.
+- name: Bienestar
+  description: Endpoints para consulta de beneficios y reconocimientos de bienestar.
+- name: Selección
+  description: Endpoints para seguimiento de procesos y etapas de selección.
