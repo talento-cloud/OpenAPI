@@ -25,7 +25,7 @@ info:
       - Selección - Seguimiento por etapas - OK
       - Formación - Avance por tema - Pendiente
       - Bienestar - reporte detallado beneficios/reconocimientos - OK
-      - Bienestar - reporte transacciones puntos beneficios/reconocimientos  - Pendiente    
+      - Bienestar - reporte transacciones puntos beneficios/reconocimientos - OK
       - Objetivos Smart - Resultados consolidados de gestión (Todo el grupo) - Pendiente
       - Objetivos Smart - Modelo mapa de desempeño - Pendiente
       - Competencias - Procesos - OK
@@ -1176,6 +1176,66 @@ paths:
                       aprobadores: null
                       observaciones: null
                       campos_adicionales: null
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
+  /v1/datalake/bienestar/transaccionesPuntos/{anio}.json:
+    get:
+      tags:
+      - Bienestar
+      summary: Bienestar - Transacciones puntos beneficios/reconocimientos
+      description: Endpoint donde se listan las transacciones de puntos de beneficios y reconocimientos ejecutadas en un año dado
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/bienestar/transaccionesPuntos/2025.json' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: Bienestar-Transaccionespuntosbeneficiosreconocimientos
+      parameters:
+      - name: anio
+        in: path
+        required: true
+        description: Año a consultar en formato YYYY (por ejemplo 2025).
+        schema:
+          type: integer
+          example: 2025
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Bienestar_transaccionesPuntos'
+                - example:
+                    data:
+                    - usuario: Andres Perez Mengano
+                      tipo_documento: CEDULA
+                      documento_usuario: '1234567890'
+                      tipo_usuario: Administrativo
+                      email: noexiste@unmail.net
+                      negocio: Desarrollo de Software
+                      empresa: talento cloud
+                      uen: UEN Dirección General
+                      vicepresidencia: Producción
+                      pais: Colombia
+                      ciudad: Medellin
+                      regional: Antioquia
+                      sede: Medellín
+                      cargo: Ingeniero(a) de sistemas
+                      nivel_organizacional: Ejecutivo
+                      area: Operaciones
+                      documento_jefe: '1020980000'
+                      jefe: Juan Osorio Ospina
+                      tipo: Beneficio
+                      fecha_transacion: '2025-04-09'
+                      descripcion: Recuperación de puntos
+                      valor: '50'
+                      saldo: '100'
                     success: true
         '401':
           $ref: '#/components/responses/UnauthorizedError'
@@ -2899,6 +2959,143 @@ components:
         aprobadores: null
         observaciones: null
         campos_adicionales: null
+    Bienestar_transaccionesPuntos:
+      title: Bienestar_transaccionesPuntos
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/BienestarTransaccionesPuntosItem'
+        success:
+          type: boolean
+      example:
+        data:
+        - usuario: Andres Perez Mengano
+          tipo_documento: CEDULA
+          documento_usuario: '1234567890'
+          tipo_usuario: Administrativo
+          email: noexiste@unmail.net
+          negocio: Desarrollo de Software
+          empresa: talento cloud
+          uen: UEN Dirección General
+          vicepresidencia: Producción
+          pais: Colombia
+          ciudad: Medellin
+          regional: Antioquia
+          sede: Medellín
+          cargo: Ingeniero(a) de sistemas
+          nivel_organizacional: Ejecutivo
+          area: Operaciones
+          documento_jefe: '1020980000'
+          jefe: Juan Osorio Ospina
+          tipo: Beneficio
+          fecha_transacion: '2025-04-09'
+          descripcion: Recuperación de puntos
+          valor: '50'
+          saldo: '100'
+        success: true
+    BienestarTransaccionesPuntosItem:
+      title: BienestarTransaccionesPuntosItem
+      required:
+      - usuario
+      - tipo_documento
+      - documento_usuario
+      - tipo_usuario
+      - email
+      - negocio
+      - empresa
+      - uen
+      - vicepresidencia
+      - pais
+      - ciudad
+      - regional
+      - sede
+      - cargo
+      - nivel_organizacional
+      - area
+      - documento_jefe
+      - jefe
+      - tipo
+      - fecha_transacion
+      - descripcion
+      - valor
+      - saldo
+      type: object
+      properties:
+        usuario:
+          type: string
+        tipo_documento:
+          type: string
+        documento_usuario:
+          type: string
+        tipo_usuario:
+          type: string
+        email:
+          type: string
+        negocio:
+          type: string
+        empresa:
+          type: string
+        uen:
+          type: string
+        vicepresidencia:
+          type: string
+        pais:
+          type: string
+        ciudad:
+          type: string
+        regional:
+          type: string
+        sede:
+          type: string
+        cargo:
+          type: string
+        nivel_organizacional:
+          type: string
+        area:
+          type: string
+        documento_jefe:
+          type: string
+        jefe:
+          type: string
+        tipo:
+          type: string
+        fecha_transacion:
+          type: string
+        descripcion:
+          type: string
+        valor:
+          type: string
+        saldo:
+          type: string
+      example:
+        usuario: Andres Perez Mengano
+        tipo_documento: CEDULA
+        documento_usuario: '1234567890'
+        tipo_usuario: Administrativo
+        email: noexiste@unmail.net
+        negocio: Desarrollo de Software
+        empresa: talento cloud
+        uen: UEN Dirección General
+        vicepresidencia: Producción
+        pais: Colombia
+        ciudad: Medellin
+        regional: Antioquia
+        sede: Medellín
+        cargo: Ingeniero(a) de sistemas
+        nivel_organizacional: Ejecutivo
+        area: Operaciones
+        documento_jefe: '1020980000'
+        jefe: Juan Osorio Ospina
+        tipo: Beneficio
+        fecha_transacion: '2025-04-09'
+        descripcion: Recuperación de puntos
+        valor: '50'
+        saldo: '100'
     HV_novedadesNomina:
       title: HV_novedadesNomina
       required:
