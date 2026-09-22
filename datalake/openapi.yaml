@@ -28,7 +28,8 @@ info:
       - Bienestar - reporte transacciones puntos beneficios/reconocimientos  - Pendiente    
       - Objetivos Smart - Resultados consolidados de gestión (Todo el grupo) - Pendiente
       - Objetivos Smart - Modelo mapa de desempeño - Pendiente
-      - Competencias - Detalle valoración de competencias (de todo el grupo) - Pendiente
+      - Competencias - Procesos - OK
+      - Competencias - Detalle valoración - OK
       - Operativos (Dec) - Reporte operativos - Pendiente
       - Transversal - Reporte de todos los usuarios del sistema - OK
       - Transversal - Reporte de los usuarios activos - Pendiente
@@ -1274,6 +1275,139 @@ paths:
                       oferta_salarial_fecha_ultimo_candidato: ''
                       cierre_fecha_primer_candidato: ''
                       cierre_fecha_ultimo_candidato: '2017-06-06 24:00'
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
+  /v1/datalake/competencias/procesos.json:
+    get:
+      tags:
+      - Competencias
+      summary: Competencias - Procesos
+      description: Endpoint donde se listan los procesos de valoración de competencias registrados en talento cloud.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/competencias/procesos.json' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: Competencias-Procesos
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Competencias_procesos'
+                - example:
+                    data:
+                    - nombre: Valoracion 2026
+                      codigo: 253
+                    - nombre: Valoración de competencias 2025
+                      codigo: 243
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
+  /v1/datalake/competencias/detalleValoracion/{codProceso}.json:
+    get:
+      tags:
+      - Competencias
+      summary: Competencias - Detalle valoración
+      description: Endpoint donde se listan detalles de resultados de una valoración de competencias suministrada
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/competencias/detalleValoracion/205.json' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: Competencias-Detallevaloracion
+      parameters:
+      - name: codProceso
+        in: path
+        required: true
+        description: Código del proceso de valoración de competencias a consultar.
+        schema:
+          type: integer
+          example: 205
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Competencias_detalleValoracion'
+                - example:
+                    data:
+                    - usuario: Andres Perez Mar
+                      tipo_documento: CEDULA
+                      documento: '1234567890'
+                      tipo_usuario: Administrativo
+                      correo_electronico: noexiste@unmail.net
+                      negocio: Calidad de software
+                      empresa: Nexa Solutions
+                      uen: Nexa Digital Solutions
+                      vicepresidencia: TI
+                      pais: Colombia
+                      ciudad: Medellin
+                      regional: Antioquia
+                      sede: Medellín
+                      cargo: Analista Desarrollador
+                      nivel_organizacional: Analistas
+                      area: TI
+                      documento_lider_colaborador: '59876895'
+                      lider_colaborador: Diana Lopez
+                      proceso: Valoración de competencias (Finalizada)
+                      competencia: Comunicación
+                      comportamiento: CONSOLIDADO
+                      promedio_autoevaluacion: 100.0
+                      promedio_mi_lider: 90.0
+                      promedio_pares: null
+                      promedio_mis_colaboradores: null
+                      promedio_clientes: null
+                      promedio_total: 95.0
+                      fotalezas: null
+                      oportunidades: null
+                      observaciones: null
+                      observaciones_generales: "* Comunicar de manera clara y objetiva: Asegúrate de que la retroalimentación sea clara y basada en datos concretos. Evita utilizar lenguaje vago o subjetivo. Proporciona ejemplos específicos de comportamientos o desempeño que respalden tus comentarios. \n* Trabajo en equipo: Eres un miembro valioso de nuestro equipo. Siempre estás dispuesto/a a colaborar y aportar tus ideas para lograr nuestros objetivos comunes."
+                    - usuario: Andres Perez Mar
+                      tipo_documento: CEDULA
+                      documento: '1234567890'
+                      tipo_usuario: Administrativo
+                      correo_electronico: noexiste@unmail.net
+                      negocio: Calidad de software
+                      empresa: Nexa Solutions
+                      uen: Nexa Digital Solutions
+                      vicepresidencia: TI
+                      pais: Colombia
+                      ciudad: Medellin
+                      regional: Antioquia
+                      sede: Medellín
+                      cargo: Analista Desarrollador
+                      nivel_organizacional: Analistas
+                      area: TI
+                      documento_lider_colaborador: '59876895'
+                      lider_colaborador: Diana Lopez
+                      proceso: Valoración de competencias (Finalizada)
+                      competencia: Comunicación
+                      comportamiento: '¿Su lenguaje es claro, se hace entender?'
+                      promedio_autoevaluacion: 100.0
+                      promedio_mi_lider: 100.0
+                      promedio_pares: null
+                      promedio_mis_colaboradores: null
+                      promedio_clientes: null
+                      promedio_total: 100.0
+                      fotalezas: ''
+                      oportunidades: ''
+                      observaciones: ''
+                      observaciones_generales: null
                     success: true
         '401':
           $ref: '#/components/responses/UnauthorizedError'
@@ -3469,6 +3603,258 @@ components:
         oferta_salarial_fecha_ultimo_candidato: ''
         cierre_fecha_primer_candidato: ''
         cierre_fecha_ultimo_candidato: '2017-06-06 24:00'
+    Competencias_procesos:
+      title: Competencias_procesos
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompetenciasProcesoItem'
+        success:
+          type: boolean
+      example:
+        data:
+        - nombre: Valoracion 2026
+          codigo: 253
+        - nombre: Valoración de competencias 2025
+          codigo: 243
+        success: true
+    CompetenciasProcesoItem:
+      title: CompetenciasProcesoItem
+      required:
+      - nombre
+      - codigo
+      type: object
+      properties:
+        nombre:
+          type: string
+        codigo:
+          type: integer
+      example:
+        nombre: Valoracion 2026
+        codigo: 253
+    Competencias_detalleValoracion:
+      title: Competencias_detalleValoracion
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompetenciasDetalleValoracionItem'
+        success:
+          type: boolean
+      example:
+        data:
+        - usuario: Andres Perez Mar
+          tipo_documento: CEDULA
+          documento: '1234567890'
+          tipo_usuario: Administrativo
+          correo_electronico: noexiste@unmail.net
+          negocio: Calidad de software
+          empresa: Nexa Solutions
+          uen: Nexa Digital Solutions
+          vicepresidencia: TI
+          pais: Colombia
+          ciudad: Medellin
+          regional: Antioquia
+          sede: Medellín
+          cargo: Analista Desarrollador
+          nivel_organizacional: Analistas
+          area: TI
+          documento_lider_colaborador: '59876895'
+          lider_colaborador: Diana Lopez
+          proceso: Valoración de competencias (Finalizada)
+          competencia: Comunicación
+          comportamiento: CONSOLIDADO
+          promedio_autoevaluacion: 100.0
+          promedio_mi_lider: 90.0
+          promedio_pares: null
+          promedio_mis_colaboradores: null
+          promedio_clientes: null
+          promedio_total: 95.0
+          fotalezas: null
+          oportunidades: null
+          observaciones: null
+          observaciones_generales: "* Comunicar de manera clara y objetiva: Asegúrate de que la retroalimentación sea clara y basada en datos concretos. Evita utilizar lenguaje vago o subjetivo. Proporciona ejemplos específicos de comportamientos o desempeño que respalden tus comentarios. \n* Trabajo en equipo: Eres un miembro valioso de nuestro equipo. Siempre estás dispuesto/a a colaborar y aportar tus ideas para lograr nuestros objetivos comunes."
+        - usuario: Andres Perez Mar
+          tipo_documento: CEDULA
+          documento: '1234567890'
+          tipo_usuario: Administrativo
+          correo_electronico: noexiste@unmail.net
+          negocio: Calidad de software
+          empresa: Nexa Solutions
+          uen: Nexa Digital Solutions
+          vicepresidencia: TI
+          pais: Colombia
+          ciudad: Medellin
+          regional: Antioquia
+          sede: Medellín
+          cargo: Analista Desarrollador
+          nivel_organizacional: Analistas
+          area: TI
+          documento_lider_colaborador: '59876895'
+          lider_colaborador: Diana Lopez
+          proceso: Valoración de competencias (Finalizada)
+          competencia: Comunicación
+          comportamiento: '¿Su lenguaje es claro, se hace entender?'
+          promedio_autoevaluacion: 100.0
+          promedio_mi_lider: 100.0
+          promedio_pares: null
+          promedio_mis_colaboradores: null
+          promedio_clientes: null
+          promedio_total: 100.0
+          fotalezas: ''
+          oportunidades: ''
+          observaciones: ''
+          observaciones_generales: null
+        success: true
+    CompetenciasDetalleValoracionItem:
+      title: CompetenciasDetalleValoracionItem
+      required:
+      - usuario
+      - tipo_documento
+      - documento
+      - tipo_usuario
+      - correo_electronico
+      - negocio
+      - empresa
+      - uen
+      - vicepresidencia
+      - pais
+      - ciudad
+      - regional
+      - sede
+      - cargo
+      - nivel_organizacional
+      - area
+      - documento_lider_colaborador
+      - lider_colaborador
+      - proceso
+      - competencia
+      - comportamiento
+      - promedio_autoevaluacion
+      - promedio_mi_lider
+      - promedio_pares
+      - promedio_mis_colaboradores
+      - promedio_clientes
+      - promedio_total
+      - fotalezas
+      - oportunidades
+      - observaciones
+      - observaciones_generales
+      type: object
+      properties:
+        usuario:
+          type: string
+        tipo_documento:
+          type: string
+        documento:
+          type: string
+        tipo_usuario:
+          type: string
+        correo_electronico:
+          type: string
+        negocio:
+          type: string
+        empresa:
+          type: string
+        uen:
+          type: string
+        vicepresidencia:
+          type: string
+        pais:
+          type: string
+        ciudad:
+          type: string
+        regional:
+          type: string
+        sede:
+          type: string
+        cargo:
+          type: string
+        nivel_organizacional:
+          type: string
+        area:
+          type: string
+        documento_lider_colaborador:
+          type: string
+        lider_colaborador:
+          type: string
+        proceso:
+          type: string
+        competencia:
+          type: string
+        comportamiento:
+          type: string
+        promedio_autoevaluacion:
+          type: number
+          nullable: true
+        promedio_mi_lider:
+          type: number
+          nullable: true
+        promedio_pares:
+          type: number
+          nullable: true
+        promedio_mis_colaboradores:
+          type: number
+          nullable: true
+        promedio_clientes:
+          type: number
+          nullable: true
+        promedio_total:
+          type: number
+          nullable: true
+        fotalezas:
+          type: string
+          nullable: true
+        oportunidades:
+          type: string
+          nullable: true
+        observaciones:
+          type: string
+          nullable: true
+        observaciones_generales:
+          type: string
+          nullable: true
+      example:
+        usuario: Andres Perez Mar
+        tipo_documento: CEDULA
+        documento: '1234567890'
+        tipo_usuario: Administrativo
+        correo_electronico: noexiste@unmail.net
+        negocio: Calidad de software
+        empresa: Nexa Solutions
+        uen: Nexa Digital Solutions
+        vicepresidencia: TI
+        pais: Colombia
+        ciudad: Medellin
+        regional: Antioquia
+        sede: Medellín
+        cargo: Analista Desarrollador
+        nivel_organizacional: Analistas
+        area: TI
+        documento_lider_colaborador: '59876895'
+        lider_colaborador: Diana Lopez
+        proceso: Valoración de competencias (Finalizada)
+        competencia: Comunicación
+        comportamiento: CONSOLIDADO
+        promedio_autoevaluacion: 100.0
+        promedio_mi_lider: 90.0
+        promedio_pares: null
+        promedio_mis_colaboradores: null
+        promedio_clientes: null
+        promedio_total: 95.0
+        fotalezas: null
+        oportunidades: null
+        observaciones: null
+        observaciones_generales: "* Comunicar de manera clara y objetiva: Asegúrate de que la retroalimentación sea clara y basada en datos concretos. Evita utilizar lenguaje vago o subjetivo. Proporciona ejemplos específicos de comportamientos o desempeño que respalden tus comentarios. \n* Trabajo en equipo: Eres un miembro valioso de nuestro equipo. Siempre estás dispuesto/a a colaborar y aportar tus ideas para lograr nuestros objetivos comunes."
     ErrorResponse:
       title: ErrorResponse
       type: object
@@ -3520,3 +3906,5 @@ tags:
   description: Endpoints para consulta de beneficios y reconocimientos de bienestar.
 - name: Selección
   description: Endpoints para seguimiento de procesos y etapas de selección.
+- name: Competencias
+  description: Endpoints para consulta de procesos y resultados de valoración de competencias.
