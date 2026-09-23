@@ -32,7 +32,9 @@ info:
       - Objetivos Smart - Modelo mapa de desempeño - Pendiente
       - Competencias - Procesos - OK
       - Competencias - Detalle valoración - OK
-      - Operativos (Dec) - Reporte operativos - Pendiente
+      - DEC - Procesos - OK
+      - DEC - Temporadas - OK
+      - DEC - Reporte Operativos - OK
       - Transversal - Reporte de todos los usuarios del sistema - OK
       - Transversal - Reporte de los usuarios activos - Pendiente
       - Transversal - Novedades - Pendiente
@@ -253,6 +255,7 @@ paths:
                       nombre_beneficiario: null
                       fecha_nacimiento: null
                       parentesco: null
+                      direccion_beneficiario: 'Calle 12 1 3'
                       ciudad_beneficiario: ''
                       relacion_seguridad_social: null
                       discapacidad: null
@@ -315,6 +318,7 @@ paths:
                       nombre_beneficiario: null
                       fecha_nacimiento: null
                       parentesco: null
+                      direccion_beneficiario: 'Calle 12 1 3'
                       ciudad_beneficiario: ''
                       relacion_seguridad_social: null
                       discapacidad: null
@@ -377,6 +381,7 @@ paths:
                       nombre_beneficiario: null
                       fecha_nacimiento: null
                       parentesco: null
+                      direccion_beneficiario: 'Calle 12 1 3'
                       ciudad_beneficiario: ''
                       relacion_seguridad_social: null
                       discapacidad: null
@@ -439,6 +444,7 @@ paths:
                       nombre_beneficiario: null
                       fecha_nacimiento: null
                       parentesco: null
+                      direccion_beneficiario: 'Calle 12 1 3'
                       ciudad_beneficiario: ''
                       relacion_seguridad_social: null
                       discapacidad: null
@@ -504,6 +510,7 @@ paths:
                   nombre_beneficiario: null
                   fecha_nacimiento: null
                   parentesco: null
+                  direccion_beneficiario: 'Calle 12 1 3'
                   ciudad_beneficiario: ''
                   relacion_seguridad_social: null
                   discapacidad: null
@@ -566,6 +573,7 @@ paths:
                   nombre_beneficiario: null
                   fecha_nacimiento: null
                   parentesco: null
+                  direccion_beneficiario: 'Calle 12 1 3'
                   ciudad_beneficiario: ''
                   relacion_seguridad_social: null
                   discapacidad: null
@@ -628,6 +636,7 @@ paths:
                   nombre_beneficiario: null
                   fecha_nacimiento: null
                   parentesco: null
+                  direccion_beneficiario: 'Calle 12 1 3'
                   ciudad_beneficiario: ''
                   relacion_seguridad_social: null
                   discapacidad: null
@@ -690,6 +699,7 @@ paths:
                   nombre_beneficiario: null
                   fecha_nacimiento: null
                   parentesco: null
+                  direccion_beneficiario: 'Calle 12 1 3'
                   ciudad_beneficiario: ''
                   relacion_seguridad_social: null
                   discapacidad: null
@@ -1675,6 +1685,164 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
+  /v1/datalake/dec/procesos.json:
+    get:
+      tags:
+      - DEC
+      summary: DEC - Procesos
+      description: Endpoint donde se lista los procesos disponibles para evaluación de operativos, en el módulo de DEC.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/dec/procesos.json' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: DEC-Procesos
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/DEC_procesos'
+                - example:
+                    data:
+                    - codigo: 171
+                      nombre: Valoración DEC 2025
+                    - codigo: 37
+                      nombre: Mapa de talento DEC Operativo
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
+  /v1/datalake/dec/temporadas/{codProceso}.json:
+    get:
+      tags:
+      - DEC
+      summary: DEC - Temporadas
+      description: Endpoint donde se lista los temporadas disponibles para evaluación de operativos, en el módulo de DEC.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/dec/temporadas/37.json' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: DEC-Temporadas
+      parameters:
+      - name: codProceso
+        in: path
+        required: true
+        description: Código del proceso a consultar llamado codProceso, es obligatorio y se puede obtener del endpoint "DEC - Procesos".
+        schema:
+          type: integer
+          example: 37
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/DEC_temporadas'
+                - example:
+                    data:
+                    - codigo: 1
+                      nombre: T1 Mapa de talento DEC Operativo
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
+  /v1/datalake/dec/reporteOperativos/{codProceso}/{codTemporada}.json:
+    get:
+      tags:
+      - DEC
+      summary: DEC - Reporte Operativos
+      description: Endpoint donde se lista reporte de operativos en el módulo de DEC.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/dec/reporteOperativos/37/1.json' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: DEC-ReporteOperativos
+      parameters:
+      - name: codProceso
+        in: path
+        required: true
+        description: Código del proceso a consultar llamado codProceso, es obligatorio y se puede obtener del endpoint "DEC - Procesos".
+        schema:
+          type: integer
+          example: 37
+      - name: codTemporada
+        in: path
+        required: true
+        description: Código de la temporada a consultar llamado codTemporada, es obligatorio y se puede obtener del endpoint "DEC - Temporadas".
+        schema:
+          type: integer
+          example: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/DEC_reporteOperativos'
+                - example:
+                    data:
+                    - usuario: Daniel Perez Perez
+                      tipo_documento: CEDULA
+                      documento_usuario: '1234567890'
+                      tipo_usuario: Operativo
+                      email: noexiste@mail.edu
+                      negocio: Desarrollo de Software
+                      empresa: talento ltda
+                      uen: UEN App Moviles
+                      vicepresidencia: Procesos
+                      pais: Colombia
+                      ciudad: Medellin
+                      regional: Antioquia
+                      sede: Medellín
+                      cargo: Operario de planta
+                      nivel_organizacional: Operativo
+                      area: Producción
+                      documento_jefe: '10350000'
+                      jefe: Andres Alvarez Perez
+                      documento_evaluador: '10209800'
+                      evaluador: Juan Osorio Ospina
+                      tipo_objetivo: Objetivo genérico
+                      indicador_objetivo: Formación
+                      descripcion_objetivo: Cumplió satisfactoriamente con el PDI propuesto
+                      peso_objetivo: '20'
+                      meta_objetivo: '100'
+                      autoevaluacion_objetivo: 93%
+                      evaluacion_jefe_objetivo: 93%
+                      descripcion_competencia: Calidad en el trabajo
+                      autoevaluacion_competencia: null
+                      evaluacion_jefe_competencia: 100.0
+                      Comentarios: "* Tiene un indicador en productividad del 93%\n* Daniel siempre porta los elementos de seguridad de manera correcta, no se le ha evidenciado sin las gafas ni el casco, por lo cual se hace un reconocimiento publico. "
+                      total_objetivo: 93.0
+                      descripcion_calificacion_objetivo: 93%
+                      total_competencia: 100.0
+                      descripcion_calificacion_competencia: Excede lo esperado
+                      total_objetivos_final: 8.9
+                      total_competencias_final: 86.1
+                      consolidado: 47.5
+                      descripcion_consolidado: No cumple
+                      cuadrante: Alta Competencia
+                      concepto_general: "¡Felicitaciones por tu destacado manejo de los los elementos de SST! Vas por muy buen camino. Sigue confiando en ti mismo, porque tienes el potencial y el talento para lograr grandes cosas. Lo estás haciendo muy bien!"
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
 components:
   schemas:
     oauth2:
@@ -1777,6 +1945,7 @@ components:
           nombre_beneficiario: null
           fecha_nacimiento: null
           parentesco: null
+          direccion_beneficiario: 'Calle 12 1 3'
           ciudad_beneficiario: ''
           relacion_seguridad_social: null
           discapacidad: null
@@ -1839,6 +2008,7 @@ components:
           nombre_beneficiario: null
           fecha_nacimiento: null
           parentesco: null
+          direccion_beneficiario: 'Calle 12 1 3'
           ciudad_beneficiario: ''
           relacion_seguridad_social: null
           discapacidad: null
@@ -1901,6 +2071,7 @@ components:
           nombre_beneficiario: null
           fecha_nacimiento: null
           parentesco: null
+          direccion_beneficiario: 'Calle 12 1 3'
           ciudad_beneficiario: ''
           relacion_seguridad_social: null
           discapacidad: null
@@ -1963,6 +2134,7 @@ components:
           nombre_beneficiario: null
           fecha_nacimiento: null
           parentesco: null
+          direccion_beneficiario: 'Calle 12 1 3'
           ciudad_beneficiario: ''
           relacion_seguridad_social: null
           discapacidad: null
@@ -2029,6 +2201,7 @@ components:
       - nombre_beneficiario
       - fecha_nacimiento
       - parentesco
+      - direccion_beneficiario
       - ciudad_beneficiario
       - relacion_seguridad_social
       - discapacidad
@@ -2183,6 +2356,9 @@ components:
         parentesco:
           type: string
           nullable: true
+        direccion_beneficiario:
+          type: string
+          nullable: true
         ciudad_beneficiario:
           type: string
         relacion_seguridad_social:
@@ -2255,6 +2431,7 @@ components:
         nombre_beneficiario: null
         fecha_nacimiento: null
         parentesco: null
+        direccion_beneficiario: 'Calle 12 1 3'
         ciudad_beneficiario: ''
         relacion_seguridad_social: null
         discapacidad: null
@@ -4506,6 +4683,312 @@ components:
         fecha_limite: '2025-06-25'
         tiempo_faltante: 0 Días
         observaciones: Tiempo límite ha expirado
+    DEC_procesos:
+      title: DEC_procesos
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DECProcesoItem'
+        success:
+          type: boolean
+      example:
+        data:
+        - codigo: 171
+          nombre: Valoración DEC 2025
+        - codigo: 37
+          nombre: Mapa de talento DEC Operativo
+        success: true
+    DECProcesoItem:
+      title: DECProcesoItem
+      required:
+      - codigo
+      - nombre
+      type: object
+      properties:
+        codigo:
+          type: integer
+        nombre:
+          type: string
+      example:
+        codigo: 171
+        nombre: Valoración DEC 2025
+    DEC_temporadas:
+      title: DEC_temporadas
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DECTemporadaItem'
+        success:
+          type: boolean
+      example:
+        data:
+        - codigo: 1
+          nombre: T1 Mapa de talento DEC Operativo
+        success: true
+    DECTemporadaItem:
+      title: DECTemporadaItem
+      required:
+      - codigo
+      - nombre
+      type: object
+      properties:
+        codigo:
+          type: integer
+        nombre:
+          type: string
+      example:
+        codigo: 1
+        nombre: T1 Mapa de talento DEC Operativo
+    DEC_reporteOperativos:
+      title: DEC_reporteOperativos
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DECReporteOperativosItem'
+        success:
+          type: boolean
+      example:
+        data:
+        - usuario: Daniel Perez Perez
+          tipo_documento: CEDULA
+          documento_usuario: '1234567890'
+          tipo_usuario: Operativo
+          email: noexiste@mail.edu
+          negocio: Desarrollo de Software
+          empresa: talento ltda
+          uen: UEN App Moviles
+          vicepresidencia: Procesos
+          pais: Colombia
+          ciudad: Medellin
+          regional: Antioquia
+          sede: Medellín
+          cargo: Operario de planta
+          nivel_organizacional: Operativo
+          area: Producción
+          documento_jefe: '10350000'
+          jefe: Andres Alvarez Perez
+          documento_evaluador: '10209800'
+          evaluador: Juan Osorio Ospina
+          tipo_objetivo: Objetivo genérico
+          indicador_objetivo: Formación
+          descripcion_objetivo: Cumplió satisfactoriamente con el PDI propuesto
+          peso_objetivo: '20'
+          meta_objetivo: '100'
+          autoevaluacion_objetivo: 93%
+          evaluacion_jefe_objetivo: 93%
+          descripcion_competencia: Calidad en el trabajo
+          autoevaluacion_competencia: null
+          evaluacion_jefe_competencia: 100.0
+          Comentarios: "* Tiene un indicador en productividad del 93%\n* Daniel siempre porta los elementos de seguridad de manera correcta, no se le ha evidenciado sin las gafas ni el casco, por lo cual se hace un reconocimiento publico. "
+          total_objetivo: 93.0
+          descripcion_calificacion_objetivo: 93%
+          total_competencia: 100.0
+          descripcion_calificacion_competencia: Excede lo esperado
+          total_objetivos_final: 8.9
+          total_competencias_final: 86.1
+          consolidado: 47.5
+          descripcion_consolidado: No cumple
+          cuadrante: Alta Competencia
+          concepto_general: "¡Felicitaciones por tu destacado manejo de los los elementos de SST! Vas por muy buen camino. Sigue confiando en ti mismo, porque tienes el potencial y el talento para lograr grandes cosas. Lo estás haciendo muy bien!"
+        success: true
+    DECReporteOperativosItem:
+      title: DECReporteOperativosItem
+      required:
+      - usuario
+      - tipo_documento
+      - documento_usuario
+      - tipo_usuario
+      - email
+      - negocio
+      - empresa
+      - uen
+      - vicepresidencia
+      - pais
+      - ciudad
+      - regional
+      - sede
+      - cargo
+      - nivel_organizacional
+      - area
+      - documento_jefe
+      - jefe
+      - documento_evaluador
+      - evaluador
+      - tipo_objetivo
+      - indicador_objetivo
+      - descripcion_objetivo
+      - peso_objetivo
+      - meta_objetivo
+      - autoevaluacion_objetivo
+      - evaluacion_jefe_objetivo
+      - descripcion_competencia
+      - autoevaluacion_competencia
+      - evaluacion_jefe_competencia
+      - Comentarios
+      - total_objetivo
+      - descripcion_calificacion_objetivo
+      - total_competencia
+      - descripcion_calificacion_competencia
+      - total_objetivos_final
+      - total_competencias_final
+      - consolidado
+      - descripcion_consolidado
+      - cuadrante
+      - concepto_general
+      type: object
+      properties:
+        usuario:
+          type: string
+        tipo_documento:
+          type: string
+        documento_usuario:
+          type: string
+        tipo_usuario:
+          type: string
+        email:
+          type: string
+        negocio:
+          type: string
+        empresa:
+          type: string
+        uen:
+          type: string
+        vicepresidencia:
+          type: string
+        pais:
+          type: string
+        ciudad:
+          type: string
+        regional:
+          type: string
+        sede:
+          type: string
+        cargo:
+          type: string
+        nivel_organizacional:
+          type: string
+        area:
+          type: string
+        documento_jefe:
+          type: string
+        jefe:
+          type: string
+        documento_evaluador:
+          type: string
+        evaluador:
+          type: string
+        tipo_objetivo:
+          type: string
+        indicador_objetivo:
+          type: string
+        descripcion_objetivo:
+          type: string
+        peso_objetivo:
+          type: string
+        meta_objetivo:
+          type: string
+        autoevaluacion_objetivo:
+          type: string
+        evaluacion_jefe_objetivo:
+          type: string
+        descripcion_competencia:
+          type: string
+        autoevaluacion_competencia:
+          type: number
+          nullable: true
+        evaluacion_jefe_competencia:
+          type: number
+          nullable: true
+        Comentarios:
+          type: string
+          nullable: true
+        total_objetivo:
+          type: number
+          nullable: true
+        descripcion_calificacion_objetivo:
+          type: string
+          nullable: true
+        total_competencia:
+          type: number
+          nullable: true
+        descripcion_calificacion_competencia:
+          type: string
+          nullable: true
+        total_objetivos_final:
+          type: number
+          nullable: true
+        total_competencias_final:
+          type: number
+          nullable: true
+        consolidado:
+          type: number
+          nullable: true
+        descripcion_consolidado:
+          type: string
+          nullable: true
+        cuadrante:
+          type: string
+          nullable: true
+        concepto_general:
+          type: string
+          nullable: true
+      example:
+        usuario: Daniel Perez Perez
+        tipo_documento: CEDULA
+        documento_usuario: '1234567890'
+        tipo_usuario: Operativo
+        email: noexiste@mail.edu
+        negocio: Desarrollo de Software
+        empresa: talento ltda
+        uen: UEN App Moviles
+        vicepresidencia: Procesos
+        pais: Colombia
+        ciudad: Medellin
+        regional: Antioquia
+        sede: Medellín
+        cargo: Operario de planta
+        nivel_organizacional: Operativo
+        area: Producción
+        documento_jefe: '10350000'
+        jefe: Andres Alvarez Perez
+        documento_evaluador: '10209800'
+        evaluador: Juan Osorio Ospina
+        tipo_objetivo: Objetivo genérico
+        indicador_objetivo: Formación
+        descripcion_objetivo: Cumplió satisfactoriamente con el PDI propuesto
+        peso_objetivo: '20'
+        meta_objetivo: '100'
+        autoevaluacion_objetivo: 93%
+        evaluacion_jefe_objetivo: 93%
+        descripcion_competencia: Calidad en el trabajo
+        autoevaluacion_competencia: null
+        evaluacion_jefe_competencia: 100.0
+        Comentarios: "* Tiene un indicador en productividad del 93%\n* Daniel siempre porta los elementos de seguridad de manera correcta, no se le ha evidenciado sin las gafas ni el casco, por lo cual se hace un reconocimiento publico. "
+        total_objetivo: 93.0
+        descripcion_calificacion_objetivo: 93%
+        total_competencia: 100.0
+        descripcion_calificacion_competencia: Excede lo esperado
+        total_objetivos_final: 8.9
+        total_competencias_final: 86.1
+        consolidado: 47.5
+        descripcion_consolidado: No cumple
+        cuadrante: Alta Competencia
+        concepto_general: "¡Felicitaciones por tu destacado manejo de los los elementos de SST! Vas por muy buen camino. Sigue confiando en ti mismo, porque tienes el potencial y el talento para lograr grandes cosas. Lo estás haciendo muy bien!"
     ErrorResponse:
       title: ErrorResponse
       type: object
@@ -4561,3 +5044,5 @@ tags:
   description: Endpoints para consulta de procesos y resultados de valoración de competencias.
 - name: Formación
   description: Endpoints para consulta de años, temas y reporte de avance en el módulo de Formación.
+- name: DEC
+  description: Endpoints para consulta de procesos, temporadas y reporte de operativos en el módulo de DEC.
