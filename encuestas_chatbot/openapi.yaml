@@ -1,0 +1,566 @@
+openapi: 3.0.0
+info:
+  title: Encuestas_Chatbot
+  description: >-
+    Microservicio para gestión en talento cloud del módulo de Encuestas, pensado para ser consultado por chatbot ClaudIA.
+
+    ## Manejo de errores
+
+
+        Los errores habituales pueden incluir:
+
+
+        - `401 Unauthorized`: Token JWT inválido, expirado o ausente.
+
+        - `403 Forbidden`: El usuario autenticado no tiene la licencia necesaria para el módulo de Encuestas.
+
+        - `405 Method Not Allowed`: Se usó un verbo HTTP distinto de GET/HEAD/OPTIONS contra esta
+        ruta — todos los endpoints de este chatbot son de solo lectura.
+
+        - `500 Internal Server Error`: Error inesperado en el servidor.
+
+
+        Cuando sea posible, cada endpoint detallará sus códigos de error
+        específicos y estructura de respuesta en su propia descripción.
+  termsOfService: Uso privado
+  contact:
+    name: API Support
+    email: soporte@talento.cloud
+    url: https://talento.cloud/contact
+  license:
+    name: Privado
+    url: https://talento.cloud/licenses
+  version: '1.0'
+servers:
+  - url: https://clientex.talento.cloud/api
+    description: Servidor de producción
+  - url: https://clientex.talento-dev.cloud/api
+    description: Servidor de pruebas
+paths:
+  /html/encuestas/chatbot/pendientes.json:
+    get:
+      tags:
+      - Encuestas
+      summary: pendientes
+      description: >-
+        Retorna las encuestas pendientes de responder del usuario autenticado (identificado por el
+        token de sesión, nunca por parámetro). Solo lectura: no crea, modifica ni elimina información,
+        y no admite ningún parámetro de query ni de path.
+
+
+        **Criterio de "pendiente"**: una encuesta aparece en el listado cuando, para el usuario
+        autenticado, existe una fila de población (`fd_formulario_usuario`) asociada a un proceso de
+        encuesta (`fd_proceso_encuesta`) que está **activo** (`estado=PUBLICADO` y, si tiene fecha de
+        vencimiento configurada, que aún no se haya cumplido) y que el usuario **todavía no ha
+        respondido** (su estado en `fd_formulario_usuario` es distinto de `REALIZADA` y de `VENCIDA`).
+
+
+        **Encuestas anónimas incluidas**: a diferencia del listado no-chatbot equivalente
+        (`/encuestas/proceso/listarProcesosUsuario`), este endpoint **sí incluye** los procesos
+        marcados como anónimos — se identifican con el campo `anonima=true` por encuesta. No se expone
+        el `hash` de acceso directo al formulario (ese hash funciona como token de acceso sin sesión),
+        así que Claudia puede informar al usuario que la encuesta existe pero no puede enlazarlo
+        directamente al formulario.
+
+
+        **Información resumida, sin estructura completa**: cada encuesta pendiente trae únicamente
+        `codigoProceso`, `nombreEncuesta`, `fechaLimite`, `cantidadPreguntas` y `anonima` — nunca las
+        preguntas, secciones, opciones de respuesta ni la población del proceso.
+        `cantidadPreguntas` cuenta los campos reales de la encuesta, **excluyendo** los de tipo
+        "título" (separadores visuales que no son preguntas que el usuario deba responder).
+
+
+        **Sin pendientes no es un error**: si el usuario no tiene ninguna encuesta pendiente, la
+        respuesta sigue siendo `200 OK` con `tieneEncuestasPendientes=false`, `cantidadPendientes=0`,
+        `encuestas=[]` y un `message` explicativo ("No tienes encuestas pendientes por responder.").
+        Cuando hay pendientes no se incluye `message`.
+      operationId: pendientes
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Set-Cookie:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: JSESSIONID=19ree07ze9nl01652vhe2qjmry;Path=/
+            Expires:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Thu, 01 Jan 1970 00:00:00 GMT
+            Content-Language:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: es-CO
+            Cache-Control:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: no-store
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1; mode=block
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            Content-Security-Policy:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: frame-ancestors 'self' https://*.talento-dev.cloud https://*.talento.cloud http://localhost:*
+            Transfer-Encoding:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: chunked
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Jetty(8.y.z-SNAPSHOT)
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/pendientes'
+                - example:
+                    success: true
+                    data:
+                      tieneEncuestasPendientes: true
+                      cantidadPendientes: 2
+                      encuestas:
+                      - codigoProceso: 123
+                        nombreEncuesta: Encuesta de clima organizacional
+                        fechaLimite: '2026-09-30'
+                        cantidadPreguntas: 15
+                        anonima: false
+                      - codigoProceso: 124
+                        nombreEncuesta: Encuesta de satisfacción interna (anónima)
+                        fechaLimite: '2026-10-05'
+                        cantidadPreguntas: 8
+                        anonima: true
+              example:
+                success: true
+                data:
+                  tieneEncuestasPendientes: true
+                  cantidadPendientes: 2
+                  encuestas:
+                  - codigoProceso: 123
+                    nombreEncuesta: Encuesta de clima organizacional
+                    fechaLimite: '2026-09-30'
+                    cantidadPreguntas: 15
+                    anonima: false
+                  - codigoProceso: 124
+                    nombreEncuesta: Encuesta de satisfacción interna (anónima)
+                    fechaLimite: '2026-10-05'
+                    cantidadPreguntas: 8
+                    anonima: true
+          x-examples:
+            Usuario con encuestas pendientes:
+              success: true
+              data:
+                tieneEncuestasPendientes: true
+                cantidadPendientes: 2
+                encuestas:
+                - codigoProceso: 123
+                  nombreEncuesta: Encuesta de clima organizacional
+                  fechaLimite: '2026-09-30'
+                  cantidadPreguntas: 15
+                  anonima: false
+                - codigoProceso: 124
+                  nombreEncuesta: Encuesta de satisfacción interna (anónima)
+                  fechaLimite: '2026-10-05'
+                  cantidadPreguntas: 8
+                  anonima: true
+            Usuario sin encuestas pendientes:
+              success: true
+              data:
+                tieneEncuestasPendientes: false
+                cantidadPendientes: 0
+                encuestas: []
+              message: No tienes encuestas pendientes por responder.
+            Proceso pendiente sin fecha de vencimiento configurada (fechaLimite null):
+              success: true
+              data:
+                tieneEncuestasPendientes: true
+                cantidadPendientes: 1
+                encuestas:
+                - codigoProceso: 125
+                  nombreEncuesta: Encuesta de cultura organizacional
+                  fechaLimite: null
+                  cantidadPreguntas: 10
+                  anonima: false
+        '401':
+          description: >-
+            Sin sesión, o token JWT ausente/inválido/expirado. Sin cuerpo adicional en la respuesta,
+            solo el status code.
+        '403':
+          description: >-
+            El usuario autenticado no tiene la licencia necesaria para el módulo de Encuestas
+            (Usuarios.getLicenciaTieneEncuesta() falsy).
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/errorPendientes'
+              example:
+                success: false
+                message: No dispones de la licencia necesaria para hacer uso de las encuestas!
+        '500':
+          description: Error interno inesperado en el servidor.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/errorPendientes'
+              example:
+                success: false
+                message: Ocurrió un error inesperado en el servidor.
+      deprecated: false
+  /html/encuestas/chatbot/detalle.json:
+    get:
+      tags:
+      - Encuestas
+      summary: detalle
+      description: >-
+        Retorna el estado, para el usuario autenticado (identificado por el token, nunca por
+        parámetro), de las encuestas cuyo **nombre** es igual o contiene el texto indicado. Solo
+        lectura. Complementa a `pendientes`: permite consultar encuestas puntuales, incluso las que el
+        usuario **ya respondió**.
+
+
+        **Búsqueda**: el texto se compara sin distinguir mayúsculas, tildes ni espacios sobrantes, y
+        coincide si el nombre de la encuesta es igual o lo **contiene** (por ejemplo, `clima` encuentra
+        "Encuesta de clima organizacional" y "Clima de seguridad"). Se devuelven **todas** las
+        encuestas que coinciden (máximo 10), una por encuesta con su publicación más reciente; las
+        coincidencias exactas van primero y luego las más recientes. Solo se consideran las encuestas
+        en las que el usuario hace parte de la población y cuyo proceso está publicado o finalizado.
+
+
+        **Privacidad**: si no hay coincidencias porque la encuesta no existe, o existe pero no está
+        dirigida al usuario, o su proceso está cancelado/en creación, la respuesta es la misma
+        (`encontrada=false` con un mensaje genérico), para no revelar la existencia de encuestas de
+        otras poblaciones. La condición "vencida" sí se informa aparte (`vencida=true`).
+
+
+        **Estado de cada encuesta**: `yaRespondida=true` si el usuario ya la respondió. `vencida=true`
+        si no la respondió y el proceso finalizó o su fecha límite ya pasó. La fecha límite cuenta como
+        día completo: la encuesta sigue vigente durante todo ese día (hasta la medianoche) y solo se
+        marca vencida a partir del día siguiente. `diasRestantes` (días de calendario hasta
+        `fechaLimite`; `0` si vence hoy) solo viene cuando no está respondida ni vencida y hay fecha
+        límite; en otro caso es `null`.
+
+
+        No retorna preguntas, secciones, opciones ni la estructura de la encuesta.
+      operationId: detalle
+      parameters:
+      - name: nombre
+        in: query
+        required: true
+        description: Nombre de la encuesta, o parte de él, a consultar.
+        schema:
+          type: string
+        example: clima
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/detalle'
+              examples:
+                Una coincidencia disponible para responder:
+                  value:
+                    success: true
+                    data:
+                      encontrada: true
+                      cantidad: 1
+                      encuestas:
+                      - nombreEncuesta: Encuesta de clima organizacional
+                        yaRespondida: false
+                        vencida: false
+                        fechaLimite: '2026-09-30'
+                        diasRestantes: 8
+                Varias coincidencias (ya respondida, vencida):
+                  value:
+                    success: true
+                    data:
+                      encontrada: true
+                      cantidad: 2
+                      encuestas:
+                      - nombreEncuesta: Encuesta de clima organizacional
+                        yaRespondida: true
+                        vencida: false
+                        fechaLimite: '2026-09-30'
+                        diasRestantes: null
+                      - nombreEncuesta: Clima de seguridad
+                        yaRespondida: false
+                        vencida: true
+                        fechaLimite: '2026-09-10'
+                        diasRestantes: null
+                Sin coincidencias o no disponible para el usuario:
+                  value:
+                    success: true
+                    data:
+                      encontrada: false
+                      cantidad: 0
+                      encuestas: []
+                    message: No se encontró una encuesta con ese nombre o no está disponible para ti.
+        '400':
+          description: El parámetro `nombre` está ausente o vacío.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/errorPendientes'
+              example:
+                success: false
+                message: Debes indicar el nombre de la encuesta a consultar.
+        '401':
+          description: >-
+            Sin sesión, o token JWT ausente/inválido/expirado. Sin cuerpo adicional en la respuesta,
+            solo el status code.
+        '403':
+          description: >-
+            El usuario autenticado no tiene la licencia necesaria para el módulo de Encuestas.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/errorPendientes'
+              example:
+                success: false
+                message: No dispones de la licencia necesaria para hacer uso de las encuestas!
+        '500':
+          description: Error interno inesperado en el servidor.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/errorPendientes'
+              example:
+                success: false
+                message: Ocurrió un error inesperado en el servidor.
+      deprecated: false
+components:
+  schemas:
+    pendientes:
+      title: pendientes
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Data'
+        success:
+          type: boolean
+        message:
+          type: string
+          description: Solo presente cuando el usuario no tiene encuestas pendientes.
+      example:
+        success: true
+        data:
+          tieneEncuestasPendientes: true
+          cantidadPendientes: 2
+          encuestas:
+          - codigoProceso: 123
+            nombreEncuesta: Encuesta de clima organizacional
+            fechaLimite: '2026-09-30'
+            cantidadPreguntas: 15
+            anonima: false
+          - codigoProceso: 124
+            nombreEncuesta: Encuesta de satisfacción interna (anónima)
+            fechaLimite: '2026-10-05'
+            cantidadPreguntas: 8
+            anonima: true
+    Data:
+      title: Data
+      required:
+      - tieneEncuestasPendientes
+      - cantidadPendientes
+      - encuestas
+      type: object
+      properties:
+        tieneEncuestasPendientes:
+          type: boolean
+          description: 'true si `encuestas` trae al menos un elemento.'
+        cantidadPendientes:
+          type: integer
+          format: int32
+          description: Cantidad de encuestas pendientes (tamaño del arreglo `encuestas`).
+        encuestas:
+          type: array
+          items:
+            $ref: '#/components/schemas/EncuestaPendiente'
+          description: >-
+            Listado resumido de encuestas pendientes, ordenado ascendente por `fechaLimite` (las
+            encuestas sin fecha límite configurada van al final). Arreglo vacío si no hay pendientes.
+      example:
+        tieneEncuestasPendientes: true
+        cantidadPendientes: 2
+        encuestas:
+        - codigoProceso: 123
+          nombreEncuesta: Encuesta de clima organizacional
+          fechaLimite: '2026-09-30'
+          cantidadPreguntas: 15
+          anonima: false
+        - codigoProceso: 124
+          nombreEncuesta: Encuesta de satisfacción interna (anónima)
+          fechaLimite: '2026-10-05'
+          cantidadPreguntas: 8
+          anonima: true
+    EncuestaPendiente:
+      title: EncuestaPendiente
+      required:
+      - codigoProceso
+      - nombreEncuesta
+      - cantidadPreguntas
+      - anonima
+      type: object
+      properties:
+        codigoProceso:
+          type: integer
+          format: int64
+          description: >-
+            Código del proceso de encuesta (fd_proceso_encuesta.codigo). No es el hash de acceso
+            directo al formulario — ese no se expone vía chatbot por riesgo de seguridad.
+        nombreEncuesta:
+          type: string
+          description: Título de la encuesta (fd_encuesta.titulo).
+        fechaLimite:
+          type: string
+          format: date
+          nullable: true
+          description: >-
+            Fecha de vencimiento del proceso (fd_proceso_encuesta.fecha_vencimiento), formato
+            `yyyy-MM-dd`. `null` si el proceso no tiene fecha límite configurada — no se excluye del
+            listado por esa razón.
+        cantidadPreguntas:
+          type: integer
+          format: int32
+          description: >-
+            Cantidad de campos reales de la encuesta (fd_campo_encuesta), excluyendo los de tipo
+            "título" (separadores visuales, no una pregunta que el usuario deba responder).
+        anonima:
+          type: boolean
+          description: >-
+            true si el proceso de encuesta es anónimo (fd_proceso_encuesta.anonima). A diferencia del
+            listado no-chatbot equivalente, este endpoint incluye las encuestas anónimas marcadas con
+            este flag, en vez de excluirlas.
+      example:
+        codigoProceso: 123
+        nombreEncuesta: Encuesta de clima organizacional
+        fechaLimite: '2026-09-30'
+        cantidadPreguntas: 15
+        anonima: false
+    detalle:
+      title: detalle
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/DetalleEncuestas'
+        message:
+          type: string
+          description: Solo presente cuando `encontrada=false`.
+    DetalleEncuestas:
+      title: DetalleEncuestas
+      required:
+      - encontrada
+      - cantidad
+      - encuestas
+      type: object
+      properties:
+        encontrada:
+          type: boolean
+          description: >-
+            false si no hay coincidencias: la encuesta no existe, no está dirigida al usuario o su
+            proceso está cancelado/en creación (no se distingue entre estos casos, por privacidad).
+        cantidad:
+          type: integer
+          format: int32
+          description: Cantidad de encuestas devueltas (máximo 10).
+        encuestas:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetalleEncuesta'
+          description: Encuestas que coinciden con el texto buscado. Vacío si `encontrada=false`.
+    DetalleEncuesta:
+      title: DetalleEncuesta
+      required:
+      - nombreEncuesta
+      - yaRespondida
+      - vencida
+      type: object
+      properties:
+        nombreEncuesta:
+          type: string
+          description: Nombre real de la encuesta encontrada.
+        yaRespondida:
+          type: boolean
+          description: true si el usuario ya respondió la encuesta.
+        vencida:
+          type: boolean
+          description: true si no la respondió y el proceso finalizó o su fecha límite ya pasó.
+        fechaLimite:
+          type: string
+          format: date
+          nullable: true
+          description: Fecha de vencimiento del proceso (`yyyy-MM-dd`), null si no tiene fecha límite.
+        diasRestantes:
+          type: integer
+          format: int64
+          nullable: true
+          description: >-
+            Días de calendario hasta `fechaLimite`. null si ya está respondida, vencida o sin fecha
+            límite.
+    errorPendientes:
+      title: errorPendientes
+      required:
+      - success
+      - message
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+      example:
+        success: false
+        message: No dispones de la licencia necesaria para hacer uso de las encuestas!
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+security:
+- bearer: []
+tags:
+- name: Encuestas
+  description: ''
