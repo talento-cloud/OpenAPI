@@ -242,6 +242,128 @@ paths:
                 success: false
                 message: Ocurrió un error inesperado en el servidor.
       deprecated: false
+  /html/encuestas/chatbot/detalle.json:
+    get:
+      tags:
+      - Encuestas
+      summary: detalle
+      description: >-
+        Retorna el estado, para el usuario autenticado (identificado por el token, nunca por
+        parámetro), de las encuestas cuyo **nombre** es igual o contiene el texto indicado. Solo
+        lectura. Complementa a `pendientes`: permite consultar encuestas puntuales, incluso las que el
+        usuario **ya respondió**.
+
+
+        **Búsqueda**: el texto se compara sin distinguir mayúsculas, tildes ni espacios sobrantes, y
+        coincide si el nombre de la encuesta es igual o lo **contiene** (por ejemplo, `clima` encuentra
+        "Encuesta de clima organizacional" y "Clima de seguridad"). Se devuelven **todas** las
+        encuestas que coinciden (máximo 10), una por encuesta con su publicación más reciente; las
+        coincidencias exactas van primero y luego las más recientes. Solo se consideran las encuestas
+        en las que el usuario hace parte de la población y cuyo proceso está publicado o finalizado.
+
+
+        **Privacidad**: si no hay coincidencias porque la encuesta no existe, o existe pero no está
+        dirigida al usuario, o su proceso está cancelado/en creación, la respuesta es la misma
+        (`encontrada=false` con un mensaje genérico), para no revelar la existencia de encuestas de
+        otras poblaciones. La condición "vencida" sí se informa aparte (`vencida=true`).
+
+
+        **Estado de cada encuesta**: `yaRespondida=true` si el usuario ya la respondió. `vencida=true`
+        si no la respondió y el proceso finalizó o su fecha límite ya pasó. La fecha límite cuenta como
+        día completo: la encuesta sigue vigente durante todo ese día (hasta la medianoche) y solo se
+        marca vencida a partir del día siguiente. `diasRestantes` (días de calendario hasta
+        `fechaLimite`; `0` si vence hoy) solo viene cuando no está respondida ni vencida y hay fecha
+        límite; en otro caso es `null`.
+
+
+        No retorna preguntas, secciones, opciones ni la estructura de la encuesta.
+      operationId: detalle
+      parameters:
+      - name: nombre
+        in: query
+        required: true
+        description: Nombre de la encuesta, o parte de él, a consultar.
+        schema:
+          type: string
+        example: clima
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/detalle'
+              examples:
+                Una coincidencia disponible para responder:
+                  value:
+                    success: true
+                    data:
+                      encontrada: true
+                      cantidad: 1
+                      encuestas:
+                      - nombreEncuesta: Encuesta de clima organizacional
+                        yaRespondida: false
+                        vencida: false
+                        fechaLimite: '2026-09-30'
+                        diasRestantes: 8
+                Varias coincidencias (ya respondida, vencida):
+                  value:
+                    success: true
+                    data:
+                      encontrada: true
+                      cantidad: 2
+                      encuestas:
+                      - nombreEncuesta: Encuesta de clima organizacional
+                        yaRespondida: true
+                        vencida: false
+                        fechaLimite: '2026-09-30'
+                        diasRestantes: null
+                      - nombreEncuesta: Clima de seguridad
+                        yaRespondida: false
+                        vencida: true
+                        fechaLimite: '2026-09-10'
+                        diasRestantes: null
+                Sin coincidencias o no disponible para el usuario:
+                  value:
+                    success: true
+                    data:
+                      encontrada: false
+                      cantidad: 0
+                      encuestas: []
+                    message: No se encontró una encuesta con ese nombre o no está disponible para ti.
+        '400':
+          description: El parámetro `nombre` está ausente o vacío.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/errorPendientes'
+              example:
+                success: false
+                message: Debes indicar el nombre de la encuesta a consultar.
+        '401':
+          description: >-
+            Sin sesión, o token JWT ausente/inválido/expirado. Sin cuerpo adicional en la respuesta,
+            solo el status code.
+        '403':
+          description: >-
+            El usuario autenticado no tiene la licencia necesaria para el módulo de Encuestas.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/errorPendientes'
+              example:
+                success: false
+                message: No dispones de la licencia necesaria para hacer uso de las encuestas!
+        '500':
+          description: Error interno inesperado en el servidor.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/errorPendientes'
+              example:
+                success: false
+                message: Ocurrió un error inesperado en el servidor.
+      deprecated: false
 components:
   schemas:
     pendientes:
@@ -354,6 +476,71 @@ components:
         fechaLimite: '2026-09-30'
         cantidadPreguntas: 15
         anonima: false
+    detalle:
+      title: detalle
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/DetalleEncuestas'
+        message:
+          type: string
+          description: Solo presente cuando `encontrada=false`.
+    DetalleEncuestas:
+      title: DetalleEncuestas
+      required:
+      - encontrada
+      - cantidad
+      - encuestas
+      type: object
+      properties:
+        encontrada:
+          type: boolean
+          description: >-
+            false si no hay coincidencias: la encuesta no existe, no está dirigida al usuario o su
+            proceso está cancelado/en creación (no se distingue entre estos casos, por privacidad).
+        cantidad:
+          type: integer
+          format: int32
+          description: Cantidad de encuestas devueltas (máximo 10).
+        encuestas:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetalleEncuesta'
+          description: Encuestas que coinciden con el texto buscado. Vacío si `encontrada=false`.
+    DetalleEncuesta:
+      title: DetalleEncuesta
+      required:
+      - nombreEncuesta
+      - yaRespondida
+      - vencida
+      type: object
+      properties:
+        nombreEncuesta:
+          type: string
+          description: Nombre real de la encuesta encontrada.
+        yaRespondida:
+          type: boolean
+          description: true si el usuario ya respondió la encuesta.
+        vencida:
+          type: boolean
+          description: true si no la respondió y el proceso finalizó o su fecha límite ya pasó.
+        fechaLimite:
+          type: string
+          format: date
+          nullable: true
+          description: Fecha de vencimiento del proceso (`yyyy-MM-dd`), null si no tiene fecha límite.
+        diasRestantes:
+          type: integer
+          format: int64
+          nullable: true
+          description: >-
+            Días de calendario hasta `fechaLimite`. null si ya está respondida, vencida o sin fecha
+            límite.
     errorPendientes:
       title: errorPendientes
       required:
