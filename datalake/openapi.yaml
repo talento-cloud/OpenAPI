@@ -23,7 +23,9 @@ info:
       - HojaVida - Experiencia laboral - OK
       - Selección - Reporte de selección detallado - Pendiente
       - Selección - Seguimiento por etapas - OK
-      - Formación - Avance por tema - Pendiente
+      - Formación - Años planeados - OK
+      - Formación - Temas registrados - OK
+      - Formación - Avance por tema - OK
       - Bienestar - reporte detallado beneficios/reconocimientos - OK
       - Bienestar - reporte transacciones puntos beneficios/reconocimientos - OK
       - Objetivos Smart - Resultados consolidados de gestión (Todo el grupo) - Pendiente
@@ -1468,6 +1470,205 @@ paths:
                       oportunidades: ''
                       observaciones: ''
                       observaciones_generales: null
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
+  /v1/datalake/formacion/anios.json:
+    get:
+      tags:
+      - Formación
+      summary: Formación - Años planeados
+      description: Endpoint donde se lista los años configurados en el módulo de Formación.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/formacion/anios.json' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: Formacion-Aniosplaneados
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Formacion_anios'
+                - example:
+                    data:
+                    - nombre: '2021'
+                      codigo: 1
+                    - nombre: '2022'
+                      codigo: 2
+                    - nombre: '2023'
+                      codigo: 3
+                    - nombre: '2025'
+                      codigo: 38
+                    - nombre: '2026'
+                      codigo: 39
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
+  /v1/datalake/formacion/temas.json:
+    get:
+      tags:
+      - Formación
+      summary: Formación - Temas registrados
+      description: Endpoint donde se lista los temas registrados en el módulo de Formación.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/formacion/temas.json?start=0&limit=50&query=Auto' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: Formacion-Temasregistrados
+      parameters:
+      - name: start
+        in: query
+        required: false
+        description: Número de registro inicial para paginación (por defecto 0).
+        schema:
+          type: integer
+          default: 0
+          example: 0
+      - name: limit
+        in: query
+        required: false
+        description: Cantidad máxima de registros a retornar (por defecto 50).
+        schema:
+          type: integer
+          default: 50
+          example: 50
+      - name: query
+        in: query
+        required: false
+        description: Texto para filtrar los temas por nombre. Es opcional; si no se suministra no se filtra por nombre.
+        schema:
+          type: string
+          example: Auto
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Formacion_temas'
+                - example:
+                    data:
+                    - nombre: Autocuidado
+                      codigo: 2
+                    - nombre: Capital
+                      codigo: 271
+                    - nombre: Estrategia Empresarial
+                      codigo: 238
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
+  /v1/datalake/formacion/avancePorTema/{codAnio}.json:
+    get:
+      tags:
+      - Formación
+      summary: Formación - Avance por tema
+      description: Endpoint donde se lista reporte del avance por tema en el módulo de Formación para un año dado.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/formacion/avancePorTema/38.json?codTema=-1&incluirUsuariosInactivos=false&fechaInicial=2025-01-01&fechaFinal=2025-10-30' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: Formacion-Avanceportema
+      parameters:
+      - name: codAnio
+        in: path
+        required: true
+        description: Código del año a consultar. Es obligatorio y se puede obtener del endpoint "Formación - Años planeados".
+        schema:
+          type: integer
+          example: 38
+      - name: codTema
+        in: query
+        required: false
+        description: Código del tema a consultar. Es opcional y se puede obtener del endpoint "Formación - Temas registrados". Si se pone y el valor es -1 o no se pone representa todos los temas.
+        schema:
+          type: integer
+          default: -1
+          example: -1
+      - name: incluirUsuariosInactivos
+        in: query
+        required: false
+        description: Indica si se deben incluir usuarios inactivos en el reporte. Por defecto false para solo activos.
+        schema:
+          type: boolean
+          default: false
+          example: false
+      - name: fechaInicial
+        in: query
+        required: false
+        description: Fecha inicial de primeras sesiones de clase para el reporte en formato yyyy-MM-dd. Es opcional.
+        schema:
+          type: string
+          format: date
+          example: '2025-01-01'
+      - name: fechaFinal
+        in: query
+        required: false
+        description: Fecha final de primeras sesiones de clase para el reporte en formato yyyy-MM-dd. Es opcional.
+        schema:
+          type: string
+          format: date
+          example: '2025-10-30'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Formacion_avancePorTema'
+                - example:
+                    data:
+                    - usuario: Ana Gomez Perez
+                      tipo_documento: CEDULA
+                      documento_usuario: '1234567890'
+                      estado_usuario: Activo
+                      tipo_usuario: Administrativo
+                      email: noexiste@mail.org
+                      negocio: Desarrollo de Software
+                      empresa: talento sas
+                      uen: UEN App
+                      vicepresidencia: Financiera
+                      pais: Colombia
+                      ciudad: Medellin
+                      regional: Antioquia
+                      sede: Medellín
+                      cargo: Gerente de Calidad y Soporte
+                      nivel_organizacional: Gerencial
+                      area: Sistemas
+                      documento_jefe: '21890000'
+                      jefe: Blanca Perez Perez
+                      tema_formacion: Estrategia Empresarial
+                      fecha_asignacion: '2025-05-27'
+                      grupos_formacion: 266-Medellín
+                      fecha_primera_sesion: '2024-06-05 08:00'
+                      responsable: Juan Daniel Boos
+                      porcentaje_avance: 29%
+                      nota: Sin evaluar
+                      fecha_registro: '2025-05-30 17:39'
+                      tiempo_limite: 30 Días
+                      fecha_limite: '2025-06-25'
+                      tiempo_faltante: 0 Días
+                      observaciones: Tiempo límite ha expirado
                     success: true
         '401':
           $ref: '#/components/responses/UnauthorizedError'
@@ -4052,6 +4253,259 @@ components:
         oportunidades: null
         observaciones: null
         observaciones_generales: "* Comunicar de manera clara y objetiva: Asegúrate de que la retroalimentación sea clara y basada en datos concretos. Evita utilizar lenguaje vago o subjetivo. Proporciona ejemplos específicos de comportamientos o desempeño que respalden tus comentarios. \n* Trabajo en equipo: Eres un miembro valioso de nuestro equipo. Siempre estás dispuesto/a a colaborar y aportar tus ideas para lograr nuestros objetivos comunes."
+    Formacion_anios:
+      title: Formacion_anios
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/FormacionAnioItem'
+        success:
+          type: boolean
+      example:
+        data:
+        - nombre: '2021'
+          codigo: 1
+        - nombre: '2022'
+          codigo: 2
+        - nombre: '2023'
+          codigo: 3
+        - nombre: '2025'
+          codigo: 38
+        - nombre: '2026'
+          codigo: 39
+        success: true
+    FormacionAnioItem:
+      title: FormacionAnioItem
+      required:
+      - nombre
+      - codigo
+      type: object
+      properties:
+        nombre:
+          type: string
+        codigo:
+          type: integer
+      example:
+        nombre: '2021'
+        codigo: 1
+    Formacion_temas:
+      title: Formacion_temas
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/FormacionTemaItem'
+        success:
+          type: boolean
+      example:
+        data:
+        - nombre: Autocuidado
+          codigo: 2
+        - nombre: Capital
+          codigo: 271
+        - nombre: Estrategia Empresarial
+          codigo: 238
+        success: true
+    FormacionTemaItem:
+      title: FormacionTemaItem
+      required:
+      - nombre
+      - codigo
+      type: object
+      properties:
+        nombre:
+          type: string
+        codigo:
+          type: integer
+      example:
+        nombre: Autocuidado
+        codigo: 2
+    Formacion_avancePorTema:
+      title: Formacion_avancePorTema
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/FormacionAvancePorTemaItem'
+        success:
+          type: boolean
+      example:
+        data:
+        - usuario: Ana Gomez Perez
+          tipo_documento: CEDULA
+          documento_usuario: '1234567890'
+          estado_usuario: Activo
+          tipo_usuario: Administrativo
+          email: noexiste@mail.org
+          negocio: Desarrollo de Software
+          empresa: talento sas
+          uen: UEN App
+          vicepresidencia: Financiera
+          pais: Colombia
+          ciudad: Medellin
+          regional: Antioquia
+          sede: Medellín
+          cargo: Gerente de Calidad y Soporte
+          nivel_organizacional: Gerencial
+          area: Sistemas
+          documento_jefe: '21890000'
+          jefe: Blanca Perez Perez
+          tema_formacion: Estrategia Empresarial
+          fecha_asignacion: '2025-05-27'
+          grupos_formacion: 266-Medellín
+          fecha_primera_sesion: '2024-06-05 08:00'
+          responsable: Juan Daniel Boos
+          porcentaje_avance: 29%
+          nota: Sin evaluar
+          fecha_registro: '2025-05-30 17:39'
+          tiempo_limite: 30 Días
+          fecha_limite: '2025-06-25'
+          tiempo_faltante: 0 Días
+          observaciones: Tiempo límite ha expirado
+        success: true
+    FormacionAvancePorTemaItem:
+      title: FormacionAvancePorTemaItem
+      required:
+      - usuario
+      - tipo_documento
+      - documento_usuario
+      - estado_usuario
+      - tipo_usuario
+      - email
+      - negocio
+      - empresa
+      - uen
+      - vicepresidencia
+      - pais
+      - ciudad
+      - regional
+      - sede
+      - cargo
+      - nivel_organizacional
+      - area
+      - documento_jefe
+      - jefe
+      - tema_formacion
+      - fecha_asignacion
+      - grupos_formacion
+      - fecha_primera_sesion
+      - responsable
+      - porcentaje_avance
+      - nota
+      - fecha_registro
+      - tiempo_limite
+      - fecha_limite
+      - tiempo_faltante
+      - observaciones
+      type: object
+      properties:
+        usuario:
+          type: string
+        tipo_documento:
+          type: string
+        documento_usuario:
+          type: string
+        estado_usuario:
+          type: string
+        tipo_usuario:
+          type: string
+        email:
+          type: string
+        negocio:
+          type: string
+        empresa:
+          type: string
+        uen:
+          type: string
+        vicepresidencia:
+          type: string
+        pais:
+          type: string
+        ciudad:
+          type: string
+        regional:
+          type: string
+        sede:
+          type: string
+        cargo:
+          type: string
+        nivel_organizacional:
+          type: string
+        area:
+          type: string
+        documento_jefe:
+          type: string
+        jefe:
+          type: string
+        tema_formacion:
+          type: string
+        fecha_asignacion:
+          type: string
+        grupos_formacion:
+          type: string
+        fecha_primera_sesion:
+          type: string
+        responsable:
+          type: string
+        porcentaje_avance:
+          type: string
+        nota:
+          type: string
+        fecha_registro:
+          type: string
+        tiempo_limite:
+          type: string
+        fecha_limite:
+          type: string
+        tiempo_faltante:
+          type: string
+        observaciones:
+          type: string
+      example:
+        usuario: Ana Gomez Perez
+        tipo_documento: CEDULA
+        documento_usuario: '1234567890'
+        estado_usuario: Activo
+        tipo_usuario: Administrativo
+        email: noexiste@mail.org
+        negocio: Desarrollo de Software
+        empresa: talento sas
+        uen: UEN App
+        vicepresidencia: Financiera
+        pais: Colombia
+        ciudad: Medellin
+        regional: Antioquia
+        sede: Medellín
+        cargo: Gerente de Calidad y Soporte
+        nivel_organizacional: Gerencial
+        area: Sistemas
+        documento_jefe: '21890000'
+        jefe: Blanca Perez Perez
+        tema_formacion: Estrategia Empresarial
+        fecha_asignacion: '2025-05-27'
+        grupos_formacion: 266-Medellín
+        fecha_primera_sesion: '2024-06-05 08:00'
+        responsable: Juan Daniel Boos
+        porcentaje_avance: 29%
+        nota: Sin evaluar
+        fecha_registro: '2025-05-30 17:39'
+        tiempo_limite: 30 Días
+        fecha_limite: '2025-06-25'
+        tiempo_faltante: 0 Días
+        observaciones: Tiempo límite ha expirado
     ErrorResponse:
       title: ErrorResponse
       type: object
@@ -4105,3 +4559,5 @@ tags:
   description: Endpoints para seguimiento de procesos y etapas de selección.
 - name: Competencias
   description: Endpoints para consulta de procesos y resultados de valoración de competencias.
+- name: Formación
+  description: Endpoints para consulta de años, temas y reporte de avance en el módulo de Formación.
