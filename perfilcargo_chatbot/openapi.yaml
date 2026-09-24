@@ -341,8 +341,162 @@ paths:
                 success: false
                 message: Error inesperado en el servidor.
       deprecated: false
+  /html/perfilcargo/chatbot/mis-indicadores.json:
+    get:
+      tags:
+      - PerfilCargo
+      summary: misIndicadores
+      description: >-
+        Retorna el listado resumido de los indicadores definidos para el cargo del usuario autenticado
+        (identificado por el token de sesión, nunca por parámetro), replicando la ficha de indicadores
+        del perfil de cargo. Solo lectura: no admite ningún parámetro. No incluye el detalle de
+        cálculo del indicador.
+
+
+        Cada indicador incluye `nombre`, `objetivoEstrategico`, `perspectiva`, `meta`, `peso` y
+        `objetivoCargo`. Mismas reglas de la ficha:
+
+        - `meta`, `perspectiva` y `objetivoCargo` vienen con el texto `Sin definir` (traducido según el
+        idioma de la empresa) cuando no están configurados.
+
+        - `objetivoEstrategico` viene `Sin definir` si el cargo es de clase administrativa y `No aplica`
+        para los demás cargos cuando el indicador no tiene objetivo estratégico asociado.
+
+        - `peso` es el valor numérico configurado (porcentaje).
+
+
+        **Sin indicadores**: si el usuario no tiene cargo asociado o el cargo no tiene indicadores
+        activos, la respuesta es `200 OK` con `data.tieneIndicadores=false`, `data.indicadores=[]` y un
+        `message` explícito — no es un error técnico.
+
+
+        **Cuadro de indicadores oculto**: si el cliente tiene deshabilitado el cuadro de indicadores del
+        perfil de cargo (propiedad `PERFIL_CARGO_MOSTRAR_CUADRO_INDICADORES`), la respuesta es igual a la
+        de "sin indicadores" pero con un mensaje que indica que la consulta no está disponible.
+      operationId: misIndicadores
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/misIndicadores'
+              example:
+                data:
+                  tieneIndicadores: true
+                  indicadores:
+                  - nombre: Tiempo promedio de cobertura de vacantes
+                    objetivoEstrategico: Optimizar el proceso de selección
+                    perspectiva: Procesos Internos
+                    meta: 30 días
+                    peso: 40.0
+                    objetivoCargo: Reducir el tiempo de vinculación de nuevo personal.
+                  - nombre: Satisfacción del cliente interno
+                    objetivoEstrategico: No aplica
+                    perspectiva: Sin definir
+                    meta: Sin definir
+                    peso: 60.0
+                    objetivoCargo: Sin definir
+                success: true
+          x-examples:
+            Cargo sin indicadores definidos:
+              data:
+                tieneIndicadores: false
+                indicadores: []
+              message: El cargo no tiene indicadores definidos.
+              success: true
+        '401':
+          description: Token JWT inválido, expirado o ausente. Solo status code, sin cuerpo adicional.
+        '405':
+          description: Verbo HTTP distinto de GET/HEAD/OPTIONS.
+        '500':
+          description: Error inesperado en el servidor.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+              example:
+                success: false
+                message: Error inesperado en el servidor.
+      deprecated: false
 components:
   schemas:
+    misIndicadores:
+      title: misIndicadores
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/DataIndicadores'
+        message:
+          type: string
+          description: Presente únicamente cuando `data.tieneIndicadores` es `false`.
+        success:
+          type: boolean
+    DataIndicadores:
+      title: DataIndicadores
+      required:
+      - tieneIndicadores
+      - indicadores
+      type: object
+      properties:
+        tieneIndicadores:
+          type: boolean
+          description: false si el usuario no tiene cargo, el cargo no tiene indicadores o el cliente oculta el cuadro de indicadores.
+        indicadores:
+          type: array
+          items:
+            $ref: '#/components/schemas/IndicadorItem'
+          description: "[] cuando `tieneIndicadores` es false. Nunca es null."
+    IndicadorItem:
+      title: IndicadorItem
+      required:
+      - nombre
+      - objetivoEstrategico
+      - perspectiva
+      - meta
+      - peso
+      - objetivoCargo
+      type: object
+      properties:
+        nombre:
+          type: string
+          description: Nombre del indicador (TrvIndicadorCargo.indicador).
+        objetivoEstrategico:
+          type: string
+          description: >-
+            Objetivo estratégico asociado. Si no tiene: "Sin definir" para cargos administrativos,
+            "No aplica" para los demás (traducido).
+        perspectiva:
+          type: string
+          description: >-
+            Perspectiva del objetivo estratégico (p. ej. Procesos Internos, Financiera, Cliente,
+            Aprendizaje y Crecimiento). "Sin definir" (traducido) si no está configurada.
+        meta:
+          type: string
+          description: Meta del indicador. "Sin definir" (traducido) si no está configurada.
+        peso:
+          type: number
+          format: double
+          nullable: true
+          description: Peso del indicador en porcentaje.
+        objetivoCargo:
+          type: string
+          description: Objetivo del cargo relacionado con el indicador (texto descriptivo). "Sin definir" (traducido) si no está configurado.
+      example:
+        nombre: Tiempo promedio de cobertura de vacantes
+        objetivoEstrategico: Optimizar el proceso de selección
+        perspectiva: Procesos Internos
+        meta: 30 días
+        peso: 40.0
+        objetivoCargo: Reducir el tiempo de vinculación de nuevo personal.
     misPares:
       title: misPares
       required:
