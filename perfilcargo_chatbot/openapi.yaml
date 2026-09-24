@@ -273,8 +273,130 @@ paths:
                     nombre: Manejo de ATS
               success: true
       deprecated: false
+  /html/perfilcargo/chatbot/mis-pares.json:
+    get:
+      tags:
+      - PerfilCargo
+      summary: misPares
+      description: >-
+        Retorna el listado resumido de los pares del usuario autenticado (identificado por el token
+        de sesión, nunca por parámetro). Un **par** es todo colaborador activo que reporta al mismo
+        jefe directo que el usuario, excluyendo al propio usuario. Solo lectura: no crea, modifica ni
+        elimina información, y no admite ningún parámetro.
+
+
+        Cada par incluye únicamente `nombre` y `cargo`. No se retorna el organigrama ni datos de
+        contacto u otra información sensible.
+
+
+        **Usuario sin pares**: si el usuario no tiene jefe asignado, o su jefe no tiene otros
+        colaboradores activos, la respuesta es `200 OK` con `data.tienePares=false`, `data.pares=[]`
+        y un `message` explícito — no es un error técnico.
+
+
+        Si el par no tiene cargo asignado, `cargo` viene con el texto `Sin cargo asignado` (traducido
+        según el idioma de la empresa), nunca `null`.
+      operationId: misPares
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/misPares'
+              example:
+                data:
+                  tienePares: true
+                  pares:
+                  - nombre: Ana María Pérez
+                    cargo: Analista de Selección
+                  - nombre: Carlos Gómez
+                    cargo: Analista de Nómina
+                  - nombre: Luisa Rojas
+                    cargo: Sin cargo asignado
+                success: true
+          x-examples:
+            Usuario sin pares (o sin jefe asignado):
+              data:
+                tienePares: false
+                pares: []
+              message: No se encontraron pares registrados para el usuario.
+              success: true
+        '401':
+          description: Token JWT inválido, expirado o ausente. Solo status code, sin cuerpo adicional.
+        '405':
+          description: Verbo HTTP distinto de GET/HEAD/OPTIONS.
+        '500':
+          description: Error inesperado en el servidor.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+              example:
+                success: false
+                message: Error inesperado en el servidor.
+      deprecated: false
 components:
   schemas:
+    misPares:
+      title: misPares
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/DataPares'
+        message:
+          type: string
+          description: Presente únicamente cuando `data.tienePares` es `false`.
+        success:
+          type: boolean
+      example:
+        data:
+          tienePares: true
+          pares:
+          - nombre: Ana María Pérez
+            cargo: Analista de Selección
+        success: true
+    DataPares:
+      title: DataPares
+      required:
+      - tienePares
+      - pares
+      type: object
+      properties:
+        tienePares:
+          type: boolean
+          description: false si el usuario no tiene jefe o no tiene otros colaboradores activos con el mismo jefe.
+        pares:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParItem'
+          description: "[] cuando `tienePares` es false. Nunca es null."
+    ParItem:
+      title: ParItem
+      required:
+      - nombre
+      - cargo
+      type: object
+      properties:
+        nombre:
+          type: string
+          description: Nombre completo del par (Usuarios.nombrecompleto).
+        cargo:
+          type: string
+          description: >-
+            Nombre del cargo del par (Cargo.nombre). Si el par no tiene cargo asignado viene el texto
+            "Sin cargo asignado" (traducido según el idioma de la empresa, p. ej. "No position assigned").
+      example:
+        nombre: Ana María Pérez
+        cargo: Analista de Selección
     miPerfil:
       title: miPerfil
       required:
