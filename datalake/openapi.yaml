@@ -1823,19 +1823,21 @@ paths:
                       meta_objetivo: '100'
                       autoevaluacion_objetivo: 93%
                       evaluacion_jefe_objetivo: 93%
+                      total_objetivo: 93.0
+                      descripcion_calificacion_objetivo: 93%
                       descripcion_competencia: Calidad en el trabajo
                       autoevaluacion_competencia: null
                       evaluacion_jefe_competencia: 100.0
-                      Comentarios: "* Tiene un indicador en productividad del 93%\n* Daniel siempre porta los elementos de seguridad de manera correcta, no se le ha evidenciado sin las gafas ni el casco, por lo cual se hace un reconocimiento publico. "
-                      total_objetivo: 93.0
-                      descripcion_calificacion_objetivo: 93%
                       total_competencia: 100.0
                       descripcion_calificacion_competencia: Excede lo esperado
                       total_objetivos_final: 8.9
+                      descripcion_calificacion_objetivo_final: Ajustado a lo esperado
                       total_competencias_final: 86.1
-                      consolidado: 47.5
-                      descripcion_consolidado: No cumple
+                      descripcion_calificacion_competencia_final: Excede lo esperado
+                      consolidado: 89.5
+                      descripcion_consolidado: Ajustado a lo esperado
                       cuadrante: Alta Competencia
+                      comentarios: "* Tiene un indicador en productividad del 93%\n* Daniel siempre porta los elementos de seguridad de manera correcta, no se le ha evidenciado sin las gafas ni el casco, por lo cual se hace un reconocimiento publico. "
                       concepto_general: "¡Felicitaciones por tu destacado manejo de los los elementos de SST! Vas por muy buen camino. Sigue confiando en ti mismo, porque tienes el potencial y el talento para lograr grandes cosas. Lo estás haciendo muy bien!"
                     success: true
         '401':
@@ -4791,19 +4793,21 @@ components:
           meta_objetivo: '100'
           autoevaluacion_objetivo: 93%
           evaluacion_jefe_objetivo: 93%
+          total_objetivo: 93.0
+          descripcion_calificacion_objetivo: 93%
           descripcion_competencia: Calidad en el trabajo
           autoevaluacion_competencia: null
           evaluacion_jefe_competencia: 100.0
-          Comentarios: "* Tiene un indicador en productividad del 93%\n* Daniel siempre porta los elementos de seguridad de manera correcta, no se le ha evidenciado sin las gafas ni el casco, por lo cual se hace un reconocimiento publico. "
-          total_objetivo: 93.0
-          descripcion_calificacion_objetivo: 93%
           total_competencia: 100.0
           descripcion_calificacion_competencia: Excede lo esperado
           total_objetivos_final: 8.9
+          descripcion_calificacion_objetivo_final: Ajustado a lo esperado
           total_competencias_final: 86.1
-          consolidado: 47.5
-          descripcion_consolidado: No cumple
+          descripcion_calificacion_competencia_final: Excede lo esperado
+          consolidado: 89.5
+          descripcion_consolidado: Ajustado a lo esperado
           cuadrante: Alta Competencia
+          comentarios: "* Tiene un indicador en productividad del 93%\n* Daniel siempre porta los elementos de seguridad de manera correcta, no se le ha evidenciado sin las gafas ni el casco, por lo cual se hace un reconocimiento publico. "
           concepto_general: "¡Felicitaciones por tu destacado manejo de los los elementos de SST! Vas por muy buen camino. Sigue confiando en ti mismo, porque tienes el potencial y el talento para lograr grandes cosas. Lo estás haciendo muy bien!"
         success: true
     DECReporteOperativosItem:
@@ -4836,19 +4840,21 @@ components:
       - meta_objetivo
       - autoevaluacion_objetivo
       - evaluacion_jefe_objetivo
+      - total_objetivo
+      - descripcion_calificacion_objetivo
       - descripcion_competencia
       - autoevaluacion_competencia
       - evaluacion_jefe_competencia
-      - Comentarios
-      - total_objetivo
-      - descripcion_calificacion_objetivo
       - total_competencia
       - descripcion_calificacion_competencia
       - total_objetivos_final
+      - descripcion_calificacion_objetivo_final
       - total_competencias_final
+      - descripcion_calificacion_competencia_final
       - consolidado
       - descripcion_consolidado
       - cuadrante
+      - comentarios
       - concepto_general
       type: object
       properties:
@@ -4906,6 +4912,12 @@ components:
           type: string
         evaluacion_jefe_objetivo:
           type: string
+        total_objetivo:
+          type: number
+          nullable: true
+        descripcion_calificacion_objetivo:
+          type: string
+          nullable: true
         descripcion_competencia:
           type: string
         autoevaluacion_competencia:
@@ -4913,15 +4925,6 @@ components:
           nullable: true
         evaluacion_jefe_competencia:
           type: number
-          nullable: true
-        Comentarios:
-          type: string
-          nullable: true
-        total_objetivo:
-          type: number
-          nullable: true
-        descripcion_calificacion_objetivo:
-          type: string
           nullable: true
         total_competencia:
           type: number
@@ -4932,8 +4935,14 @@ components:
         total_objetivos_final:
           type: number
           nullable: true
+        descripcion_calificacion_objetivo_final:
+          type: string
+          nullable: true
         total_competencias_final:
           type: number
+          nullable: true
+        descripcion_calificacion_competencia_final:
+          type: string
           nullable: true
         consolidado:
           type: number
@@ -4942,6 +4951,9 @@ components:
           type: string
           nullable: true
         cuadrante:
+          type: string
+          nullable: true
+        comentarios:
           type: string
           nullable: true
         concepto_general:
@@ -4975,19 +4987,21 @@ components:
         meta_objetivo: '100'
         autoevaluacion_objetivo: 93%
         evaluacion_jefe_objetivo: 93%
+        total_objetivo: 93.0
+        descripcion_calificacion_objetivo: 93%
         descripcion_competencia: Calidad en el trabajo
         autoevaluacion_competencia: null
         evaluacion_jefe_competencia: 100.0
-        Comentarios: "* Tiene un indicador en productividad del 93%\n* Daniel siempre porta los elementos de seguridad de manera correcta, no se le ha evidenciado sin las gafas ni el casco, por lo cual se hace un reconocimiento publico. "
-        total_objetivo: 93.0
-        descripcion_calificacion_objetivo: 93%
         total_competencia: 100.0
         descripcion_calificacion_competencia: Excede lo esperado
         total_objetivos_final: 8.9
+        descripcion_calificacion_objetivo_final: Ajustado a lo esperado
         total_competencias_final: 86.1
-        consolidado: 47.5
-        descripcion_consolidado: No cumple
+        descripcion_calificacion_competencia_final: Excede lo esperado
+        consolidado: 89.5
+        descripcion_consolidado: Ajustado a lo esperado
         cuadrante: Alta Competencia
+        comentarios: "* Tiene un indicador en productividad del 93%\n* Daniel siempre porta los elementos de seguridad de manera correcta, no se le ha evidenciado sin las gafas ni el casco, por lo cual se hace un reconocimiento publico. "
         concepto_general: "¡Felicitaciones por tu destacado manejo de los los elementos de SST! Vas por muy buen camino. Sigue confiando en ti mismo, porque tienes el potencial y el talento para lograr grandes cosas. Lo estás haciendo muy bien!"
     ErrorResponse:
       title: ErrorResponse
