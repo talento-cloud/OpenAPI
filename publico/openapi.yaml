@@ -690,17 +690,20 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
-  /v2/slc/requisiciones/get.json:
+  /api/html/v1/public/seleccion/get.json:
     get:
       tags:
       - Selección
       summary: Selección - Lista de requisiciones
       description: Retorna todos los procesos de selección **aprobados,** de forma paginada
+      security:
+        - oauth2:
+            - talento.seleccion.read
       x-codeSamples:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v2/slc/requisiciones/get.json?start=0&limit=10' \
+            curl --location 'https://clientex.talento-dev.cloud/api/html/v1/public/seleccion/get.json?start=0&limit=10' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Seleccion-ListaRequisiciones
       parameters:
@@ -791,17 +794,20 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
-  /v2/slc/requisiciones/get/{codProceso}.json:
+  /api/html/v1/public/seleccion/get/{codProceso}.json:
     get:
       tags:
       - Selección
       summary: Selección - Detalle de requisición
       description: Retorna la información de una requisición específica
+      security:
+        - oauth2:
+            - talento.seleccion.read
       x-codeSamples:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v2/slc/requisiciones/get/209.json' \
+            curl --location 'https://clientex.talento-dev.cloud/api/html/v1/public/seleccion/get/209.json' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Seleccion-DetalleRequisicion
       parameters:
@@ -1562,6 +1568,79 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '403':
           $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
+  /html/v1/public/transversal/cargar/usuarios.json:
+    post:
+      tags:
+      - Transversal
+      summary: Transversal - Carga masiva de usuarios a partir de un arreglo JSON
+      description: |
+        Endpoint que recibe un listado de usuarios en formato JSON y realiza la inserción o actualización masiva en el sistema.
+        Procesa la información, crea tablas temporales, actualiza datos de los usuarios, e indica mediante correo electrónico el resultado de la carga masiva.
+      security:
+        - oauth2:
+            - talento.usuarios.write
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location --request POST 'https://clientex.talento-dev.cloud/html/v1/public/transversal/cargar/usuarios.json' \
+              --header 'Content-Type: application/json' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>' \
+              --data '[
+                {
+                  "primerNombre": "Carlos",
+                  "primerApellido": "Perez",
+                  "tipoDocumento": "CC",
+                  "numeroDocumento": "1000000001",
+                  "genero": "Masculino",
+                  "email": "carlos.perez@empresa-ejemplo.com",
+                  "empresa": "Empresa Ejemplo S.A.S.",
+                  "cargo": "Analista Desarrollador",
+                  "nivelOrganizacional": "Analistas",
+                  "area": "TI",
+                  "tipoUsuario": "Administrativo"
+                }
+              ]'
+      operationId: Transversal-CargamasivadeusuariosapartirdeunarregloJSON
+      requestBody:
+        description: Listado de usuarios a cargar.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/DTOUsuarioCarga'
+      responses:
+        '200':
+          description: Operación procesada. Devuelve un estado de éxito y un mensaje con el detalle de la ejecución de carga.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indica si la operación inicial de carga fue exitosa.
+                  message:
+                    type: string
+                    description: Mensaje con el resultado de la operación.
+                  mensajes:
+                    type: array
+                    items:
+                      type: string
+                    description: Lista de mensajes de error o validación generados durante la carga masiva.
+                example:
+                  success: true
+                  message: Proceso de carga masiva iniciado correctamente. Se enviará un correo con el resultado final.
+                  mensajes: []
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '500':
+          description: Error inesperado en la fase de carga e integración.
       deprecated: false
   /v1/public/bienestar/informe/reporteDetallado.json:
     get:
@@ -3134,6 +3213,216 @@ components:
         motivo_retiro: ''
         genero: ''
         dias_vacaciones_disponibles: '0'
+    DTOUsuarioCarga:
+      title: DTOUsuarioCarga
+      type: object
+      description: Objeto de transferencia de datos con la información del usuario a cargar.
+      properties:
+        primerNombre:
+          type: string
+        otrosNombres:
+          type: string
+        primerApellido:
+          type: string
+        segundoApellido:
+          type: string
+        tipoDocumento:
+          type: string
+          description: |
+            Tipo de documento del colaborador. Los valores base permitidos son:
+            - CC: Cédula de ciudadanía
+            - Cédula: Cédula de ciudadanía
+            - CE: Cédula de extranjería
+            - PP: Pasaporte
+            - TI: Tarjeta de identidad
+            - CG: Cédula Guatemala
+            - NU: Número único nacional
+            - RE: Registro civil
+            - Registro: Registro civil
+            - CURP
+            - DL
+            - PEP
+            - RFC
+            - RUN
+            *Nota: Es posible crear nuevos tipos de documento por el administrador general (opción tipificadores).*
+        numeroDocumento:
+          type: string
+          description: Número de documento del participante. No debe contener puntos ni separadores de miles.
+        genero:
+          type: string
+          description: Género del colaborador.
+          enum: [Masculino, Femenino]
+        email:
+          type: string
+        empresa:
+          type: string
+        cargo:
+          type: string
+        nivelOrganizacional:
+          type: string
+          description: Nivel organizacional. En conjunto con el área, determina la singularidad del cargo en la organización.
+        area:
+          type: string
+          description: Área del colaborador. En conjunto con el nivel organizacional, determina la singularidad del cargo.
+        categoriaCargo:
+          type: string
+        criticidades:
+          type: string
+        sede:
+          type: string
+          description: Sede corporativa. Si hay sedes que se llamen igual, deben pertenecer a la misma ciudad.
+        direccion:
+          type: string
+        ciudad:
+          type: string
+          description: Ciudad de la sede. Fundamental para diferenciar sedes que se llamen igual.
+        departamento:
+          type: string
+        pais:
+          type: string
+        regional:
+          type: string
+        negocio:
+          type: string
+        uen:
+          type: string
+        numeroDocumentoJefe:
+          type: string
+        nombreJefe:
+          type: string
+        fechaIngreso:
+          type: string
+          format: date
+          description: Fecha de ingreso estructurada en formato aaaa-mm-dd (Ejemplo 2023-12-31).
+        fechaInicioCargoActual:
+          type: string
+          format: date
+          description: Fecha estructurada en formato aaaa-mm-dd (Ejemplo 2023-12-31).
+        vicepresidencia:
+          type: string
+        tipoUsuario:
+          type: string
+          description: Tipo de usuario en el sistema.
+          enum: [Administrativo, Operativo]
+        escolaridad:
+          type: string
+          description: |
+            Nivel de escolaridad. Valores permitidos:
+            - Ninguna
+            - Primaria
+            - Bachiller
+            - Técnico
+            - Tecnólogo
+            - Profesional
+            - Especialista
+            - Maestría
+            - Doctorado
+            - Posdoctorado
+            *(Si se envían valores diferentes a estos, no se guardará la información de este campo).*
+          enum: [Ninguna, Primaria, Bachiller, Técnico, Tecnólogo, Profesional, Especialista, Maestría, Doctorado, Posdoctorado]
+        moduloDesempenioAdministrativo:
+          type: string
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
+        moduloCompetencias:
+          type: string
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
+        moduloDesempenioOperativo:
+          type: string
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
+        moduloDesarrollo:
+          type: string
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
+        moduloSeleccion:
+          type: string
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
+        moduloFormacion:
+          type: string
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
+        moduloOKR:
+          type: string
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
+        moduloBeneficios:
+          type: string
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
+        moduloClimaLaboral:
+          type: string
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
+        idExternoCargo:
+          type: string
+        documentoLiderFunciona:
+          type: string
+        nombreLiderFunciona:
+          type: string
+        tiempoLaborado:
+          type: string
+          description: Indica el porcentaje de tiempo que el colaborador labora en la empresa (ejemplo Medio tiempo 50%).
+        etiquetas:
+          type: string
+          description: Múltiples registros de etiquetas sin repetir, separados por ";" cumpliendo el formato etiqueta:valor (Ej. Sistema operativos:windows; Sistemas operativos:macOS).
+        diasVacaciones:
+          type: string
+          description: Días disponibles de vacaciones. Solo se permiten valores numéricos (enteros o decimales) positivos.
+        moduloEncuesta:
+          type: string
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
+        moduloOnboarding:
+          type: string
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
+        moduloAutogestion:
+          type: string
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
+        moduloDisciplinarios:
+          type: string
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
+        moduloSucesion:
+          type: string
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
+        moduloBasesConocimiento:
+          type: string
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
+        moduloCompetenciasOperativo:
+          type: string
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
+        moduloDesarrolloOperativo:
+          type: string
+          nullable: true
+          description: Determina si tiene licencia en este módulo. Valores permitidos SI/NO o nulo/vacío.
+          enum: [SI, NO, ""]
+        moduloOperativosMedicos:
+          type: string
+          deprecated: true
     HV_conceptosNomina:
       title: HV_conceptosNomina
       required:
@@ -6725,6 +7014,8 @@ components:
           tokenUrl: https://clientex.talento.cloud/html/oauth2/token/demo.json
           scopes:
             talento.read: "Permiso para leer datos de talento"
+            talento.seleccion.read: "Permiso para leer datos de selección"
+            talento.usuarios.write: "Permiso para crear y actualizar usuarios"
 security:
 - oauth2:
       - talento.read
