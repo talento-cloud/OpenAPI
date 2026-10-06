@@ -15,29 +15,8 @@ info:
     El client_id y client_secret son suministrados por talento cloud al cliente.
 
 
-    Maneja autenticación Oauth 2.0 y se podria consultar los siguientes informes en formato application/json:
-      - HojaVida - Información de nómina - OK
-      - HojaVida - Conceptos de nómina - OK
-      - HojaVida - Datos basicos - OK
-      - HojaVida - Novedades de nómina - OK
-      - HojaVida - Experiencia laboral - OK
-      - Selección - Reporte de selección detallado - Pendiente
-      - Selección - Seguimiento por etapas - OK
-      - Formación - Años planeados - OK
-      - Formación - Temas registrados - OK
-      - Formación - Avance por tema - OK
-      - Bienestar - reporte detallado beneficios/reconocimientos - OK
-      - Bienestar - reporte transacciones puntos beneficios/reconocimientos - OK
-      - Objetivos Smart - Resultados consolidados de gestión (Todo el grupo) - Pendiente
-      - Objetivos Smart - Modelo mapa de desempeño - Pendiente
-      - Competencias - Procesos - OK
-      - Competencias - Detalle valoración - OK
-      - DEC - Procesos - OK
-      - DEC - Temporadas - OK
-      - DEC - Reporte Operativos - OK
-      - Transversal - Reporte de todos los usuarios del sistema - OK
-      - Transversal - Reporte de los usuarios activos - Pendiente
-      - Transversal - Novedades - Pendiente
+    Maneja autenticación Oauth 2.0 y se podria consultar diferentes endpoints en formato application/json
+
 
     ## Manejo de errores
 
@@ -93,7 +72,7 @@ paths:
 
         ```bash
 
-        curl -X POST https://clientex.talento.cloud/api/v1/datalake/modulox/reportey  \
+        curl -X POST https://clientex.talento.cloud/api/v1/public/modulox/reportey  \
           -H "Authorization: Bearer eyJhbGci..."
 
         ```      
@@ -142,7 +121,7 @@ paths:
                   example: client_credentials
                 scope:
                   type: string
-                  description: Por defecto talento.read
+                  description: Por defecto talento.read, tambien puede ser talento.seleccion.read o talento.usuarios.write según el caso particular
                   example: talento.read
         required: false
       responses:
@@ -174,7 +153,7 @@ paths:
                 scope: talento.read
       deprecated: false
       security: []
-  /v1/datalake/hojavida/informacionNomina.json:
+  /v1/public/hojavida/informe/informacionNomina.json:
     get:
       tags:
       - HojaVida
@@ -184,7 +163,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/hojavida/informacionNomina.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/hojavida/informe/informacionNomina.json' \
               -H "Authorization: Bearer <TU_TOKEN_JWT>" 
       operationId: HojaVida-Informaciondenomina
       parameters: []
@@ -711,7 +690,7 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'        
       deprecated: false
-  /v1/datalake/hojavida/conceptosNomina.json:
+  /v1/public/hojavida/informe/conceptosNomina.json:
     get:
       tags:
       - HojaVida
@@ -721,7 +700,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/hojavida/conceptosNomina.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/hojavida/informe/conceptosNomina.json' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: HojaVida-Conceptosdenomina
       parameters: []
@@ -753,7 +732,7 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
-  /v1/datalake/hojavida/datosBasicosInternos.json:
+  /v1/public/hojavida/informe/datosBasicosInternos.json:
     get:
       tags:
       - HojaVida
@@ -763,7 +742,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/hojavida/datosBasicosInternos.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/hojavida/datosBasicosInternos.json' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: HojaVida-Datosbasicos
       parameters: []
@@ -846,7 +825,7 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
-  /v1/datalake/hojavida/novedadesNomina/{fecha_inicial}/{fecha_final}.json:
+  /v1/public/hojavida/informe/novedadesNomina/{fecha_inicial}/{fecha_final}.json:
     get:
       tags:
       - HojaVida
@@ -856,7 +835,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/hojavida/novedadesNomina/2026-01-01/2026-09-10.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/hojavida/informe/novedadesNomina/2026-01-01/2026-09-10.json' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: HojaVida-Novedadesdenomina
       parameters:
@@ -926,7 +905,7 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
-  /v1/datalake/hojavida/experienciaLaboral.json:
+  /v1/public/hojavida/informe/experienciaLaboral.json:
     get:
       tags:
       - HojaVida
@@ -936,7 +915,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/hojavida/experienciaLaboral.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/hojavida/informe/experienciaLaboral.json' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: HojaVida-Experiencialaboral
       parameters: []
@@ -985,7 +964,7 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
-  /v1/datalake/transversal/todosUsuarios/{tipo_usuario}.json:
+  /v1/public/transversal/informe/todosUsuarios/{tipo_usuario}.json:
     get:
       tags:
       - Transversal
@@ -995,7 +974,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/transversal/todosUsuarios/Todos.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/transversal/informe/todosUsuarios/Todos.json' \
               --header 'Accept-Language: es' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Transversal-Reportedetodoslosusuariosdelsistema
@@ -1106,7 +1085,7 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
-  /v1/datalake/bienestar/reporteDetallado.json:
+  /v1/public/bienestar/informe/reporteDetallado.json:
     get:
       tags:
       - Bienestar
@@ -1116,7 +1095,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/bienestar/reporteDetallado.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/bienestar/informe/reporteDetallado.json' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Bienestar-Reportedetalladobeneficiosreconocimientos
       parameters: []
@@ -1194,7 +1173,7 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
-  /v1/datalake/bienestar/transaccionesPuntos/{anio}.json:
+  /v1/public/bienestar/informe/transaccionesPuntos/{anio}.json:
     get:
       tags:
       - Bienestar
@@ -1204,7 +1183,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/bienestar/transaccionesPuntos/2025.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/bienestar/informe/transaccionesPuntos/2025.json' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Bienestar-Transaccionespuntosbeneficiosreconocimientos
       parameters:
@@ -1254,7 +1233,7 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
-  /v1/datalake/seleccion/seguimientoPorEtapa/{estado}.json:
+  /v1/public/seleccion/informe/seguimientoPorEtapa/{estado}.json:
     get:
       tags:
       - Selección
@@ -1264,7 +1243,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/seleccion/seguimientoPorEtapa/TODOS.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/seleccion/informe/seguimientoPorEtapa/TODOS.json' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Seleccion-Seguimientoporetapas
       parameters:
@@ -1353,7 +1332,7 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
-  /v1/datalake/competencias/procesos.json:
+  /v1/public/competencias/procesos.json:
     get:
       tags:
       - Competencias
@@ -1363,7 +1342,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/competencias/procesos.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/competencias/procesos.json' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Competencias-Procesos
       parameters: []
@@ -1387,7 +1366,7 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
-  /v1/datalake/competencias/detalleValoracion/{codProceso}.json:
+  /v1/public/competencias/informe/detalleValoracion/{codProceso}.json:
     get:
       tags:
       - Competencias
@@ -1397,7 +1376,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/competencias/detalleValoracion/205.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/competencias/informe/detalleValoracion/205.json' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Competencias-Detallevaloracion
       parameters:
@@ -1486,7 +1465,7 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
-  /v1/datalake/formacion/anios.json:
+  /v1/public/formacion/anios.json:
     get:
       tags:
       - Formación
@@ -1496,7 +1475,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/formacion/anios.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/formacion/anios.json' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Formacion-Aniosplaneados
       parameters: []
@@ -1526,7 +1505,7 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
-  /v1/datalake/formacion/temas.json:
+  /v1/public/formacion/temas.json:
     get:
       tags:
       - Formación
@@ -1536,7 +1515,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/formacion/temas.json?start=0&limit=50&query=Auto' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/formacion/temas.json?start=0&limit=50&query=Auto' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Formacion-Temasregistrados
       parameters:
@@ -1585,7 +1564,7 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
-  /v1/datalake/formacion/avancePorTema/{codAnio}.json:
+  /v1/public/formacion/informe/avancePorTema/{codAnio}.json:
     get:
       tags:
       - Formación
@@ -1595,7 +1574,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/formacion/avancePorTema/38.json?codTema=-1&incluirUsuariosInactivos=false&fechaInicial=2025-01-01&fechaFinal=2025-10-30' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/formacion/informe/avancePorTema/38.json?codTema=-1&incluirUsuariosInactivos=false&fechaInicial=2025-01-01&fechaFinal=2025-10-30' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Formacion-Avanceportema
       parameters:
@@ -1685,7 +1664,7 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
-  /v1/datalake/dec/procesos.json:
+  /v1/public/dec/procesos.json:
     get:
       tags:
       - DEC
@@ -1695,7 +1674,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/dec/procesos.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/dec/procesos.json' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: DEC-Procesos
       parameters: []
@@ -1719,7 +1698,7 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
-  /v1/datalake/dec/temporadas/{codProceso}.json:
+  /v1/public/dec/temporadas/{codProceso}.json:
     get:
       tags:
       - DEC
@@ -1729,7 +1708,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/dec/temporadas/37.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/dec/temporadas/37.json' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: DEC-Temporadas
       parameters:
@@ -1758,7 +1737,7 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
-  /v1/datalake/dec/reporteOperativos/{codProceso}/{codTemporada}.json:
+  /v1/public/dec/informe/reporteOperativos/{codProceso}/{codTemporada}.json:
     get:
       tags:
       - DEC
@@ -1768,7 +1747,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/datalake/dec/reporteOperativos/37/1.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/dec/informe/reporteOperativos/37/1.json' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: DEC-ReporteOperativos
       parameters:
