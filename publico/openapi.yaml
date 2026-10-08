@@ -1892,6 +1892,88 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
+  /html/v1/public/seleccion/informe/reporteDetallado/{tipoReporte}.json:
+    get:
+      tags:
+      - Selección
+      summary: Selección - Reporte detallado
+      description: Endpoint donde se lista reporte detallado de procesos en el módulo de Selección.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/seleccion/informe/reporteDetallado/SOLOACTIVOS.json' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: Seleccion-Reportedetallado
+      parameters:
+      - name: tipoReporte
+        in: path
+        required: true
+        description: Tipo de reporte de procesos de selección a consultar (SOLOACTIVOS o TODOS).
+        schema:
+          type: string
+          enum:
+          - SOLOACTIVOS
+          - TODOS
+          example: SOLOACTIVOS
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Seleccion_reporteDetallado'
+                - example:
+                    data:
+                    - numero_solicitud: 213
+                      cargo: Analista de compras
+                      empresa: talento ltda
+                      ciudad: Medellin
+                      solicitante: Pepito Perez
+                      persona_que_cancela: ''
+                      persona_que_cierra: ''
+                      fecha_solicitud: '2026-09-14'
+                      fecha_redicacion: '2026-09-14'
+                      fecha_asignacion_responsables: '2026-09-14'
+                      fecha_cancelacion: null
+                      fecha_cierre: null
+                      tipo_convocatoria: MIXTA
+                      motivo: Reemplazo
+                      personas_reemplazar: null
+                      tipo_solicitud: Sin aprobacion
+                      responsables: Juan Ospina
+                      porcentaje_avance: 57.14
+                      estado_proceso: Publicada
+                      fecha_ultima_etapa: '2026-10-02'
+                      cantidad_vacantes_solicitadas: 2
+                      cantidad_vacantes_pendientes: 2
+                      cantidad_personas_consideradas: 3
+                      cantidad_candidatos_contratados: 0
+                      vicepresidencia: Procesos
+                      regional: Antioquia
+                      sede: Medellín
+                      lider: Juan Osorio
+                      justificacion: Para reemplezar al analista de compras
+                      observaciones: Pueden usarce candidatos de otras ciudades
+                      observaciones_cancelacion: null
+                      observaciones_cierre: null
+                      cliente: null
+                      ans: 30
+                      dias_transcurridos: '15'
+                      cumplimiento: Cumple
+                      dias_totales: ''
+                      fecha_contratacion: ''
+                      candidato_elegido: '   '
+                      candidato_elegido_cedlula: null
+                      cubrimiento: ''
+                      criticidad: '-'
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
   /html/v1/public/competencias/procesos.json:
     get:
       tags:
@@ -4929,6 +5011,247 @@ components:
         oferta_salarial_fecha_ultimo_candidato: ''
         cierre_fecha_primer_candidato: ''
         cierre_fecha_ultimo_candidato: '2017-06-06 24:00'
+    Seleccion_reporteDetallado:
+      title: Seleccion_reporteDetallado
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SeleccionReporteDetalladoItem'
+        success:
+          type: boolean
+      example:
+        data:
+        - numero_solicitud: 213
+          cargo: Analista de compras
+          empresa: talento ltda
+          ciudad: Medellin
+          solicitante: Pepito Perez
+          persona_que_cancela: ''
+          persona_que_cierra: ''
+          fecha_solicitud: '2026-09-14'
+          fecha_redicacion: '2026-09-14'
+          fecha_asignacion_responsables: '2026-09-14'
+          fecha_cancelacion: null
+          fecha_cierre: null
+          tipo_convocatoria: MIXTA
+          motivo: Reemplazo
+          personas_reemplazar: null
+          tipo_solicitud: Sin aprobacion
+          responsables: Juan Ospina
+          porcentaje_avance: 57.14
+          estado_proceso: Publicada
+          fecha_ultima_etapa: '2026-10-02'
+          cantidad_vacantes_solicitadas: 2
+          cantidad_vacantes_pendientes: 2
+          cantidad_personas_consideradas: 3
+          cantidad_candidatos_contratados: 0
+          vicepresidencia: Procesos
+          regional: Antioquia
+          sede: Medellín
+          lider: Juan Osorio
+          justificacion: Para reemplezar al analista de compras
+          observaciones: Pueden usarce candidatos de otras ciudades
+          observaciones_cancelacion: null
+          observaciones_cierre: null
+          cliente: null
+          ans: 30
+          dias_transcurridos: '15'
+          cumplimiento: Cumple
+          dias_totales: ''
+          fecha_contratacion: ''
+          candidato_elegido: '   '
+          candidato_elegido_cedlula: null
+          cubrimiento: ''
+          criticidad: '-'
+        success: true
+    SeleccionReporteDetalladoItem:
+      title: SeleccionReporteDetalladoItem
+      required:
+      - numero_solicitud
+      - cargo
+      - empresa
+      - ciudad
+      - solicitante
+      - persona_que_cancela
+      - persona_que_cierra
+      - fecha_solicitud
+      - fecha_redicacion
+      - fecha_asignacion_responsables
+      - fecha_cancelacion
+      - fecha_cierre
+      - tipo_convocatoria
+      - motivo
+      - personas_reemplazar
+      - tipo_solicitud
+      - responsables
+      - porcentaje_avance
+      - estado_proceso
+      - fecha_ultima_etapa
+      - cantidad_vacantes_solicitadas
+      - cantidad_vacantes_pendientes
+      - cantidad_personas_consideradas
+      - cantidad_candidatos_contratados
+      - vicepresidencia
+      - regional
+      - sede
+      - lider
+      - justificacion
+      - observaciones
+      - observaciones_cancelacion
+      - observaciones_cierre
+      - cliente
+      - ans
+      - dias_transcurridos
+      - cumplimiento
+      - dias_totales
+      - fecha_contratacion
+      - candidato_elegido
+      - candidato_elegido_cedlula
+      - cubrimiento
+      - criticidad
+      type: object
+      properties:
+        numero_solicitud:
+          type: integer
+        cargo:
+          type: string
+        empresa:
+          type: string
+        ciudad:
+          type: string
+        solicitante:
+          type: string
+        persona_que_cancela:
+          type: string
+          nullable: true
+        persona_que_cierra:
+          type: string
+          nullable: true
+        fecha_solicitud:
+          type: string
+        fecha_redicacion:
+          type: string
+        fecha_asignacion_responsables:
+          type: string
+        fecha_cancelacion:
+          type: string
+          nullable: true
+        fecha_cierre:
+          type: string
+          nullable: true
+        tipo_convocatoria:
+          type: string
+        motivo:
+          type: string
+        personas_reemplazar:
+          type: string
+          nullable: true
+        tipo_solicitud:
+          type: string
+        responsables:
+          type: string
+        porcentaje_avance:
+          type: number
+        estado_proceso:
+          type: string
+        fecha_ultima_etapa:
+          type: string
+        cantidad_vacantes_solicitadas:
+          type: integer
+        cantidad_vacantes_pendientes:
+          type: integer
+        cantidad_personas_consideradas:
+          type: integer
+        cantidad_candidatos_contratados:
+          type: integer
+        vicepresidencia:
+          type: string
+        regional:
+          type: string
+        sede:
+          type: string
+        lider:
+          type: string
+        justificacion:
+          type: string
+        observaciones:
+          type: string
+        observaciones_cancelacion:
+          type: string
+          nullable: true
+        observaciones_cierre:
+          type: string
+          nullable: true
+        cliente:
+          type: string
+          nullable: true
+        ans:
+          type: integer
+        dias_transcurridos:
+          type: string
+        cumplimiento:
+          type: string
+        dias_totales:
+          type: string
+        fecha_contratacion:
+          type: string
+        candidato_elegido:
+          type: string
+        candidato_elegido_cedlula:
+          type: string
+          nullable: true
+        cubrimiento:
+          type: string
+        criticidad:
+          type: string
+      example:
+        numero_solicitud: 213
+        cargo: Analista de compras
+        empresa: talento ltda
+        ciudad: Medellin
+        solicitante: Pepito Perez
+        persona_que_cancela: ''
+        persona_que_cierra: ''
+        fecha_solicitud: '2026-09-14'
+        fecha_redicacion: '2026-09-14'
+        fecha_asignacion_responsables: '2026-09-14'
+        fecha_cancelacion: null
+        fecha_cierre: null
+        tipo_convocatoria: MIXTA
+        motivo: Reemplazo
+        personas_reemplazar: null
+        tipo_solicitud: Sin aprobacion
+        responsables: Juan Ospina
+        porcentaje_avance: 57.14
+        estado_proceso: Publicada
+        fecha_ultima_etapa: '2026-10-02'
+        cantidad_vacantes_solicitadas: 2
+        cantidad_vacantes_pendientes: 2
+        cantidad_personas_consideradas: 3
+        cantidad_candidatos_contratados: 0
+        vicepresidencia: Procesos
+        regional: Antioquia
+        sede: Medellín
+        lider: Juan Osorio
+        justificacion: Para reemplezar al analista de compras
+        observaciones: Pueden usarce candidatos de otras ciudades
+        observaciones_cancelacion: null
+        observaciones_cierre: null
+        cliente: null
+        ans: 30
+        dias_transcurridos: '15'
+        cumplimiento: Cumple
+        dias_totales: ''
+        fecha_contratacion: ''
+        candidato_elegido: '   '
+        candidato_elegido_cedlula: null
+        cubrimiento: ''
+        criticidad: '-'
     Seleccion_listaRequisiciones:
       title: Seleccion_listaRequisiciones
       required:
