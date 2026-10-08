@@ -53,7 +53,7 @@ paths:
       - Autenticación
       summary: OAuth2 - Obtener token      
       description: >-
-        Para obtener el token que autoriza uso de los otros servicios, el client_id y client_secret son suministrados por talento cloud al cliente, según el tenant la url cambia, por ejemplo para la empresa Alianza sería https://somostalentoalianza.talento.cloud/html/oauth2/token/somostalentoalianza.json
+        Para obtener el token que autoriza uso de los otros servicios, el client_id y client_secret son suministrados por talento cloud al cliente, según el tenant la url cambia, por ejemplo para la empresa Microsfot sería https://microsoft.talento.cloud/html/oauth2/token/microsoft.json
 
         ## Ejemplo petición con curl:
 
