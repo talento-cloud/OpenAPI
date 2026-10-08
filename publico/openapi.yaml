@@ -13,6 +13,9 @@ info:
 
 
     El client_id y client_secret son suministrados por talento cloud al cliente.
+    
+
+    La IP del cliente debe estar en la lista blanca de IPs permitidas para tener acceso a estas APIs. El cliente debe suministrar su IP publica para registrarla en dicha lista.
 
 
     Maneja autenticación Oauth 2.0 y se podria consultar diferentes endpoints en formato application/json
