@@ -162,14 +162,38 @@ paths:
       - HojaVida
       summary: HojaVida - Información de nómina
       description: Endpoint donde se lista la información de nómina de las hojas de vida de usuarios activos de talento cloud. Las fechas se entregan en formato yyyy-mm-dd
+      security:
+        - oauth2:
+            - talento.hojavida.read
       x-codeSamples:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/hojavida/informe/informacionNomina.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/hojavida/informe/informacionNomina.json?start=0&limit=100' \
               -H "Authorization: Bearer <TU_TOKEN_JWT>" 
       operationId: HojaVida-Informaciondenomina
-      parameters: []
+      parameters:
+      - name: start
+        in: query
+        required: false
+        description: Número de registro inicial para paginación (por defecto 0).
+        schema:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          example: 0
+      - name: limit
+        in: query
+        required: false
+        description: Cantidad máxima de registros a retornar (por defecto 100, máximo 100).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          minimum: 1
+          maximum: 100
+          example: 100
       responses:
         '200':
           description: OK
@@ -433,6 +457,7 @@ paths:
                       beneficiario_eps: null
                       beneficiario_caja_compensacion: null
                     success: true
+                    total: 4
               example:
                 data:
                 - usuario: CARLOS ANDRES PEREZ GOMEZ
@@ -688,6 +713,7 @@ paths:
                   beneficiario_eps: null
                   beneficiario_caja_compensacion: null
                 success: true
+                total: 4
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
@@ -1183,14 +1209,38 @@ paths:
       - HojaVida
       summary: HojaVida - Conceptos de nómina
       description: Endpoint donde se listan los conceptos de nómina de las hojas de vida de usuarios en talento cloud. Las fechas se entregan en formato yyyy-mm-dd.
+      security:
+        - oauth2:
+            - talento.hojavida.nomina.read
       x-codeSamples:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/hojavida/informe/conceptosNomina.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/hojavida/informe/conceptosNomina.json?start=0&limit=100' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: HojaVida-Conceptosdenomina
-      parameters: []
+      parameters:
+      - name: start
+        in: query
+        required: false
+        description: Número de registro inicial para paginación (por defecto 0).
+        schema:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          example: 0
+      - name: limit
+        in: query
+        required: false
+        description: Cantidad máxima de registros a retornar (por defecto 100, máximo 100).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          minimum: 1
+          maximum: 100
+          example: 100
       responses:
         '200':
           description: OK
@@ -1214,6 +1264,7 @@ paths:
                       fecha_inicial: '2026-03-11'
                       fecha_final: ''
                     success: true
+                    total: 2
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
@@ -1229,10 +1280,31 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/hojavida/datosBasicosInternos.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/hojavida/informe/datosBasicosInternos.json?start=0&limit=100' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: HojaVida-Datosbasicos
-      parameters: []
+      parameters:
+      - name: start
+        in: query
+        required: false
+        description: Número de registro inicial para paginación (por defecto 0).
+        schema:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          example: 0
+      - name: limit
+        in: query
+        required: false
+        description: Cantidad máxima de registros a retornar (por defecto 100, máximo 100).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          minimum: 1
+          maximum: 100
+          example: 100
       responses:
         '200':
           description: OK
@@ -1307,6 +1379,7 @@ paths:
                       auxilio_movilidad: null
                       turno_trabajo: null
                     success: true
+                    total: 1
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
@@ -1322,7 +1395,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/hojavida/informe/novedadesNomina/2026-01-01/2026-09-10.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/hojavida/informe/novedadesNomina/2026-01-01/2026-09-10.json?start=0&limit=100' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: HojaVida-Novedadesdenomina
       parameters:
@@ -1340,6 +1413,27 @@ paths:
         schema:
           type: string
           example: '2026-09-10'
+      - name: start
+        in: query
+        required: false
+        description: Número de registro inicial para paginación (por defecto 0).
+        schema:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          example: 0
+      - name: limit
+        in: query
+        required: false
+        description: Cantidad máxima de registros a retornar (por defecto 100, máximo 100).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          minimum: 1
+          maximum: 100
+          example: 100
       responses:
         '200':
           description: OK
@@ -1387,6 +1481,7 @@ paths:
                       nombre_entidad_afiliacion: No aplica
                       fecha_desvinculacion: No aplica
                     success: true
+                    total: 1
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
@@ -1402,10 +1497,31 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/hojavida/informe/experienciaLaboral.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/hojavida/informe/experienciaLaboral.json?start=0&limit=100' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: HojaVida-Experiencialaboral
-      parameters: []
+      parameters:
+      - name: start
+        in: query
+        required: false
+        description: Número de registro inicial para paginación (por defecto 0).
+        schema:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          example: 0
+      - name: limit
+        in: query
+        required: false
+        description: Cantidad máxima de registros a retornar (por defecto 100, máximo 100).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          minimum: 1
+          maximum: 100
+          example: 100
       responses:
         '200':
           description: OK
@@ -1446,6 +1562,7 @@ paths:
                       descripcion_tipo_obra: null
                       descripcion_sistema_obra: null
                     success: true
+                    total: 1
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
@@ -1461,7 +1578,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/transversal/informe/todosUsuarios/Todos.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/transversal/informe/todosUsuarios/Todos.json?start=0&limit=100' \
               --header 'Accept-Language: es' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Transversal-Reportedetodoslosusuariosdelsistema
@@ -1484,6 +1601,27 @@ paths:
         schema:
           type: string
           example: es
+      - name: start
+        in: query
+        required: false
+        description: Número de registro inicial para paginación (por defecto 0).
+        schema:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          example: 0
+      - name: limit
+        in: query
+        required: false
+        description: Cantidad máxima de registros a retornar (por defecto 100, máximo 100).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          minimum: 1
+          maximum: 100
+          example: 100
       responses:
         '200':
           description: OK
@@ -1567,6 +1705,7 @@ paths:
                       genero: ''
                       dias_vacaciones_disponibles: '0'
                     success: true
+                    total: 2
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
@@ -1655,10 +1794,31 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/bienestar/informe/reporteDetallado.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/bienestar/informe/reporteDetallado.json?start=0&limit=100' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Bienestar-Reportedetalladobeneficiosreconocimientos
-      parameters: []
+      parameters:
+      - name: start
+        in: query
+        required: false
+        description: Número de registro inicial para paginación (por defecto 0).
+        schema:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          example: 0
+      - name: limit
+        in: query
+        required: false
+        description: Cantidad máxima de registros a retornar (por defecto 100, máximo 100).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          minimum: 1
+          maximum: 100
+          example: 100
       responses:
         '200':
           description: OK
@@ -1728,6 +1888,7 @@ paths:
                       observaciones: null
                       campos_adicionales: null
                     success: true
+                    total: 2
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
@@ -1743,7 +1904,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/bienestar/informe/transaccionesPuntos/2025.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/bienestar/informe/transaccionesPuntos/2025.json?start=0&limit=100' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Bienestar-Transaccionespuntosbeneficiosreconocimientos
       parameters:
@@ -1754,6 +1915,27 @@ paths:
         schema:
           type: integer
           example: 2025
+      - name: start
+        in: query
+        required: false
+        description: Número de registro inicial para paginación (por defecto 0).
+        schema:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          example: 0
+      - name: limit
+        in: query
+        required: false
+        description: Cantidad máxima de registros a retornar (por defecto 100, máximo 100).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          minimum: 1
+          maximum: 100
+          example: 100
       responses:
         '200':
           description: OK
@@ -1788,6 +1970,7 @@ paths:
                       valor: '50'
                       saldo: '100'
                     success: true
+                    total: 1
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
@@ -1799,11 +1982,14 @@ paths:
       - Selección
       summary: Selección - Seguimiento por etapas
       description: Endpoint donde se lista el seguimiento por etapas de los procesos de selección en talento cloud. Permite filtrar por estado (TODOS, ACTIVOS o CERRADOS). El formato de fecha es yyyy-MM-dd kk:mm.
+      security:
+        - oauth2:
+            - talento.seleccion.read
       x-codeSamples:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/seleccion/informe/seguimientoPorEtapa/TODOS.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/seleccion/informe/seguimientoPorEtapa/TODOS.json?start=0&limit=100' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Seleccion-Seguimientoporetapas
       parameters:
@@ -1818,6 +2004,27 @@ paths:
           - ACTIVOS
           - CERRADOS
           example: TODOS
+      - name: start
+        in: query
+        required: false
+        description: Número de registro inicial para paginación (por defecto 0).
+        schema:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          example: 0
+      - name: limit
+        in: query
+        required: false
+        description: Cantidad máxima de registros a retornar (por defecto 100, máximo 100).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          minimum: 1
+          maximum: 100
+          example: 100
       responses:
         '200':
           description: OK
@@ -1887,6 +2094,7 @@ paths:
                       cierre_fecha_primer_candidato: ''
                       cierre_fecha_ultimo_candidato: '2017-06-06 24:00'
                     success: true
+                    total: 1
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
@@ -1898,11 +2106,14 @@ paths:
       - Selección
       summary: Selección - Reporte detallado
       description: Endpoint donde se lista reporte detallado de procesos en el módulo de Selección.
+      security:
+        - oauth2:
+            - talento.seleccion.read
       x-codeSamples:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/seleccion/informe/reporteDetallado/SOLOACTIVOS.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/seleccion/informe/reporteDetallado/SOLOACTIVOS.json?start=0&limit=100' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Seleccion-Reportedetallado
       parameters:
@@ -1916,6 +2127,27 @@ paths:
           - SOLOACTIVOS
           - TODOS
           example: SOLOACTIVOS
+      - name: start
+        in: query
+        required: false
+        description: Número de registro inicial para paginación (por defecto 0).
+        schema:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          example: 0
+      - name: limit
+        in: query
+        required: false
+        description: Cantidad máxima de registros a retornar (por defecto 100, máximo 100).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          minimum: 1
+          maximum: 100
+          example: 100
       responses:
         '200':
           description: OK
@@ -1969,6 +2201,7 @@ paths:
                       cubrimiento: ''
                       criticidad: '-'
                     success: true
+                    total: 1
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
@@ -2018,7 +2251,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/competencias/informe/detalleValoracion/205.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/competencias/informe/detalleValoracion/205.json?start=0&limit=100' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Competencias-Detallevaloracion
       parameters:
@@ -2029,6 +2262,27 @@ paths:
         schema:
           type: integer
           example: 205
+      - name: start
+        in: query
+        required: false
+        description: Número de registro inicial para paginación (por defecto 0).
+        schema:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          example: 0
+      - name: limit
+        in: query
+        required: false
+        description: Cantidad máxima de registros a retornar (por defecto 100, máximo 100).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          minimum: 1
+          maximum: 100
+          example: 100
       responses:
         '200':
           description: OK
@@ -2102,6 +2356,7 @@ paths:
                       observaciones: ''
                       observaciones_generales: null
                     success: true
+                    total: 2
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
@@ -2216,7 +2471,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/formacion/informe/avancePorTema/38.json?codTema=-1&incluirUsuariosInactivos=false&fechaInicial=2025-01-01&fechaFinal=2025-10-30' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/formacion/informe/avancePorTema/38.json?start=0&limit=100&codTema=-1&incluirUsuariosInactivos=false&fechaInicial=2025-01-01&fechaFinal=2025-10-30' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Formacion-Avanceportema
       parameters:
@@ -2227,6 +2482,27 @@ paths:
         schema:
           type: integer
           example: 38
+      - name: start
+        in: query
+        required: false
+        description: Número de registro inicial para paginación (por defecto 0).
+        schema:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          example: 0
+      - name: limit
+        in: query
+        required: false
+        description: Cantidad máxima de registros a retornar (por defecto 100, máximo 100).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          minimum: 1
+          maximum: 100
+          example: 100
       - name: codTema
         in: query
         required: false
@@ -2301,6 +2577,7 @@ paths:
                       tiempo_faltante: 0 Días
                       observaciones: Tiempo límite ha expirado
                     success: true
+                    total: 1
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
@@ -2389,7 +2666,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/dec/informe/reporteOperativos/37/1.json' \
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/dec/informe/reporteOperativos/37/1.json?start=0&limit=100' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: DEC-ReporteOperativos
       parameters:
@@ -2407,6 +2684,27 @@ paths:
         schema:
           type: integer
           example: 1
+      - name: start
+        in: query
+        required: false
+        description: Número de registro inicial para paginación (por defecto 0).
+        schema:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          example: 0
+      - name: limit
+        in: query
+        required: false
+        description: Cantidad máxima de registros a retornar (por defecto 100, máximo 100).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          minimum: 1
+          maximum: 100
+          example: 100
       responses:
         '200':
           description: OK
@@ -2461,6 +2759,7 @@ paths:
                       comentarios: "* Tiene un indicador en productividad del 93%\n* Daniel siempre porta los elementos de seguridad de manera correcta, no se le ha evidenciado sin las gafas ni el casco, por lo cual se hace un reconocimiento publico. "
                       concepto_general: "¡Felicitaciones por tu destacado manejo de los los elementos de SST! Vas por muy buen camino. Sigue confiando en ti mismo, porque tienes el potencial y el talento para lograr grandes cosas. Lo estás haciendo muy bien!"
                     success: true
+                    total: 1
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
@@ -2500,6 +2799,7 @@ components:
       required:
       - data
       - success
+      - total
       type: object
       properties:
         data:
@@ -2509,6 +2809,9 @@ components:
           description: ''
         success:
           type: boolean
+        total:
+          type: integer
+          format: int32
       example:
         data:
         - usuario: CARLOS ANDRES PEREZ GOMEZ
@@ -2764,6 +3067,7 @@ components:
           beneficiario_eps: null
           beneficiario_caja_compensacion: null
         success: true
+        total: 4
     Datum:
       title: Datum
       required:
@@ -3065,6 +3369,7 @@ components:
       required:
       - data
       - success
+      - total
       type: object
       properties:
         data:
@@ -3073,6 +3378,9 @@ components:
             $ref: '#/components/schemas/UsuarioTransversal'
         success:
           type: boolean
+        total:
+          type: integer
+          format: int32
       example:
         data:
         - usuario: CARLOS ANDRES PEREZ GOMEZ
@@ -3148,6 +3456,7 @@ components:
           genero: ''
           dias_vacaciones_disponibles: '0'
         success: true
+        total: 2
     UsuarioTransversal:
       title: UsuarioTransversal
       required:
@@ -3513,6 +3822,7 @@ components:
       required:
       - data
       - success
+      - total
       type: object
       properties:
         data:
@@ -3521,6 +3831,9 @@ components:
             $ref: '#/components/schemas/HV_conceptoNomina'
         success:
           type: boolean
+        total:
+          type: integer
+          format: int32
       example:
         data:
         - tipo_documento: Cédula de ciudadanía
@@ -3536,6 +3849,7 @@ components:
           fecha_inicial: '2026-03-11'
           fecha_final: ''
         success: true
+        total: 2
     HV_conceptoNomina:
       title: HV_conceptoNomina
       required:
@@ -3577,6 +3891,7 @@ components:
       required:
       - data
       - success
+      - total
       type: object
       properties:
         data:
@@ -3585,6 +3900,9 @@ components:
             $ref: '#/components/schemas/HV_datoBasicoInterno'
         success:
           type: boolean
+        total:
+          type: integer
+          format: int32
       example:
         data:
         - nrodocumento: '1000000001'
@@ -3651,6 +3969,7 @@ components:
           auxilio_movilidad: null
           turno_trabajo: null
         success: true
+        total: 1
     HV_datoBasicoInterno:
       title: HV_datoBasicoInterno
       required:
@@ -3974,6 +4293,7 @@ components:
       required:
       - data
       - success
+      - total
       type: object
       properties:
         data:
@@ -3982,6 +4302,9 @@ components:
             $ref: '#/components/schemas/BienestarDetalladoItem'
         success:
           type: boolean
+        total:
+          type: integer
+          format: int32
       example:
         data:
         - usuario: MARIA FERNANDA RODRIGUEZ LOPEZ
@@ -4043,6 +4366,7 @@ components:
           observaciones: null
           campos_adicionales: null
         success: true
+        total: 2
     BienestarDetalladoItem:
       title: BienestarDetalladoItem
       required:
@@ -4175,6 +4499,7 @@ components:
       required:
       - data
       - success
+      - total
       type: object
       properties:
         data:
@@ -4183,6 +4508,9 @@ components:
             $ref: '#/components/schemas/BienestarTransaccionesPuntosItem'
         success:
           type: boolean
+        total:
+          type: integer
+          format: int32
       example:
         data:
         - usuario: Andres Perez Mengano
@@ -4209,6 +4537,7 @@ components:
           valor: '50'
           saldo: '100'
         success: true
+        total: 1
     BienestarTransaccionesPuntosItem:
       title: BienestarTransaccionesPuntosItem
       required:
@@ -4312,6 +4641,7 @@ components:
       required:
       - data
       - success
+      - total
       type: object
       properties:
         data:
@@ -4320,6 +4650,9 @@ components:
             $ref: '#/components/schemas/HV_novedadNomina'
         success:
           type: boolean
+        total:
+          type: integer
+          format: int32
       example:
         data:
         - usuario: PEPITO PEREZ GOMEZ
@@ -4359,6 +4692,7 @@ components:
           nombre_entidad_afiliacion: No aplica
           fecha_desvinculacion: No aplica
         success: true
+        total: 1
     HV_novedadNomina:
       title: HV_novedadNomina
       required:
@@ -4514,6 +4848,7 @@ components:
       required:
       - data
       - success
+      - total
       type: object
       properties:
         data:
@@ -4522,6 +4857,9 @@ components:
             $ref: '#/components/schemas/HV_experienciaLaboralItem'
         success:
           type: boolean
+        total:
+          type: integer
+          format: int32
       example:
         data:
         - documento: '1234567890'
@@ -4554,6 +4892,7 @@ components:
           descripcion_tipo_obra: null
           descripcion_sistema_obra: null
         success: true
+        total: 1
     HV_experienciaLaboralItem:
       title: HV_experienciaLaboralItem
       required:
@@ -4704,6 +5043,7 @@ components:
       required:
       - data
       - success
+      - total
       type: object
       properties:
         data:
@@ -4712,6 +5052,9 @@ components:
             $ref: '#/components/schemas/SeleccionSeguimientoPorEtapaItem'
         success:
           type: boolean
+        total:
+          type: integer
+          format: int32
       example:
         data:
         - proceso: SEL-6
@@ -4773,6 +5116,7 @@ components:
           cierre_fecha_primer_candidato: ''
           cierre_fecha_ultimo_candidato: '2017-06-06 24:00'
         success: true
+        total: 1
     SeleccionSeguimientoPorEtapaItem:
       title: SeleccionSeguimientoPorEtapaItem
       required:
@@ -5016,6 +5360,7 @@ components:
       required:
       - data
       - success
+      - total
       type: object
       properties:
         data:
@@ -5024,6 +5369,9 @@ components:
             $ref: '#/components/schemas/SeleccionReporteDetalladoItem'
         success:
           type: boolean
+        total:
+          type: integer
+          format: int32
       example:
         data:
         - numero_solicitud: 213
@@ -5069,6 +5417,7 @@ components:
           cubrimiento: ''
           criticidad: '-'
         success: true
+        total: 1
     SeleccionReporteDetalladoItem:
       title: SeleccionReporteDetalladoItem
       required:
@@ -6519,6 +6868,7 @@ components:
       required:
       - data
       - success
+      - total
       type: object
       properties:
         data:
@@ -6527,6 +6877,9 @@ components:
             $ref: '#/components/schemas/CompetenciasDetalleValoracionItem'
         success:
           type: boolean
+        total:
+          type: integer
+          format: int32
       example:
         data:
         - usuario: Andres Perez Mar
@@ -6592,6 +6945,7 @@ components:
           observaciones: ''
           observaciones_generales: null
         success: true
+        total: 2
     CompetenciasDetalleValoracionItem:
       title: CompetenciasDetalleValoracionItem
       required:
@@ -6813,6 +7167,7 @@ components:
       required:
       - data
       - success
+      - total
       type: object
       properties:
         data:
@@ -6821,6 +7176,9 @@ components:
             $ref: '#/components/schemas/FormacionAvancePorTemaItem'
         success:
           type: boolean
+        total:
+          type: integer
+          format: int32
       example:
         data:
         - usuario: Ana Gomez Perez
@@ -6855,6 +7213,7 @@ components:
           tiempo_faltante: 0 Días
           observaciones: Tiempo límite ha expirado
         success: true
+        total: 1
     FormacionAvancePorTemaItem:
       title: FormacionAvancePorTemaItem
       required:
@@ -7056,6 +7415,7 @@ components:
       required:
       - data
       - success
+      - total
       type: object
       properties:
         data:
@@ -7064,6 +7424,9 @@ components:
             $ref: '#/components/schemas/DECReporteOperativosItem'
         success:
           type: boolean
+        total:
+          type: integer
+          format: int32
       example:
         data:
         - usuario: Daniel Perez Perez
@@ -7110,6 +7473,7 @@ components:
           comentarios: "* Tiene un indicador en productividad del 93%\n* Daniel siempre porta los elementos de seguridad de manera correcta, no se le ha evidenciado sin las gafas ni el casco, por lo cual se hace un reconocimiento publico. "
           concepto_general: "¡Felicitaciones por tu destacado manejo de los los elementos de SST! Vas por muy buen camino. Sigue confiando en ti mismo, porque tienes el potencial y el talento para lograr grandes cosas. Lo estás haciendo muy bien!"
         success: true
+        total: 1
     DECReporteOperativosItem:
       title: DECReporteOperativosItem
       required:
@@ -7339,9 +7703,16 @@ components:
         clientCredentials:
           tokenUrl: https://clientex.talento.cloud/html/oauth2/token/demo.json
           scopes:
-            talento.read: "Permiso para leer datos de talento"
-            talento.seleccion.read: "Permiso para leer datos de selección"
-            talento.usuarios.write: "Permiso para crear y actualizar usuarios"
+            talento.read: "Permiso para leer datos de talento, esta obsoleto y se removerá próximamente"
+            talento.seleccion.read: "Permiso para leer datos de selección. Todos los endpoints de Selección, incluido seguimiento por etapas"
+            talento.hojavida.read: "Datos básicos y experiencia laboral"
+            talento.hojavida.nomina.read: "Información de nómina, conceptos y novedades de nómina, y los campos sensibles: salario, banco y cuenta, grupo sanguíneo, etnia, discapacidad, peso y estatura"
+            talento.transversal.read: "Reporte de todos los usuarios del sistema"
+            talento.bienestar.read: "Beneficios, reconocimientos y puntos"
+            talento.competencias.read: "Procesos y detalle de valoración"
+            talento.formacion.read: "Años, temas y avance por tema"
+            talento.dec.read: "Procesos, temporadas y reporte de operativos"
+            talento.usuarios.write: "Carga masiva de usuarios"
 security:
 - oauth2:
       - talento.read
