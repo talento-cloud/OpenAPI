@@ -164,7 +164,7 @@ paths:
       description: Endpoint donde se lista la información de nómina de las hojas de vida de usuarios activos de talento cloud. Las fechas se entregan en formato yyyy-mm-dd
       security:
         - oauth2:
-            - talento.hojavida.read
+            - talento.hojavida.nomina.read
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -1276,6 +1276,9 @@ paths:
       - HojaVida
       summary: HojaVida - Datos basicos
       description: Endpoint donde se listan los datos básicos de la hoja de vida de usuarios internos en talento cloud. Las fechas se entregan en formato yyyy-mm-dd.
+      security:
+        - oauth2:
+            - talento.hojavida.read
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -1391,6 +1394,9 @@ paths:
       - HojaVida
       summary: HojaVida - Novedades de nómina
       description: Endpoint donde se listan las novedades de nómina de las hojas de vida en un rango de fechas. Las fechas se entregan en formato yyyy-mm-dd.
+      security:
+        - oauth2:
+            - talento.hojavida.nomina.read
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -1493,6 +1499,9 @@ paths:
       - HojaVida
       summary: HojaVida - Experiencia laboral
       description: Endpoint donde se listan la experiencia laboral de la hoja de vida de usuarios internos en talento cloud. Las fechas se entregan en formato yyyy-mm-dd.
+      security:
+        - oauth2:
+            - talento.hojavida.read
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -1574,6 +1583,9 @@ paths:
       - Transversal
       summary: Transversal - Reporte de todos los usuarios del sistema
       description: Endpoint donde se lista la información de todos los usuarios del sistema para Datalake. Permite filtrar por tipo de usuario (Todos, Administrativo u Operativo). Las fechas se entregan en formato yyyy-mm-dd.
+      security:
+        - oauth2:
+            - talento.transversal.read
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -1790,6 +1802,9 @@ paths:
       - Bienestar
       summary: Bienestar - Reporte detallado beneficios/reconocimientos
       description: Endpoint donde se lista el reporte detallado de beneficios y reconocimientos de los usuarios en talento cloud. Las fechas se entregan en formato yyyy-mm-dd.
+      security:
+        - oauth2:
+            - talento.bienestar.read
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -1900,6 +1915,9 @@ paths:
       - Bienestar
       summary: Bienestar - Transacciones puntos beneficios/reconocimientos
       description: Endpoint donde se listan las transacciones de puntos de beneficios y reconocimientos ejecutadas en un año dado
+      security:
+        - oauth2:
+            - talento.bienestar.read
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -2213,6 +2231,9 @@ paths:
       - Competencias
       summary: Competencias - Procesos
       description: Endpoint donde se listan los procesos de valoración de competencias registrados en talento cloud.
+      security:
+        - oauth2:
+            - talento.competencias.read
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -2247,6 +2268,9 @@ paths:
       - Competencias
       summary: Competencias - Detalle valoración
       description: Endpoint donde se listan detalles de resultados de una valoración de competencias suministrada
+      security:
+        - oauth2:
+            - talento.competencias.read
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -2368,6 +2392,9 @@ paths:
       - Formación
       summary: Formación - Años planeados
       description: Endpoint donde se lista los años configurados en el módulo de Formación.
+      security:
+        - oauth2:
+            - talento.formacion.read
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -2408,6 +2435,9 @@ paths:
       - Formación
       summary: Formación - Temas registrados
       description: Endpoint donde se lista los temas registrados en el módulo de Formación.
+      security:
+        - oauth2:
+            - talento.formacion.read
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -2467,6 +2497,9 @@ paths:
       - Formación
       summary: Formación - Avance por tema
       description: Endpoint donde se lista reporte del avance por tema en el módulo de Formación para un año dado.
+      security:
+        - oauth2:
+            - talento.formacion.read
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -2589,6 +2622,9 @@ paths:
       - DEC
       summary: DEC - Procesos
       description: Endpoint donde se lista los procesos disponibles para evaluación de operativos, en el módulo de DEC.
+      security:
+        - oauth2:
+            - talento.dec.read
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -2623,6 +2659,9 @@ paths:
       - DEC
       summary: DEC - Temporadas
       description: Endpoint donde se lista los temporadas disponibles para evaluación de operativos, en el módulo de DEC.
+      security:
+        - oauth2:
+            - talento.dec.read
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -2662,6 +2701,9 @@ paths:
       - DEC
       summary: DEC - Reporte Operativos
       description: Endpoint donde se lista reporte de operativos en el módulo de DEC.
+      security:
+        - oauth2:
+            - talento.dec.read
       x-codeSamples:
         - lang: Shell
           label: cURL
