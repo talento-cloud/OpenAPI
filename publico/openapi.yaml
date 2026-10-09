@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
-  title: Datalake - API publica de talento cloud
+  title: API publica de talento cloud
   description: >-
-    API REST para entregar info a datalake.
+    API REST para entregar info a clientes y proveedores.
 
 
     En la documentación se mencionan 2 urls:
@@ -56,7 +56,7 @@ paths:
       - Autenticación
       summary: OAuth2 - Obtener token      
       description: >-
-        Para obtener el token que autoriza uso de los otros servicios, el client_id y client_secret son suministrados por talento cloud al cliente, según el tenant la url cambia, por ejemplo para la empresa Microsfot sería https://microsoft.talento.cloud/html/oauth2/token/microsoft.json
+        Para obtener el token que autoriza uso de los otros servicios, el client_id y client_secret son suministrados por talento cloud al cliente, según el tenant la url cambia, por ejemplo para la empresa ClienteX sería https://clientex.talento.cloud/html/oauth2/token/clientex.json
 
         ## Ejemplo petición con curl:
 
@@ -75,7 +75,7 @@ paths:
 
         ```bash
 
-        curl -X POST https://clientex.talento.cloud/api/v1/public/modulox/reportey  \
+        curl -X POST https://clientex.talento.cloud/html/v1/public/hojavida/informe/informacionNomina.json?start=0&limit=100  \
           -H "Authorization: Bearer eyJhbGci..."
 
         ```      
@@ -94,7 +94,7 @@ paths:
       - name: tenant
         in: path
         required: true
-        description: El tenant de la organización, y para la empresa Alianza sería clientex
+        description: El tenant de la organización, y para la empresa ClienteX sería clientex
         schema:
           type: string
           example: clientex
