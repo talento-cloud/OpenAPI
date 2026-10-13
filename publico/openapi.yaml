@@ -67,7 +67,7 @@ paths:
           -d "grant_type=client_credentials" \
           -d "client_id=webhook-servicio" \
           -d "client_secret=mi-secreto" \
-          -d "scope=talento.read"
+          -d "scope=talento.hojavida.read"
 
         ```
 
@@ -88,7 +88,7 @@ paths:
               -d "grant_type=client_credentials" \
               -d "client_id=webhook-servicio" \
               -d "client_secret=mi-secreto" \
-              -d "scope=talento.read"
+              -d "scope=talento.hojavida.read"
       operationId: OAuth2-Obtenertoken
       parameters:
       - name: tenant
@@ -124,8 +124,8 @@ paths:
                   example: client_credentials
                 scope:
                   type: string
-                  description: Por defecto talento.read, tambien puede ser talento.seleccion.read o talento.usuarios.write según el caso particular
-                  example: talento.read
+                  description: Por defecto talento.hojavida.read, tambien puede ser talento.seleccion.read o talento.usuarios.write según el caso particular
+                  example: talento.hojavida.read
         required: false
       responses:
         '200':
@@ -147,13 +147,13 @@ paths:
                     token_type: Bearer
                     expires_in: 900
                     success: true
-                    scope: talento.read
+                    scope: talento.hojavida.read
               example:
                 access_token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IlVzdWFyaW8gRWplbXBsbyIsImlhdCI6MTUxNjIzOTAyMn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
                 token_type: Bearer
                 expires_in: 900
                 success: true
-                scope: talento.read
+                scope: talento.hojavida.read
       deprecated: false
       security: []
   /html/v1/public/hojavida/informe/informacionNomina.json:
@@ -2807,6 +2807,153 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
+  /html/v1/public/objetivossmart/procesos.json:
+    get:
+      tags:
+      - ObjetivosSMART
+      summary: ObjetivosSMART - Años procesos
+      description: Endpoint donde se lista los procesos de años de objetivos SMART.
+      security:
+        - oauth2:
+            - talento.objetivossmart.read
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/objetivossmart/procesos.json' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: ObjetivosSMART-Aniosprocesos
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ObjetivosSMART_procesos'
+                - example:
+                    data:
+                    - codigo: 202300
+                      nombre: 2023op
+                    - codigo: 202200
+                      nombre: 2022adm
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
+  /html/v1/public/objetivossmart/informe/resultadosConsolidadosGestion/{anio}.json:
+    get:
+      tags:
+      - ObjetivosSMART
+      summary: ObjetivosSMART - Resultados consolidados gestión
+      description: Endpoint donde se lista los resultados consolidados de gestión de objetivos SMART de un proceso dado de forma paginada.
+      security:
+        - oauth2:
+            - talento.objetivossmart.read
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/objetivossmart/informe/resultadosConsolidadosGestion/20260.json?start=0&limit=100' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: ObjetivosSMART-Resultadosconsolidadosgestion
+      parameters:
+      - name: anio
+        in: path
+        required: true
+        description: Código del año del proceso de objetivos SMART, es obligatorio y se puede obtener del endpoint "ObjetivosSMART - Años procesos".
+        schema:
+          type: integer
+          example: 20260
+      - name: start
+        in: query
+        required: false
+        description: Número de registro inicial para paginación (por defecto 0).
+        schema:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          example: 0
+      - name: limit
+        in: query
+        required: false
+        description: Cantidad máxima de registros a retornar (por defecto 100, máximo 100).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          minimum: 1
+          maximum: 100
+          example: 100
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ObjetivosSMART_resultadosConsolidadosGestion'
+                - example:
+                    data:
+                    - usuario: Emma Hernández
+                      tipo_documento: CEDULA
+                      documento: '987650000'
+                      tipo_usuario: Administrativo
+                      email: emma@noexiste.com
+                      negocio: Desarrollo de Software
+                      empresa: talento ltda
+                      uen: UEN App Moviles
+                      vicepresidencia: Financiera
+                      pais: Colombia
+                      ciudad: Medellin
+                      regional: Antioquia
+                      sede: Medellín
+                      cargo: Asistente Ejecutiva
+                      nivel_organizacional: Ejecutivo
+                      area: Presidencia
+                      documento_jefe: '1123456'
+                      nombre_jefe: Juan Ospina
+                      tipo_objetivo: Objetivo área
+                      perspectiva: Perspectiva del objetivo
+                      objetivo_estrategico: Objetivo estrategico al que se apunta
+                      indicador_iniciativa: Definición de nuevos procesos de mejora continua del área
+                      descripcion_objetivo: Buscamos mejorar las ventas
+                      estado_objetivo: Aprobado
+                      observacion_revision: ok
+                      peso: '50'
+                      criterio: Las ventas incrementan un 80%
+                      minimo_aceptable: '50'
+                      meta_logro: '80'
+                      seguimiento_1: Sin seguimientos iniciados
+                      evidencia_comentarios_seg_1: ''
+                      estado_seguimiento_1: Pendiente
+                      observacion_revision_1: ''
+                      seguimiento_2: ''
+                      evidencia_comentarios_seg_2: ''
+                      estado_seguimiento_2: Pendiente
+                      observacion_revision_2: ''
+                      seguimiento_3: ''
+                      evidencia_comentarios_seg_3: ''
+                      estado_seguimiento_3: Pendiente
+                      observacion_revision_3: ''
+                      seguimiento_4: ''
+                      evidencia_comentarios_seg_4: ''
+                      estado_seguimiento_4: Pendiente
+                      observacion_revision_4: ''
+                      seguimiento_5: ''
+                      evidencia_comentarios_seg_5: ''
+                      estado_seguimiento_5: Pendiente
+                      observacion_revision_5: ''
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
 components:
   schemas:
     oauth2:
@@ -2835,7 +2982,7 @@ components:
         token_type: Bearer
         expires_in: 900
         success: true
-        scope: talento.read
+        scope: talento.hojavida.read
     HV_informacionNomina:
       title: HV_informacionNomina
       required:
@@ -7709,6 +7856,307 @@ components:
         cuadrante: Alta Competencia
         comentarios: "* Tiene un indicador en productividad del 93%\n* Daniel siempre porta los elementos de seguridad de manera correcta, no se le ha evidenciado sin las gafas ni el casco, por lo cual se hace un reconocimiento publico. "
         concepto_general: "¡Felicitaciones por tu destacado manejo de los los elementos de SST! Vas por muy buen camino. Sigue confiando en ti mismo, porque tienes el potencial y el talento para lograr grandes cosas. Lo estás haciendo muy bien!"
+    ObjetivosSMART_procesos:
+      title: ObjetivosSMART_procesos
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjetivosSMARTProcesoItem'
+        success:
+          type: boolean
+      example:
+        data:
+        - codigo: 202300
+          nombre: 2023op
+        - codigo: 202200
+          nombre: 2022adm
+        success: true
+    ObjetivosSMARTProcesoItem:
+      title: ObjetivosSMARTProcesoItem
+      required:
+      - codigo
+      - nombre
+      type: object
+      properties:
+        codigo:
+          type: integer
+        nombre:
+          type: string
+      example:
+        codigo: 202300
+        nombre: 2023op
+    ObjetivosSMART_resultadosConsolidadosGestion:
+      title: ObjetivosSMART_resultadosConsolidadosGestion
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjetivosSMARTResultadosConsolidadosGestionItem'
+        success:
+          type: boolean
+      example:
+        data:
+        - usuario: Emma Hernández
+          tipo_documento: CEDULA
+          documento: '987650000'
+          tipo_usuario: Administrativo
+          email: emma@noexiste.com
+          negocio: Desarrollo de Software
+          empresa: talento ltda
+          uen: UEN App Moviles
+          vicepresidencia: Financiera
+          pais: Colombia
+          ciudad: Medellin
+          regional: Antioquia
+          sede: Medellín
+          cargo: Asistente Ejecutiva
+          nivel_organizacional: Ejecutivo
+          area: Presidencia
+          documento_jefe: '1123456'
+          nombre_jefe: Juan Ospina
+          tipo_objetivo: Objetivo área
+          perspectiva: Perspectiva del objetivo
+          objetivo_estrategico: Objetivo estrategico al que se apunta
+          indicador_iniciativa: Definición de nuevos procesos de mejora continua del área
+          descripcion_objetivo: Buscamos mejorar las ventas
+          estado_objetivo: Aprobado
+          observacion_revision: ok
+          peso: '50'
+          criterio: Las ventas incrementan un 80%
+          minimo_aceptable: '50'
+          meta_logro: '80'
+          seguimiento_1: Sin seguimientos iniciados
+          evidencia_comentarios_seg_1: ''
+          estado_seguimiento_1: Pendiente
+          observacion_revision_1: ''
+          seguimiento_2: ''
+          evidencia_comentarios_seg_2: ''
+          estado_seguimiento_2: Pendiente
+          observacion_revision_2: ''
+          seguimiento_3: ''
+          evidencia_comentarios_seg_3: ''
+          estado_seguimiento_3: Pendiente
+          observacion_revision_3: ''
+          seguimiento_4: ''
+          evidencia_comentarios_seg_4: ''
+          estado_seguimiento_4: Pendiente
+          observacion_revision_4: ''
+          seguimiento_5: ''
+          evidencia_comentarios_seg_5: ''
+          estado_seguimiento_5: Pendiente
+          observacion_revision_5: ''
+        success: true
+    ObjetivosSMARTResultadosConsolidadosGestionItem:
+      title: ObjetivosSMARTResultadosConsolidadosGestionItem
+      required:
+      - usuario
+      - tipo_documento
+      - documento
+      - tipo_usuario
+      - email
+      - negocio
+      - empresa
+      - uen
+      - vicepresidencia
+      - pais
+      - ciudad
+      - regional
+      - sede
+      - cargo
+      - nivel_organizacional
+      - area
+      - documento_jefe
+      - nombre_jefe
+      - tipo_objetivo
+      - perspectiva
+      - objetivo_estrategico
+      - indicador_iniciativa
+      - descripcion_objetivo
+      - estado_objetivo
+      - observacion_revision
+      - peso
+      - criterio
+      - minimo_aceptable
+      - meta_logro
+      - seguimiento_1
+      - evidencia_comentarios_seg_1
+      - estado_seguimiento_1
+      - observacion_revision_1
+      - seguimiento_2
+      - evidencia_comentarios_seg_2
+      - estado_seguimiento_2
+      - observacion_revision_2
+      - seguimiento_3
+      - evidencia_comentarios_seg_3
+      - estado_seguimiento_3
+      - observacion_revision_3
+      - seguimiento_4
+      - evidencia_comentarios_seg_4
+      - estado_seguimiento_4
+      - observacion_revision_4
+      - seguimiento_5
+      - evidencia_comentarios_seg_5
+      - estado_seguimiento_5
+      - observacion_revision_5
+      type: object
+      properties:
+        usuario:
+          type: string
+        tipo_documento:
+          type: string
+        documento:
+          type: string
+        tipo_usuario:
+          type: string
+        email:
+          type: string
+        negocio:
+          type: string
+        empresa:
+          type: string
+        uen:
+          type: string
+        vicepresidencia:
+          type: string
+        pais:
+          type: string
+        ciudad:
+          type: string
+        regional:
+          type: string
+        sede:
+          type: string
+        cargo:
+          type: string
+        nivel_organizacional:
+          type: string
+        area:
+          type: string
+        documento_jefe:
+          type: string
+        nombre_jefe:
+          type: string
+        tipo_objetivo:
+          type: string
+        perspectiva:
+          type: string
+        objetivo_estrategico:
+          type: string
+        indicador_iniciativa:
+          type: string
+        descripcion_objetivo:
+          type: string
+        estado_objetivo:
+          type: string
+        observacion_revision:
+          type: string
+        peso:
+          type: string
+        criterio:
+          type: string
+        minimo_aceptable:
+          type: string
+        meta_logro:
+          type: string
+        seguimiento_1:
+          type: string
+        evidencia_comentarios_seg_1:
+          type: string
+        estado_seguimiento_1:
+          type: string
+        observacion_revision_1:
+          type: string
+        seguimiento_2:
+          type: string
+        evidencia_comentarios_seg_2:
+          type: string
+        estado_seguimiento_2:
+          type: string
+        observacion_revision_2:
+          type: string
+        seguimiento_3:
+          type: string
+        evidencia_comentarios_seg_3:
+          type: string
+        estado_seguimiento_3:
+          type: string
+        observacion_revision_3:
+          type: string
+        seguimiento_4:
+          type: string
+        evidencia_comentarios_seg_4:
+          type: string
+        estado_seguimiento_4:
+          type: string
+        observacion_revision_4:
+          type: string
+        seguimiento_5:
+          type: string
+        evidencia_comentarios_seg_5:
+          type: string
+        estado_seguimiento_5:
+          type: string
+        observacion_revision_5:
+          type: string
+      example:
+        usuario: Emma Hernández
+        tipo_documento: CEDULA
+        documento: '987650000'
+        tipo_usuario: Administrativo
+        email: emma@noexiste.com
+        negocio: Desarrollo de Software
+        empresa: talento ltda
+        uen: UEN App Moviles
+        vicepresidencia: Financiera
+        pais: Colombia
+        ciudad: Medellin
+        regional: Antioquia
+        sede: Medellín
+        cargo: Asistente Ejecutiva
+        nivel_organizacional: Ejecutivo
+        area: Presidencia
+        documento_jefe: '1123456'
+        nombre_jefe: Juan Ospina
+        tipo_objetivo: Objetivo área
+        perspectiva: Perspectiva del objetivo
+        objetivo_estrategico: Objetivo estrategico al que se apunta
+        indicador_iniciativa: Definición de nuevos procesos de mejora continua del área
+        descripcion_objetivo: Buscamos mejorar las ventas
+        estado_objetivo: Aprobado
+        observacion_revision: ok
+        peso: '50'
+        criterio: Las ventas incrementan un 80%
+        minimo_aceptable: '50'
+        meta_logro: '80'
+        seguimiento_1: Sin seguimientos iniciados
+        evidencia_comentarios_seg_1: ''
+        estado_seguimiento_1: Pendiente
+        observacion_revision_1: ''
+        seguimiento_2: ''
+        evidencia_comentarios_seg_2: ''
+        estado_seguimiento_2: Pendiente
+        observacion_revision_2: ''
+        seguimiento_3: ''
+        evidencia_comentarios_seg_3: ''
+        estado_seguimiento_3: Pendiente
+        observacion_revision_3: ''
+        seguimiento_4: ''
+        evidencia_comentarios_seg_4: ''
+        estado_seguimiento_4: Pendiente
+        observacion_revision_4: ''
+        seguimiento_5: ''
+        evidencia_comentarios_seg_5: ''
+        estado_seguimiento_5: Pendiente
+        observacion_revision_5: ''
     ErrorResponse:
       title: ErrorResponse
       type: object
@@ -7744,8 +8192,7 @@ components:
       flows:
         clientCredentials:
           tokenUrl: https://clientex.talento.cloud/html/oauth2/token/demo.json
-          scopes:
-            talento.read: "Permiso para leer datos de talento, esta obsoleto y se removerá próximamente"
+          scopes:            
             talento.seleccion.read: "Permiso para leer datos de selección. Todos los endpoints de Selección, incluido seguimiento por etapas"
             talento.hojavida.read: "Datos básicos y experiencia laboral"
             talento.hojavida.nomina.read: "Información de nómina, conceptos y novedades de nómina, y los campos sensibles: salario, banco y cuenta, grupo sanguíneo, etnia, discapacidad, peso y estatura"
@@ -7754,10 +8201,12 @@ components:
             talento.competencias.read: "Procesos y detalle de valoración"
             talento.formacion.read: "Años, temas y avance por tema"
             talento.dec.read: "Procesos, temporadas y reporte de operativos"
+            talento.objetivossmart.read: "Procesos y resultados consolidados de gestión de objetivos SMART"
             talento.usuarios.write: "Carga masiva de usuarios"
+            talento.read: "Permiso para leer datos de talento, esta obsoleto y se removerá próximamente"
 security:
 - oauth2:
-      - talento.read
+      - talento.hojavida.read
 tags:
 - name: Autenticación
   description: Endpoints para autenticación y obtención de tokens de acceso OAuth 2.0.
@@ -7775,3 +8224,5 @@ tags:
   description: Endpoints para consulta de años, temas y reporte de avance en el módulo de Formación.
 - name: DEC
   description: Endpoints para consulta de procesos, temporadas y reporte de operativos en el módulo de DEC.
+- name: ObjetivosSMART
+  description: Endpoints para consulta de procesos y resultados consolidados de gestión de objetivos SMART.
