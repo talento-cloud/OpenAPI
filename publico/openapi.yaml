@@ -161,7 +161,7 @@ paths:
       tags:
       - HojaVida
       summary: HojaVida - Información de nómina
-      description: Endpoint donde se lista la información de nómina de las hojas de vida de usuarios activos de talento cloud. Las fechas se entregan en formato yyyy-mm-dd
+      description: Endpoint donde se lista la información de nómina de las hojas de vida de usuarios activos de talento cloud. Las fechas se entregan en formato yyyy-mm-dd. Los datos se entregan de forma paginada.
       security:
         - oauth2:
             - talento.hojavida.nomina.read
@@ -3055,6 +3055,180 @@ paths:
                       estado_seguimiento_5: Pendiente
                       observacion_revision_5: ''
                     total: 10  
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
+  /html/v1/public/objetivossmart/modelosMapaTalento.json:
+    get:
+      tags:
+      - ObjetivosSMART
+      summary: MapaTalento - Modelos
+      description: Endpoint donde se lista todos los procesos de modelos de mapa de talento activos.
+      security:
+        - oauth2:
+            - talento.objetivossmart.read
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/objetivossmart/modelosMapaTalento.json' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: ObjetivosSMART-ModelosMapaTalento
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ObjetivosSMART_modelosMapaTalento'
+                - example:
+                    data:
+                    - codigo: 37
+                      nombre: Mapa de talento DEC Operativo
+                    - codigo: 35
+                      nombre: Mapa de talento Administrativos
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
+  /html/v1/public/objetivossmart/temporadasMapaTalento/{codModeloProceso}.json:
+    get:
+      tags:
+      - ObjetivosSMART
+      summary: MapaTalento - Temporadas
+      description: Endpoint donde se lista las temporadas de un mapa de talento activos.
+      security:
+        - oauth2:
+            - talento.objetivossmart.read
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/objetivossmart/temporadasMapaTalento/35.json' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: ObjetivosSMART-TemporadasMapaTalento
+      parameters:
+      - name: codModeloProceso
+        in: path
+        required: true
+        description: Código del modelo de mapa de talento capturado en el endpoint "MapaTalento - Modelos".
+        schema:
+          type: integer
+          example: 35
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ObjetivosSMART_temporadasMapaTalento'
+                - example:
+                    data:
+                    - codigo: 34
+                      nombre: Temporada final (Cierre de la evaluación)
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
+  /html/v1/public/objetivossmart/informe/modeloMapaDesempenio/{codModeloProceso}/{codTemporada}.json:
+    get:
+      tags:
+      - ObjetivosSMART
+      summary: MapaTalento - Modelo mapa de desempeño
+      description: Endpoint donde se lista json con reporte de Modelo mapa de desempeño de un modelo de mapa de talento de la temporada indicada. Se lista de forma paginada.
+      security:
+        - oauth2:
+            - talento.objetivossmart.read
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/objetivossmart/informe/modeloMapaDesempenio/35/34.json?start=0&limit=100' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: ObjetivosSMART-ModeloMapaDesempenio
+      parameters:
+      - name: codModeloProceso
+        in: path
+        required: true
+        description: Código del modelo de mapa de talento capturado en el endpoint "MapaTalento - Modelos".
+        schema:
+          type: integer
+          example: 35
+      - name: codTemporada
+        in: path
+        required: true
+        description: Código de la temporada capturado en el endpoint "MapaTalento - Temporadas".
+        schema:
+          type: integer
+          example: 34
+      - name: start
+        in: query
+        required: false
+        description: Número de registro inicial para paginación (por defecto 0).
+        schema:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          example: 0
+      - name: limit
+        in: query
+        required: false
+        description: Cantidad máxima de registros a retornar (por defecto 100, máximo 100).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          minimum: 1
+          maximum: 100
+          example: 100
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ObjetivosSMART_modeloMapaDesempenio'
+                - example:
+                    data:
+                    - usuario: Carlos Perez
+                      tipo_documento: CEDULA
+                      documento: '1234567890'
+                      tipo_usuario: Administrativo
+                      email: carlos@mail.net
+                      negocio: Desarrollo de Software
+                      empresa: talento sas
+                      uen: UEN App Moviles
+                      vicepresidencia: VP de Operaciones
+                      pais: Colombia
+                      ciudad: Medellin
+                      regional: Antioquia
+                      sede: Medellín
+                      cargo: Gerente de Calidad y Soporte
+                      nivel_organizacional: Gerencial
+                      area: Operaciones
+                      documento_jefe: '102000000'
+                      nombre_jefe: Juan Ospina
+                      evaluador: 'Líder: Juan Ospina, Par: Catalina Fernandez, Par: Maria Barranquero, Par: Andres Salazar, Autoevaluación: Carlos Perez'
+                      potencial: 60.79367
+                      objetivo_estrategico: 75.0
+                      objetivo_area: 75.0
+                      desarrollo_individual: 75.0
+                      desempenio_general: 75.0
+                      total_talento: '67,9'
+                      cuadrante_mapa_talento: Moderado Competencia en Desarrollo
+                    total: 12
                     success: true
         '401':
           $ref: '#/components/responses/UnauthorizedError'
@@ -8553,6 +8727,203 @@ components:
         evidencia_comentarios_seg_5: ''
         estado_seguimiento_5: Pendiente
         observacion_revision_5: ''
+    ObjetivosSMART_modelosMapaTalento:
+      title: ObjetivosSMART_modelosMapaTalento
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjetivosSMARTModelosMapaTalentoItem'
+        success:
+          type: boolean
+      example:
+        data:
+        - codigo: 37
+          nombre: Mapa de talento DEC Operativo
+        - codigo: 35
+          nombre: Mapa de talento Administrativos
+        success: true
+    ObjetivosSMARTModelosMapaTalentoItem:
+      title: ObjetivosSMARTModelosMapaTalentoItem
+      required:
+      - codigo
+      - nombre
+      type: object
+      properties:
+        codigo:
+          type: integer
+        nombre:
+          type: string
+      example:
+        codigo: 37
+        nombre: Mapa de talento DEC Operativo
+    ObjetivosSMART_temporadasMapaTalento:
+      title: ObjetivosSMART_temporadasMapaTalento
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjetivosSMARTTemporadasMapaTalentoItem'
+        success:
+          type: boolean
+      example:
+        data:
+        - codigo: 34
+          nombre: Temporada final (Cierre de la evaluación)
+        success: true
+    ObjetivosSMARTTemporadasMapaTalentoItem:
+      title: ObjetivosSMARTTemporadasMapaTalentoItem
+      required:
+      - codigo
+      - nombre
+      type: object
+      properties:
+        codigo:
+          type: integer
+        nombre:
+          type: string
+      example:
+        codigo: 34
+        nombre: Temporada final (Cierre de la evaluación)
+    ObjetivosSMART_modeloMapaDesempenio:
+      title: ObjetivosSMART_modeloMapaDesempenio
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjetivosSMARTModeloMapaDesempenioItem'
+        total:
+          type: integer
+        success:
+          type: boolean
+      example:
+        data:
+        - usuario: Carlos Perez
+          tipo_documento: CEDULA
+          documento: '1234567890'
+          tipo_usuario: Administrativo
+          email: carlos@mail.net
+          negocio: Desarrollo de Software
+          empresa: talento sas
+          uen: UEN App Moviles
+          vicepresidencia: VP de Operaciones
+          pais: Colombia
+          ciudad: Medellin
+          regional: Antioquia
+          sede: Medellín
+          cargo: Gerente de Calidad y Soporte
+          nivel_organizacional: Gerencial
+          area: Operaciones
+          documento_jefe: '102000000'
+          nombre_jefe: Juan Ospina
+          evaluador: 'Líder: Juan Ospina, Par: Catalina Fernandez, Par: Maria Barranquero, Par: Andres Salazar, Autoevaluación: Carlos Perez'
+          potencial: 60.79367
+          objetivo_estrategico: 75.0
+          objetivo_area: 75.0
+          desarrollo_individual: 75.0
+          desempenio_general: 75.0
+          total_talento: '67,9'
+          cuadrante_mapa_talento: Moderado Competencia en Desarrollo
+        total: 12
+        success: true
+    ObjetivosSMARTModeloMapaDesempenioItem:
+      title: ObjetivosSMARTModeloMapaDesempenioItem
+      type: object
+      properties:
+        usuario:
+          type: string
+        tipo_documento:
+          type: string
+        documento:
+          type: string
+        tipo_usuario:
+          type: string
+        email:
+          type: string
+        negocio:
+          type: string
+        empresa:
+          type: string
+        uen:
+          type: string
+        vicepresidencia:
+          type: string
+        pais:
+          type: string
+        ciudad:
+          type: string
+        regional:
+          type: string
+        sede:
+          type: string
+        cargo:
+          type: string
+        nivel_organizacional:
+          type: string
+        area:
+          type: string
+        documento_jefe:
+          type: string
+        nombre_jefe:
+          type: string
+        evaluador:
+          type: string
+        potencial:
+          type: number
+        objetivo_estrategico:
+          type: number
+        objetivo_area:
+          type: number
+        desarrollo_individual:
+          type: number
+        desempenio_general:
+          type: number
+        total_talento:
+          oneOf:
+          - type: number
+          - type: string
+          description: Puede ser un número o el texto "Pendiente"
+        cuadrante_mapa_talento:
+          type: string
+      example:
+        usuario: Carlos Perez
+        tipo_documento: CEDULA
+        documento: '1234567890'
+        tipo_usuario: Administrativo
+        email: carlos@mail.net
+        negocio: Desarrollo de Software
+        empresa: talento sas
+        uen: UEN App Moviles
+        vicepresidencia: VP de Operaciones
+        pais: Colombia
+        ciudad: Medellin
+        regional: Antioquia
+        sede: Medellín
+        cargo: Gerente de Calidad y Soporte
+        nivel_organizacional: Gerencial
+        area: Operaciones
+        documento_jefe: '102000000'
+        nombre_jefe: Juan Ospina
+        evaluador: 'Líder: Juan Ospina, Par: Catalina Fernandez, Par: Maria Barranquero, Par: Andres Salazar, Autoevaluación: Carlos Perez'
+        potencial: 60.79367
+        objetivo_estrategico: 75.0
+        objetivo_area: 75.0
+        desarrollo_individual: 75.0
+        desempenio_general: 75.0
+        total_talento: '67,9'
+        cuadrante_mapa_talento: Moderado Competencia en Desarrollo
     ErrorResponse:
       title: ErrorResponse
       type: object
