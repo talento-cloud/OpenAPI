@@ -1,0 +1,1164 @@
+openapi: 3.0.3
+info:
+  title: Talento Cloud - API de Carga Masiva de Estructura Organizacional
+  version: 2.0.0
+  description: |
+    Documentación del microservicio que carga la **estructura organizacional** (las posiciones y quién ocupa
+    cada una) de forma masiva, a partir de un archivo `.xlsx`, con validación fila a fila y una vista previa de
+    los cambios antes de aplicar nada.
+
+    Solo pueden usar esta API personas marcadas como **administradoras del sistema**. Esto se verifica contra la
+    base de datos del tenant en cada llamada (no basta con el rol `ADMINISTRADOR` del token).
+
+    ## Qué hace: carga total
+    Una **posición** es un cargo con su ocupante (una posición sin ocupante es una vacante). La plantilla se
+    descarga con **todos los colaboradores activos** y el archivo representa la **estructura completa**:
+
+    | Situación del colaborador | Qué hace la carga con su posición |
+    |---|---|
+    | Viene en el archivo, es válido y no tiene posición | La **crea**, con su cargo actual y debajo de la posición de su líder. |
+    | Viene y su posición ya es así | **Sin cambios**. |
+    | Viene y su posición tiene otro cargo u otro padre | La **actualiza** (conserva su código). |
+    | Viene pero su fila se rechaza | **No se toca** su posición actual. |
+    | **No viene** en el archivo (o viene inactivo o bloqueado) | La **elimina** de forma lógica; si tiene posiciones subordinadas que siguen activas, no se elimina: queda **vacante**. |
+    | Tiene varias posiciones | Conserva una y elimina las demás: un colaborador solo ocupa una posición. |
+
+    Las vacantes que ya existen se conservan. La carga **nunca modifica los usuarios**: no cambia el cargo ni el
+    jefe de nadie; la posición se construye a partir de `usuarios.cargoid` (cargo) y `usuarios.jefe` (la
+    posición del líder es el padre). Si alguno de esos datos es incorrecto, se corrige en el sistema y se
+    descarga de nuevo la plantilla.
+
+    > **Atención:** como quien no viene sale de la estructura, subir un archivo con pocas filas elimina a los
+    > demás. Revise siempre `GET /cargas/{id}/cambios` (en especial `ELIMINAR` y `DESOCUPAR`) antes de
+    > confirmar.
+
+    ## Flujo de uso
+    1. `GET /plantilla` descarga la plantilla oficial `.xlsx` (versión 3) en el idioma solicitado: una hoja
+       **Instrucciones** y la hoja **Usuarios**, prellenada con todos los colaboradores activos.
+    2. `POST /cargas` crea el registro de la carga y devuelve una URL prefirmada de S3 para subir el archivo
+       directamente desde el cliente (en desarrollo local, sin S3, se sube con
+       `PUT /cargas/{id}/archivo` a este mismo servicio).
+    3. `POST /cargas/{id}/validar` inicia la validación en segundo plano (`202 Accepted`). Mientras tanto,
+       `GET /cargas/{id}` permite hacer *polling* del progreso; la respuesta trae `sugerenciaPollingMs` con el
+       intervalo recomendado para la siguiente consulta. **Validar no modifica la estructura.**
+    4. Con la carga en estado `VALIDADA`, se revisan los resultados con `GET /cargas/{id}/mensajes` (log de
+       reglas violadas), `GET /cargas/{id}/filas` (detalle fila a fila) y
+       **`GET /cargas/{id}/cambios`** (vista previa de lo que la carga va a crear, actualizar, eliminar y
+       desocupar). `GET /cargas/{id}/log` entrega todo como `.xlsx` descargable.
+    5. `POST /cargas/{id}/confirmar` aplica la carga total en segundo plano (`202 Accepted`), en una sola
+       transacción.
+    6. `GET /cargas/{id}/resultado` da el resumen final (conteos, motivos por regla y cambios por acción).
+       `GET /cargas/{id}/cambios` queda como auditoría de lo aplicado. `GET /cargas` lista el historial
+       (últimas 20 cargas del tenant).
+    7. `DELETE /cargas/{id}` descarta una carga en estado `CREADA` o `VALIDADA` y libera el cupo del tenant.
+
+    Solo puede existir **una carga activa por tenant** a la vez (estados `CREADA`, `VALIDANDO`, `VALIDADA` o
+    `APLICANDO`); crear una nueva mientras hay una activa responde `409` (`error.carga_activa`).
+
+    ## Plantilla (versión 3)
+    La hoja **Usuarios** tiene 9 columnas; el encabezado se valida por posición (no por texto). Ninguna hoja está
+    bloqueada: para sacar a alguien de la estructura se elimina su fila.
+
+    | Col | Encabezado (es) | Origen al descargar | Al cargar |
+    |---|---|---|---|
+    | A | Código usuario | `usuarios.codigo` | Obligatorio. Identifica al colaborador. |
+    | B | Nro. documento | `usuarios.nrodocumento` | Referencia. |
+    | C | Nombre | `usuarios.nombrecompleto` | Referencia. |
+    | D | Código cargo externo | `cargo.id_nomina` | Opcional; si viene, debe corresponder al cargo interno. |
+    | E | Código cargo interno | `usuarios.cargoid` | Obligatorio; debe ser el cargo actual del colaborador. |
+    | F | Nombre cargo | `cargo.nombre` | Referencia. |
+    | G | Área | Área del colaborador (o la de su cargo) | Referencia. |
+    | H | Nivel organizacional | `tipocargo.nombre` | Referencia. |
+    | I | Código cargo padre | Cargo del jefe del colaborador | Debe ser el cargo del líder; vacío solo en la raíz. |
+
+    El **líder** del colaborador (su jefe en el sistema) también debe venir en el archivo, y el código de cargo
+    padre debe ser el cargo de ese líder. Solo puede haber una raíz (el colaborador sin líder).
+
+    Formato: `.xlsx` sin macros, fórmulas ni enlaces externos; máximo 5 MB y 20.000 filas. Las plantillas de
+    versiones anteriores (v1 y v2) se rechazan con la regla `A002`.
+
+    ## Idioma de las respuestas
+    Los textos (`message`, los campos `*Texto`, los nombres de hoja y los mensajes de validación de cada fila) se
+    resuelven en este orden de prioridad: parámetro de query `?locale=`, cabecera `Accept-Language`, idioma
+    guardado en el token JWT, y por defecto `es`. Idiomas soportados: `es`, `en`.
+
+    ## Envolvente de error
+    Toda respuesta de error (4xx/5xx) usa el mismo formato (ver `ErrorResponse`):
+    ```json
+    { "success": false, "codigo": "error.solicitud", "message": "Solicitud inválida: tamano." }
+    ```
+    `codigo` es una clave estable pensada para lógica de cliente; `message` ya viene traducido al idioma
+    resuelto.
+
+    | HTTP | `codigo` típico | Cuándo ocurre |
+    |------|------------------|---------------|
+    | `400` | `error.solicitud` | Parámetro faltante o con formato inválido (incluye un valor desconocido en los filtros `accion`, `severidad` o `resultado`). |
+    | `401` | `error.no_autorizado` | Token JWT ausente, mal formado, expirado, o de un tenant no registrado. |
+    | `403` | `error.prohibido` | La persona autenticada no es administradora del sistema del tenant. |
+    | `404` | `error.no_encontrado` | La carga solicitada no existe o no pertenece al tenant. |
+    | `409` | `error.carga_activa` / `error.estado_invalido` / `error.archivo_faltante` / `error.sin_aceptadas` | Ya hay una carga activa; la operación no aplica al estado actual; aún no se subió el archivo; o no hay filas aceptadas para confirmar. |
+    | `413` | `regla.A001.tamano` | El archivo declarado o subido excede el tamaño máximo permitido (por defecto 5 MB). |
+    | `500` | `error.tecnico` | Error inesperado; la respuesta trae solo una referencia corta para buscar en el log del servidor, nunca el detalle interno. |
+    | `503` | `error.tecnico` | No se pudo consultar el registro de tenants (problema temporal de infraestructura). |
+
+    ## Catálogo de reglas de validación
+    El detalle fila a fila (`GET /cargas/{id}/filas` y `GET /cargas/{id}/mensajes`) usa estos códigos en el campo
+    `regla`; el campo `mensaje` de cada `MensajeDto` ya viene traducido y listo para mostrar. **Una fila rechazada
+    nunca provoca eliminaciones**: el colaborador conserva su posición actual.
+
+    **Nivel archivo** (`A0xx`): el archivo se rechaza completo (`estado = RECHAZADA_ARCHIVO`), no se guarda ninguna
+    fila y no se cambia nada.
+
+    | Código | Motivo |
+    |---|---|
+    | `A001` | No es un `.xlsx` válido, excede el tamaño o las filas máximas, tiene macros o enlaces externos, no tiene filas de colaboradores, o falló un control de seguridad del archivo. |
+    | `A002` | No se encontró la información de la plantilla oficial, falta la hoja Usuarios, o la versión de la plantilla no es la vigente. |
+    | `A003` | El número de columnas no coincide con las 9 esperadas, o hay datos fuera de ellas. |
+    | `A004` | Una celda tiene una fórmula o un error en vez de un valor. |
+
+    **Nivel fila** (`E0xx`): se rechaza esa fila, con su motivo.
+
+    | Código | Motivo |
+    |---|---|
+    | `E010` | Código de usuario vacío, no numérico o inexistente, o colaborador inactivo, bloqueado o eliminado. |
+    | `E011` | El colaborador está repetido en el archivo (se rechazan todas sus filas). |
+    | `E020` | Código de cargo interno vacío, no numérico o distinto al cargo actual del colaborador; colaborador sin cargo; cargo inexistente o inactivo. |
+    | `E021` | El código de cargo externo no corresponde al cargo interno, o el cargo no tiene código externo registrado. |
+    | `E030` | El líder no existe, está inactivo, bloqueado o eliminado, o **no viene en el archivo**. |
+    | `E031` | Los líderes forman una jerarquía circular. |
+    | `E032` | Raíz no permitida: ya existe otra raíz, o hay varias en el archivo. |
+    | `E033` | El código de cargo padre está vacío o no es el cargo del líder del colaborador (o se informó en la raíz). |
+    | `E060` | Rechazada en cascada porque la fila de su líder fue rechazada (el mensaje indica la fila causa). |
+
+    **Informativos** (`I1xx`): `I100` resumen de la carga, `I101` el colaborador ya ocupa esa posición (sin
+    cambios), `I102` su posición se actualizará.
+
+servers:
+  - url: https://{tenant}.talento.cloud/api
+    description: Producción (reemplazar `{tenant}` por el subdominio del cliente).
+    variables:
+      tenant:
+        default: demo
+  - url: https://{tenant}.talento-dev.cloud/api
+    description: Desarrollo / demo.
+    variables:
+      tenant:
+        default: demo
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: Plantilla
+    description: Descarga de la plantilla oficial .xlsx (versión 3) con todos los colaboradores activos.
+  - name: Cargas
+    description: Ciclo de vida de una carga - crear, subir, validar, confirmar, consultar estado, descartar.
+  - name: Resultados
+    description: Consulta de mensajes, filas, vista previa de cambios, resumen y log de una carga ya validada.
+
+paths:
+
+  # -------------------- PLANTILLA --------------------
+  /arquitectura/estructura-organizacional/carga/plantilla:
+    get:
+      tags: [Plantilla]
+      summary: Descarga la plantilla oficial.
+      description: >
+        Genera y descarga la plantilla `.xlsx` vigente (versión 3) traducida al idioma pedido. Trae dos hojas:
+        **Instrucciones** (primera, con las reglas) y **Usuarios**, prellenada con **todos los colaboradores
+        activos** (no bloqueados ni eliminados), tengan o no posición, en el orden del árbol de líderes. Cada fila
+        trae el código de usuario, el documento, el nombre, el código de cargo externo (`id_nomina`) e interno, el
+        nombre del cargo, el área, el nivel organizacional y el código del cargo padre (el cargo del jefe). Para
+        sacar a alguien de la estructura se elimina su fila. Ver la sección «Plantilla (versión 3)» de la
+        descripción general.
+      operationId: descargarPlantilla
+      parameters:
+        - $ref: '#/components/parameters/locale'
+      responses:
+        '200':
+          description: Archivo `.xlsx` de la plantilla.
+          headers:
+            Content-Disposition:
+              schema:
+                type: string
+                example: attachment; filename="plantilla_estructura_organizacional.xlsx"
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/NoAutorizado'
+        '403':
+          $ref: '#/components/responses/Prohibido'
+
+  # -------------------- CARGAS --------------------
+  /arquitectura/estructura-organizacional/carga/cargas:
+    post:
+      tags: [Cargas]
+      summary: Crea una carga y devuelve la URL de subida.
+      description: >
+        Crea el registro de la carga (estado inicial `CREADA`) y devuelve una URL prefirmada de S3 (o, en
+        desarrollo local, la ruta de subida directa a este servicio) para subir el archivo. Falla con `409` si
+        ya existe una carga activa para el tenant.
+      operationId: crearCarga
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CrearCargaRequest'
+      responses:
+        '201':
+          description: Carga creada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrearCargaResponse'
+        '400':
+          $ref: '#/components/responses/SolicitudInvalida'
+        '401':
+          $ref: '#/components/responses/NoAutorizado'
+        '403':
+          $ref: '#/components/responses/Prohibido'
+        '409':
+          description: Ya existe una carga activa para este tenant (`error.carga_activa`).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: El tamaño declarado excede el máximo permitido (`regla.A001.tamano`).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      tags: [Cargas]
+      summary: Historial de cargas (últimas 20).
+      operationId: listarCargas
+      parameters:
+        - $ref: '#/components/parameters/locale'
+      responses:
+        '200':
+          description: Últimas cargas del tenant, más reciente primero.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CargaDto'
+        '401':
+          $ref: '#/components/responses/NoAutorizado'
+        '403':
+          $ref: '#/components/responses/Prohibido'
+
+  /arquitectura/estructura-organizacional/carga/cargas/{id}/archivo:
+    put:
+      tags: [Cargas]
+      summary: Sube el archivo (solo desarrollo local).
+      description: >
+        En producción el archivo se sube directo a S3 con la URL prefirmada devuelta por
+        `POST /cargas`; este endpoint solo existe para desarrollo local sin S3, y responde `404` si el
+        almacenamiento activo no admite subida directa. Exige que la carga esté en estado `CREADA`.
+      operationId: subirArchivoLocal
+      parameters:
+        - $ref: '#/components/parameters/idCarga'
+      requestBody:
+        required: true
+        content:
+          application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '204':
+          description: Archivo recibido.
+        '401':
+          $ref: '#/components/responses/NoAutorizado'
+        '403':
+          $ref: '#/components/responses/Prohibido'
+        '404':
+          description: >
+            La carga no existe, no pertenece al tenant, o el almacenamiento activo no admite subida directa
+            (`error.no_encontrado`).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: La carga no está en estado `CREADA` (`error.estado_invalido`).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: El archivo excede el tamaño máximo permitido (`regla.A001.tamano`).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /arquitectura/estructura-organizacional/carga/cargas/{id}/validar:
+    post:
+      tags: [Cargas]
+      summary: Inicia la validación (asíncrona).
+      description: >
+        Encola la validación del archivo subido y responde de inmediato con `202`. Use
+        `GET /cargas/{id}` para hacer *polling* del progreso hasta que el estado sea `VALIDADA`,
+        `RECHAZADA_ARCHIVO` o `FALLIDA`.
+      operationId: validarCarga
+      parameters:
+        - $ref: '#/components/parameters/idCarga'
+        - $ref: '#/components/parameters/locale'
+      responses:
+        '202':
+          description: Validación encolada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Accepted'
+        '401':
+          $ref: '#/components/responses/NoAutorizado'
+        '403':
+          $ref: '#/components/responses/Prohibido'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: >
+            Aún no se subió el archivo (`error.archivo_faltante`) o la carga no está en un estado que admita
+            validar (`error.estado_invalido`).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /arquitectura/estructura-organizacional/carga/cargas/{id}:
+    get:
+      tags: [Cargas]
+      summary: Estado y progreso de una carga.
+      description: "Pensado para *polling*: incluye estado, paso del asistente, etapa con contadores, resumen legible y acciones habilitadas en este momento."
+      operationId: obtenerCarga
+      parameters:
+        - $ref: '#/components/parameters/idCarga'
+        - $ref: '#/components/parameters/locale'
+      responses:
+        '200':
+          description: Estado actual de la carga.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CargaDto'
+        '401':
+          $ref: '#/components/responses/NoAutorizado'
+        '403':
+          $ref: '#/components/responses/Prohibido'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+    delete:
+      tags: [Cargas]
+      summary: Descarta una carga.
+      description: >
+        Solo admite cargas en estado `CREADA` o `VALIDADA`. Libera el cupo de carga activa del tenant.
+      operationId: descartarCarga
+      parameters:
+        - $ref: '#/components/parameters/idCarga'
+        - $ref: '#/components/parameters/locale'
+      responses:
+        '200':
+          description: Carga descartada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Accepted'
+        '401':
+          $ref: '#/components/responses/NoAutorizado'
+        '403':
+          $ref: '#/components/responses/Prohibido'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: La carga no está en estado `CREADA` ni `VALIDADA` (`error.estado_invalido`).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /arquitectura/estructura-organizacional/carga/cargas/{id}/confirmar:
+    post:
+      tags: [Cargas]
+      summary: Aplica la carga total (asíncrono).
+      description: >
+        Encola la aplicación de la carga y responde de inmediato con `202`. Antes de escribir **revalida** todo
+        contra el estado actual de la base (un usuario pudo cambiar entre validar y confirmar) y, en una sola
+        transacción y bajo un bloqueo por tenant: elimina o desocupa las posiciones de quien no viene, crea las
+        posiciones nuevas, actualiza el cargo y el padre de las que cambian y recalcula los niveles jerárquicos de
+        toda la estructura. No modifica los usuarios. Una fila rechazada nunca provoca eliminaciones. Revise
+        `GET /cargas/{id}/cambios` antes de llamar a este endpoint. Requiere que la carga esté `VALIDADA` y tenga
+        al menos una fila aceptada.
+      operationId: confirmarCarga
+      parameters:
+        - $ref: '#/components/parameters/idCarga'
+        - $ref: '#/components/parameters/locale'
+      responses:
+        '202':
+          description: Aplicación encolada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Accepted'
+        '401':
+          $ref: '#/components/responses/NoAutorizado'
+        '403':
+          $ref: '#/components/responses/Prohibido'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: >
+            La carga no está `VALIDADA` (`error.estado_invalido`) o no tiene filas aceptadas para aplicar
+            (`error.sin_aceptadas`).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # -------------------- RESULTADOS --------------------
+  /arquitectura/estructura-organizacional/carga/cargas/{id}/mensajes:
+    get:
+      tags: [Resultados]
+      summary: Log de mensajes de validación, paginado.
+      operationId: mensajesCarga
+      parameters:
+        - $ref: '#/components/parameters/idCarga'
+        - $ref: '#/components/parameters/locale'
+        - name: severidad
+          in: query
+          description: Filtra por severidad del mensaje.
+          schema:
+            $ref: '#/components/schemas/Severidad'
+        - $ref: '#/components/parameters/pagina'
+        - $ref: '#/components/parameters/tamanoPagina'
+      responses:
+        '200':
+          description: Página de mensajes.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginaMensajes'
+        '401':
+          $ref: '#/components/responses/NoAutorizado'
+        '403':
+          $ref: '#/components/responses/Prohibido'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /arquitectura/estructura-organizacional/carga/cargas/{id}/filas:
+    get:
+      tags: [Resultados]
+      summary: Vista previa fila a fila, paginada.
+      description: >
+        Resultado (`ACEPTADA`/`RECHAZADA`), acción a realizar y motivos de cada fila del archivo (un colaborador
+        por fila), ordenadas por hoja y fila. Una fila se identifica con `hoja` + `fila`.
+      operationId: filasCarga
+      parameters:
+        - $ref: '#/components/parameters/idCarga'
+        - $ref: '#/components/parameters/locale'
+        - name: resultado
+          in: query
+          description: Filtra por resultado de la fila.
+          schema:
+            type: string
+            enum: [ACEPTADA, RECHAZADA]
+        - $ref: '#/components/parameters/pagina'
+        - $ref: '#/components/parameters/tamanoPagina'
+      responses:
+        '200':
+          description: Página de filas.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginaFilas'
+        '401':
+          $ref: '#/components/responses/NoAutorizado'
+        '403':
+          $ref: '#/components/responses/Prohibido'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /arquitectura/estructura-organizacional/carga/cargas/{id}/cambios:
+    get:
+      tags: [Resultados]
+      summary: Cambios sobre la estructura (vista previa y auditoría), paginado.
+      description: >
+        Lo que la carga total hace sobre la estructura, un registro por cambio. Antes de confirmar es la **vista
+        previa** (`aplicado: false`); después de aplicar es la **auditoría** de lo que se hizo (`aplicado: true`,
+        con los códigos reales de las posiciones creadas), con el valor anterior y el nuevo.
+
+
+        Las acciones son `CREAR` (posición nueva para quien no tenía), `ACTUALIZAR` (cambia el cargo y/o el padre de
+        una posición existente), `ELIMINAR` (la posición sale de la estructura, de forma lógica) y `DESOCUPAR` (la
+        posición no se elimina porque tiene un equipo debajo: queda vacante y el colaborador sale). `ELIMINAR` y
+        `DESOCUPAR` corresponden a colaboradores que **no vinieron en el archivo**, vinieron inactivos, o a
+        posiciones repetidas de un colaborador, así que no tienen fila del archivo. Lo que queda sin cambios no se
+        lista.
+
+
+        **Revise este endpoint, en especial `ELIMINAR` y `DESOCUPAR`, antes de confirmar.**
+      operationId: cambiosCarga
+      parameters:
+        - $ref: '#/components/parameters/idCarga'
+        - $ref: '#/components/parameters/locale'
+        - name: accion
+          in: query
+          description: Filtra por tipo de cambio. Un valor desconocido responde `400`.
+          schema:
+            $ref: '#/components/schemas/AccionCambio'
+        - $ref: '#/components/parameters/pagina'
+        - $ref: '#/components/parameters/tamanoPagina'
+      responses:
+        '200':
+          description: Página de cambios.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginaCambios'
+        '400':
+          $ref: '#/components/responses/SolicitudInvalida'
+        '401':
+          $ref: '#/components/responses/NoAutorizado'
+        '403':
+          $ref: '#/components/responses/Prohibido'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /arquitectura/estructura-organizacional/carga/cargas/{id}/resultado:
+    get:
+      tags: [Resultados]
+      summary: Resumen final de la carga.
+      description: >
+        Conteo de aceptados/rechazados, conteo de motivos agrupado por regla, conteo de cambios agrupado por acción
+        (crear, actualizar, eliminar, desocupar), y los mensajes de nivel general (no atados a una fila).
+      operationId: resultadoCarga
+      parameters:
+        - $ref: '#/components/parameters/idCarga'
+        - $ref: '#/components/parameters/locale'
+      responses:
+        '200':
+          description: Resumen de la carga.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultadoDto'
+        '401':
+          $ref: '#/components/responses/NoAutorizado'
+        '403':
+          $ref: '#/components/responses/Prohibido'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /arquitectura/estructura-organizacional/carga/cargas/{id}/log:
+    get:
+      tags: [Resultados]
+      summary: Descarga el log de resultados.
+      description: >
+        Genera un `.xlsx` con dos hojas: **Resultado** (una línea por mensaje; las filas aceptadas sin mensajes
+        aparecen una vez, con hoja, fila, códigos de usuario y de cargo, resultado, acción, regla, severidad y
+        mensaje) y **Cambios** (lo mismo que `GET /cargas/{id}/cambios`). Los textos van en el idioma pedido.
+      operationId: descargarLogCarga
+      parameters:
+        - $ref: '#/components/parameters/idCarga'
+        - $ref: '#/components/parameters/locale'
+      responses:
+        '200':
+          description: Archivo `.xlsx` con el log de la carga.
+          headers:
+            Content-Disposition:
+              schema:
+                type: string
+                example: attachment; filename="log_carga_123.xlsx"
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/NoAutorizado'
+        '403':
+          $ref: '#/components/responses/Prohibido'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >
+        Token JWT firmado con la llave del tenant (familia HMAC: HS256, HS384 o HS512 según el tamaño de la
+        llave configurada). El tenant se toma únicamente del claim `empresa` del token verificado; nunca de
+        cabeceras ni parámetros.
+
+  parameters:
+    idCarga:
+      name: id
+      in: path
+      required: true
+      description: Identificador de la carga.
+      schema:
+        type: integer
+        format: int64
+    locale:
+      name: locale
+      in: query
+      required: false
+      description: Fuerza el idioma de la respuesta (`es` o `en`). Si se omite, se usa `Accept-Language` y luego el idioma del token.
+      schema:
+        type: string
+        enum: [es, en]
+    pagina:
+      name: pagina
+      in: query
+      required: false
+      description: Número de página, empezando en 1.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    tamanoPagina:
+      name: tamano
+      in: query
+      required: false
+      description: Cantidad de elementos por página.
+      schema:
+        type: integer
+        minimum: 1
+        default: 50
+
+  responses:
+    NoAutorizado:
+      description: Token ausente, mal formado, expirado, o de un tenant no registrado (`error.no_autorizado`).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Prohibido:
+      description: La persona autenticada no es administradora del sistema del tenant (`error.prohibido`).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NoEncontrado:
+      description: La carga no existe o no pertenece al tenant (`error.no_encontrado`).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    SolicitudInvalida:
+      description: Parámetro faltante o con formato inválido (`error.solicitud`).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+  schemas:
+    ErrorResponse:
+      type: object
+      description: Envolvente uniforme de error para toda la API.
+      properties:
+        success:
+          type: boolean
+          example: false
+        codigo:
+          type: string
+          description: Clave i18n estable, util para logica de cliente.
+          example: error.solicitud
+        message:
+          type: string
+          description: Texto ya traducido al idioma resuelto de la peticion.
+          example: "Solicitud inválida: tamano."
+      required: [success, codigo, message]
+
+    EstadoCarga:
+      type: string
+      description: Ciclo de vida de la carga.
+      enum: [CREADA, VALIDANDO, VALIDADA, APLICANDO, APLICADA, RECHAZADA_ARCHIVO, FALLIDA, DESCARTADA, EXPIRADA]
+
+    PasoCarga:
+      type: string
+      description: Paso del asistente que la pantalla debe mostrar, derivado de `estado`.
+      enum: [SUBIR_ARCHIVO, VALIDANDO, REVISAR, APLICANDO, TERMINADA, ERROR_ARCHIVO, ERROR, CERRADA]
+
+    EtapaCarga:
+      type: string
+      description: Detalle de lo que se está haciendo mientras el estado es `VALIDANDO` o `APLICANDO`.
+      enum:
+        - EN_COLA
+        - LEYENDO_ARCHIVO
+        - GUARDANDO_FILAS
+        - CARGANDO_REFERENCIAS
+        - VALIDANDO_FILAS
+        - GUARDANDO_RESULTADOS
+        - REVALIDANDO
+        - ACTUALIZANDO_ESTRUCTURA
+        - CREANDO_POSICIONES
+        - FINALIZANDO
+
+    Severidad:
+      type: string
+      description: Severidad de un mensaje de validación.
+      enum: [RECHAZO, ADVERTENCIA, INFO]
+
+    AccionDto:
+      type: object
+      description: Una acción que la pantalla puede habilitar en este momento.
+      properties:
+        codigo:
+          type: string
+          description: Código estable de la acción.
+          enum:
+            - SUBIR_ARCHIVO
+            - VALIDAR
+            - DESCARTAR
+            - VER_FILAS
+            - VER_MENSAJES
+            - DESCARGAR_LOG
+            - CONFIRMAR
+            - VER_RESULTADO
+            - NUEVA_CARGA
+        texto:
+          type: string
+          description: Texto ya traducido para el botón/acción.
+      required: [codigo, texto]
+
+    CrearCargaRequest:
+      type: object
+      description: Datos del archivo que se va a subir (aún no el contenido).
+      properties:
+        nombreArchivo:
+          type: string
+          description: Nombre del archivo, debe terminar en `.xlsx`.
+          example: estructura_ventas_2026.xlsx
+        tamano:
+          type: integer
+          format: int64
+          description: Tamaño declarado en bytes; no puede exceder el máximo configurado (por defecto 5 MB).
+          example: 245678
+      required: [nombreArchivo, tamano]
+
+    SubidaDto:
+      type: object
+      description: Instrucciones para que el cliente suba el archivo directamente.
+      properties:
+        metodo:
+          type: string
+          example: PUT
+        url:
+          type: string
+          format: uri
+          description: URL prefirmada (S3) o local para la subida.
+        cabeceras:
+          type: object
+          additionalProperties:
+            type: string
+          description: Cabeceras que deben enviarse exactamente así en la petición de subida (p. ej. `Content-Type`, cifrado).
+        expira:
+          type: string
+          format: date-time
+          description: Momento en que la URL de subida deja de ser válida.
+      required: [metodo, url, cabeceras, expira]
+
+    CargaDto:
+      type: object
+      description: Estado completo de una carga, pensado para alimentar la pantalla y el polling.
+      properties:
+        id:
+          type: integer
+          format: int64
+        estado:
+          $ref: '#/components/schemas/EstadoCarga'
+        estadoTexto:
+          type: string
+          description: Texto del estado, ya traducido.
+        progreso:
+          type: integer
+          description: Porcentaje de avance (0-100).
+        etapa:
+          $ref: '#/components/schemas/EtapaCarga'
+        etapaTexto:
+          type: string
+          nullable: true
+          description: Texto de la etapa, con contadores si aplica (p. ej. "Guardando las filas - 12.000 de 20.000"). Nulo salvo mientras `VALIDANDO`/`APLICANDO`.
+        actual:
+          type: integer
+          nullable: true
+          description: Contador actual de la etapa en curso (solo mientras procesa).
+        total:
+          type: integer
+          nullable: true
+          description: Contador total de la etapa en curso (solo mientras procesa).
+        resumen:
+          type: string
+          description: Frase que describe el estado actual y qué hacer después.
+        paso:
+          $ref: '#/components/schemas/PasoCarga'
+        pasoTexto:
+          type: string
+          description: Texto del paso, ya traducido.
+        acciones:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccionDto'
+        sugerenciaPollingMs:
+          type: integer
+          description: Milisegundos sugeridos hasta la siguiente consulta de estado; 0 si no hace falta volver a consultar.
+        segundosSinActividad:
+          type: integer
+          format: int64
+          nullable: true
+          description: Solo mientras procesa - segundos desde la última actualización; si crece mucho, la carga podría estar detenida.
+        archivoSubido:
+          type: boolean
+          nullable: true
+          description: >-
+            true/false solo mientras `estado=CREADA` (¿ya llegó el archivo a S3?); null en cualquier otro estado,
+            donde no aplica. Permite confirmar la subida con polling antes de llamar a validar, en vez de
+            enterarse recién con un `error.archivo_faltante`.
+        nombreArchivo:
+          type: string
+          nullable: true
+        totalFilas:
+          type: integer
+          nullable: true
+        filasAceptadas:
+          type: integer
+          nullable: true
+        filasRechazadas:
+          type: integer
+          nullable: true
+        filasConAdvertencia:
+          type: integer
+          nullable: true
+        usuarioId:
+          type: integer
+          format: int64
+          description: Código del usuario que creó la carga.
+        creado:
+          type: string
+          format: date-time
+        modificado:
+          type: string
+          format: date-time
+          nullable: true
+        finalizado:
+          type: string
+          format: date-time
+          nullable: true
+      required: [id, estado, estadoTexto, progreso, resumen, paso, pasoTexto, acciones, sugerenciaPollingMs, usuarioId, creado]
+
+    CrearCargaResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        carga:
+          $ref: '#/components/schemas/CargaDto'
+        subida:
+          $ref: '#/components/schemas/SubidaDto'
+      required: [success, carga, subida]
+
+    Accepted:
+      type: object
+      description: Respuesta estándar de las operaciones asíncronas (`validar`, `confirmar`) y de `descartar`.
+      properties:
+        success:
+          type: boolean
+          example: true
+        carga:
+          $ref: '#/components/schemas/CargaDto'
+      required: [success, carga]
+
+    MensajeDto:
+      type: object
+      description: Un mensaje de validación (rechazo, advertencia o informativo), ya traducido.
+      properties:
+        severidad:
+          $ref: '#/components/schemas/Severidad'
+        severidadTexto:
+          type: string
+        regla:
+          type: string
+          description: Código de la regla que originó el mensaje (p. ej. `E030`, `E033`, `A001`). Ver el catálogo de reglas en la descripción general.
+        hoja:
+          type: string
+          nullable: true
+          enum: [USUARIO]
+          description: Hoja de la plantilla de la que viene la fila; nulo si el mensaje es del archivo completo.
+        hojaTexto:
+          type: string
+          nullable: true
+          description: Nombre de la hoja, ya traducido (el mismo de la plantilla, p. ej. `Usuarios`).
+        fila:
+          type: integer
+          nullable: true
+          description: Número de fila del Excel dentro de su hoja (1-based; la 1 es el encabezado); nulo si el mensaje no está atado a una fila.
+        columna:
+          type: string
+          nullable: true
+          description: Letra de la columna del Excel donde está el problema (p. ej. `E`).
+        valor:
+          type: string
+          nullable: true
+          description: Valor de la celda que originó el mensaje, si aplica.
+        clave:
+          type: string
+          description: Clave i18n del mensaje.
+        parametros:
+          type: array
+          items:
+            type: string
+        mensaje:
+          type: string
+          description: Texto final ya traducido, listo para mostrar.
+      required: [severidad, severidadTexto, regla, clave, parametros, mensaje]
+
+    FilaDto:
+      type: object
+      description: >
+        Resultado del procesamiento de una fila del archivo, que corresponde a un colaborador. Se identifica con
+        `hoja` + `fila`. `codigoCargo*` y `codigoCargoPadre` son los valores escritos en el archivo.
+      properties:
+        hoja:
+          type: string
+          enum: [USUARIO]
+          description: Hoja de la plantilla de la que viene la fila.
+        hojaTexto:
+          type: string
+          description: Nombre de la hoja, ya traducido.
+        fila:
+          type: integer
+          description: Número de fila del Excel dentro de su hoja (1-based; la 1 es el encabezado).
+        codigoUsuario:
+          type: string
+          nullable: true
+          description: Código de usuario del colaborador (columna A).
+        documento:
+          type: string
+          nullable: true
+          description: Nro. de documento (columna B), solo referencia.
+        codigoCargoExterno:
+          type: string
+          nullable: true
+          description: Código de cargo externo (columna D, `id_nomina`).
+        codigoCargo:
+          type: string
+          nullable: true
+          description: Código de cargo interno (columna E).
+        codigoCargoPadre:
+          type: string
+          nullable: true
+          description: Código de cargo padre (columna I).
+        resultado:
+          type: string
+          enum: [ACEPTADA, RECHAZADA]
+        resultadoTexto:
+          type: string
+        accion:
+          type: string
+          nullable: true
+          enum: [CREAR_POSICION, ACTUALIZAR_POSICION, SIN_CAMBIOS, NINGUNA]
+          description: >
+            Acción que se aplicará sobre la posición del colaborador: `CREAR_POSICION` (no tenía posición),
+            `ACTUALIZAR_POSICION` (conserva su posición pero cambia su cargo o su padre), `SIN_CAMBIOS` (ya está
+            como debe) o `NINGUNA` (fila rechazada: no se toca su posición actual).
+        accionTexto:
+          type: string
+          nullable: true
+        reglaPrincipal:
+          type: string
+          nullable: true
+          description: Código de la regla que determinó el resultado, si la fila fue rechazada.
+        nivelJerarquico:
+          type: integer
+          nullable: true
+          description: Nivel que tendrá su posición (el del líder + 1; la raíz es 1). Nulo si la fila fue rechazada.
+        posicionExistente:
+          type: integer
+          format: int64
+          nullable: true
+          description: Código de la posición actual que se conserva (`SIN_CAMBIOS` o `ACTUALIZAR_POSICION`).
+        posicionCreada:
+          type: integer
+          format: int64
+          nullable: true
+          description: Código de la posición creada por esta fila, una vez confirmada la carga.
+        mensajes:
+          type: array
+          items:
+            $ref: '#/components/schemas/MensajeDto'
+      required: [hoja, hojaTexto, fila, resultado, resultadoTexto, mensajes]
+
+    AccionCambio:
+      type: string
+      description: >
+        Tipo de cambio sobre la estructura: `CREAR`, `ACTUALIZAR`, `ELIMINAR` (borrado lógico) o `DESOCUPAR`
+        (la posición queda vacante porque conserva un equipo debajo).
+      enum: [CREAR, ACTUALIZAR, ELIMINAR, DESOCUPAR]
+
+    CambioDto:
+      type: object
+      description: >
+        Un cambio sobre la estructura: parte de la vista previa antes de confirmar (`aplicado: false`) y de la
+        auditoría después (`aplicado: true`).
+      properties:
+        accion:
+          $ref: '#/components/schemas/AccionCambio'
+        accionTexto:
+          type: string
+          description: Texto de la acción, ya traducido.
+        aplicado:
+          type: boolean
+          description: false = plan calculado al validar; true = lo que se hizo al confirmar.
+        hoja:
+          type: string
+          nullable: true
+          enum: [USUARIO]
+          description: Hoja de la fila que origina el cambio; nulo en `ELIMINAR` y `DESOCUPAR` (no tienen fila).
+        fila:
+          type: integer
+          nullable: true
+          description: Fila del archivo que origina el cambio; nulo en `ELIMINAR` y `DESOCUPAR`.
+        posicion:
+          type: integer
+          format: int64
+          nullable: true
+          description: Código de la posición afectada. Nulo en un `CREAR` de la vista previa (aún no existe).
+        codigoUsuario:
+          type: integer
+          format: int64
+          nullable: true
+          description: Colaborador afectado (el ocupante de la posición).
+        nombre:
+          type: string
+          nullable: true
+          description: Nombre del colaborador afectado.
+        documento:
+          type: string
+          nullable: true
+          description: Nro. de documento del colaborador afectado.
+        cargoAntes:
+          type: integer
+          format: int64
+          nullable: true
+          description: Código del cargo de la posición antes del cambio (nulo en `CREAR`).
+        cargoAntesNombre:
+          type: string
+          nullable: true
+        cargoDespues:
+          type: integer
+          format: int64
+          nullable: true
+          description: Código del cargo de la posición después del cambio (nulo en `ELIMINAR`).
+        cargoDespuesNombre:
+          type: string
+          nullable: true
+        padreAntes:
+          type: integer
+          format: int64
+          nullable: true
+          description: Posición padre antes del cambio (nulo en `CREAR` o si era la raíz).
+        padreDespues:
+          type: integer
+          format: int64
+          nullable: true
+          description: >
+            Posición padre después del cambio. Nulo en `ELIMINAR`, si es la raíz, o en la vista previa cuando el
+            padre también se crea en la misma carga (aún no tiene código).
+      required: [accion, accionTexto, aplicado]
+
+    PaginaMensajes:
+      type: object
+      properties:
+        pagina:
+          type: integer
+        tamano:
+          type: integer
+        total:
+          type: integer
+          format: int64
+        datos:
+          type: array
+          items:
+            $ref: '#/components/schemas/MensajeDto'
+      required: [pagina, tamano, total, datos]
+
+    PaginaFilas:
+      type: object
+      properties:
+        pagina:
+          type: integer
+        tamano:
+          type: integer
+        total:
+          type: integer
+          format: int64
+        datos:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilaDto'
+      required: [pagina, tamano, total, datos]
+
+    PaginaCambios:
+      type: object
+      properties:
+        pagina:
+          type: integer
+        tamano:
+          type: integer
+        total:
+          type: integer
+          format: int64
+        datos:
+          type: array
+          items:
+            $ref: '#/components/schemas/CambioDto'
+      required: [pagina, tamano, total, datos]
+
+    ResultadoDto:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        carga:
+          $ref: '#/components/schemas/CargaDto'
+        resumenPorRegla:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int64
+          description: Conteo de mensajes agrupado por severidad y código de regla (`SEVERIDAD:REGLA`).
+          example:
+            "INFO:I100": 1
+            "INFO:I101": 2
+            "RECHAZO:E033": 1
+        resumenPorCambio:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int64
+          description: >
+            Conteo de cambios sobre la estructura, agrupado por acción (`CREAR`, `ACTUALIZAR`, `ELIMINAR`,
+            `DESOCUPAR`). Solo trae las acciones que ocurrieron.
+          example:
+            CREAR: 2
+            ACTUALIZAR: 1
+            ELIMINAR: 1
+            DESOCUPAR: 1
+        mensajesGenerales:
+          type: array
+          items:
+            $ref: '#/components/schemas/MensajeDto'
+          description: Mensajes de nivel general, no atados a una fila (p. ej. el resumen `I100`, que cuenta aceptadas, rechazadas y posiciones que se crean, actualizan, quedan igual, eliminan y desocupan).
+      required: [success, carga, resumenPorRegla, resumenPorCambio, mensajesGenerales]

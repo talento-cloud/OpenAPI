@@ -1835,8 +1835,15 @@ paths:
       - Transversal
       summary: Transversal - Carga masiva de usuarios a partir de un arreglo JSON
       description: |
-        Endpoint que recibe un listado de usuarios en formato JSON y realiza la inserción o actualización masiva en el sistema.
-        Procesa la información, crea tablas temporales, actualiza datos de los usuarios, e indica mediante correo electrónico el resultado de la carga masiva.
+        Recibe un listado de usuarios en formato JSON y realiza su creación o actualización masiva en el sistema.
+
+        **Procesamiento asíncrono.** La respuesta `202` confirma que la solicitud fue recibida e inició el procesamiento; **no indica que la carga haya terminado ni que todos los registros sean válidos**. El resultado final (cargas exitosas, advertencias y errores) se envía por correo electrónico al usuario asociado al cliente API y a los destinatarios configurados para el cliente.
+
+        **Una carga a la vez.** Solo se procesa una carga por cliente en cada momento. Si hay otra en curso, el servicio responde `409` y la solicitud no se procesa; reintente cuando la anterior haya finalizado.
+
+        **Requisitos.** El token debe incluir el permiso `talento.usuarios.write` y pertenecer a un cliente API habilitado para la carga de usuarios; de lo contrario se responde `403`.
+
+        **Errores por registro.** Los errores de validación de cada registro no se retornan en la respuesta HTTP; se informan en el correo con el resultado de la carga.
       security:
         - oauth2:
             - talento.usuarios.write
@@ -1864,43 +1871,65 @@ paths:
               ]'
       operationId: Transversal-CargamasivadeusuariosapartirdeunarregloJSON
       requestBody:
-        description: Listado de usuarios a cargar.
+        description: Listado de usuarios a cargar. Debe contener al menos un registro.
         required: true
         content:
           application/json:
             schema:
               type: array
+              minItems: 1
               items:
                 $ref: '#/components/schemas/DTOUsuarioCarga'
       responses:
-        '200':
-          description: Operación procesada. Devuelve un estado de éxito y un mensaje con el detalle de la ejecución de carga.
+        '202':
+          description: Solicitud aceptada. La carga se procesa en segundo plano y el resultado final se notifica por correo electrónico.
           content:
             application/json;charset=UTF-8:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    description: Indica si la operación inicial de carga fue exitosa.
-                  message:
-                    type: string
-                    description: Mensaje con el resultado de la operación.
-                  mensajes:
-                    type: array
-                    items:
-                      type: string
-                    description: Lista de mensajes de error o validación generados durante la carga masiva.
-                example:
-                  success: true
-                  message: Proceso de carga masiva iniciado correctamente. Se enviará un correo con el resultado final.
-                  mensajes: []
+                $ref: '#/components/schemas/CargaUsuariosAceptada'
+              example:
+                success: true
+                message: El archivo está en proceso de validación y carga, el resultado será notificado via correo electrónico
+                registros_recibidos: 120
+        '400':
+          description: El cuerpo de la solicitud no contiene registros de usuarios.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: No se recibieron registros de usuarios para procesar.
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '403':
-          $ref: '#/components/responses/ForbiddenError'
+          description: El token no tiene el permiso `talento.usuarios.write` o no pertenece a un cliente API habilitado para la carga de usuarios.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: El usuario autenticado no tiene permisos suficientes.
+        '409':
+          description: Ya hay una carga de usuarios en proceso. La solicitud no se procesó; reintente cuando la carga en curso haya finalizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Hay una tarea sin terminar, espere a que finalice para realizar una nueva carga.
         '500':
-          description: Error inesperado en la fase de carga e integración.
+          description: Error inesperado al recibir la solicitud. La carga no se inició.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CargaUsuariosError'
+              example:
+                success: false
+                message: Ocurrió un error inesperado en el servidor.
+                mensajes: []
       deprecated: false
   /html/v1/public/bienestar/informe/reporteDetallado.json:
     get:
@@ -4189,10 +4218,66 @@ components:
         modulo_disciplinarios: "No"
         modulo_sucesion: "No"
         modulo_bases_conocimiento: "No"
+    CargaUsuariosAceptada:
+      title: CargaUsuariosAceptada
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indica que la solicitud fue aceptada. No indica que la carga haya finalizado.
+        message:
+          type: string
+          description: Mensaje informativo sobre el inicio del procesamiento.
+        registros_recibidos:
+          type: integer
+          format: int32
+          description: Cantidad de registros de usuarios recibidos en la solicitud.
+    CargaUsuariosError:
+      title: CargaUsuariosError
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+        mensajes:
+          type: array
+          items:
+            type: string
+          description: Detalle adicional del error, cuando aplica.
     DTOUsuarioCarga:
       title: DTOUsuarioCarga
       type: object
-      description: Objeto de transferencia de datos con la información del usuario a cargar.
+      description: |
+        Información del usuario a cargar.
+
+        **Campos obligatorios.** Todo registro debe incluir: `primerNombre`, `primerApellido`, `tipoDocumento`, `numeroDocumento`, `empresa`, `cargo`, `categoriaCargo`, `nivelOrganizacional`, `area`, `sede`, `ciudad`, `departamento`, `pais`, `regional`, `negocio`, `uen`, `criticidades`, `vicepresidencia` y `tipoUsuario`. Un campo obligatorio vacío se reporta como error en el resultado de la carga.
+
+        **Obligatorios según el caso:**
+        - `numeroDocumentoJefe`: obligatorio, salvo que el cliente tenga configurado conservar el jefe actual de usuarios ya existentes. Si se envía, debe corresponder a un usuario existente en el sistema.
+        - `tipoDocumentoJefe`: obligatorio cuando se envía `numeroDocumentoJefe`.
+        - `fechaIngreso` / `fechaInicioCargoActual`: para usuarios nuevos debe enviarse al menos una de las dos.
+      required:
+        - primerNombre
+        - primerApellido
+        - tipoDocumento
+        - numeroDocumento
+        - empresa
+        - cargo
+        - categoriaCargo
+        - nivelOrganizacional
+        - area
+        - sede
+        - ciudad
+        - departamento
+        - pais
+        - regional
+        - negocio
+        - uen
+        - criticidades
+        - vicepresidencia
+        - tipoUsuario
       properties:
         primerNombre:
           type: string
@@ -4221,15 +4306,19 @@ components:
             - RFC
             - RUN
             *Nota: Es posible crear nuevos tipos de documento por el administrador general (opción tipificadores).*
+
+            Un valor que no corresponda a un tipo de documento existente se reporta como error. Si el usuario ya existe con otro tipo de documento, el registro también se reporta como error.
         numeroDocumento:
           type: string
-          description: Número de documento del participante. No debe contener puntos ni separadores de miles.
+          description: Número de documento del participante. No debe contener puntos ni separadores de miles. No puede repetirse dentro de la misma carga.
         genero:
           type: string
           description: Género del colaborador.
           enum: [Masculino, Femenino]
         email:
           type: string
+          description: |
+            Correo electrónico del colaborador. **No es obligatorio.** Si se omite, viene vacío o con formato inválido, el sistema conserva el correo que ya tiene el usuario o le asigna uno por defecto.
         empresa:
           type: string
         cargo:
@@ -4264,16 +4353,21 @@ components:
           type: string
         numeroDocumentoJefe:
           type: string
+          description: Número de documento del jefe directo.
+        tipoDocumentoJefe:
+          type: string
+          description: Tipo de documento del jefe directo. Admite los mismos valores que `tipoDocumento`.
         nombreJefe:
           type: string
+          description: Nombre del jefe directo. Informativo; el jefe se identifica por su documento.
         fechaIngreso:
           type: string
           format: date
-          description: Fecha de ingreso estructurada en formato aaaa-mm-dd (Ejemplo 2023-12-31).
+          description: Fecha de ingreso estructurada en formato aaaa-mm-dd (Ejemplo 2023-12-31). Para usuarios nuevos debe enviarse esta fecha o `fechaInicioCargoActual`.
         fechaInicioCargoActual:
           type: string
           format: date
-          description: Fecha estructurada en formato aaaa-mm-dd (Ejemplo 2023-12-31).
+          description: Fecha estructurada en formato aaaa-mm-dd (Ejemplo 2023-12-31). Para usuarios nuevos debe enviarse esta fecha o `fechaIngreso`.
         vicepresidencia:
           type: string
         tipoUsuario:
@@ -4294,7 +4388,7 @@ components:
             - Maestría
             - Doctorado
             - Posdoctorado
-            *(Si se envían valores diferentes a estos, no se guardará la información de este campo).*
+            *(Si se envía un valor diferente a estos, el registro se reporta como error en el resultado de la carga).*
           enum: [Ninguna, Primaria, Bachiller, Técnico, Tecnólogo, Profesional, Especialista, Maestría, Doctorado, Posdoctorado]
         moduloDesempenioAdministrativo:
           type: string
@@ -4343,10 +4437,13 @@ components:
           enum: [SI, NO, ""]
         idExternoCargo:
           type: string
+          description: Código del cargo en el sistema externo del cliente (por ejemplo, nómina o ERP).
         documentoLiderFunciona:
           type: string
+          description: Número de documento del líder funcional. El nombre del campo se conserva así por compatibilidad.
         nombreLiderFunciona:
           type: string
+          description: Nombre del líder funcional. El nombre del campo se conserva así por compatibilidad.
         tiempoLaborado:
           type: string
           description: Indica el porcentaje de tiempo que el colaborador labora en la empresa (ejemplo Medio tiempo 50%).
@@ -4399,6 +4496,7 @@ components:
         moduloOperativosMedicos:
           type: string
           deprecated: true
+          description: Campo obsoleto. Se mantiene solo por compatibilidad y no tiene efecto en la carga; no es necesario enviarlo.
     HV_conceptosNomina:
       title: HV_conceptosNomina
       required:
