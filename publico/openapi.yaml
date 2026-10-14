@@ -1577,6 +1577,112 @@ paths:
         '403':
           $ref: '#/components/responses/ForbiddenError'
       deprecated: false
+  /html/v1/public/transversal/informe/usuariosActivos.json:
+    get:
+      tags:
+      - Transversal
+      summary: Transversal - Reporte de usuarios activos
+      description: Endpoint donde se lista los usuarios activos del sistema de forma paginada.
+      security:
+        - oauth2:
+            - talento.transversal.read
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/html/v1/public/transversal/informe/usuariosActivos.json?start=0&limit=100' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      operationId: Transversal-Reportedeusuariosactivos
+      parameters:
+      - name: start
+        in: query
+        required: false
+        description: Número de registro inicial para paginación (por defecto 0).
+        schema:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+          example: 0
+      - name: limit
+        in: query
+        required: false
+        description: Cantidad máxima de registros a retornar (por defecto 100, máximo 100).
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          minimum: 1
+          maximum: 100
+          example: 100
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Transversal_usuariosActivos'
+                - example:
+                    data:
+                    - primer_nombre: "PEPITO"
+                      otros_nombres: ""
+                      primer_apellido: "CORDOBA"
+                      segundo_apellido: ""
+                      tipo_documento_txt: "Cédula de ciudadanía"
+                      documento_identidad: "1234567"
+                      tiempo_laborado: null
+                      correo_electronico: "pepito@correo.com"
+                      empresa: "talento ltda"
+                      negocio: "Desarrollo de Software"
+                      uen: "UEN App Moviles"
+                      vicepresidencia: "Gestión Humana"
+                      id_interno_cargo: "516"
+                      id_externo_cargo: null
+                      cargo: "Analista de Formación y Desarrollo"
+                      nivel_organizacional: "Analistas"
+                      area: "Talento Humano"
+                      categoria_cargo: "Analista"
+                      es_talento_clave: "Cargo Estrategico: Clave"
+                      sede: "Bogotá"
+                      ciudad: "Bogota"
+                      departamento: "Cundinamarca"
+                      pais: "Colombia"
+                      regional: "Centro"
+                      tipo_documento_jefe: "Cédula de ciudadanía"
+                      documento_jefe: "12346434"
+                      nombre_jefe: "ANA SANTOS"
+                      etiquetas: "Bases de datos:Oracle; \nComercial:Sin valor; \nFrameworks java:Hibernate"
+                      fecha_ingreso_compania: "2026-02-04"
+                      fecha_inicio_en_cargo_actual: "2026-02-04"
+                      tipo_usuario: "Administrativo"
+                      genero: "Masculino"
+                      escolaridad: "Doctorado"
+                      dias_disponibles_vacaciones: 21
+                      modulo_desempenio_administrativo: "Si"
+                      modulo_competencias_administrativo: "No"
+                      modulo_desarrollo_administrativo: "No"
+                      modulo_seleccion: "No"
+                      modulo_formacion: "No"
+                      modulo_okr: "No"
+                      modulo_beneficios: "No"
+                      modulo_clima_laboral: "No"
+                      modulo_encuestas: "No"
+                      modulo_desempenio_operativo: "No"
+                      modulo_desarrollo_operativo: "No"
+                      modulo_competencias_operativo: "No"
+                      modulo_onboarding: "No"
+                      modulo_autogestion: "Sí"
+                      modulo_disciplinarios: "No"
+                      modulo_sucesion: "No"
+                      modulo_bases_conocimiento: "No"
+                    total: 150
+                    success: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
   /html/v1/public/transversal/informe/todosUsuarios/{tipo_usuario}.json:
     get:
       tags:
@@ -2948,6 +3054,7 @@ paths:
                       evidencia_comentarios_seg_5: ''
                       estado_seguimiento_5: Pendiente
                       observacion_revision_5: ''
+                    total: 10  
                     success: true
         '401':
           $ref: '#/components/responses/UnauthorizedError'
@@ -3796,6 +3903,292 @@ components:
         motivo_retiro: ''
         genero: ''
         dias_vacaciones_disponibles: '0'
+    Transversal_usuariosActivos:
+      title: Transversal_usuariosActivos
+      required:
+      - data
+      - success
+      - total
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransversalUsuariosActivosItem'
+        success:
+          type: boolean
+        total:
+          type: integer
+          format: int32
+      example:
+        data:
+        - primer_nombre: "PEPITO"
+          otros_nombres: ""
+          primer_apellido: "CORDOBA"
+          segundo_apellido: ""
+          tipo_documento_txt: "Cédula de ciudadanía"
+          documento_identidad: "1234567"
+          tiempo_laborado: null
+          correo_electronico: "pepito@correo.com"
+          empresa: "talento ltda"
+          negocio: "Desarrollo de Software"
+          uen: "UEN App Moviles"
+          vicepresidencia: "Gestión Humana"
+          id_interno_cargo: "516"
+          id_externo_cargo: null
+          cargo: "Analista de Formación y Desarrollo"
+          nivel_organizacional: "Analistas"
+          area: "Talento Humano"
+          categoria_cargo: "Analista"
+          es_talento_clave: "Cargo Estrategico: Clave"
+          sede: "Bogotá"
+          ciudad: "Bogota"
+          departamento: "Cundinamarca"
+          pais: "Colombia"
+          regional: "Centro"
+          tipo_documento_jefe: "Cédula de ciudadanía"
+          documento_jefe: "12346434"
+          nombre_jefe: "ANA SANTOS"
+          etiquetas: "Bases de datos:Oracle; \nComercial:Sin valor; \nFrameworks java:Hibernate"
+          fecha_ingreso_compania: "2026-02-04"
+          fecha_inicio_en_cargo_actual: "2026-02-04"
+          tipo_usuario: "Administrativo"
+          genero: "Masculino"
+          escolaridad: "Doctorado"
+          dias_disponibles_vacaciones: 21
+          modulo_desempenio_administrativo: "Si"
+          modulo_competencias_administrativo: "No"
+          modulo_desarrollo_administrativo: "No"
+          modulo_seleccion: "No"
+          modulo_formacion: "No"
+          modulo_okr: "No"
+          modulo_beneficios: "No"
+          modulo_clima_laboral: "No"
+          modulo_encuestas: "No"
+          modulo_desempenio_operativo: "No"
+          modulo_desarrollo_operativo: "No"
+          modulo_competencias_operativo: "No"
+          modulo_onboarding: "No"
+          modulo_autogestion: "Sí"
+          modulo_disciplinarios: "No"
+          modulo_sucesion: "No"
+          modulo_bases_conocimiento: "No"
+        total: 150
+        success: true
+    TransversalUsuariosActivosItem:
+      title: TransversalUsuariosActivosItem
+      required:
+      - primer_nombre
+      - otros_nombres
+      - primer_apellido
+      - segundo_apellido
+      - tipo_documento_txt
+      - documento_identidad
+      - tiempo_laborado
+      - correo_electronico
+      - empresa
+      - negocio
+      - uen
+      - vicepresidencia
+      - id_interno_cargo
+      - id_externo_cargo
+      - cargo
+      - nivel_organizacional
+      - area
+      - categoria_cargo
+      - es_talento_clave
+      - sede
+      - ciudad
+      - departamento
+      - pais
+      - regional
+      - tipo_documento_jefe
+      - documento_jefe
+      - nombre_jefe
+      - etiquetas
+      - fecha_ingreso_compania
+      - fecha_inicio_en_cargo_actual
+      - tipo_usuario
+      - genero
+      - escolaridad
+      - dias_disponibles_vacaciones
+      - modulo_desempenio_administrativo
+      - modulo_competencias_administrativo
+      - modulo_desarrollo_administrativo
+      - modulo_seleccion
+      - modulo_formacion
+      - modulo_okr
+      - modulo_beneficios
+      - modulo_clima_laboral
+      - modulo_encuestas
+      - modulo_desempenio_operativo
+      - modulo_desarrollo_operativo
+      - modulo_competencias_operativo
+      - modulo_onboarding
+      - modulo_autogestion
+      - modulo_disciplinarios
+      - modulo_sucesion
+      - modulo_bases_conocimiento
+      type: object
+      properties:
+        primer_nombre:
+          type: string
+        otros_nombres:
+          type: string
+          nullable: true
+        primer_apellido:
+          type: string
+        segundo_apellido:
+          type: string
+          nullable: true
+        tipo_documento_txt:
+          type: string
+        documento_identidad:
+          type: string
+        tiempo_laborado:
+          type: string
+          nullable: true
+        correo_electronico:
+          type: string
+        empresa:
+          type: string
+        negocio:
+          type: string
+        uen:
+          type: string
+        vicepresidencia:
+          type: string
+        id_interno_cargo:
+          type: string
+        id_externo_cargo:
+          type: string
+          nullable: true
+        cargo:
+          type: string
+        nivel_organizacional:
+          type: string
+        area:
+          type: string
+        categoria_cargo:
+          type: string
+        es_talento_clave:
+          type: string
+        sede:
+          type: string
+        ciudad:
+          type: string
+        departamento:
+          type: string
+        pais:
+          type: string
+        regional:
+          type: string
+        tipo_documento_jefe:
+          type: string
+        documento_jefe:
+          type: string
+        nombre_jefe:
+          type: string
+        etiquetas:
+          type: string
+        fecha_ingreso_compania:
+          type: string
+        fecha_inicio_en_cargo_actual:
+          type: string
+        tipo_usuario:
+          type: string
+        genero:
+          type: string
+        escolaridad:
+          type: string
+        dias_disponibles_vacaciones:
+          type: integer
+        modulo_desempenio_administrativo:
+          type: string
+        modulo_competencias_administrativo:
+          type: string
+        modulo_desarrollo_administrativo:
+          type: string
+        modulo_seleccion:
+          type: string
+        modulo_formacion:
+          type: string
+        modulo_okr:
+          type: string
+        modulo_beneficios:
+          type: string
+        modulo_clima_laboral:
+          type: string
+        modulo_encuestas:
+          type: string
+        modulo_desempenio_operativo:
+          type: string
+        modulo_desarrollo_operativo:
+          type: string
+        modulo_competencias_operativo:
+          type: string
+        modulo_onboarding:
+          type: string
+        modulo_autogestion:
+          type: string
+        modulo_disciplinarios:
+          type: string
+        modulo_sucesion:
+          type: string
+        modulo_bases_conocimiento:
+          type: string
+      example:
+        primer_nombre: "PEPITO"
+        otros_nombres: ""
+        primer_apellido: "CORDOBA"
+        segundo_apellido: ""
+        tipo_documento_txt: "Cédula de ciudadanía"
+        documento_identidad: "1234567"
+        tiempo_laborado: null
+        correo_electronico: "pepito@correo.com"
+        empresa: "talento ltda"
+        negocio: "Desarrollo de Software"
+        uen: "UEN App Moviles"
+        vicepresidencia: "Gestión Humana"
+        id_interno_cargo: "516"
+        id_externo_cargo: null
+        cargo: "Analista de Formación y Desarrollo"
+        nivel_organizacional: "Analistas"
+        area: "Talento Humano"
+        categoria_cargo: "Analista"
+        es_talento_clave: "Cargo Estrategico: Clave"
+        sede: "Bogotá"
+        ciudad: "Bogota"
+        departamento: "Cundinamarca"
+        pais: "Colombia"
+        regional: "Centro"
+        tipo_documento_jefe: "Cédula de ciudadanía"
+        documento_jefe: "12346434"
+        nombre_jefe: "ANA SANTOS"
+        etiquetas: "Bases de datos:Oracle; \nComercial:Sin valor; \nFrameworks java:Hibernate"
+        fecha_ingreso_compania: "2026-02-04"
+        fecha_inicio_en_cargo_actual: "2026-02-04"
+        tipo_usuario: "Administrativo"
+        genero: "Masculino"
+        escolaridad: "Doctorado"
+        dias_disponibles_vacaciones: 21
+        modulo_desempenio_administrativo: "Si"
+        modulo_competencias_administrativo: "No"
+        modulo_desarrollo_administrativo: "No"
+        modulo_seleccion: "No"
+        modulo_formacion: "No"
+        modulo_okr: "No"
+        modulo_beneficios: "No"
+        modulo_clima_laboral: "No"
+        modulo_encuestas: "No"
+        modulo_desempenio_operativo: "No"
+        modulo_desarrollo_operativo: "No"
+        modulo_competencias_operativo: "No"
+        modulo_onboarding: "No"
+        modulo_autogestion: "Sí"
+        modulo_disciplinarios: "No"
+        modulo_sucesion: "No"
+        modulo_bases_conocimiento: "No"
     DTOUsuarioCarga:
       title: DTOUsuarioCarga
       type: object
@@ -7869,6 +8262,8 @@ components:
             $ref: '#/components/schemas/ObjetivosSMARTProcesoItem'
         success:
           type: boolean
+        total: 
+          type: number  
       example:
         data:
         - codigo: 202300
@@ -7954,6 +8349,7 @@ components:
           evidencia_comentarios_seg_5: ''
           estado_seguimiento_5: Pendiente
           observacion_revision_5: ''
+        total: 10   
         success: true
     ObjetivosSMARTResultadosConsolidadosGestionItem:
       title: ObjetivosSMARTResultadosConsolidadosGestionItem
