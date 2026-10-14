@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: API publica de talento cloud
+  title: API pública de talento cloud
   description: >-
     API REST para entregar info a clientes y proveedores.
 
