@@ -12,12 +12,16 @@ The repository is organized by functional modules, each in its own directory:
 
 - **autogestion/** - Self-service module (certificates, payslips, vacations)
 - **autogestion_ausentismos/** - Absence management
+- **beneficios_chatbot/** - Benefits (points balance) chatbot API
 - **competencias360/** - 360-degree competency assessments
 - **datalake/** - Public API for external data providers with OAuth 2.0 authentication
 - **disciplinarios/** - Disciplinary processes
 - **estructura_organizacional/** - Organizational structure
+- **estructura_organizacional_carga/** - Bulk upload (Carga Masiva) of organizational structure from .xlsx
+- **formacion_chatbot/** - Training (Formación) chatbot API
 - **magneto/** - Magneto module
 - **objetivossmart_chatbot/** - SMART objectives chatbot API
+- **perfilcargo_chatbot/** - Position profile (Perfil de Cargo) chatbot API
 - **seleccion/** - Selection/recruitment processes
 - **transversal/** - Cross-cutting/shared user data
 - **gral/** - General reference and legacy files
@@ -29,6 +33,22 @@ Each module directory contains:
 - `custom-template.hbs` (some modules) - Custom Handlebars template for documentation rendering. Optional
 
 ## Common Commands
+
+### New Module Checklist (chatbot APIs and any other module using login-template.html)
+
+Every `*_chatbot/` module (and any other module that ships behind the password gate) needs all three
+steps below, **in this order**, every time `openapi.yaml` changes — the encrypt step is not optional and
+is easy to forget because it is a separate command from `build-docs`:
+
+1. **Validate** the spec (`redocly lint`).
+2. **Generate** `index.html` from `openapi.yaml` (`build-docs`) — this produces a plain, unencrypted page.
+3. **Encrypt** that `index.html` in place with StatiCrypt (`npx staticrypt ...`, see below) — without this
+   step the module's docs are published unprotected, inconsistent with every other chatbot module. This
+   also creates/updates a `.staticrypt.json` file (per-module salt) that must be committed alongside
+   `index.html`.
+
+Confirm a module is done by checking that `grep -o staticrypt index.html` returns a match — an
+unencrypted `index.html` (plain Redoc output) means step 3 was skipped.
 
 ### Generate HTML Documentation
 
