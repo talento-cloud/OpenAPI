@@ -4252,10 +4252,10 @@ components:
       description: |
         Información del usuario a cargar.
 
-        **Campos obligatorios.** Todo registro debe incluir: `primerNombre`, `primerApellido`, `tipoDocumento`, `numeroDocumento`, `empresa`, `cargo`, `categoriaCargo`, `nivelOrganizacional`, `area`, `sede`, `ciudad`, `departamento`, `pais`, `regional`, `negocio`, `uen`, `criticidades`, `vicepresidencia` y `tipoUsuario`. Un campo obligatorio vacío se reporta como error en el resultado de la carga.
+        **Campos obligatorios.** Todo registro debe incluir: `primerNombre`, `primerApellido`, `tipoDocumento`, `numeroDocumento`, `empresa`, `cargo`, `categoriaCargo`, `nivelOrganizacional`, `area`, `sede`, `ciudad`, `departamento`, `pais`, `regional`, `negocio`, `uen`, `criticidades`, `vicepresidencia`, `numeroDocumentoJefe` y `tipoUsuario`. Un campo obligatorio vacío se reporta como error en el resultado de la carga.
 
         **Obligatorios según el caso:**
-        - `numeroDocumentoJefe`: obligatorio, salvo que el cliente tenga configurado conservar el jefe actual de usuarios ya existentes. Si se envía, debe corresponder a un usuario existente en el sistema.
+        - `numeroDocumentoJefe`: siempre se debe enviar. La única excepción es que el cliente tenga configurado conservar el jefe actual y el usuario ya exista con un jefe asignado. Debe corresponder a un usuario existente en el sistema.
         - `tipoDocumentoJefe`: obligatorio cuando se envía `numeroDocumentoJefe`.
         - `fechaIngreso` / `fechaInicioCargoActual`: para usuarios nuevos debe enviarse al menos una de las dos.
       required:
@@ -4277,6 +4277,7 @@ components:
         - uen
         - criticidades
         - vicepresidencia
+        - numeroDocumentoJefe
         - tipoUsuario
       properties:
         primerNombre:
@@ -4353,7 +4354,7 @@ components:
           type: string
         numeroDocumentoJefe:
           type: string
-          description: Número de documento del jefe directo.
+          description: Número de documento del jefe directo. Obligatorio (ver excepción en la descripción del objeto). Debe ser un usuario existente en el sistema.
         tipoDocumentoJefe:
           type: string
           description: Tipo de documento del jefe directo. Admite los mismos valores que `tipoDocumento`.
