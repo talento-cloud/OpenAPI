@@ -8571,6 +8571,8 @@ components:
             $ref: '#/components/schemas/ObjetivosSMARTResultadosConsolidadosGestionItem'
         success:
           type: boolean
+        total:
+          type: number  
       example:
         data:
         - usuario: Emma Hernández
