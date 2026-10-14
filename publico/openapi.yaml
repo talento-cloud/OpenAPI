@@ -770,52 +770,52 @@ paths:
                       seleccionados: 0
                       cargo: Analista Desarrollador
                       etapa_seleccion: Aprobación
-                      solitante: Juan Fernando Osorio Ospina
+                      solicitante: Juan Fernando Osorio Ospina
                     - codigo: 210
                       seleccionados: 0
                       cargo: Auxiliar de tesorería
                       etapa_seleccion: Aprobación
-                      solitante: Juan Fernando Osorio Ospina
+                      solicitante: Juan Fernando Osorio Ospina
                     - codigo: 209
                       seleccionados: 3
                       cargo: Coordinador de Calidad
                       etapa_seleccion: Cierre
-                      solitante: Juan Fernando Osorio Ospina
+                      solicitante: Juan Fernando Osorio Ospina
                     - codigo: 208
                       seleccionados: 1
                       cargo: Ingeniero(a) de sistemas
                       etapa_seleccion: Cierre
-                      solitante: Juan Fernando Osorio Ospina
+                      solicitante: Juan Fernando Osorio Ospina
                     - codigo: 207
                       seleccionados: 1
                       cargo: 'Director Gestion '
                       etapa_seleccion: Cierre
-                      solitante: Juan Fernando Osorio Ospina
+                      solicitante: Juan Fernando Osorio Ospina
                     - codigo: 206
                       seleccionados: 0
                       cargo: Asistente de tecnología
                       etapa_seleccion: Filtro telefónico
-                      solitante: Juan Fernando Osorio Ospina
+                      solicitante: Juan Fernando Osorio Ospina
                     - codigo: 205
                       seleccionados: 1
                       cargo: Auxiliar de tesorería
                       etapa_seleccion: Cierre
-                      solitante: Blanca Ruiz Suarez
+                      solicitante: Blanca Ruiz Suarez
                     - codigo: 204
                       seleccionados: 0
                       cargo: Asistente de tecnología
                       etapa_seleccion: Cierre
-                      solitante: Juan Fernando Osorio Ospina
+                      solicitante: Juan Fernando Osorio Ospina
                     - codigo: 203
                       seleccionados: 0
                       cargo: Auxiliar de Operaciones
                       etapa_seleccion: Preselección
-                      solitante: Juan Fernando Osorio Ospina
+                      solicitante: Juan Fernando Osorio Ospina
                     - codigo: 202
                       seleccionados: 0
                       cargo: Auxiliar de Operaciones
                       etapa_seleccion: Preselección
-                      solitante: Juan Fernando Osorio Ospina
+                      solicitante: Juan Fernando Osorio Ospina
                     success: true
                     total: 62
         '401':
@@ -2118,7 +2118,7 @@ paths:
                       documento_jefe: '1020980000'
                       jefe: Juan Osorio Ospina
                       tipo: Beneficio
-                      fecha_transacion: '2025-04-09'
+                      fecha_transaccion: '2025-04-09'
                       descripcion: Recuperación de puntos
                       valor: '50'
                       saldo: '100'
@@ -2220,8 +2220,8 @@ paths:
                       entrevista_individual_fecha_ultimo_candidato: '2017-05-22 15:39'
                       entrevista_gh_fecha_primer_candidato: ''
                       entrevista_gh_fecha_ultimo_candidato: '2017-05-22 16:07'
-                      entrevisata_lider_fecha_primer_candidato: ''
-                      entrevisata_lider_fecha_ultimo_candidato: '2017-05-22 16:10'
+                      entrevista_lider_fecha_primer_candidato: ''
+                      entrevista_lider_fecha_ultimo_candidato: '2017-05-22 16:10'
                       referencias_laborales_fecha_primer_candidato: ''
                       referencias_laborales_fecha_ultimo_candidato: '2017-06-06 14:49'
                       visita_domiciliaria_fecha_primer_candidato: ''
@@ -2479,7 +2479,7 @@ paths:
                       promedio_mis_colaboradores: null
                       promedio_clientes: null
                       promedio_total: 95.0
-                      fotalezas: null
+                      fortalezas: null
                       oportunidades: null
                       observaciones: null
                       observaciones_generales: "* Comunicar de manera clara y objetiva: Asegúrate de que la retroalimentación sea clara y basada en datos concretos. Evita utilizar lenguaje vago o subjetivo. Proporciona ejemplos específicos de comportamientos o desempeño que respalden tus comentarios. \n* Trabajo en equipo: Eres un miembro valioso de nuestro equipo. Siempre estás dispuesto/a a colaborar y aportar tus ideas para lograr nuestros objetivos comunes."
@@ -2510,7 +2510,7 @@ paths:
                       promedio_mis_colaboradores: null
                       promedio_clientes: null
                       promedio_total: 100.0
-                      fotalezas: ''
+                      fortalezas: ''
                       oportunidades: ''
                       observaciones: ''
                       observaciones_generales: null
@@ -5387,7 +5387,7 @@ components:
           documento_jefe: '1020980000'
           jefe: Juan Osorio Ospina
           tipo: Beneficio
-          fecha_transacion: '2025-04-09'
+          fecha_transaccion: '2025-04-09'
           descripcion: Recuperación de puntos
           valor: '50'
           saldo: '100'
@@ -5415,7 +5415,7 @@ components:
       - documento_jefe
       - jefe
       - tipo
-      - fecha_transacion
+      - fecha_transaccion
       - descripcion
       - valor
       - saldo
@@ -5459,7 +5459,7 @@ components:
           type: string
         tipo:
           type: string
-        fecha_transacion:
+        fecha_transaccion:
           type: string
         descripcion:
           type: string
@@ -5487,7 +5487,7 @@ components:
         documento_jefe: '1020980000'
         jefe: Juan Osorio Ospina
         tipo: Beneficio
-        fecha_transacion: '2025-04-09'
+        fecha_transaccion: '2025-04-09'
         descripcion: Recuperación de puntos
         valor: '50'
         saldo: '100'
@@ -5944,8 +5944,8 @@ components:
           entrevista_individual_fecha_ultimo_candidato: '2017-05-22 15:39'
           entrevista_gh_fecha_primer_candidato: ''
           entrevista_gh_fecha_ultimo_candidato: '2017-05-22 16:07'
-          entrevisata_lider_fecha_primer_candidato: ''
-          entrevisata_lider_fecha_ultimo_candidato: '2017-05-22 16:10'
+          entrevista_lider_fecha_primer_candidato: ''
+          entrevista_lider_fecha_ultimo_candidato: '2017-05-22 16:10'
           referencias_laborales_fecha_primer_candidato: ''
           referencias_laborales_fecha_ultimo_candidato: '2017-06-06 14:49'
           visita_domiciliaria_fecha_primer_candidato: ''
@@ -6007,8 +6007,8 @@ components:
       - entrevista_individual_fecha_ultimo_candidato
       - entrevista_gh_fecha_primer_candidato
       - entrevista_gh_fecha_ultimo_candidato
-      - entrevisata_lider_fecha_primer_candidato
-      - entrevisata_lider_fecha_ultimo_candidato
+      - entrevista_lider_fecha_primer_candidato
+      - entrevista_lider_fecha_ultimo_candidato
       - referencias_laborales_fecha_primer_candidato
       - referencias_laborales_fecha_ultimo_candidato
       - visita_domiciliaria_fecha_primer_candidato
@@ -6099,9 +6099,9 @@ components:
           type: string
         entrevista_gh_fecha_ultimo_candidato:
           type: string
-        entrevisata_lider_fecha_primer_candidato:
+        entrevista_lider_fecha_primer_candidato:
           type: string
-        entrevisata_lider_fecha_ultimo_candidato:
+        entrevista_lider_fecha_ultimo_candidato:
           type: string
         referencias_laborales_fecha_primer_candidato:
           type: string
@@ -6184,8 +6184,8 @@ components:
         entrevista_individual_fecha_ultimo_candidato: '2017-05-22 15:39'
         entrevista_gh_fecha_primer_candidato: ''
         entrevista_gh_fecha_ultimo_candidato: '2017-05-22 16:07'
-        entrevisata_lider_fecha_primer_candidato: ''
-        entrevisata_lider_fecha_ultimo_candidato: '2017-05-22 16:10'
+        entrevista_lider_fecha_primer_candidato: ''
+        entrevista_lider_fecha_ultimo_candidato: '2017-05-22 16:10'
         referencias_laborales_fecha_primer_candidato: ''
         referencias_laborales_fecha_ultimo_candidato: '2017-06-06 14:49'
         visita_domiciliaria_fecha_primer_candidato: ''
@@ -6480,52 +6480,52 @@ components:
           seleccionados: 0
           cargo: Analista Desarrollador
           etapa_seleccion: Aprobación
-          solitante: Juan Fernando Osorio Ospina
+          solicitante: Juan Fernando Osorio Ospina
         - codigo: 210
           seleccionados: 0
           cargo: Auxiliar de tesorería
           etapa_seleccion: Aprobación
-          solitante: Juan Fernando Osorio Ospina
+          solicitante: Juan Fernando Osorio Ospina
         - codigo: 209
           seleccionados: 3
           cargo: Coordinador de Calidad
           etapa_seleccion: Cierre
-          solitante: Juan Fernando Osorio Ospina
+          solicitante: Juan Fernando Osorio Ospina
         - codigo: 208
           seleccionados: 1
           cargo: Ingeniero(a) de sistemas
           etapa_seleccion: Cierre
-          solitante: Juan Fernando Osorio Ospina
+          solicitante: Juan Fernando Osorio Ospina
         - codigo: 207
           seleccionados: 1
           cargo: 'Director Gestion '
           etapa_seleccion: Cierre
-          solitante: Juan Fernando Osorio Ospina
+          solicitante: Juan Fernando Osorio Ospina
         - codigo: 206
           seleccionados: 0
           cargo: Asistente de tecnología
           etapa_seleccion: Filtro telefónico
-          solitante: Juan Fernando Osorio Ospina
+          solicitante: Juan Fernando Osorio Ospina
         - codigo: 205
           seleccionados: 1
           cargo: Auxiliar de tesorería
           etapa_seleccion: Cierre
-          solitante: Blanca Ruiz Suarez
+          solicitante: Blanca Ruiz Suarez
         - codigo: 204
           seleccionados: 0
           cargo: Asistente de tecnología
           etapa_seleccion: Cierre
-          solitante: Juan Fernando Osorio Ospina
+          solicitante: Juan Fernando Osorio Ospina
         - codigo: 203
           seleccionados: 0
           cargo: Auxiliar de Operaciones
           etapa_seleccion: Preselección
-          solitante: Juan Fernando Osorio Ospina
+          solicitante: Juan Fernando Osorio Ospina
         - codigo: 202
           seleccionados: 0
           cargo: Auxiliar de Operaciones
           etapa_seleccion: Preselección
-          solitante: Juan Fernando Osorio Ospina
+          solicitante: Juan Fernando Osorio Ospina
         success: true
         total: 62
     SeleccionRequisicionItem:
@@ -6535,7 +6535,7 @@ components:
       - seleccionados
       - cargo
       - etapa_seleccion
-      - solitante
+      - solicitante
       type: object
       properties:
         codigo:
@@ -6548,14 +6548,14 @@ components:
           type: string
         etapa_seleccion:
           type: string
-        solitante:
+        solicitante:
           type: string
       example:
         codigo: 211
         seleccionados: 0
         cargo: Analista Desarrollador
         etapa_seleccion: Aprobación
-        solitante: Juan Fernando Osorio Ospina
+        solicitante: Juan Fernando Osorio Ospina
     Seleccion_detalleRequisicion:
       title: Seleccion_detalleRequisicion
       required:
@@ -7764,7 +7764,7 @@ components:
           promedio_mis_colaboradores: null
           promedio_clientes: null
           promedio_total: 95.0
-          fotalezas: null
+          fortalezas: null
           oportunidades: null
           observaciones: null
           observaciones_generales: "* Comunicar de manera clara y objetiva: Asegúrate de que la retroalimentación sea clara y basada en datos concretos. Evita utilizar lenguaje vago o subjetivo. Proporciona ejemplos específicos de comportamientos o desempeño que respalden tus comentarios. \n* Trabajo en equipo: Eres un miembro valioso de nuestro equipo. Siempre estás dispuesto/a a colaborar y aportar tus ideas para lograr nuestros objetivos comunes."
@@ -7795,7 +7795,7 @@ components:
           promedio_mis_colaboradores: null
           promedio_clientes: null
           promedio_total: 100.0
-          fotalezas: ''
+          fortalezas: ''
           oportunidades: ''
           observaciones: ''
           observaciones_generales: null
@@ -7831,7 +7831,7 @@ components:
       - promedio_mis_colaboradores
       - promedio_clientes
       - promedio_total
-      - fotalezas
+      - fortalezas
       - oportunidades
       - observaciones
       - observaciones_generales
@@ -7897,7 +7897,7 @@ components:
         promedio_total:
           type: number
           nullable: true
-        fotalezas:
+        fortalezas:
           type: string
           nullable: true
         oportunidades:
@@ -7937,7 +7937,7 @@ components:
         promedio_mis_colaboradores: null
         promedio_clientes: null
         promedio_total: 95.0
-        fotalezas: null
+        fortalezas: null
         oportunidades: null
         observaciones: null
         observaciones_generales: "* Comunicar de manera clara y objetiva: Asegúrate de que la retroalimentación sea clara y basada en datos concretos. Evita utilizar lenguaje vago o subjetivo. Proporciona ejemplos específicos de comportamientos o desempeño que respalden tus comentarios. \n* Trabajo en equipo: Eres un miembro valioso de nuestro equipo. Siempre estás dispuesto/a a colaborar y aportar tus ideas para lograr nuestros objetivos comunes."
