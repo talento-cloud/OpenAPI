@@ -1,24 +1,24 @@
 openapi: 3.0.0
 info:
-  title: API pública de talento cloud
+  title: API pública de Talento Cloud
   description: >-
-    API REST para entregar info a clientes y proveedores.
+    API REST para entregar información de Talento Cloud a otros sistemas.
 
 
-    En la documentación se mencionan 2 urls:
+    En la documentación se mencionan 2 URLs:
 
     - Producción: https://[tenant].talento.cloud/
 
     - Pruebas: https://[tenant].talento-dev.cloud/
 
 
-    El client_id y client_secret son suministrados por talento cloud al cliente.
+    El client_id y client_secret son suministrados por Talento Cloud al cliente.
     
 
-    La IP del cliente debe estar en la lista blanca de IPs permitidas para tener acceso a estas APIs. El cliente debe suministrar su IP publica para registrarla en dicha lista.
+    La IP del cliente debe estar en la lista blanca de IPs permitidas para tener acceso a estas APIs. El cliente debe suministrar su IP pública para registrarla en dicha lista.
 
 
-    Maneja autenticación Oauth 2.0 y se podria consultar diferentes endpoints en formato application/json
+    Usa autenticación OAuth 2.0. Se pueden consultar diferentes endpoints y las respuestas están en formato application/json
 
 
     ## Manejo de errores
@@ -56,7 +56,7 @@ paths:
       - Autenticación
       summary: OAuth2 - Obtener token      
       description: >-
-        Para obtener el token que autoriza uso de los otros servicios, el client_id y client_secret son suministrados por talento cloud al cliente, según el tenant la url cambia, por ejemplo para la empresa ClienteX sería https://clientex.talento.cloud/html/oauth2/token/clientex.json
+        Para obtener el token que autoriza uso de los otros servicios, el client_id y client_secret son suministrados por Talento Cloud al cliente, según el tenant la url cambia, por ejemplo para la empresa ClienteX sería https://clientex.talento.cloud/html/oauth2/token/clientex.json
 
         ## Ejemplo petición con curl:
 
@@ -112,11 +112,11 @@ paths:
               properties:
                 client_id:
                   type: string
-                  description: Suministrado por talento cloud
+                  description: Suministrado por Talento Cloud
                   example: '00000000000000000000000000000000'
                 client_secret:
                   type: string
-                  description: Suministrado por talento cloud
+                  description: Suministrado por Talento Cloud
                   example: '0000000000000000000000000000000000000000000000000000000000000000'
                 grant_type:
                   type: string
@@ -124,7 +124,7 @@ paths:
                   example: client_credentials
                 scope:
                   type: string
-                  description: Por defecto talento.hojavida.read, tambien puede ser talento.seleccion.read o talento.usuarios.write según el caso particular
+                  description: Por defecto talento.hojavida.read, también puede ser talento.seleccion.read o talento.usuarios.write según el caso particular
                   example: talento.hojavida.read
         required: false
       responses:
@@ -1208,7 +1208,7 @@ paths:
       tags:
       - HojaVida
       summary: HojaVida - Conceptos de nómina
-      description: Endpoint donde se listan los conceptos de nómina de las hojas de vida de usuarios en talento cloud. Las fechas se entregan en formato yyyy-mm-dd.
+      description: Endpoint donde se listan los conceptos de nómina de las hojas de vida de usuarios en Talento Cloud. Las fechas se entregan en formato yyyy-mm-dd.
       security:
         - oauth2:
             - talento.hojavida.nomina.read
@@ -1274,8 +1274,8 @@ paths:
     get:
       tags:
       - HojaVida
-      summary: HojaVida - Datos basicos
-      description: Endpoint donde se listan los datos básicos de la hoja de vida de usuarios internos en talento cloud. Las fechas se entregan en formato yyyy-mm-dd.
+      summary: HojaVida - Datos básicos
+      description: Endpoint donde se listan los datos básicos de la hoja de vida de usuarios internos en Talento Cloud. Las fechas se entregan en formato yyyy-mm-dd.
       security:
         - oauth2:
             - talento.hojavida.read
@@ -1498,7 +1498,7 @@ paths:
       tags:
       - HojaVida
       summary: HojaVida - Experiencia laboral
-      description: Endpoint donde se listan la experiencia laboral de la hoja de vida de usuarios internos en talento cloud. Las fechas se entregan en formato yyyy-mm-dd.
+      description: Endpoint donde se lista la experiencia laboral de la hoja de vida de usuarios internos en Talento Cloud. Las fechas se entregan en formato yyyy-mm-dd.
       security:
         - oauth2:
             - talento.hojavida.read
@@ -1582,7 +1582,7 @@ paths:
       tags:
       - Transversal
       summary: Transversal - Reporte de usuarios activos
-      description: Endpoint donde se lista los usuarios activos del sistema de forma paginada.
+      description: Endpoint donde se listan los usuarios activos del sistema de forma paginada.
       security:
         - oauth2:
             - talento.transversal.read
@@ -1688,7 +1688,7 @@ paths:
       tags:
       - Transversal
       summary: Transversal - Reporte de todos los usuarios del sistema
-      description: Endpoint donde se lista la información de todos los usuarios del sistema para Datalake. Permite filtrar por tipo de usuario (Todos, Administrativo u Operativo). Las fechas se entregan en formato yyyy-mm-dd.
+      description: Endpoint donde se lista la información de todos los usuarios del sistema. Permite filtrar por tipo de usuario (Todos, Administrativo u Operativo). Las fechas se entregan en formato yyyy-mm-dd.
       security:
         - oauth2:
             - talento.transversal.read
@@ -1936,7 +1936,7 @@ paths:
       tags:
       - Bienestar
       summary: Bienestar - Reporte detallado beneficios/reconocimientos
-      description: Endpoint donde se lista el reporte detallado de beneficios y reconocimientos de los usuarios en talento cloud. Las fechas se entregan en formato yyyy-mm-dd.
+      description: Endpoint donde se lista el reporte detallado de beneficios y reconocimientos de los usuarios en Talento Cloud. Las fechas se entregan en formato yyyy-mm-dd.
       security:
         - oauth2:
             - talento.bienestar.read
@@ -2049,7 +2049,7 @@ paths:
       tags:
       - Bienestar
       summary: Bienestar - Transacciones puntos beneficios/reconocimientos
-      description: Endpoint donde se listan las transacciones de puntos de beneficios y reconocimientos ejecutadas en un año dado
+      description: Endpoint donde se listan las transacciones de puntos de beneficios y reconocimientos ejecutadas en un año dado.
       security:
         - oauth2:
             - talento.bienestar.read
@@ -2134,7 +2134,7 @@ paths:
       tags:
       - Selección
       summary: Selección - Seguimiento por etapas
-      description: Endpoint donde se lista el seguimiento por etapas de los procesos de selección en talento cloud. Permite filtrar por estado (TODOS, ACTIVOS o CERRADOS). El formato de fecha es yyyy-MM-dd kk:mm.
+      description: Endpoint donde se lista el seguimiento por etapas de los procesos de selección en Talento Cloud. Permite filtrar por estado (TODOS, ACTIVOS o CERRADOS). El formato de fecha es yyyy-MM-dd kk:mm.
       security:
         - oauth2:
             - talento.seleccion.read
@@ -2258,7 +2258,7 @@ paths:
       tags:
       - Selección
       summary: Selección - Reporte detallado
-      description: Endpoint donde se lista reporte detallado de procesos en el módulo de Selección.
+      description: Endpoint donde se lista el reporte detallado de procesos en el módulo de Selección.
       security:
         - oauth2:
             - talento.seleccion.read
@@ -2365,7 +2365,7 @@ paths:
       tags:
       - Competencias
       summary: Competencias - Procesos
-      description: Endpoint donde se listan los procesos de valoración de competencias registrados en talento cloud.
+      description: Endpoint donde se listan los procesos de valoración de competencias registrados en Talento Cloud.
       security:
         - oauth2:
             - talento.competencias.read
@@ -2402,7 +2402,7 @@ paths:
       tags:
       - Competencias
       summary: Competencias - Detalle valoración
-      description: Endpoint donde se listan detalles de resultados de una valoración de competencias suministrada
+      description: Endpoint donde se listan los detalles de resultados de una valoración de competencias suministrada.
       security:
         - oauth2:
             - talento.competencias.read
@@ -2526,7 +2526,7 @@ paths:
       tags:
       - Formación
       summary: Formación - Años planeados
-      description: Endpoint donde se lista los años configurados en el módulo de Formación.
+      description: Endpoint donde se listan los años configurados en el módulo de Formación.
       security:
         - oauth2:
             - talento.formacion.read
@@ -2569,7 +2569,7 @@ paths:
       tags:
       - Formación
       summary: Formación - Temas registrados
-      description: Endpoint donde se lista los temas registrados en el módulo de Formación.
+      description: Endpoint donde se listan los temas registrados en el módulo de Formación.
       security:
         - oauth2:
             - talento.formacion.read
@@ -2631,7 +2631,7 @@ paths:
       tags:
       - Formación
       summary: Formación - Avance por tema
-      description: Endpoint donde se lista reporte del avance por tema en el módulo de Formación para un año dado.
+      description: Endpoint donde se lista el reporte del avance por tema en el módulo de Formación para un año dado.
       security:
         - oauth2:
             - talento.formacion.read
@@ -2756,7 +2756,7 @@ paths:
       tags:
       - DEC
       summary: DEC - Procesos
-      description: Endpoint donde se lista los procesos disponibles para evaluación de operativos, en el módulo de DEC.
+      description: Endpoint donde se listan los procesos disponibles para evaluación de operativos en el módulo de DEC.
       security:
         - oauth2:
             - talento.dec.read
@@ -2793,7 +2793,7 @@ paths:
       tags:
       - DEC
       summary: DEC - Temporadas
-      description: Endpoint donde se lista los temporadas disponibles para evaluación de operativos, en el módulo de DEC.
+      description: Endpoint donde se listan las temporadas disponibles para evaluación de operativos en el módulo de DEC.
       security:
         - oauth2:
             - talento.dec.read
@@ -2835,7 +2835,7 @@ paths:
       tags:
       - DEC
       summary: DEC - Reporte Operativos
-      description: Endpoint donde se lista reporte de operativos en el módulo de DEC.
+      description: Endpoint donde se lista el reporte de operativos en el módulo de DEC.
       security:
         - oauth2:
             - talento.dec.read
@@ -2947,7 +2947,7 @@ paths:
       tags:
       - ObjetivosSMART
       summary: ObjetivosSMART - Años procesos
-      description: Endpoint donde se lista los procesos de años de objetivos SMART.
+      description: Endpoint donde se listan los procesos anuales de objetivos SMART.
       security:
         - oauth2:
             - talento.objetivossmart.read
@@ -2984,7 +2984,7 @@ paths:
       tags:
       - ObjetivosSMART
       summary: ObjetivosSMART - Resultados consolidados gestión
-      description: Endpoint donde se lista los resultados consolidados de gestión de objetivos SMART de un proceso dado de forma paginada.
+      description: Endpoint donde se listan los resultados consolidados de gestión de objetivos SMART de un proceso dado, de forma paginada.
       security:
         - oauth2:
             - talento.objetivossmart.read
@@ -3095,7 +3095,7 @@ paths:
       tags:
       - ObjetivosSMART
       summary: MapaTalento - Modelos
-      description: Endpoint donde se lista todos los procesos de modelos de mapa de talento activos.
+      description: Endpoint donde se listan todos los procesos de modelos de mapa de talento activos.
       security:
         - oauth2:
             - talento.objetivossmart.read
@@ -3132,7 +3132,7 @@ paths:
       tags:
       - ObjetivosSMART
       summary: MapaTalento - Temporadas
-      description: Endpoint donde se lista las temporadas de un mapa de talento activos.
+      description: Endpoint donde se listan las temporadas de un modelo de mapa de talento activo.
       security:
         - oauth2:
             - talento.objetivossmart.read
@@ -3174,7 +3174,7 @@ paths:
       tags:
       - ObjetivosSMART
       summary: MapaTalento - Modelo mapa de desempeño
-      description: Endpoint donde se lista json con reporte de Modelo mapa de desempeño de un modelo de mapa de talento de la temporada indicada. Se lista de forma paginada.
+      description: Endpoint donde se lista el reporte de Modelo de Mapa de Desempeño de un modelo de mapa de talento para la temporada indicada, de forma paginada.
       security:
         - oauth2:
             - talento.objetivossmart.read
@@ -3304,7 +3304,7 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/Datum'
+            $ref: '#/components/schemas/HV_InformacionNominaItem'
           description: ''
         success:
           type: boolean
@@ -3567,8 +3567,8 @@ components:
           beneficiario_caja_compensacion: null
         success: true
         total: 4
-    Datum:
-      title: Datum
+    HV_InformacionNominaItem:
+      title: HV_InformacionNominaItem
       required:
       - usuario
       - tipo_documento
@@ -7224,24 +7224,24 @@ components:
         conocimientosTecnicos:
           type: array
           items:
-            $ref: '#/components/schemas/ConocimientosTecnico'
+            $ref: '#/components/schemas/ConocimientoTecnico'
           description: ''
         competenciasFuncionales:
           type: array
           items:
-            $ref: '#/components/schemas/CompetenciasFuncionale'
+            $ref: '#/components/schemas/CompetenciaFuncional'
           description: ''
         competenciasCorporativas:
           type: array
           items:
-            $ref: '#/components/schemas/CompetenciasCorporativa'
+            $ref: '#/components/schemas/CompetenciaCorporativa'
           description: ''
         titulosAcademicosHtml:
           type: string
         titulosAcademicos:
           type: array
           items:
-            $ref: '#/components/schemas/TitulosAcademico'
+            $ref: '#/components/schemas/TituloAcademico'
           description: ''
         nombreIdioma:
           type: string
@@ -7300,8 +7300,8 @@ components:
         aprobador:
           type: string
           nullable: true
-    ConocimientosTecnico:
-      title: ConocimientosTecnico
+    ConocimientoTecnico:
+      title: ConocimientoTecnico
       required:
       - codigo
       - nombre
@@ -7315,8 +7315,8 @@ components:
       example:
         codigo: 221
         nombre: AAA Pruebas Varias
-    CompetenciasFuncionale:
-      title: CompetenciasFuncionale
+    CompetenciaFuncional:
+      title: CompetenciaFuncional
       required:
       - codigo
       - nombre
@@ -7330,8 +7330,8 @@ components:
       example:
         codigo: 89
         nombre: Administración y gestión de recursos
-    CompetenciasCorporativa:
-      title: CompetenciasCorporativa
+    CompetenciaCorporativa:
+      title: CompetenciaCorporativa
       required:
       - codigo
       - nombre
@@ -7345,8 +7345,8 @@ components:
       example:
         codigo: 150
         nombre: Trabajo en equipo
-    TitulosAcademico:
-      title: TitulosAcademico
+    TituloAcademico:
+      title: TituloAcademico
       required:
       - codigo
       - nombre
@@ -7636,7 +7636,7 @@ components:
         titulosAcademicos:
           type: array
           items:
-            $ref: '#/components/schemas/TitulosAcademico'
+            $ref: '#/components/schemas/TituloAcademico'
           description: ''
         formacionComplementaria:
           type: string
@@ -9059,7 +9059,7 @@ components:
       type: oauth2
       flows:
         clientCredentials:
-          tokenUrl: https://clientex.talento.cloud/html/oauth2/token/demo.json
+          tokenUrl: https://clientex.talento.cloud/html/oauth2/token/clientex.json
           scopes:            
             talento.seleccion.read: "Permiso para leer datos de selección. Todos los endpoints de Selección, incluido seguimiento por etapas"
             talento.hojavida.read: "Datos básicos y experiencia laboral"
@@ -9071,7 +9071,7 @@ components:
             talento.dec.read: "Procesos, temporadas y reporte de operativos"
             talento.objetivossmart.read: "Procesos y resultados consolidados de gestión de objetivos SMART"
             talento.usuarios.write: "Carga masiva de usuarios"
-            talento.read: "Permiso para leer datos de talento, esta obsoleto y se removerá próximamente"
+            talento.read: "Permiso para leer datos de talento, está obsoleto y se removerá próximamente"
 security:
 - oauth2:
       - talento.hojavida.read
