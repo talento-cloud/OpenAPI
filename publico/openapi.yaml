@@ -962,7 +962,7 @@ paths:
                         fechaCreacion: '2022-01-11 13:41:16'
                         etapaProceso: 'Cierre - Terminada - Encuesta '
                       publicacion:
-                        fechaEstimadaIngreso: '2022-04-30 24:00:00'
+                        fechaEstimadaIngreso: '2022-04-30 00:00:00'
                         tipoVinculacion: Contrato de aprendizaje
                         proceso: 121
                         salario: Según experiencia
