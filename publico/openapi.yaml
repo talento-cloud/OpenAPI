@@ -732,7 +732,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/api/api/html/v1/public/seleccion/get.json?start=0&limit=10' \
+            curl --location 'https://clientex.talento-dev.cloud/api/html/v1/public/seleccion/requisiciones.json?start=0&limit=10' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Seleccion-ListaRequisiciones
       parameters:
@@ -770,52 +770,52 @@ paths:
                       seleccionados: 0
                       cargo: Analista Desarrollador
                       etapa_seleccion: Aprobación
-                      solicitante: Juan Fernando Osorio Ospina
+                      solicitante: Carlos Andres Perez Gomez
                     - codigo: 210
                       seleccionados: 0
                       cargo: Auxiliar de tesorería
                       etapa_seleccion: Aprobación
-                      solicitante: Juan Fernando Osorio Ospina
+                      solicitante: Carlos Andres Perez Gomez
                     - codigo: 209
                       seleccionados: 3
                       cargo: Coordinador de Calidad
                       etapa_seleccion: Cierre
-                      solicitante: Juan Fernando Osorio Ospina
+                      solicitante: Carlos Andres Perez Gomez
                     - codigo: 208
                       seleccionados: 1
                       cargo: Ingeniero(a) de sistemas
                       etapa_seleccion: Cierre
-                      solicitante: Juan Fernando Osorio Ospina
+                      solicitante: Carlos Andres Perez Gomez
                     - codigo: 207
                       seleccionados: 1
                       cargo: 'Director Gestion '
                       etapa_seleccion: Cierre
-                      solicitante: Juan Fernando Osorio Ospina
+                      solicitante: Carlos Andres Perez Gomez
                     - codigo: 206
                       seleccionados: 0
                       cargo: Asistente de tecnología
                       etapa_seleccion: Filtro telefónico
-                      solicitante: Juan Fernando Osorio Ospina
+                      solicitante: Carlos Andres Perez Gomez
                     - codigo: 205
                       seleccionados: 1
                       cargo: Auxiliar de tesorería
                       etapa_seleccion: Cierre
-                      solicitante: Blanca Ruiz Suarez
+                      solicitante: Maria Fernanda Rodriguez Lopez
                     - codigo: 204
                       seleccionados: 0
                       cargo: Asistente de tecnología
                       etapa_seleccion: Cierre
-                      solicitante: Juan Fernando Osorio Ospina
+                      solicitante: Carlos Andres Perez Gomez
                     - codigo: 203
                       seleccionados: 0
                       cargo: Auxiliar de Operaciones
                       etapa_seleccion: Preselección
-                      solicitante: Juan Fernando Osorio Ospina
+                      solicitante: Carlos Andres Perez Gomez
                     - codigo: 202
                       seleccionados: 0
                       cargo: Auxiliar de Operaciones
                       etapa_seleccion: Preselección
-                      solicitante: Juan Fernando Osorio Ospina
+                      solicitante: Carlos Andres Perez Gomez
                     success: true
                     total: 62
         '401':
@@ -836,7 +836,7 @@ paths:
         - lang: Shell
           label: cURL
           source: |
-            curl --location 'https://clientex.talento-dev.cloud/api/api/html/v1/public/seleccion/get/209.json' \
+            curl --location 'https://clientex.talento-dev.cloud/api/html/v1/public/seleccion/requisiciones/121.json' \
               --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       operationId: Seleccion-DetalleRequisicion
       parameters:
@@ -847,7 +847,7 @@ paths:
           schema:
             type: integer
             format: int64
-            example: 209
+            example: 121
       responses:
         '200':
           description: OK
@@ -858,346 +858,124 @@ paths:
                 - $ref: '#/components/schemas/Seleccion_detalleRequisicion'
                 - example:
                     data:
-                      misionCargo: "Coordinar los aspectos administrativos y de control al interior de la organización en el marco de la\nimplementación y posterior mantención del Sistema de Gestión de Calidad, de acuerdo con los\nrequisitos de las normas ISO 9001:2008, para todos los Sistemas de Calidad de los Programas de\nMejoramiento de la Gestión "
-                      aprobaciones: []
+                      misionCargo: "Dirigir el correcto desarrollo de las actividades operativas de la empresa, garantizar que los procesos de lleven acabo en el tiempo y la forma estipulados por la compañía con el fin de que se haga entrega de los servicios  de manera oportuna, coordinar que se cuente con los insumos necesarios para desarrollar las operaciones. Relacionarse con las actividades operativas de todas las áreas de la empresa."
+                      aprobaciones:
+                      - posicion: 0
+                        estado: Aprobada
+                        fechaAprobacion: '2022-09-06 11:28:20'
+                        defineSalario: false
+                        salario: null
+                        aprobador: Diego Garcia
+                        concepto: Favorable
+                        comentario: 'ok '
                       recursos:
-                      - codigo: 489
-                        recurso: 28
-                        nombreRecurso: "Diadema"
+                      - descripcion: "💻"
+                        codigo: 305
+                        nombreRecurso: "Computador portátil 💻"
+                        codigoRecurso: 23
                         cantidad: 1
-                        descripcion: Diadema con micrófono de cancelación de ruido para mejorar la calidad de llamadas y videoconferencias.
-                        categoria: Equipos de Comunicación
-                        requisicion: 209
-                        notificar: 0
-                        codRecursoCandidato: null
-                        codCandidato: null
+                      - descripcion: "Kit de bienvenida que incluye elementos representativos de la empresa como snacks, termos, cuadernos, bolígrafos y otros artículos personalizados para generar sentido de pertenencia y una experiencia de integración positiva."
+                        codigo: 306
+                        nombreRecurso: "Ancheta de Bienvenida 🎁"
+                        codigoRecurso: 36
+                        cantidad: 1
+                      - descripcion: ""
+                        codigo: 271
+                        nombreRecurso: "Archivadores 📁"
+                        codigoRecurso: 7
+                        cantidad: 1
+                      - descripcion: ""
+                        codigo: 205
+                        nombreRecurso: "Celular 📱"
+                        codigoRecurso: 21
+                        cantidad: 1
+                      - descripcion: "Diadema con micrófono de cancelación de ruido para mejorar la calidad de llamadas y videoconferencias."
+                        codigo: 307
+                        nombreRecurso: "Diadema 🎧"
+                        codigoRecurso: 28
+                        cantidad: 1
                       requisicion:
-                        codigo: 209
-                        fechaCreacion: 2025-09-19 14:52:54
-                        fechaModificacion: N/A
-                        fechaCancelacion: null
-                        fechaCierreRequisicion: null
-                        codigoCargo: 92
-                        nombreCargo: Coordinador de Calidad
-                        cargoExterno: null
-                        codigoCargoJefe: 96
-                        nombreCargoJefe: Director de Operaciones
-                        codigoUsuarioSolicitante: 1
-                        nombreUsuarioSolicitante: Juan Fernando Osorio Ospina
-                        nroRequisicion: 209
-                        estadoRequisicion: 20
-                        estadoProceso: 7
-                        nombreEstadoProceso: Cierre
-                        nombreMacroEstado: null
-                        nombreEtapaProceso: Cierre
-                        estadoRequisicionStr: Cierre
-                        estadoProcesoStr: null
-                        codigoMotivo: 2
-                        motivo: Convocatoria
-                        codigoTipoVinculacion: 1564
-                        tipoVinculacion: Contrato de aprendizaje
-                        nroVacantes: 3
-                        ans: 158/0
-                        eliminar: null
-                        justificacion: 'Necesario cubrir el puesto '
-                        duracionDias: '333'
+                        descripcion: Convocatoria Mixta para el cargo de Director de Operaciones
+                        jornadaLaboral: Turno partido
+                        justificacion: Se requiere ocupante para nuevo cargo
                         salarioMensual: Según experiencia
-                        observacionesAdicionales: Sin observaciones adicionales
-                        recibeCompensacion: false
-                        fechaHumana: 19 de sep 2025
-                        nombreRegional: Antioquia
-                        disponibilidadViajar: false
+                        centroCostos: null
+                        nroVacantes: 2
+                        vicepresidencia: Gestión Humana
+                        tipoProceso: Cargo nuevo
                         rotacionTurnos: false
-                        tipoConvocatoria: MIXTA
-                        codigoCentroCostos: null
-                        nombreCentroCostos: null
-                        edadDesde: 18
-                        edadHasta: 65
-                        codigoSede: 1
-                        nombreSede: Medellín
-                        nombreCiudad: Medellin
-                        compensacionVariable: null
-                        codigoAprobacion: null
-                        codigoAprobador: null
-                        fechaAprobacion: 19 de sep 2025
-                        concepto: null
-                        comentario: null
-                        tipoAprobador: null
-                        fechaEstimada: 30/01/2027
-                        personaReemplaza: null
-                        nombrePersonaReemplaza: null
-                        nombresPersonasReemplazaHtml: null
-                        personasReemplazar: []
-                        personaEvaluar: null
-                        jornadaLaboral: 1549
-                        nombreJornadaLaboral: No definido
-                        ansTipoCargo: 0
-                        ansDiasLider: null
-                        ansDiasPsicologo: null
-                        ansPrioridadLiderTxt: null
-                        ansPrioridadPsicologoTxt: null
-                        ansPrioridadLider: null
-                        ansPrioridadPsicologo: null
-                        tipoProcesoSeleccion: null
-                        tipoProcesoSeleccionTxt: null
-                        familiaCargo: null
-                        familiaCargoTxt: null
-                        especialidad: null
-                        especialidadTxt: null
-                        perfil: null
-                        perfilTxt: null
-                        lider: null
-                        liderTxt: null
-                        tecnologiaSophos: null
-                        tecnologiaSophosTxt: null
-                        nombreArea: N/A
-                        nombreJefe: null
-                        codigoResponsableProceso: null
-                        nombreResponsableProceso: null
-                        responsablesProceso: null
-                        trvIdiomaRequisicion: []
-                        avanceANS: 0
-                        diasTranscurridos: 158
-                        vicepresidencia: Procesos
-                        hash: 1ae24d72-7795-4501-9659-31f5d480079f
-                        codigoJefeInmediato: 1
-                        jefeInmediato: Juan Fernando Osorio Ospina
-                        codigoVicepresidencia: 8
-                        nombreVicepresidencia: Procesos
-                        codigoNegocio: 1
-                        nombreNegocio: Desarrollo de Software
-                        codigoUen: 6
-                        nombreUen: UEN App Moviles
-                        codigoEmpresa: 1
-                        nombreEmpresa: talento cloud
-                        corporativo: false
-                        genero: INDIFERENTE
-                        vehiculo: null
-                        diasTotales: null
-                        tipoRequisicion: 2
-                        tipoReglaRequisicion: 24
-                        nombreReglaRequisicion: Sin aprobacion
-                        fechaCierreRequicision: Hoy
-                        codigoEntrevistadorGH: null
-                        nombreEntrevistadorGH: null
-                        codigoEncargadoExamenMedico: null
-                        experiencia: 36
-                        experienciaAnios: 3
-                        experienciaMes: 0
-                        nombreAprobador: null
-                        cliente: ''
-                        codigoProyecto: ''
-                        banda: ''
-                        escolaridad: '4'
-                        codigoEscolaridad: 4
-                        nombreEscolaridad: 'Profesional                   '
-                        estadoEscolaridad: null
-                        etapasConfiguradas: false
-                        descripcion: ' '
-                        tipoProceso: Sin aprobacion
-                        tiempoMinimoPermanencia: 0
-                        empresaSolicitante: null
-                        tarifa: ''
-                        perfilAspirante: "Asegurarse de que se establecen, implementan y mantienen los procesos necesarios para el sistema de gestión de la calidad e inocuidad.\nGarantizar el cumplimiento de las metas programadas para el sistema de calidad\ne inocuidad.\nEjecutar y llevar el seguimiento a los aspectos ambientales y programas de gestión ambiental de la empresa.\nVerificar el cumplimiento de las Buenas Prácticas de Manufactura en toda la\nplanta, tanto a nivel de los productos fabricados, como a nivel del funcionamiento\nde las áreas de producción - 36 meses, \n"
-                        valorProceso: ''
-                        confidencialidad: ''
-                        fechaOcupacionCargo: 1801198800000
-                        observacionesProceso: gsdf gsdf gsdf sgdf g
-                        centroCostosNombre: null
-                        descripcionJefe: ' '
-                        observacionesJornada: ' '
-                        alcanceCargoFK: null
-                        nombreAlcanceCargo: null
-                        infoRelevanteJefe: ' '
-                        infoRelevanteComercial: ' '
-                        politicasContratacion: ' '
-                        preferenciasAspirante: ' '
-                        nivelIdioma: null
-                        idioma: null
-                        avanceProceso: 0.727272748947144
-                        paMisionCargo: "Coordinar los aspectos administrativos y de control al interior de la organización en el marco de la\nimplementación y posterior mantención del Sistema de Gestión de Calidad, de acuerdo con los\nrequisitos de las normas ISO 9001:2008, para todos los Sistemas de Calidad de los Programas de\nMejoramiento de la Gestión "
-                        paRetoCargo: ' '
-                        paResponsabilidadCargo: ' '
-                        paIndicadores: ' '
-                        paPresupuestoArea: ' '
-                        formacionComplementaria: ''
-                        funcionesCargo: ' '
-                        tipoExperiencia: ''
-                        conocimientosTecnicosHtml: <br/>-AAA Pruebas Varias<br/>-NodeJS<br/>-Linux Scripting<br/>-Java<br/>-Comunicación asertiva<br/>
-                        conocimientosTecnicos:
-                        - codigo: 221
-                          nombre: AAA Pruebas Varias
-                        - codigo: 138
-                          nombre: NodeJS
-                        - codigo: 137
-                          nombre: Linux Scripting
-                        - codigo: 140
-                          nombre: Java
-                        - codigo: 133
-                          nombre: Comunicación asertiva
+                        competenciasCorporativas: []
                         competenciasFuncionales:
-                        - codigo: 89
-                          nombre: Administración y gestión de recursos
-                        - codigo: 90
-                          nombre: Análisis numérico
-                        - codigo: 101
-                          nombre: Comunicación
-                        - codigo: 97
-                          nombre: Calidad en el trabajo
-                        competenciasCorporativas:
-                        - codigo: 150
-                          nombre: Trabajo en equipo
-                        - codigo: 292
-                          nombre: Pruebas react
-                        - codigo: 149
-                          nombre: Promotor de los valores y la ética
-                        - codigo: 148
-                          nombre: Planeación, organización y control
-                        - codigo: 147
-                          nombre: Orientación al servicio al cliente
-                        - codigo: 146
-                          nombre: Experiencia y conocimientos técnicos
-                        - codigo: 100
-                          nombre: Empatía
-                        - codigo: 145
-                          nombre: Comunicación
-                        - codigo: 96
-                          nombre: Capacidad de aprendizaje
-                        - codigo: 91
-                          nombre: Análisis y resolución de problemas
-                        - codigo: 88
-                          nombre: Adaptación y flexibilidad
-                        - codigo: 86
-                          nombre: Adaptación al cambio2
-                        titulosAcademicosHtml: Ninguna                       /Administración de sistemas informáticos<br/>
+                        - codigo: 93
+                          nombre: Asertividad
+                        - codigo: 94
+                          nombre: Autoconfianza
+                        - codigo: 95
+                          nombre: Autocontrol
+                        genero: INDIFERENTE
+                        cargo: Director de Operaciones
+                        negocio: Desarrollo de Software
+                        diasTranscurridos: 1510
                         titulosAcademicos:
-                        - codigo: 26
-                          nombre: Administración de sistemas informáticos
-                        nombreIdioma: null
-                        nombreNivelIdioma: null
-                        codPlantilla: 2
-                        plantillaEditable: true
-                        editable: false
-                        editableConPermiso: false
-                        nroHojasVidasExternas: 0
-                        infVacanteAuxilioRodamiento: 'null'
-                        infVacanteArea: 'null'
-                        infVacanteTipoSalario: 'null'
-                        fuePublicada: true
-                        nroSolicitudERP: ''
-                        codCandidatoBuscado: null
-                        candidatoEncontrado: false
-                        calendario: COLOMBIA
-                        competenciasCorporativasHtml: null
-                        competenciasFuncionalesHtml: null
-                        afinacion: null
-                        instruccionesIA: '{"idiomas":"medio","observaciones_adicionales":"Que viva en medellin es lo mejor","experiencia_laboral":"alto","nivel_educacion":"alto","ciudad":"medio","genero":"medio","disponibilidad_viajar":"bajo","descripcion_funciones_puesto":"irrelevante","titulos_academicos":"medio","expectativa_salarial":"medio","habilidades_especificas":"bajo","edad":"bajo"}'
-                        label: 209 - Coordinador de Calidad
-                        disponibilidadViajarAlt: false
-                        rotacionTurnosAlt: false
-                        nombreEmpresaSolicitante: N/A
-                        aprobador: null
-                      publicacion:
-                        estadoPublicacion: PUBLICADO
-                        cargo: Coordinador de Calidad
-                        codigo: 209
-                        publicada: true
+                        - codigo: 28
+                          nombre: Administración financiera
+                        idiomas:
+                        - idioma: Francés - B1
+                          nivel: B1
+                        cliente: Empresa Cliente S.A.S.
+                        escolaridad: Tecnólogo
+                        estadoProceso: Terminada
                         tipoConvocatoria: MIXTA
-                        experiencia: 36
-                        experienciaAnios: 3
-                        experienciaMeses: 0
-                        nombreTipoVinculacion: Contrato de aprendizaje
-                        codigoTipoVinculacion: 1564
+                        ciudad: Cali
+                        compensacionVariable: null
+                        ansAvance: 0
+                        empresa: talento cloud
+                        motivo: Convocatoria
+                        tipoVinculacion: Contrato de aprendizaje
+                        regional: Sur
+                        jefeInmediato: Carlos Andres Perez Gomez
+                        perfilAspirante: 'Amplia experiencia en selección de recursos, manejo de herramientas ofimáticas y diseño de entrevistas. '
+                        fechaAprobacion: '2022-05-24 06:01:57'
+                        fechaCierreRequisicion: null
+                        recibeCompensacion: false
+                        observacionesAdicionales: Sin observaciones adicionales
+                        uen: UEN App Moviles
+                        edadHasta: 68
+                        observacionesProceso: 'También sede Medellín  y  Bogotá '
+                        tarifa: 25millones
+                        competenciasTecnicas:
+                        - codigo: 142
+                          nombre: Prospección en frio
+                        - codigo: 141
+                          nombre: Prospección
+                        - codigo: 136
+                          nombre: Networking y alianzas
+                        escolaridadEstado: CULMINADO
+                        proceso: 121
+                        sede: Cali
+                        ans: 1510/30
+                        usuarioSolicitante: Carlos Andres Perez Gomez
+                        disponibilidadViajar: false
+                        edadDesde: 15
+                        experienciaAnios: 1
+                        empresaSolicitante: null
+                        fechaCreacion: '2022-01-11 13:41:16'
+                        etapaProceso: 'Cierre - Terminada - Encuesta '
+                      publicacion:
+                        fechaEstimadaIngreso: '2022-04-30 24:00:00'
+                        tipoVinculacion: Contrato de aprendizaje
+                        proceso: 121
                         salario: Según experiencia
-                        salarioPublico: '5000000'
-                        nombreHorario: No definido
-                        codigoHorario: 1549
-                        funciones: >+
-                          Asesorar al Representante de la Dirección en la planeación, mantenimiento y perfeccionamiento del Sistema de Gestión de Calidad..
-
-                          Planear, dirigir y organizar las actividades necesarias para la implantación y mejora del Sistema de Gestión de Calidad..
-
-                          Mantener, Actualizar y Soportar todos los procesos del Sistema de Gestión de Calidad en la empresa  .
-
-                        conocimeintos: "<br/>-Comunicación asertiva \r<br/>-Java \r<br/>-Linux Scripting \r<br/>-NodeJS \r<br/>"
-                        fechaCreacion: 2025-09-19 14:52:54.539
-                        nroRequisicion: '209'
-                        fechaCierre: 31-07-2027
-                        fechaCierreD: 1817096399000
-                        fechaCierreDia: 31
-                        fechaCierreMes: 7
-                        fechaCierreAnio: 2027
-                        fechaCierreHumana: 31 de julio de 2027
-                        fechaQueda: (Quedan 443 dias, 8 horas)
-                        sede: null
-                        ciudad: null
-                        nroVacantes: null
-                        escolaridad: 4
-                        fechaIngreso: 2027-01-30 00:00:00.0
-                        fechaIngresoD: 1801285200000
-                        fechaIngresoDia: 30
-                        fechaIngresoMes: 1
-                        fechaIngresoAnio: 2027
+                        experienciaMeses: 0
+                        publicada: false
+                        salarioPublico: Según la experiencia mostrada
+                        fechaCierre: '2023-10-31 23:59:59'
+                        tipoConvocatoria: MIXTA
+                        informacion: 'Etiam luctus venenatis mi. Donec in risus eget leo dignissim malesuada ac bibendum dolor. '
+                        funciones: "Desarrollar una compresión integral de la cultura de la organización:\r\nEstablecer los requisitos de reclutamiento, estudiando los planes, misión, visión y valores de la organización o empresa..\r\nElaborar el perfil del “candidato ideal”..\r\nConfirmar tanto las fechas límite de reclutamiento, como las expectativas de las distintas áreas..\r\nElaborar y publicar ofertas de empleo en distintos canales y en las redes sociales a los fines de atraer candidatos:\r\nRevisar la descripción de los perfiles de los cargos.\r\nDeterminar los requisitos del candidato, estudiando su experiencia laboral y formación académica..\r\nConstruir, alimentar y mantener actualizada una red de candidatos:\r\nBuscar candidatos potenciales en las redes sociales y páginas de empleo.\r\nEstablecer una fuente de candidatos, contactando a universidades y asociaciones profesionales.\r\nUtilizar la publicidad para establecer contactos y atraer candidatos.\r\nMantener actualizada la información de los candidatos..\r\nReclutar candidatos:\r\nGestionar todo el proceso pre-empleo del candidato, además de revisar su CV y resultados de la entrevista y evaluaciones.\r\nCoordinar y realizar entrevistas personales con los candidatos a los fines de verificar que sus habilidades y destrezas cumplan o excedan las expectativas.\r\nEvaluar la habilidad del candidato para ajustarse a la cultura corporativa de la empresa u organización.\r\nAdministrar y calificar las evaluaciones pre-empleo.\r\nRevisar los antecedentes y validar las referencias y experiencia laboral del candidato..\r\nReunirse con los Gerentes de las distintas áreas para discutir sus necesidades..\r\nMantener el flujo de información haciéndole seguimiento constante a los candidatos y clientes (en caso de tratarse de una agencia cazatalentos o de empleo):\r\nNegociar la aceptación u oferta final.\r\nAsistir en el proceso de inducción de los nuevos ingresos.\r\nRealizar evaluaciones de desempeño.\r\nEvaluar las impresiones tanto de los candidatos, como de los Gerentes de otras áreas..\r\n"
+                        experienciaAnios: 1
                         estadoEducacion: GRADUADO
-                        paraElEmpleo: false
-                        paraComputrabajo: false
-                        paraTicJob: false
-                        errorElEmpleo: null
-                        errorComputrabajo: null
-                        errorTicJob: null
-                        aplicado: 0
-                        eeTitulo: Coordinador de Calidad
-                        eeDescripcion: "Gestión del talento > Desarrollo > Comunicación asertiva, \r\nSistemas de información > Lenguajes > Java, \r\nSistemas de información > Sistemas Operativos > Linux Scripting, \r\nSistemas de información > Lenguajes > NodeJS, \r\n"
-                        eeRequerimientos: >+
-                          Asesorar al Representante de la Dirección en la planeación, mantenimiento y perfeccionamiento del Sistema de Gestión de Calidad..
-
-                          Planear, dirigir y organizar las actividades necesarias para la implantación y mejora del Sistema de Gestión de Calidad..
-
-                          Mantener, Actualizar y Soportar todos los procesos del Sistema de Gestión de Calidad en la empresa  .
-
-                        eePublicarNombre: null
-                        eePublicarEmpresarial: null
-                        eeIntensidadHoraria: null
-                        eePositionSublevel: null
-                        eePosition: null
-                        eeProfession: null
-                        eeWorkArea: null
-                        eeSector: null
-                        eeCity: null
-                        eeSalary: '34'
-                        tjReferencia: null
-                        tjLanguage: null
-                        tjTitle: Coordinador de Calidad
-                        tjKeywords: null
-                        tjLocation: null
-                        tjHtmlcontent: null
-                        tjSkills: null
-                        tjExperience: null
-                        tjStudyLevel: null
-                        tjJobMode: null
-                        tjJobType: null
-                        tjJobDuration: null
-                        tjJobLocation: null
-                        titulosAcademicosHtml: null
-                        titulosAcademicos:
-                        - codigo: 26
-                          nombre: Administración de sistemas informáticos
-                        formacionComplementaria: null
-                        tipoExperiencia: null
-                        informacion: Vacante para un ejemplo
-                        usuarioReapertura: Desconocido
-                        fechaReapertura: null
-                        ansTipoCargo: null
-                        ansDiasLider: null
-                        ansDiasPsicologo: null
-                        ansPrioridadLiderTxt: null
-                        ansPrioridadPsicologoTxt: null
-                        ansPrioridadLider: null
-                        ansPrioridadPsicologo: null
-                        rangoSalarioID: null
-                        rangoSalarioName: null
-                        encuestaVacanteCodigo: null
-                        encuestaVacanteNombre: null
+                        conocimientos: "-\r--Networking y alianzas \r--Planificación de trabajo \r--\r--Curso - Manejo avanzado del sistema operativo Windows y de\r--herramientas como Word Excel y Power Point\r-- \r"
                     success: true
         '401':
           $ref: '#/components/responses/UnauthorizedError'
@@ -2117,7 +1895,7 @@ paths:
                       nivel_organizacional: Ejecutivo
                       area: Operaciones
                       documento_jefe: '1020980000'
-                      jefe: Juan Osorio Ospina
+                      jefe: Carlos Perez
                       tipo: Beneficio
                       fecha_transaccion: '2025-04-09'
                       descripcion: Recuperación de puntos
@@ -2339,7 +2117,7 @@ paths:
                       vicepresidencia: Procesos
                       regional: Antioquia
                       sede: Medellín
-                      lider: Juan Osorio
+                      lider: Carlos Perez
                       justificacion: Para reemplezar al analista de compras
                       observaciones: Pueden usarce candidatos de otras ciudades
                       observaciones_cancelacion: null
@@ -2912,7 +2690,7 @@ paths:
                       documento_jefe: '10350000'
                       jefe: Andres Alvarez Perez
                       documento_evaluador: '10209800'
-                      evaluador: Juan Osorio Ospina
+                      evaluador: Carlos Perez
                       tipo_objetivo: Objetivo genérico
                       indicador_objetivo: Formación
                       descripcion_objetivo: Cumplió satisfactoriamente con el PDI propuesto
@@ -3596,10 +3374,6 @@ components:
       - tipo_salario
       - nomina
       - regimen_pension
-      - tipo_cuenta
-      - banco
-      - numero_cuenta
-      - salario
       - cupo_beneficios
       - centros_costos
       - modalidad
@@ -3631,7 +3405,6 @@ components:
       - direccion_beneficiario
       - ciudad_beneficiario
       - relacion_seguridad_social
-      - discapacidad
       - beneficiario_eps
       - beneficiario_caja_compensacion
       type: object
@@ -4840,10 +4613,6 @@ components:
       - lugar_nacimiento
       - sexo
       - estado_civil
-      - estatura
-      - peso
-      - grupo_sanguineo_rh
-      - etnia
       - tiene_foto
       - ciudad_residencia
       - barrio_residencia
@@ -4887,9 +4656,6 @@ components:
       - celular_con_wifi
       - plan_datos
       - tipo_contrato
-      - banco
-      - tipo_cuenta
-      - nro_cuenta_banco
       - auxilio_movilidad
       - turno_trabajo
       type: object
@@ -5386,7 +5152,7 @@ components:
           nivel_organizacional: Ejecutivo
           area: Operaciones
           documento_jefe: '1020980000'
-          jefe: Juan Osorio Ospina
+          jefe: Carlos Perez
           tipo: Beneficio
           fecha_transaccion: '2025-04-09'
           descripcion: Recuperación de puntos
@@ -5486,7 +5252,7 @@ components:
         nivel_organizacional: Ejecutivo
         area: Operaciones
         documento_jefe: '1020980000'
-        jefe: Juan Osorio Ospina
+        jefe: Carlos Perez
         tipo: Beneficio
         fecha_transaccion: '2025-04-09'
         descripcion: Recuperación de puntos
@@ -6257,7 +6023,7 @@ components:
           vicepresidencia: Procesos
           regional: Antioquia
           sede: Medellín
-          lider: Juan Osorio
+          lider: Carlos Perez
           justificacion: Para reemplezar al analista de compras
           observaciones: Pueden usarce candidatos de otras ciudades
           observaciones_cancelacion: null
@@ -6442,7 +6208,7 @@ components:
         vicepresidencia: Procesos
         regional: Antioquia
         sede: Medellín
-        lider: Juan Osorio
+        lider: Carlos Perez
         justificacion: Para reemplezar al analista de compras
         observaciones: Pueden usarce candidatos de otras ciudades
         observaciones_cancelacion: null
@@ -6481,52 +6247,52 @@ components:
           seleccionados: 0
           cargo: Analista Desarrollador
           etapa_seleccion: Aprobación
-          solicitante: Juan Fernando Osorio Ospina
+          solicitante: Carlos Andres Perez Gomez
         - codigo: 210
           seleccionados: 0
           cargo: Auxiliar de tesorería
           etapa_seleccion: Aprobación
-          solicitante: Juan Fernando Osorio Ospina
+          solicitante: Carlos Andres Perez Gomez
         - codigo: 209
           seleccionados: 3
           cargo: Coordinador de Calidad
           etapa_seleccion: Cierre
-          solicitante: Juan Fernando Osorio Ospina
+          solicitante: Carlos Andres Perez Gomez
         - codigo: 208
           seleccionados: 1
           cargo: Ingeniero(a) de sistemas
           etapa_seleccion: Cierre
-          solicitante: Juan Fernando Osorio Ospina
+          solicitante: Carlos Andres Perez Gomez
         - codigo: 207
           seleccionados: 1
           cargo: 'Director Gestion '
           etapa_seleccion: Cierre
-          solicitante: Juan Fernando Osorio Ospina
+          solicitante: Carlos Andres Perez Gomez
         - codigo: 206
           seleccionados: 0
           cargo: Asistente de tecnología
           etapa_seleccion: Filtro telefónico
-          solicitante: Juan Fernando Osorio Ospina
+          solicitante: Carlos Andres Perez Gomez
         - codigo: 205
           seleccionados: 1
           cargo: Auxiliar de tesorería
           etapa_seleccion: Cierre
-          solicitante: Blanca Ruiz Suarez
+          solicitante: Maria Fernanda Rodriguez Lopez
         - codigo: 204
           seleccionados: 0
           cargo: Asistente de tecnología
           etapa_seleccion: Cierre
-          solicitante: Juan Fernando Osorio Ospina
+          solicitante: Carlos Andres Perez Gomez
         - codigo: 203
           seleccionados: 0
           cargo: Auxiliar de Operaciones
           etapa_seleccion: Preselección
-          solicitante: Juan Fernando Osorio Ospina
+          solicitante: Carlos Andres Perez Gomez
         - codigo: 202
           seleccionados: 0
           cargo: Auxiliar de Operaciones
           etapa_seleccion: Preselección
-          solicitante: Juan Fernando Osorio Ospina
+          solicitante: Carlos Andres Perez Gomez
         success: true
         total: 62
     SeleccionRequisicionItem:
@@ -6556,7 +6322,7 @@ components:
         seleccionados: 0
         cargo: Analista Desarrollador
         etapa_seleccion: Aprobación
-        solicitante: Juan Fernando Osorio Ospina
+        solicitante: Carlos Andres Perez Gomez
     Seleccion_detalleRequisicion:
       title: Seleccion_detalleRequisicion
       required:
@@ -6570,16 +6336,11 @@ components:
           type: boolean
     SeleccionDetalleRequisicionData:
       title: SeleccionDetalleRequisicionData
-      required:
-      - misionCargo
-      - aprobaciones
-      - recursos
-      - requisicion
-      - publicacion
       type: object
       properties:
         misionCargo:
           type: string
+          nullable: true
         aprobaciones:
           type: array
           items:
@@ -6601,1113 +6362,351 @@ components:
         posicion:
           type: integer
           format: int32
+          nullable: true
         estado:
           type: string
+          nullable: true
         fechaAprobacion:
           type: string
+          nullable: true
         defineSalario:
           type: boolean
+          nullable: true
         salario:
           type: number
           nullable: true
         aprobador:
           type: string
+          nullable: true
         concepto:
           type: string
-        comentario:
-          type: string
-    Recurso:
-      title: Recurso
-      required:
-      - codigo
-      - recurso
-      - nombreRecurso
-      - cantidad
-      - descripcion
-      - categoria
-      - requisicion
-      - notificar
-      - codRecursoCandidato
-      - codCandidato
-      type: object
-      properties:
-        codigo:
-          type: integer
-          format: int32
-        recurso:
-          type: integer
-          format: int32
-        nombreRecurso:
-          type: string
-        cantidad:
-          type: integer
-          format: int32
-        descripcion:
-          type: string
-        categoria:
-          type: string
-        requisicion:
-          type: integer
-          format: int32
-        notificar:
-          type: integer
-          format: int32
-        codRecursoCandidato:
-          type: string
           nullable: true
-        codCandidato:
+        comentario:
           type: string
           nullable: true
       example:
-        codigo: 489
-        recurso: 28
-        nombreRecurso: "Diadema"
-        cantidad: 1
-        descripcion: Diadema con micrófono de cancelación de ruido para mejorar la calidad de llamadas y videoconferencias.
-        categoria: Equipos de Comunicación
-        requisicion: 209
-        notificar: 0
-        codRecursoCandidato: null
-        codCandidato: null
-    Requisicion:
-      title: Requisicion
-      required:
-      - codigo
-      - fechaCreacion
-      - fechaModificacion
-      - fechaCancelacion
-      - codigoCargo
-      - nombreCargo
-      - cargoExterno
-      - codigoCargoJefe
-      - nombreCargoJefe
-      - codigoUsuarioSolicitante
-      - nombreUsuarioSolicitante
-      - nroRequisicion
-      - estadoRequisicion
-      - estadoProceso
-      - nombreEstadoProceso
-      - nombreMacroEstado
-      - nombreEtapaProceso
-      - estadoRequisicionStr
-      - estadoProcesoStr
-      - codigoMotivo
-      - motivo
-      - codigoTipoVinculacion
-      - tipoVinculacion
-      - nroVacantes
-      - ans
-      - eliminar
-      - justificacion
-      - duracionDias
-      - salarioMensual
-      - observacionesAdicionales
-      - recibeCompensacion
-      - fechaHumana
-      - nombreRegional
-      - disponibilidadViajar
-      - rotacionTurnos
-      - tipoConvocatoria
-      - codigoCentroCostos
-      - nombreCentroCostos
-      - edadDesde
-      - edadHasta
-      - codigoSede
-      - nombreSede
-      - nombreCiudad
-      - compensacionVariable
-      - codigoAprobacion
-      - codigoAprobador
-      - fechaAprobacion
-      - concepto
-      - comentario
-      - tipoAprobador
-      - fechaEstimada
-      - personaReemplaza
-      - nombrePersonaReemplaza
-      - nombresPersonasReemplazaHtml
-      - personasReemplazar
-      - personaEvaluar
-      - jornadaLaboral
-      - nombreJornadaLaboral
-      - ansTipoCargo
-      - ansDiasLider
-      - ansDiasPsicologo
-      - ansPrioridadLiderTxt
-      - ansPrioridadPsicologoTxt
-      - ansPrioridadLider
-      - ansPrioridadPsicologo
-      - tipoProcesoSeleccion
-      - tipoProcesoSeleccionTxt
-      - familiaCargo
-      - familiaCargoTxt
-      - especialidad
-      - especialidadTxt
-      - perfil
-      - perfilTxt
-      - lider
-      - liderTxt
-      - tecnologiaSophos
-      - tecnologiaSophosTxt
-      - nombreArea
-      - nombreJefe
-      - codigoResponsableProceso
-      - nombreResponsableProceso
-      - responsablesProceso
-      - trvIdiomaRequisicion
-      - avanceANS
-      - diasTranscurridos
-      - vicepresidencia
-      - hash
-      - codigoJefeInmediato
-      - jefeInmediato
-      - codigoVicepresidencia
-      - nombreVicepresidencia
-      - codigoNegocio
-      - nombreNegocio
-      - codigoUen
-      - nombreUen
-      - codigoEmpresa
-      - nombreEmpresa
-      - corporativo
-      - genero
-      - vehiculo
-      - diasTotales
-      - tipoRequisicion
-      - tipoReglaRequisicion
-      - nombreReglaRequisicion
-      - fechaCierreRequicision
-      - codigoEntrevistadorGH
-      - nombreEntrevistadorGH
-      - codigoEncargadoExamenMedico
-      - experiencia
-      - experienciaAnios
-      - experienciaMes
-      - nombreAprobador
-      - cliente
-      - codigoProyecto
-      - banda
-      - escolaridad
-      - codigoEscolaridad
-      - nombreEscolaridad
-      - estadoEscolaridad
-      - etapasConfiguradas
-      - descripcion
-      - tipoProceso
-      - tiempoMinimoPermanencia
-      - empresaSolicitante
-      - tarifa
-      - perfilAspirante
-      - valorProceso
-      - confidencialidad
-      - fechaOcupacionCargo
-      - observacionesProceso
-      - centroCostosNombre
-      - descripcionJefe
-      - observacionesJornada
-      - alcanceCargoFK
-      - nombreAlcanceCargo
-      - infoRelevanteJefe
-      - infoRelevanteComercial
-      - politicasContratacion
-      - preferenciasAspirante
-      - nivelIdioma
-      - idioma
-      - avanceProceso
-      - paMisionCargo
-      - paRetoCargo
-      - paResponsabilidadCargo
-      - paIndicadores
-      - paPresupuestoArea
-      - formacionComplementaria
-      - funcionesCargo
-      - tipoExperiencia
-      - conocimientosTecnicosHtml
-      - conocimientosTecnicos
-      - competenciasFuncionales
-      - competenciasCorporativas
-      - titulosAcademicosHtml
-      - titulosAcademicos
-      - nombreIdioma
-      - nombreNivelIdioma
-      - codPlantilla
-      - plantillaEditable
-      - editable
-      - editableConPermiso
-      - nroHojasVidasExternas
-      - infVacanteAuxilioRodamiento
-      - infVacanteArea
-      - infVacanteTipoSalario
-      - fuePublicada
-      - nroSolicitudERP
-      - codCandidatoBuscado
-      - candidatoEncontrado
-      - calendario
-      - competenciasCorporativasHtml
-      - competenciasFuncionalesHtml
-      - afinacion
-      - instruccionesIA
-      - label
-      - disponibilidadViajarAlt
-      - rotacionTurnosAlt
-      - nombreEmpresaSolicitante
-      - aprobador
+        posicion: 0
+        estado: Aprobada
+        fechaAprobacion: '2022-09-06 11:28:20'
+        defineSalario: false
+        salario: null
+        aprobador: Diego Garcia
+        concepto: Favorable
+        comentario: 'ok '
+    Recurso:
+      title: Recurso
       type: object
       properties:
+        descripcion:
+          type: string
+          nullable: true
         codigo:
           type: integer
           format: int32
-        fechaCreacion:
-          type: string
-        fechaModificacion:
-          type: string
-        fechaCancelacion:
+          nullable: true
+        nombreRecurso:
           type: string
           nullable: true
-        fechaCierreRequisicion:
+        codigoRecurso:
+          type: integer
+          format: int32
+          nullable: true
+        cantidad:
+          type: integer
+          format: int32
+          nullable: true
+      example:
+        descripcion: "Diadema con micrófono de cancelación de ruido para mejorar la calidad de llamadas y videoconferencias."
+        codigo: 307
+        nombreRecurso: "Diadema 🎧"
+        codigoRecurso: 28
+        cantidad: 1
+    Requisicion:
+      title: Requisicion
+      type: object
+      properties:
+        descripcion:
           type: string
           nullable: true
-        codigoCargo:
-          type: integer
-          format: int32
-        nombreCargo:
-          type: string
-        cargoExterno:
-          type: string
-          nullable: true
-        codigoCargoJefe:
-          type: integer
-          format: int32
-        nombreCargoJefe:
-          type: string
-        codigoUsuarioSolicitante:
-          type: integer
-          format: int32
-        nombreUsuarioSolicitante:
-          type: string
-        nroRequisicion:
-          type: integer
-          format: int32
-        estadoRequisicion:
-          type: integer
-          format: int32
-        estadoProceso:
-          type: integer
-          format: int32
-        nombreEstadoProceso:
-          type: string
-        nombreMacroEstado:
-          type: string
-          nullable: true
-        nombreEtapaProceso:
-          type: string
-        estadoRequisicionStr:
-          type: string
-        estadoProcesoStr:
-          type: string
-          nullable: true
-        codigoMotivo:
-          type: integer
-          format: int32
-        motivo:
-          type: string
-        codigoTipoVinculacion:
-          type: integer
-          format: int32
-        tipoVinculacion:
-          type: string
-        nroVacantes:
-          type: integer
-          format: int32
-        ans:
-          type: string
-        eliminar:
+        jornadaLaboral:
           type: string
           nullable: true
         justificacion:
           type: string
-        duracionDias:
-          type: string
+          nullable: true
         salarioMensual:
           type: string
-        observacionesAdicionales:
-          type: string
-        recibeCompensacion:
-          type: boolean
-        fechaHumana:
-          type: string
-        nombreRegional:
-          type: string
-        disponibilidadViajar:
-          type: boolean
-        rotacionTurnos:
-          type: boolean
-        tipoConvocatoria:
-          type: string
-        codigoCentroCostos:
+          nullable: true
+        centroCostos:
           type: string
           nullable: true
-        nombreCentroCostos:
-          type: string
-          nullable: true
-        edadDesde:
+        nroVacantes:
           type: integer
           format: int32
-        edadHasta:
-          type: integer
-          format: int32
-        codigoSede:
-          type: integer
-          format: int32
-        nombreSede:
-          type: string
-        nombreCiudad:
-          type: string
-        compensacionVariable:
-          type: string
           nullable: true
-        codigoAprobacion:
-          type: string
-          nullable: true
-        codigoAprobador:
-          type: string
-          nullable: true
-        fechaAprobacion:
-          type: string
-        concepto:
-          type: string
-          nullable: true
-        comentario:
-          type: string
-          nullable: true
-        tipoAprobador:
-          type: string
-          nullable: true
-        fechaEstimada:
-          type: string
-        personaReemplaza:
-          type: string
-          nullable: true
-        nombrePersonaReemplaza:
-          type: string
-          nullable: true
-        nombresPersonasReemplazaHtml:
-          type: string
-          nullable: true
-        personasReemplazar:
-          type: array
-          items:
-            type: string
-          description: ''
-        personaEvaluar:
-          type: string
-          nullable: true
-        jornadaLaboral:
-          type: integer
-          format: int32
-        nombreJornadaLaboral:
-          type: string
-        ansTipoCargo:
-          type: integer
-          format: int32
-        ansDiasLider:
-          type: string
-          nullable: true
-        ansDiasPsicologo:
-          type: string
-          nullable: true
-        ansPrioridadLiderTxt:
-          type: string
-          nullable: true
-        ansPrioridadPsicologoTxt:
-          type: string
-          nullable: true
-        ansPrioridadLider:
-          type: string
-          nullable: true
-        ansPrioridadPsicologo:
-          type: string
-          nullable: true
-        tipoProcesoSeleccion:
-          type: string
-          nullable: true
-        tipoProcesoSeleccionTxt:
-          type: string
-          nullable: true
-        familiaCargo:
-          type: string
-          nullable: true
-        familiaCargoTxt:
-          type: string
-          nullable: true
-        especialidad:
-          type: string
-          nullable: true
-        especialidadTxt:
-          type: string
-          nullable: true
-        perfil:
-          type: string
-          nullable: true
-        perfilTxt:
-          type: string
-          nullable: true
-        lider:
-          type: string
-          nullable: true
-        liderTxt:
-          type: string
-          nullable: true
-        tecnologiaSophos:
-          type: string
-          nullable: true
-        tecnologiaSophosTxt:
-          type: string
-          nullable: true
-        nombreArea:
-          type: string
-        nombreJefe:
-          type: string
-          nullable: true
-        codigoResponsableProceso:
-          type: string
-          nullable: true
-        nombreResponsableProceso:
-          type: string
-          nullable: true
-        responsablesProceso:
-          type: string
-          nullable: true
-        trvIdiomaRequisicion:
-          type: array
-          items:
-            type: string
-          description: ''
-        avanceANS:
-          type: integer
-          format: int32
-        diasTranscurridos:
-          type: integer
-          format: int32
         vicepresidencia:
           type: string
-        hash:
-          type: string
-        codigoJefeInmediato:
-          type: integer
-          format: int32
-        jefeInmediato:
-          type: string
-        codigoVicepresidencia:
-          type: integer
-          format: int32
-        nombreVicepresidencia:
-          type: string
-        codigoNegocio:
-          type: integer
-          format: int32
-        nombreNegocio:
-          type: string
-        codigoUen:
-          type: integer
-          format: int32
-        nombreUen:
-          type: string
-        codigoEmpresa:
-          type: integer
-          format: int32
-        nombreEmpresa:
-          type: string
-        corporativo:
-          type: boolean
-        genero:
-          type: string
-        vehiculo:
-          type: string
           nullable: true
-        diasTotales:
-          type: string
-          nullable: true
-        tipoRequisicion:
-          type: integer
-          format: int32
-        tipoReglaRequisicion:
-          type: integer
-          format: int32
-        nombreReglaRequisicion:
-          type: string
-        fechaCierreRequicision:
-          type: string
-        codigoEntrevistadorGH:
-          type: string
-          nullable: true
-        nombreEntrevistadorGH:
-          type: string
-          nullable: true
-        codigoEncargadoExamenMedico:
-          type: string
-          nullable: true
-        experiencia:
-          type: integer
-          format: int32
-        experienciaAnios:
-          type: integer
-          format: int32
-        experienciaMes:
-          type: integer
-          format: int32
-        nombreAprobador:
-          type: string
-          nullable: true
-        cliente:
-          type: string
-        codigoProyecto:
-          type: string
-        banda:
-          type: string
-        escolaridad:
-          type: string
-        codigoEscolaridad:
-          type: integer
-          format: int32
-        nombreEscolaridad:
-          type: string
-        estadoEscolaridad:
-          type: string
-          nullable: true
-        etapasConfiguradas:
-          type: boolean
-        descripcion:
-          type: string
         tipoProceso:
           type: string
-        tiempoMinimoPermanencia:
-          type: integer
-          format: int32
-        empresaSolicitante:
-          type: string
           nullable: true
-        tarifa:
-          type: string
-        perfilAspirante:
-          type: string
-        valorProceso:
-          type: string
-        confidencialidad:
-          type: string
-        fechaOcupacionCargo:
-          type: integer
-          format: int64
-        observacionesProceso:
-          type: string
-        centroCostosNombre:
-          type: string
+        rotacionTurnos:
+          type: boolean
           nullable: true
-        descripcionJefe:
-          type: string
-        observacionesJornada:
-          type: string
-        alcanceCargoFK:
-          type: string
-          nullable: true
-        nombreAlcanceCargo:
-          type: string
-          nullable: true
-        infoRelevanteJefe:
-          type: string
-        infoRelevanteComercial:
-          type: string
-        politicasContratacion:
-          type: string
-        preferenciasAspirante:
-          type: string
-        nivelIdioma:
-          type: string
-          nullable: true
-        idioma:
-          type: string
-          nullable: true
-        avanceProceso:
-          type: number
-        paMisionCargo:
-          type: string
-        paRetoCargo:
-          type: string
-        paResponsabilidadCargo:
-          type: string
-        paIndicadores:
-          type: string
-        paPresupuestoArea:
-          type: string
-        formacionComplementaria:
-          type: string
-        funcionesCargo:
-          type: string
-        tipoExperiencia:
-          type: string
-        conocimientosTecnicosHtml:
-          type: string
-        conocimientosTecnicos:
+        competenciasCorporativas:
           type: array
           items:
-            $ref: '#/components/schemas/ConocimientoTecnico'
+            $ref: '#/components/schemas/CompetenciaCorporativa'
           description: ''
         competenciasFuncionales:
           type: array
           items:
             $ref: '#/components/schemas/CompetenciaFuncional'
           description: ''
-        competenciasCorporativas:
-          type: array
-          items:
-            $ref: '#/components/schemas/CompetenciaCorporativa'
-          description: ''
-        titulosAcademicosHtml:
+        genero:
           type: string
+          nullable: true
+        cargo:
+          type: string
+          nullable: true
+        negocio:
+          type: string
+          nullable: true
+        diasTranscurridos:
+          type: integer
+          format: int32
+          nullable: true
         titulosAcademicos:
           type: array
           items:
             $ref: '#/components/schemas/TituloAcademico'
           description: ''
-        nombreIdioma:
+        idiomas:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdiomaRequisicion'
+          description: ''
+        cliente:
           type: string
           nullable: true
-        nombreNivelIdioma:
+        escolaridad:
           type: string
           nullable: true
-        codPlantilla:
-          type: integer
-          format: int32
-        plantillaEditable:
-          type: boolean
-        editable:
-          type: boolean
-        editableConPermiso:
-          type: boolean
-        nroHojasVidasExternas:
-          type: integer
-          format: int32
-        infVacanteAuxilioRodamiento:
-          type: string
-        infVacanteArea:
-          type: string
-        infVacanteTipoSalario:
-          type: string
-        fuePublicada:
-          type: boolean
-        nroSolicitudERP:
-          type: string
-        codCandidatoBuscado:
+        estadoProceso:
           type: string
           nullable: true
-        candidatoEncontrado:
-          type: boolean
-        calendario:
-          type: string
-        competenciasCorporativasHtml:
-          type: string
-          nullable: true
-        competenciasFuncionalesHtml:
-          type: string
-          nullable: true
-        afinacion:
-          type: string
-          nullable: true
-        instruccionesIA:
-          type: string
-        label:
-          type: string
-        disponibilidadViajarAlt:
-          type: boolean
-        rotacionTurnosAlt:
-          type: boolean
-        nombreEmpresaSolicitante:
-          type: string
-        aprobador:
-          type: string
-          nullable: true
-    ConocimientoTecnico:
-      title: ConocimientoTecnico
-      required:
-      - codigo
-      - nombre
-      type: object
-      properties:
-        codigo:
-          type: integer
-          format: int32
-        nombre:
-          type: string
-      example:
-        codigo: 221
-        nombre: AAA Pruebas Varias
-    CompetenciaFuncional:
-      title: CompetenciaFuncional
-      required:
-      - codigo
-      - nombre
-      type: object
-      properties:
-        codigo:
-          type: integer
-          format: int32
-        nombre:
-          type: string
-      example:
-        codigo: 89
-        nombre: Administración y gestión de recursos
-    CompetenciaCorporativa:
-      title: CompetenciaCorporativa
-      required:
-      - codigo
-      - nombre
-      type: object
-      properties:
-        codigo:
-          type: integer
-          format: int32
-        nombre:
-          type: string
-      example:
-        codigo: 150
-        nombre: Trabajo en equipo
-    TituloAcademico:
-      title: TituloAcademico
-      required:
-      - codigo
-      - nombre
-      type: object
-      properties:
-        codigo:
-          type: integer
-          format: int32
-        nombre:
-          type: string
-      example:
-        codigo: 26
-        nombre: Administración de sistemas informáticos
-    Publicacion:
-      title: Publicacion
-      required:
-      - estadoPublicacion
-      - cargo
-      - codigo
-      - publicada
-      - tipoConvocatoria
-      - experiencia
-      - experienciaAnios
-      - experienciaMeses
-      - nombreTipoVinculacion
-      - codigoTipoVinculacion
-      - salario
-      - salarioPublico
-      - nombreHorario
-      - codigoHorario
-      - funciones
-      - conocimeintos
-      - fechaCreacion
-      - nroRequisicion
-      - fechaCierre
-      - fechaCierreD
-      - fechaCierreDia
-      - fechaCierreMes
-      - fechaCierreAnio
-      - fechaCierreHumana
-      - fechaQueda
-      - sede
-      - ciudad
-      - nroVacantes
-      - escolaridad
-      - fechaIngreso
-      - fechaIngresoD
-      - fechaIngresoDia
-      - fechaIngresoMes
-      - fechaIngresoAnio
-      - estadoEducacion
-      - paraElEmpleo
-      - paraComputrabajo
-      - paraTicJob
-      - errorElEmpleo
-      - errorComputrabajo
-      - errorTicJob
-      - aplicado
-      - eeTitulo
-      - eeDescripcion
-      - eeRequerimientos
-      - eePublicarNombre
-      - eePublicarEmpresarial
-      - eeIntensidadHoraria
-      - eePositionSublevel
-      - eePosition
-      - eeProfession
-      - eeWorkArea
-      - eeSector
-      - eeCity
-      - eeSalary
-      - tjReferencia
-      - tjLanguage
-      - tjTitle
-      - tjKeywords
-      - tjLocation
-      - tjHtmlcontent
-      - tjSkills
-      - tjExperience
-      - tjStudyLevel
-      - tjJobMode
-      - tjJobType
-      - tjJobDuration
-      - tjJobLocation
-      - titulosAcademicosHtml
-      - titulosAcademicos
-      - formacionComplementaria
-      - tipoExperiencia
-      - informacion
-      - usuarioReapertura
-      - fechaReapertura
-      - ansTipoCargo
-      - ansDiasLider
-      - ansDiasPsicologo
-      - ansPrioridadLiderTxt
-      - ansPrioridadPsicologoTxt
-      - ansPrioridadLider
-      - ansPrioridadPsicologo
-      - rangoSalarioID
-      - rangoSalarioName
-      - encuestaVacanteCodigo
-      - encuestaVacanteNombre
-      type: object
-      properties:
-        estadoPublicacion:
-          type: string
-        cargo:
-          type: string
-        codigo:
-          type: integer
-          format: int32
-        publicada:
-          type: boolean
         tipoConvocatoria:
-          type: string
-        experiencia:
-          type: integer
-          format: int32
-        experienciaAnios:
-          type: integer
-          format: int32
-        experienciaMeses:
-          type: integer
-          format: int32
-        nombreTipoVinculacion:
-          type: string
-        codigoTipoVinculacion:
-          type: integer
-          format: int32
-        salario:
-          type: string
-        salarioPublico:
-          type: string
-        nombreHorario:
-          type: string
-        codigoHorario:
-          type: integer
-          format: int32
-        funciones:
-          type: string
-        conocimeintos:
-          type: string
-        fechaCreacion:
-          type: string
-        nroRequisicion:
-          type: string
-        fechaCierre:
-          type: string
-        fechaCierreD:
-          type: integer
-          format: int64
-        fechaCierreDia:
-          type: integer
-          format: int32
-        fechaCierreMes:
-          type: integer
-          format: int32
-        fechaCierreAnio:
-          type: integer
-          format: int32
-        fechaCierreHumana:
-          type: string
-        fechaQueda:
-          type: string
-        sede:
           type: string
           nullable: true
         ciudad:
           type: string
           nullable: true
-        nroVacantes:
+        compensacionVariable:
           type: string
           nullable: true
-        escolaridad:
-          type: integer
-          format: int32
-        fechaIngreso:
+        ansAvance:
+          type: number
+          nullable: true
+        empresa:
           type: string
-        fechaIngresoD:
-          type: integer
-          format: int64
-        fechaIngresoDia:
-          type: integer
-          format: int32
-        fechaIngresoMes:
-          type: integer
-          format: int32
-        fechaIngresoAnio:
-          type: integer
-          format: int32
-        estadoEducacion:
+          nullable: true
+        motivo:
           type: string
-        paraElEmpleo:
+          nullable: true
+        tipoVinculacion:
+          type: string
+          nullable: true
+        regional:
+          type: string
+          nullable: true
+        jefeInmediato:
+          type: string
+          nullable: true
+        perfilAspirante:
+          type: string
+          nullable: true
+        fechaAprobacion:
+          type: string
+          nullable: true
+        fechaCierreRequisicion:
+          type: string
+          nullable: true
+        recibeCompensacion:
           type: boolean
-        paraComputrabajo:
-          type: boolean
-        paraTicJob:
-          type: boolean
-        errorElEmpleo:
+          nullable: true
+        observacionesAdicionales:
           type: string
           nullable: true
-        errorComputrabajo:
+        uen:
           type: string
           nullable: true
-        errorTicJob:
-          type: string
-          nullable: true
-        aplicado:
+        edadHasta:
           type: integer
           format: int32
-        eeTitulo:
-          type: string
-        eeDescripcion:
-          type: string
-        eeRequerimientos:
-          type: string
-        eePublicarNombre:
+          nullable: true
+        observacionesProceso:
           type: string
           nullable: true
-        eePublicarEmpresarial:
+        tarifa:
           type: string
           nullable: true
-        eeIntensidadHoraria:
-          type: string
-          nullable: true
-        eePositionSublevel:
-          type: string
-          nullable: true
-        eePosition:
-          type: string
-          nullable: true
-        eeProfession:
-          type: string
-          nullable: true
-        eeWorkArea:
-          type: string
-          nullable: true
-        eeSector:
-          type: string
-          nullable: true
-        eeCity:
-          type: string
-          nullable: true
-        eeSalary:
-          type: string
-        tjReferencia:
-          type: string
-          nullable: true
-        tjLanguage:
-          type: string
-          nullable: true
-        tjTitle:
-          type: string
-        tjKeywords:
-          type: string
-          nullable: true
-        tjLocation:
-          type: string
-          nullable: true
-        tjHtmlcontent:
-          type: string
-          nullable: true
-        tjSkills:
-          type: string
-          nullable: true
-        tjExperience:
-          type: string
-          nullable: true
-        tjStudyLevel:
-          type: string
-          nullable: true
-        tjJobMode:
-          type: string
-          nullable: true
-        tjJobType:
-          type: string
-          nullable: true
-        tjJobDuration:
-          type: string
-          nullable: true
-        tjJobLocation:
-          type: string
-          nullable: true
-        titulosAcademicosHtml:
-          type: string
-          nullable: true
-        titulosAcademicos:
+        competenciasTecnicas:
           type: array
           items:
-            $ref: '#/components/schemas/TituloAcademico'
+            $ref: '#/components/schemas/ConocimientoTecnico'
           description: ''
-        formacionComplementaria:
+        escolaridadEstado:
           type: string
           nullable: true
-        tipoExperiencia:
+        proceso:
+          type: integer
+          format: int32
+          nullable: true
+        sede:
+          type: string
+          nullable: true
+        ans:
+          type: string
+          nullable: true
+        usuarioSolicitante:
+          type: string
+          nullable: true
+        disponibilidadViajar:
+          type: boolean
+          nullable: true
+        edadDesde:
+          type: integer
+          format: int32
+          nullable: true
+        experienciaAnios:
+          type: integer
+          format: int32
+          nullable: true
+        empresaSolicitante:
+          type: string
+          nullable: true
+        fechaCreacion:
+          type: string
+          nullable: true
+        etapaProceso:
+          type: string
+          nullable: true
+    IdiomaRequisicion:
+      title: IdiomaRequisicion
+      type: object
+      properties:
+        idioma:
+          type: string
+          nullable: true
+        nivel:
+          type: string
+          nullable: true
+      example:
+        idioma: Francés - B1
+        nivel: B1
+    ConocimientoTecnico:
+      title: ConocimientoTecnico
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int32
+          nullable: true
+        nombre:
+          type: string
+          nullable: true
+      example:
+        codigo: 136
+        nombre: Networking y alianzas
+    CompetenciaFuncional:
+      title: CompetenciaFuncional
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int32
+          nullable: true
+        nombre:
+          type: string
+          nullable: true
+      example:
+        codigo: 93
+        nombre: Asertividad
+    CompetenciaCorporativa:
+      title: CompetenciaCorporativa
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int32
+          nullable: true
+        nombre:
+          type: string
+          nullable: true
+      example:
+        codigo: 150
+        nombre: Trabajo en equipo
+    TituloAcademico:
+      title: TituloAcademico
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int32
+          nullable: true
+        nombre:
+          type: string
+          nullable: true
+      example:
+        codigo: 28
+        nombre: Administración financiera
+    Publicacion:
+      title: Publicacion
+      type: object
+      properties:
+        fechaEstimadaIngreso:
+          type: string
+          nullable: true
+        tipoVinculacion:
+          type: string
+          nullable: true
+        proceso:
+          type: integer
+          format: int32
+          nullable: true
+        salario:
+          type: string
+          nullable: true
+        experienciaMeses:
+          type: integer
+          format: int32
+          nullable: true
+        publicada:
+          type: boolean
+          nullable: true
+        salarioPublico:
+          type: string
+          nullable: true
+        fechaCierre:
+          type: string
+          nullable: true
+        tipoConvocatoria:
           type: string
           nullable: true
         informacion:
           type: string
-        usuarioReapertura:
-          type: string
-        fechaReapertura:
+          nullable: true
+        funciones:
           type: string
           nullable: true
-        ansTipoCargo:
+        experienciaAnios:
+          type: integer
+          format: int32
+          nullable: true
+        estadoEducacion:
           type: string
           nullable: true
-        ansDiasLider:
-          type: string
-          nullable: true
-        ansDiasPsicologo:
-          type: string
-          nullable: true
-        ansPrioridadLiderTxt:
-          type: string
-          nullable: true
-        ansPrioridadPsicologoTxt:
-          type: string
-          nullable: true
-        ansPrioridadLider:
-          type: string
-          nullable: true
-        ansPrioridadPsicologo:
-          type: string
-          nullable: true
-        rangoSalarioID:
-          type: string
-          nullable: true
-        rangoSalarioName:
-          type: string
-          nullable: true
-        encuestaVacanteCodigo:
-          type: string
-          nullable: true
-        encuestaVacanteNombre:
+        conocimientos:
           type: string
           nullable: true
     Competencias_procesos:
@@ -8329,7 +7328,7 @@ components:
           documento_jefe: '10350000'
           jefe: Andres Alvarez Perez
           documento_evaluador: '10209800'
-          evaluador: Juan Osorio Ospina
+          evaluador: Carlos Perez
           tipo_objetivo: Objetivo genérico
           indicador_objetivo: Formación
           descripcion_objetivo: Cumplió satisfactoriamente con el PDI propuesto
@@ -8524,7 +7523,7 @@ components:
         documento_jefe: '10350000'
         jefe: Andres Alvarez Perez
         documento_evaluador: '10209800'
-        evaluador: Juan Osorio Ospina
+        evaluador: Carlos Perez
         tipo_objetivo: Objetivo genérico
         indicador_objetivo: Formación
         descripcion_objetivo: Cumplió satisfactoriamente con el PDI propuesto
