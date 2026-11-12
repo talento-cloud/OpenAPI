@@ -1,6 +1,6 @@
-# API de talento cloud para Formación
+# API de talento cloud para Onboarding
 
-En este proyecto se documenta API REST para el módulo de Formación pensado para ser consultado por chatbot ClaudIA
+En este proyecto se documenta API REST para el módulo de Onboarding pensado para ser consultado por chatbot ClaudIA
 
 ## Documentación de la API de talento cloud generado con redoc
 Para generar documento html

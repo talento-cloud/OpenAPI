@@ -160,6 +160,8 @@ paths:
                   value:
                     success: false
                     message: No dispones de la licencia necesaria para hacer uso de Onboarding
+        '405':
+          $ref: '#/components/responses/MetodoNoPermitido'
         '500':
           $ref: '#/components/responses/ErrorServidor'
       deprecated: false
@@ -362,6 +364,8 @@ paths:
                   value:
                     success: false
                     message: No dispones de la licencia necesaria para hacer uso de Onboarding
+        '405':
+          $ref: '#/components/responses/MetodoNoPermitido'
         '500':
           $ref: '#/components/responses/ErrorServidor'
       deprecated: false
@@ -577,6 +581,32 @@ components:
         message:
           type: string
           description: Mensaje de error localizado.
+    ErrorMetodo:
+      type: object
+      description: Formato de respuesta del filtro de métodos HTTP del módulo.
+      properties:
+        datos:
+          type: object
+          nullable: true
+          description: Siempre nulo.
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          description: Mensaje localizado.
+        cantidad:
+          type: integer
+          nullable: true
+          description: Siempre nulo.
+        url:
+          type: string
+          nullable: true
+          description: Siempre nulo.
+        error:
+          type: string
+          nullable: true
+          description: Siempre nulo.
     ErrorAutenticacion:
       type: object
       description: Formato JSON usado por los manejadores de autenticación de Spring Security.
@@ -616,6 +646,23 @@ components:
                 resp_code: '401'
                 error: Authentication required
                 success: false
+    MetodoNoPermitido:
+      description: >-
+        Verbo HTTP distinto de GET, HEAD u OPTIONS. Lo responde el filtro del módulo
+        antes de llegar al controlador, sin header Allow.
+      content:
+        application/json;charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/ErrorMetodo'
+          examples:
+            metodoNoPermitido:
+              value:
+                datos: null
+                success: false
+                message: Método HTTP no permitido para este recurso
+                cantidad: null
+                url: null
+                error: null
     ErrorServidor:
       description: Error inesperado durante la consulta.
       content:

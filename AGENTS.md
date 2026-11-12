@@ -21,6 +21,7 @@ The repository is organized by functional modules, each in its own directory:
 - **formacion_chatbot/** - Training (Formación) chatbot API
 - **magneto/** - Magneto module
 - **objetivossmart_chatbot/** - SMART objectives chatbot API
+- **onboarding_chatbot/** - Onboarding (preparation activities) chatbot API
 - **perfilcargo_chatbot/** - Position profile (Perfil de Cargo) chatbot API
 - **seleccion/** - Selection/recruitment processes
 - **transversal/** - Cross-cutting/shared user data
