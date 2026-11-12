@@ -93,6 +93,12 @@ paths:
         o si no hay actividades visibles, se responde 200 con una lista vacía y un
         mensaje. Una cuenta inactiva o sin licencia de Onboarding recibe 403 sin
         información de actividades.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/api/html/onboarding/chatbot/actividades-preparacion.json' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       responses:
         '200':
           description: Actividades visibles, o lista vacía si no hay actividades.
@@ -282,6 +288,12 @@ paths:
         por comas, o una cadena vacía si no hay tags. Si no hay resultados, se responde
         200 con `faqs` vacío y un mensaje que distingue la ausencia de FAQ configuradas
         de una búsqueda sin coincidencias. Cuenta inactiva o sin licencia recibe 403.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/api/html/onboarding/chatbot/preguntas-frecuentes.json?busqueda=vacaciones' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       parameters:
         - name: busqueda
           in: query
