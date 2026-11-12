@@ -13,6 +13,35 @@ info:
 
     Los endpoints documentados usan GET. El filtro del módulo también permite HEAD
     y OPTIONS, y rechaza otros métodos con 405 antes de llegar al controlador.
+    
+
+    En la documentación se mencionan 2 URLs:
+
+    - Producción: https://[tenant].talento.cloud/
+
+    - Pruebas: https://[tenant].talento-dev.cloud/
+
+
+    ## Manejo de errores
+
+
+        Los errores habituales pueden incluir:
+
+
+        - `400 Bad Request`: Parámetros requeridos faltantes o con formato
+        inválido.
+            
+        - `401 Unauthorized`: Token JWT inválido, expirado o ausente.
+            
+        - `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.
+            
+        - `404 Not Found`: El recurso solicitado no existe.
+            
+        - `500 Internal Server Error`: Error inesperado en el servidor.
+            
+
+        Cuando sea posible, cada endpoint detallará sus códigos de error
+        específicos y estructura de respuesta en su propia descripción. 
   termsOfService: Uso privado
   contact:
     name: API Support
@@ -128,6 +157,98 @@ paths:
         '500':
           $ref: '#/components/responses/ErrorServidor'
       deprecated: false
+  /html/onboarding/chatbot/induccion.json:
+    get:
+      tags:
+        - Onboarding
+      summary: Inducción
+      operationId: induccion
+      description: >-
+        Endpoint que retorna información de la sección de Inducción del módulo de
+        Onboarding y puede entregar todas las subsecciones o solo una sección en
+        específico si se indica.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/api/html/onboarding/chatbot/induccion.json?seccion=todos' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'  
+      parameters:
+        - name: seccion
+          in: query
+          required: false
+          description: Sección de inducción a consultar; por defecto se entregan todas.
+          schema:
+            type: string
+            enum:
+              - mision
+              - vision
+              - valores
+              - equipo_trabajo
+              - lineamientos
+              - herramientas
+              - todos
+            default: todos
+      responses:
+        '200':
+          description: Información de inducción según la sección solicitada.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/RespuestaInduccion'
+              examples:
+                todasLasSecciones:
+                  summary: Información de todas las secciones
+                  value:
+                    data:
+                      mision: Ayudamos a las organizaciones a conocer, desarrollar y fidelizar su talento.
+                      vision: Ser la plataforma de gestión del talento más completa y fácil de usar de Latinoamérica.
+                      valores:
+                        - Actitud de trabajo en equipo
+                        - Apertura, crecimiento (Retroalimentación)
+                        - Compromiso con el resultado, la calidad y el cliente
+                        - Honestidad
+                        - Proactividad
+                      herramientas:
+                        - nombre: Manual de administrador de usuarios
+                          leido: true
+                        - nombre: Manual de ingreso a la plataforma
+                          leido: true
+                        - nombre: Administrador de usuarios
+                          leido: true
+                        - nombre: Manejo de Menú transversal
+                          leido: false
+                      lineamientos:
+                        - nombre: Lineamientos de trabajo
+                          leido: false
+                        - nombre: Política de tratamiento de datos personales
+                          leido: false
+                        - nombre: ABC Responsabilidad social
+                          leido: true
+                        - nombre: Reglamento interno de trabajo
+                          leido: true
+                      equipo_trabajo:
+                        tu_lider: Diego Perez
+                        pares_message: null
+                        pares:
+                          - nombre: Edith Perez
+                            cargo: Asistente Ejecutiva
+                          - nombre: José Angel S
+                            cargo: Director Financiero
+                        colaboradores_message: null
+                        colaboradores:
+                          - nombre: VALERIA PEREZ
+                            cargo: Asistente Ejecutiva
+                          - nombre: ANA DE JESUS PAZ
+                            cargo: Agente de Servicio al Cliente
+                    success: true
+        '401':
+          $ref: '#/components/responses/SinSesion'
+        '403':
+          description: Acceso denegado.
+        '500':
+          $ref: '#/components/responses/ErrorServidor'
+      deprecated: false
   /html/onboarding/chatbot/preguntas-frecuentes.json:
     get:
       tags:
@@ -234,6 +355,72 @@ paths:
       deprecated: false
 components:
   schemas:
+    RespuestaInduccion:
+      type: object
+      required:
+        - data
+        - success
+      properties:
+        data:
+          $ref: '#/components/schemas/DataInduccion'
+        success:
+          type: boolean
+          example: true
+    DataInduccion:
+      type: object
+      description: Las secciones devueltas dependen del parámetro seccion.
+      properties:
+        mision:
+          type: string
+        vision:
+          type: string
+        valores:
+          type: array
+          items:
+            type: string
+        herramientas:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecursoInduccion'
+        lineamientos:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecursoInduccion'
+        equipo_trabajo:
+          $ref: '#/components/schemas/EquipoTrabajoInduccion'
+    RecursoInduccion:
+      type: object
+      properties:
+        nombre:
+          type: string
+        leido:
+          type: boolean
+    EquipoTrabajoInduccion:
+      type: object
+      properties:
+        tu_lider:
+          type: string
+        pares_message:
+          type: string
+          nullable: true
+        pares:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonaEquipoInduccion'
+        colaboradores_message:
+          type: string
+          nullable: true
+        colaboradores:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonaEquipoInduccion'
+    PersonaEquipoInduccion:
+      type: object
+      properties:
+        nombre:
+          type: string
+        cargo:
+          type: string
     RespuestaActividades:
       type: object
       required:
