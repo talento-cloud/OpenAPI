@@ -2,6 +2,450 @@ openapi: 3.0.0
 info:
   title: Onboarding_Chatbot
   description: >-
+    API de solo lectura del módulo de Onboarding de Talento Cloud, pensada para ser
+    consultada por el chatbot ClaudIA. La identidad del usuario se obtiene de la
+    sesión autenticada; no se recibe como parámetro.
+
+
+    Los mensajes son localizados y pueden variar según el idioma y la configuración
+    del cliente. Los ejemplos de mensajes corresponden a los textos base en español.
+
+
+    Los endpoints documentados usan GET. El filtro del módulo también permite HEAD
+    y OPTIONS, y rechaza otros métodos con 405 antes de llegar al controlador.
+  termsOfService: Uso privado
+  contact:
+    name: API Support
+    email: soporte@talento.cloud
+    url: https://talento.cloud/contact
+  license:
+    name: Privado
+    url: https://talento.cloud/licenses
+  version: '1.0'
+servers:
+  - url: https://clientex.talento.cloud/api
+    description: Servidor de producción
+  - url: https://clientex.talento-dev.cloud/api
+    description: Servidor de pruebas
+paths:
+  /html/onboarding/chatbot/actividades-preparacion.json:
+    get:
+      tags:
+        - Onboarding
+      summary: Actividades de preparación
+      operationId: actividadesPreparacion
+      description: >-
+        Lista las actividades de preparación visibles para el usuario autenticado,
+        con sus colaboradores pendientes y completados. No crea ni modifica datos.
+
+
+        Un administrador del sistema o un usuario con el permiso de asignación de
+        responsables de actividades de preparación puede ver actividades activas;
+        para quien tiene el permiso sin ser administrador también se aplica su mapa
+        de alcance. Los demás responsables ven las actividades que tienen asignadas.
+        Una actividad se incluye si aparece en los listados de pendientes o realizados
+        de la pantalla de Onboarding. Las actividades eliminadas no se incluyen.
+
+
+        Los detalles de colaboradores se consultan por la rama de administración,
+        incluso para los responsables, sin filtrar por responsable ni usuario asignado.
+        Se aplica la ventana configurada en OB_DIAS_CREACION_CUENTA_PARTNER; si no
+        está configurada o no es numérica, se usan 30 días. El estado es `pendiente`
+        si hay colaboradores pendientes, y `completada` en caso contrario.
+
+
+        Se devuelven únicamente los nombres completos de los colaboradores, sin
+        documentos, correos ni códigos. Los conteos corresponden a los registros
+        encontrados: pueden ser mayores que el número de nombres en las listas si
+        algún colaborador no tiene nombre completo.
+
+
+        Si el usuario no es administrador, no tiene el permiso ni es responsable,
+        o si no hay actividades visibles, se responde 200 con una lista vacía y un
+        mensaje. Una cuenta inactiva o sin licencia de Onboarding recibe 403 sin
+        información de actividades.
+      responses:
+        '200':
+          description: Actividades visibles, o lista vacía si no hay actividades.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/RespuestaActividades'
+              examples:
+                conActividades:
+                  summary: Actividades pendientes y completadas
+                  value:
+                    data:
+                      tieneActividades: true
+                      totalActividades: 2
+                      actividades:
+                        - nombre: Entrega de equipos
+                          sede: Bogotá
+                          empresa: Empresa Ejemplo
+                          estado: pendiente
+                          cantidadPendientes: 1
+                          cantidadCompletados: 1
+                          colaboradoresPendientes:
+                            - Ana Pérez
+                          colaboradoresCompletados:
+                            - Luis Gómez
+                        - nombre: Bienvenida institucional
+                          sede: Todas
+                          empresa: Todas
+                          estado: completada
+                          cantidadPendientes: 0
+                          cantidadCompletados: 1
+                          colaboradoresPendientes: []
+                          colaboradoresCompletados:
+                            - Ana Pérez
+                    success: true
+                sinActividades:
+                  summary: Sin actividades visibles
+                  value:
+                    data:
+                      tieneActividades: false
+                      totalActividades: 0
+                      actividades: []
+                    message: No tienes actividades de preparación asignadas
+                    success: true
+        '401':
+          $ref: '#/components/responses/SinSesion'
+        '403':
+          description: Cuenta inactiva o licencia de Onboarding no disponible.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                cuentaInactiva:
+                  value:
+                    success: false
+                    message: Tu cuenta no está activa, por lo que no puedes consultar actividades de preparación
+                sinLicencia:
+                  value:
+                    success: false
+                    message: No dispones de la licencia necesaria para hacer uso de Onboarding
+        '500':
+          $ref: '#/components/responses/ErrorServidor'
+      deprecated: false
+  /html/onboarding/chatbot/preguntas-frecuentes.json:
+    get:
+      tags:
+        - Onboarding
+      summary: Preguntas frecuentes de Onboarding
+      operationId: preguntasFrecuentes
+      description: >-
+        Lista las preguntas frecuentes vigentes que aplican al usuario autenticado,
+        opcionalmente filtradas por palabras de búsqueda. No crea ni modifica datos.
+
+
+        Se incluyen FAQ no eliminadas cuya configuración de sedes incluye la sede del
+        usuario o el valor -1 (todas), y cuya configuración de UEN incluye la UEN del
+        usuario o -1. Si el usuario no tiene sede o UEN, para esa dimensión solo
+        aplican las FAQ marcadas con -1. Estas reglas también aplican a administradores:
+        las respuestas corresponden al propio usuario autenticado.
+
+
+        La búsqueda elimina espacios iniciales y finales, reduce los espacios
+        consecutivos y se recorta a 100 caracteres. Se consideran como máximo 10
+        palabras distintas: se ignoran las de menos de 3 caracteres salvo que todas
+        sean cortas. Basta que una palabra coincida en la pregunta, respuesta o una
+        categoría, sin distinguir mayúsculas ni tildes. Los caracteres `%` y `_` se
+        buscan literalmente. Primero se muestran las FAQ que coinciden con más
+        términos; en caso de empate se ordenan por código ascendente. Sin búsqueda se
+        listan las FAQ aplicables por código ascendente. Se devuelven como máximo 50.
+
+
+        La pregunta y la respuesta se devuelven como texto plano, con saltos de línea
+        para párrafos y listas; la categoría contiene los nombres de los tags separados
+        por comas, o una cadena vacía si no hay tags. Si no hay resultados, se responde
+        200 con `faqs` vacío y un mensaje que distingue la ausencia de FAQ configuradas
+        de una búsqueda sin coincidencias. Cuenta inactiva o sin licencia recibe 403.
+      parameters:
+        - name: busqueda
+          in: query
+          required: false
+          description: >-
+            Palabras opcionales para filtrar las FAQ. Si se omite o queda vacía tras
+            normalizarla, no se filtra por texto. Los primeros 100 caracteres del
+            texto normalizado se usan como búsqueda; no se rechazan valores más largos.
+          schema:
+            type: string
+            example: vacaciones y permisos
+      responses:
+        '200':
+          description: FAQ aplicables, o lista vacía si no hay resultados.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/RespuestaFaqs'
+              examples:
+                conResultados:
+                  summary: FAQ encontradas
+                  value:
+                    data:
+                      busqueda: vacaciones
+                      tieneFaqs: true
+                      totalFaqs: 1
+                      faqs:
+                        - pregunta: ¿Cómo solicito mis vacaciones?
+                          respuesta: Consulta el procedimiento con el área de gestión humana.
+                          categoria: Beneficios, Vacaciones
+                    success: true
+                sinCoincidencias:
+                  summary: Hay FAQ configuradas, pero ninguna coincide
+                  value:
+                    data:
+                      busqueda: transporte
+                      tieneFaqs: false
+                      totalFaqs: 0
+                      faqs: []
+                    message: No se encontraron preguntas frecuentes relacionadas con la búsqueda
+                    success: true
+                sinFaqsConfiguradas:
+                  summary: El usuario no tiene FAQ configuradas
+                  value:
+                    data:
+                      busqueda: ''
+                      tieneFaqs: false
+                      totalFaqs: 0
+                      faqs: []
+                    message: No hay preguntas frecuentes configuradas para ti
+                    success: true
+        '401':
+          $ref: '#/components/responses/SinSesion'
+        '403':
+          description: Cuenta inactiva o licencia de Onboarding no disponible.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                cuentaInactiva:
+                  value:
+                    success: false
+                    message: Tu cuenta no está activa, por lo que no puedes consultar las preguntas frecuentes
+                sinLicencia:
+                  value:
+                    success: false
+                    message: No dispones de la licencia necesaria para hacer uso de Onboarding
+        '500':
+          $ref: '#/components/responses/ErrorServidor'
+      deprecated: false
+components:
+  schemas:
+    RespuestaActividades:
+      type: object
+      required:
+        - data
+        - success
+      properties:
+        data:
+          $ref: '#/components/schemas/DataActividades'
+        message:
+          type: string
+          description: Mensaje localizado presente cuando la lista está vacía.
+        success:
+          type: boolean
+          example: true
+    DataActividades:
+      type: object
+      required:
+        - tieneActividades
+        - totalActividades
+        - actividades
+      properties:
+        tieneActividades:
+          type: boolean
+          description: Indica si la lista contiene actividades.
+        totalActividades:
+          type: integer
+          format: int32
+          description: Número de actividades devueltas.
+        actividades:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActividadPreparacion'
+    ActividadPreparacion:
+      type: object
+      required:
+        - nombre
+        - sede
+        - empresa
+        - estado
+        - cantidadPendientes
+        - cantidadCompletados
+        - colaboradoresPendientes
+        - colaboradoresCompletados
+      properties:
+        nombre:
+          type: string
+          description: Nombre de la actividad, o cadena vacía si no está definido.
+        sede:
+          type: string
+          description: Nombre de la sede, o el texto localizado para todas si no está definido.
+        empresa:
+          type: string
+          description: >-
+            Nombre de la empresa, o el texto localizado para todas si no está definida,
+            corresponde a todas o no se encuentra su nombre.
+        estado:
+          type: string
+          enum:
+            - pendiente
+            - completada
+          description: Pendiente si hay colaboradores pendientes; completada en caso contrario.
+        cantidadPendientes:
+          type: integer
+          format: int32
+          description: Número de registros de colaboradores pendientes.
+        cantidadCompletados:
+          type: integer
+          format: int32
+          description: Número de registros de colaboradores completados.
+        colaboradoresPendientes:
+          type: array
+          description: Nombres completos disponibles de los colaboradores pendientes.
+          items:
+            type: string
+        colaboradoresCompletados:
+          type: array
+          description: Nombres completos disponibles de los colaboradores completados.
+          items:
+            type: string
+    RespuestaFaqs:
+      type: object
+      required:
+        - data
+        - success
+      properties:
+        data:
+          $ref: '#/components/schemas/DataFaqs'
+        message:
+          type: string
+          description: Mensaje localizado presente cuando la lista está vacía.
+        success:
+          type: boolean
+          example: true
+    DataFaqs:
+      type: object
+      required:
+        - busqueda
+        - tieneFaqs
+        - totalFaqs
+        - faqs
+      properties:
+        busqueda:
+          type: string
+          description: Texto de búsqueda normalizado y recortado, o cadena vacía si no se envió.
+        tieneFaqs:
+          type: boolean
+          description: Indica si la lista contiene FAQ.
+        totalFaqs:
+          type: integer
+          format: int32
+          description: Número de FAQ devueltas, no el total de coincidencias existentes.
+        faqs:
+          type: array
+          maxItems: 50
+          items:
+            $ref: '#/components/schemas/Faq'
+    Faq:
+      type: object
+      required:
+        - pregunta
+        - respuesta
+        - categoria
+      properties:
+        pregunta:
+          type: string
+          description: Pregunta convertida de HTML a texto plano.
+        respuesta:
+          type: string
+          description: Respuesta convertida de HTML a texto plano; cadena vacía si es nula.
+        categoria:
+          type: string
+          description: Nombres de los tags separados por comas, o cadena vacía si no tiene.
+    Error:
+      type: object
+      required:
+        - success
+        - message
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          description: Mensaje de error localizado.
+    ErrorAutenticacion:
+      type: object
+      description: Formato JSON usado por los manejadores de autenticación de Spring Security.
+      properties:
+        resp_code:
+          type: string
+          example: '401'
+        error:
+          type: string
+          description: Descripción de la excepción de autenticación, cuando está disponible.
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+  responses:
+    SinSesion:
+      description: >-
+        Sin sesión válida. El cuerpo depende de si la respuesta proviene del
+        controlador o de los filtros de seguridad; algunos filtros pueden usar
+        sendError y generar una respuesta distinta de JSON.
+      content:
+        application/json;charset=UTF-8:
+          schema:
+            anyOf:
+              - $ref: '#/components/schemas/Error'
+              - $ref: '#/components/schemas/ErrorAutenticacion'
+          examples:
+            sinSesion:
+              summary: Respuesta de validación de sesión
+              value:
+                success: false
+                message: No tiene una sesión activa
+            seguridad:
+              summary: Ejemplo de respuesta de seguridad
+              value:
+                resp_code: '401'
+                error: Authentication required
+                success: false
+    ErrorServidor:
+      description: Error inesperado durante la consulta.
+      content:
+        application/json;charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            errorEjecucion:
+              value:
+                success: false
+                message: Error en tiempo de ejecución en el servidor
+            errorInesperado:
+              value:
+                success: false
+                message: Error inesperado en el servidor, comuníquese con el área de soporte
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearer: []
+tags:
+  - name: Onboarding
+    description: Consultas de Onboarding para el usuario autenticado.
+openapi: 3.0.0
+info:
+  title: Onboarding_Chatbot
+  description: >-
     Microservicio para gestión en talento cloud del módulo de Onboarding, pensado para ser consultado por chatbot ClaudIA.
 
     ## Manejo de errores
