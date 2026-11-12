@@ -1,0 +1,279 @@
+openapi: 3.0.0
+info:
+  title: Onboarding_Chatbot
+  description: >-
+    Microservicio para gestión en talento cloud del módulo de Onboarding, pensado para ser consultado por chatbot ClaudIA.
+
+    ## Manejo de errores
+
+
+        Los errores habituales pueden incluir:
+
+
+        - `401 Unauthorized`: Token JWT inválido, expirado o ausente. Responde solo con el código de estado, sin cuerpo.
+
+        - `403 Forbidden`: La cuenta del usuario autenticado está inactiva, o no tiene la licencia necesaria para el módulo de Onboarding. En ambos casos el mensaje lo indica y no se entrega información de actividades.
+
+        - `405 Method Not Allowed`: Se usó un verbo HTTP distinto de GET/HEAD/OPTIONS contra esta
+        ruta — todos los endpoints de este chatbot son de solo lectura.
+
+        - `500 Internal Server Error`: Error inesperado en el servidor.
+
+
+        Cuando sea posible, cada endpoint detallará sus códigos de error
+        específicos y estructura de respuesta en su propia descripción.
+  termsOfService: Uso privado
+  contact:
+    name: API Support
+    email: soporte@talento.cloud
+    url: https://talento.cloud/contact
+  license:
+    name: Privado
+    url: https://talento.cloud/licenses
+  version: '1.0'
+servers:
+  - url: https://clientex.talento.cloud/api
+    description: Servidor de producción
+  - url: https://clientex.talento-dev.cloud/api
+    description: Servidor de pruebas
+paths:
+  /html/onboarding/chatbot/actividades-preparacion.json:
+    get:
+      tags:
+      - Onboarding
+      summary: actividadesPreparacion
+      description: >-
+        Retorna las actividades de preparación de Onboarding del usuario autenticado (identificado por
+        el token de sesión, nunca por parámetro), indicando por cada una cuántos colaboradores están
+        pendientes y cuántos ya la completaron. Solo lectura: no crea, modifica ni elimina información, y
+        no admite ningún parámetro (cualquier parámetro como `usuario` o `responsable` se ignora).
+
+
+        **Mismas reglas que la pantalla de Onboarding**: el resultado es consistente con lo que el usuario
+        ve en la web (servicios `listarActividadesResponsable`, `listarActividadesRealizadasResponsable`,
+        `listarPendientes` y `listarRealizados`).
+
+
+        **Qué actividades se devuelven**: un administrador del sistema o quien tiene el permiso de
+        asignación de responsables de actividades de preparación recibe todas las actividades activas;
+        con el permiso (sin ser administrador) se aplica además su mapa de alcance. Cualquier otro usuario
+        recibe solo las actividades de las que es responsable vigente. Una actividad se incluye si tiene
+        colaboradores pendientes o completados.
+
+
+        **Colaboradores de cada actividad**: son los usuarios activos con licencia de Onboarding creados
+        dentro de la ventana de días definida por la propiedad `OB_DIAS_CREACION_CUENTA_PARTNER` (30 días
+        por defecto), filtrados por la sede y la empresa de la actividad. Un colaborador es **completado**
+        si tiene la actividad registrada como realizada y **pendiente** en caso contrario.
+
+
+        **Actividades con el mismo nombre**: pueden existir actividades distintas con el mismo nombre
+        que aplican a diferentes sedes o empresas. Cada una se devuelve por separado, con sus propios
+        colaboradores, y se distinguen por los campos `sede` y `empresa`.
+
+
+        **Estado de la actividad**: `pendiente` si tiene al menos un colaborador pendiente; `completada`
+        si no tiene pendientes.
+
+
+        **Datos personales**: de cada colaborador solo se entrega el nombre completo. No se expone
+        documento, correo ni códigos internos.
+
+
+        **Cuenta inactiva**: si el usuario autenticado está inactivo, responde 403 informando que su
+        cuenta no está activa y no entrega ninguna actividad, aunque tenga pendientes.
+
+
+        **Sin actividades**: si el usuario no tiene actividades, o no es administrador, ni responsable, ni
+        tiene el permiso, responde 200 con `tieneActividades=false`, `totalActividades=0` y
+        `actividades=[]`, más un `message` explicativo. La estructura de `data` es siempre la misma, con o
+        sin actividades.
+      operationId: actividadesPreparacion
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/actividadesPreparacion'
+              example:
+                data:
+                  tieneActividades: true
+                  totalActividades: 2
+                  actividades:
+                  - nombre: Entrega de credenciales
+                    sede: Todas
+                    empresa: Todas
+                    estado: pendiente
+                    cantidadPendientes: 2
+                    cantidadCompletados: 1
+                    colaboradoresPendientes:
+                    - Ana Pérez
+                    - Luis Gómez
+                    colaboradoresCompletados:
+                    - Marta Ruiz
+                  - nombre: Visita guiada
+                    sede: Sede Norte
+                    empresa: Todas
+                    estado: completada
+                    cantidadPendientes: 0
+                    cantidadCompletados: 3
+                    colaboradoresPendientes: []
+                    colaboradoresCompletados:
+                    - Marta Ruiz
+                    - Carlos Díaz
+                    - Sofía Mora
+                success: true
+          x-examples:
+            Usuario sin actividades asignadas:
+              data:
+                tieneActividades: false
+                totalActividades: 0
+                actividades: []
+              message: No tienes actividades de preparación asignadas
+              success: true
+        '401':
+          description: Token JWT ausente, inválido o expirado. Responde sin cuerpo.
+        '403':
+          description: >-
+            La cuenta del usuario autenticado está inactiva (`activo` distinto de `s`), o no tiene la
+            licencia necesaria para el módulo de Onboarding (Usuarios.getLicenciaTieneOnboarding() falsy).
+            En ambos casos no se entrega información de actividades, aunque el usuario las tenga
+            pendientes; el `message` indica el motivo.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/errorActividadesPreparacion'
+              examples:
+                Cuenta inactiva:
+                  value:
+                    success: false
+                    message: Tu cuenta no está activa, por lo que no puedes consultar actividades de preparación
+                Sin licencia de Onboarding:
+                  value:
+                    success: false
+                    message: No dispones de la licencia necesaria para hacer uso de Onboarding
+        '405':
+          description: Verbo HTTP distinto de GET, HEAD u OPTIONS.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/errorActividadesPreparacion'
+        '500':
+          description: Error inesperado en el servidor.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/errorActividadesPreparacion'
+      deprecated: false
+components:
+  schemas:
+    actividadesPreparacion:
+      title: actividadesPreparacion
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Data'
+        message:
+          type: string
+          description: Presente únicamente cuando `data.tieneActividades` es `false`.
+        success:
+          type: boolean
+    Data:
+      title: Data
+      required:
+      - tieneActividades
+      - totalActividades
+      - actividades
+      type: object
+      properties:
+        tieneActividades:
+          type: boolean
+          description: true si el usuario tiene al menos una actividad en `actividades`.
+        totalActividades:
+          type: integer
+          format: int32
+          description: Cantidad de elementos de `actividades`.
+        actividades:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActividadPreparacion'
+          description: Lista vacía cuando el usuario no tiene actividades asignadas.
+    ActividadPreparacion:
+      title: ActividadPreparacion
+      required:
+      - nombre
+      - sede
+      - empresa
+      - estado
+      - cantidadPendientes
+      - cantidadCompletados
+      - colaboradoresPendientes
+      - colaboradoresCompletados
+      type: object
+      properties:
+        nombre:
+          type: string
+          description: >-
+            Nombre de la actividad de preparación. Pueden existir varias actividades con el mismo
+            nombre; se distinguen por `sede` y `empresa`.
+        sede:
+          type: string
+          description: Nombre de la sede a la que aplica la actividad, o "Todas" si aplica a todas las sedes.
+        empresa:
+          type: string
+          description: Nombre de la empresa a la que aplica la actividad, o "Todas" si aplica a todas las empresas.
+        estado:
+          type: string
+          enum:
+          - pendiente
+          - completada
+          description: >-
+            `pendiente` si `cantidadPendientes` es mayor que 0; `completada` en caso contrario. Los
+            valores son parte del contrato y no se traducen.
+        cantidadPendientes:
+          type: integer
+          format: int32
+          minimum: 0
+          description: Cantidad de colaboradores que aún no completan la actividad.
+        cantidadCompletados:
+          type: integer
+          format: int32
+          minimum: 0
+          description: Cantidad de colaboradores que ya completaron la actividad.
+        colaboradoresPendientes:
+          type: array
+          items:
+            type: string
+          description: Nombre completo de cada colaborador pendiente. Su tamaño es `cantidadPendientes`.
+        colaboradoresCompletados:
+          type: array
+          items:
+            type: string
+          description: Nombre completo de cada colaborador que completó la actividad. Su tamaño es `cantidadCompletados`.
+    errorActividadesPreparacion:
+      title: errorActividadesPreparacion
+      required:
+      - success
+      - message
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+      example:
+        success: false
+        message: No dispones de la licencia necesaria para hacer uso de Onboarding
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+security:
+- bearer: []
+tags:
+- name: Onboarding
+  description: ''
