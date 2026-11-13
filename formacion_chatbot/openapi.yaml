@@ -39,6 +39,52 @@ servers:
   - url: https://clientex.talento-dev.cloud/api
     description: Servidor de pruebas
 paths:
+  /html/formacion/chatbot/tutoria-cargo.json:
+    get:
+      tags:
+      - Formacion
+      summary: tutoriaCargo
+      description: Endpoint para consulta de temas de tutoría del cargo del usuario autenticado.
+      operationId: tutoriaCargo
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/api/html/formacion/chatbot/tutoria-cargo.json' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'  
+      responses:
+        '200':
+          description: Consulta de temas de tutoría del cargo realizada correctamente.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/tutoriaCargo'
+              example:
+                data:
+                - tema: NodeJS
+                  categoria: Sistemas de información
+                  subcategoria: Lenguajes
+                  tema_autoestudio: false
+                  estado: en-progreso
+                  fecha_limite_aprendizaje_tutoria: "2012-09-08"
+                  tutor: Juan Fernando Osorio Ospina
+                  fecha_asistencia: "2023-03-14"
+                - tema: Planificación de trabajo
+                  categoria: null
+                  subcategoria: null
+                  tema_autoestudio: true
+                  estado: en-progreso
+                  fecha_limite_aprendizaje_tutoria: "2012-09-08"
+                  tutor: Juan Fernando Osorio Ospina
+                  fecha_validado_conocimiento: "2025-08-14"
+                success: true
+        '401':
+          description: Token JWT inválido, expirado o ausente.
+        '403':
+          description: El usuario autenticado no tiene permisos suficientes.
+        '500':
+          description: Error inesperado en el servidor.
+      deprecated: false
   /html/formacion/chatbot/temas.json:
     get:
       tags:
@@ -63,6 +109,12 @@ paths:
         Si el año consultado no tiene temas (o no existe como año de formación activo), la respuesta es
         `200 OK` con `data.temas` vacío y un `message` explicativo — la ausencia de temas no es un error.
       operationId: temasPorAnio
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/api/html/formacion/chatbot/temas.json?anio=2026' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       parameters:
         - name: anio
           in: query
@@ -211,6 +263,12 @@ paths:
         Si no hay pendientes (o el año consultado ya no está vigente), la respuesta es `200 OK` con
         `data.temas` vacío y un `message` explicativo — no es un error.
       operationId: temasPendientes
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/api/html/formacion/chatbot/temas/pendientes.json?anio=2026' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       parameters:
         - name: anio
           in: query
@@ -374,6 +432,12 @@ paths:
         este mensaje de error no pasa por el mecanismo de i18n del tenant — es un texto embebido en el
         servicio, no traducible por idioma/cliente).
       operationId: temaInfo
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/api/html/formacion/chatbot/tema-info.json?nombreTema=Liderazgo%20y%20gesti%C3%B3n%20de%20equipos' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       parameters:
         - name: nombreTema
           in: query
@@ -565,6 +629,12 @@ paths:
         Si el tema no existe, no está asignado al usuario, o no estaba en su plan de formación para el
         año consultado, la respuesta es `404 Not Found` con `success=false`.
       operationId: notaGeneralTema
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/api/html/formacion/chatbot/nota-general.json?nombreTema=Liderazgo%20y%20gesti%C3%B3n%20de%20equipos&anio=2026' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       parameters:
         - name: nombreTema
           in: query
@@ -770,6 +840,12 @@ paths:
         diferencia de cuando el parámetro simplemente no se envía (ahí sí se usa 7). No se valida un
         máximo.
       operationId: sesionesProgramadas
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/api/html/formacion/chatbot/sesiones-programadas.json?dias=7' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
       parameters:
         - name: dias
           in: query
@@ -925,6 +1001,49 @@ paths:
       deprecated: false
 components:
   schemas:
+    tutoriaCargo:
+      title: tutoriaCargo
+      type: object
+      required:
+      - data
+      - success
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemaTutoriaCargo'
+        success:
+          type: boolean
+    TemaTutoriaCargo:
+      title: TemaTutoriaCargo
+      type: object
+      properties:
+        tema:
+          type: string
+        categoria:
+          type: string
+          nullable: true
+        subcategoria:
+          type: string
+          nullable: true
+        tema_autoestudio:
+          type: boolean
+        estado:
+          type: string
+          example: en-progreso
+        fecha_limite_aprendizaje_tutoria:
+          type: string
+          format: date
+        tutor:
+          type: string
+        fecha_asistencia:
+          type: string
+          format: date
+          description: Fecha de asistencia, cuando está presente en la respuesta.
+        fecha_validado_conocimiento:
+          type: string
+          format: date
+          description: Fecha de validación del conocimiento, cuando está presente en la respuesta.
     temasPorAnio:
       title: temasPorAnio
       required:
