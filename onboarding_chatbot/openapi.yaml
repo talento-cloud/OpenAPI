@@ -369,8 +369,181 @@ paths:
         '500':
           $ref: '#/components/responses/ErrorServidor'
       deprecated: false
+  /html/onboarding/chatbot/documentos-solicitados.json:
+    get:
+      tags:
+        - Onboarding
+      summary: Documentos solicitados
+      operationId: documentosSolicitados
+      description: >-
+        Lista los documentos que se le solicitan al usuario autenticado e indica, por
+        cada uno, si ya está cargado o sigue pendiente. No crea ni modifica datos.
+
+
+        Usa la misma lógica de la pantalla de documentos y del resumen de Onboarding:
+        documentos asignados al usuario, documentos generales obligatorios para
+        colaboradores y documentos definidos para su cargo, sin repetir tipos de
+        documento. No incluye contratos y considera todas las categorías.
+
+
+        El estado es `cargado` si el documento tiene registro en la hoja de vida y
+        fecha de carga, la misma regla de la pantalla de documentos de Onboarding;
+        en caso contrario es `pendiente`, incluso si el documento tiene registro pero
+        no fecha de carga. No se tiene en cuenta si el documento fue validado o
+        rechazado.
+        `estado` es un código fijo pensado para la lógica del chatbot y
+        `estadoNombre` es el mismo estado traducido al idioma de la petición. `obligatorio` se informa tal como lo calcula la pantalla: solo se
+        marca en los documentos generales obligatorios que el usuario aún no tiene
+        asignados, por lo que puede ser `false` en documentos que la empresa
+        considera obligatorios.
+
+
+        Si el usuario no tiene documentos solicitados, no tiene hoja de vida o no
+        tiene cargo asignado, se responde 200 con `tieneDocumentos` en `false`, una
+        lista vacía y un mensaje explícito. Una cuenta inactiva o sin licencia de
+        Onboarding recibe 403 sin información de documentos.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location 'https://clientex.talento-dev.cloud/api/html/onboarding/chatbot/documentos-solicitados.json' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      responses:
+        '200':
+          description: Documentos solicitados, o lista vacía si no hay documentación solicitada.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/RespuestaDocumentos'
+              examples:
+                conDocumentos:
+                  summary: Documentos cargados y pendientes
+                  value:
+                    data:
+                      tieneDocumentos: true
+                      totalDocumentos: 3
+                      cargados: 1
+                      pendientes: 2
+                      documentos:
+                        - nombre: Documento de identidad
+                          estado: cargado
+                          estadoNombre: Cargado
+                          obligatorio: true
+                        - nombre: Certificado de estudios
+                          estado: pendiente
+                          estadoNombre: Pendiente
+                          obligatorio: false
+                        - nombre: Certificado de cuenta bancaria
+                          estado: pendiente
+                          estadoNombre: Pendiente
+                          obligatorio: true
+                    success: true
+                sinDocumentos:
+                  summary: Sin documentación solicitada
+                  value:
+                    data:
+                      tieneDocumentos: false
+                      totalDocumentos: 0
+                      cargados: 0
+                      pendientes: 0
+                      documentos: []
+                    message: No tienes documentación solicitada
+                    success: true
+        '401':
+          $ref: '#/components/responses/SinSesion'
+        '403':
+          description: Cuenta inactiva o licencia de Onboarding no disponible.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                cuentaInactiva:
+                  value:
+                    success: false
+                    message: Tu cuenta no está activa, por lo que no puedes consultar tus documentos solicitados
+                sinLicencia:
+                  value:
+                    success: false
+                    message: No dispones de la licencia necesaria para hacer uso de Onboarding
+        '405':
+          $ref: '#/components/responses/MetodoNoPermitido'
+        '500':
+          $ref: '#/components/responses/ErrorServidor'
+      deprecated: false
 components:
   schemas:
+    RespuestaDocumentos:
+      type: object
+      required:
+        - data
+        - success
+      properties:
+        data:
+          $ref: '#/components/schemas/DataDocumentos'
+        message:
+          type: string
+          description: Mensaje localizado presente cuando la lista está vacía.
+        success:
+          type: boolean
+          example: true
+    DataDocumentos:
+      type: object
+      required:
+        - tieneDocumentos
+        - totalDocumentos
+        - cargados
+        - pendientes
+        - documentos
+      properties:
+        tieneDocumentos:
+          type: boolean
+          description: Indica si el usuario tiene documentación solicitada.
+        totalDocumentos:
+          type: integer
+          format: int32
+          description: Número de documentos solicitados.
+        cargados:
+          type: integer
+          format: int32
+          description: Número de documentos en estado cargado.
+        pendientes:
+          type: integer
+          format: int32
+          description: Número de documentos en estado pendiente.
+        documentos:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentoSolicitado'
+    DocumentoSolicitado:
+      type: object
+      required:
+        - nombre
+        - estado
+        - estadoNombre
+        - obligatorio
+      properties:
+        nombre:
+          type: string
+          description: Nombre del tipo de documento, o cadena vacía si no está definido.
+        estado:
+          type: string
+          enum:
+            - cargado
+            - pendiente
+          description: cargado si tiene registro y fecha de carga; pendiente en caso contrario.
+        estadoNombre:
+          type: string
+          description: >-
+            Estado traducido al idioma de la petición (por ejemplo Cargado/Pendiente o
+            Uploaded/Pending), para mostrarlo al usuario. Para lógica usar `estado`,
+            que es un código fijo.
+          example: Cargado
+        obligatorio:
+          type: boolean
+          description: >-
+            Indicador de obligatoriedad tal como lo calcula la pantalla de documentos
+            (ver descripción del endpoint).
     RespuestaInduccion:
       type: object
       required:

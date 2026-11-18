@@ -1,0 +1,526 @@
+openapi: 3.0.0
+info:
+  title: OKR_Chatbot
+  description: >-
+    API de solo lectura del módulo de OKR de Talento Cloud, pensada para ser
+    consultada por el chatbot ClaudIA. La identidad del usuario se obtiene de la
+    sesión autenticada; no se recibe como parámetro.
+
+
+    Los mensajes son localizados y pueden variar según el idioma y la configuración
+    del cliente. Los ejemplos de mensajes corresponden a los textos base en español.
+
+
+    Los endpoints documentados usan GET. El filtro del módulo también permite HEAD
+    y OPTIONS, y rechaza otros métodos con 405 antes de llegar al controlador.
+
+
+    En la documentación se mencionan 2 URLs:
+
+    - Producción: https://[tenant].talento.cloud/
+
+    - Pruebas: https://[tenant].talento-dev.cloud/
+
+
+    ## Manejo de errores
+
+
+        Los errores habituales pueden incluir:
+
+
+        - `400 Bad Request`: Parámetros requeridos faltantes o con formato
+        inválido.
+
+        - `401 Unauthorized`: Token JWT inválido, expirado o ausente.
+
+        - `403 Forbidden`: El usuario autenticado no tiene permisos suficientes.
+
+        - `500 Internal Server Error`: Error inesperado en el servidor.
+
+
+        Cuando sea posible, cada endpoint detallará sus códigos de error
+        específicos y estructura de respuesta en su propia descripción.
+  termsOfService: Uso privado
+  contact:
+    name: API Support
+    email: soporte@talento.cloud
+    url: https://talento.cloud/contact
+  license:
+    name: Privado
+    url: https://talento.cloud/licenses
+  version: '1.0'
+servers:
+  - url: https://clientex.talento.cloud/api
+    description: Servidor de producción
+  - url: https://clientex.talento-dev.cloud/api
+    description: Servidor de pruebas
+paths:
+  /html/okr/chatbot/resultado-clave.json:
+    get:
+      tags:
+        - OKR
+      summary: Detalle de un key result
+      operationId: resultadoClave
+      description: >-
+        Consulta un key result (KR) del usuario autenticado por su nombre o código y
+        devuelve su detalle. No crea ni modifica datos.
+
+
+        Solo se buscan KR activos de objetivos clave cuyo dueño es el usuario
+        autenticado, de todos los años y periodos y sin importar el estado del
+        objetivo (PENDIENTE, APROBADO o RECHAZADO). Un KR de otra persona, incluso de
+        un colaborador a cargo, se trata igual que uno inexistente.
+
+
+        `kr` se compara siempre con el nombre del KR de forma exacta, sin distinguir
+        mayúsculas, tildes ni espacios repetidos; si además es numérico, también se
+        compara con el código del KR. `objetivo` se compara de la misma forma con el
+        nombre del objetivo clave y `anio` con el nombre del año OKR.
+
+
+        Como el proceso de OKR es anual y un mismo nombre puede repetirse, la
+        resolución se hace en este orden:
+
+        1. Se buscan las coincidencias por `kr`. Si no hay ninguna: `success` en
+        `false` y mensaje de que no existe o no le pertenece.
+
+        2. Si se envía `anio`, se filtra por año. Si el KR existe pero no en ese
+        año: `success` en `false`, mensaje explicativo y `candidatos` con dónde sí
+        existe.
+
+        3. Si se envía `objetivo`, se filtra por objetivo. Si el KR existe pero no
+        en ese objetivo: `success` en `false`, mensaje explicativo y `candidatos`.
+
+        4. Si no se envió `anio` y las coincidencias están en varios años, se toman
+        las del año calendario en curso; si ninguna es del año en curso, se
+        conservan todas.
+
+        5. Si queda más de un KR: `ambiguo` en `true` y la lista de `candidatos`
+        para que se precise el año, el objetivo o el código. Un KR repetido en el
+        mismo objetivo solo se puede diferenciar por código.
+
+        6. Si queda uno solo: `ambiguo` en `false` y su detalle en `resultadoClave`.
+
+
+        `resultadoAvance` es el porcentaje de resultado del KR con el mismo cálculo
+        de la pantalla de OKR, según el tipo de meta (directa o inversamente
+        proporcional) y el tope configurado en OKR_LIMITE_RESULTADO_KR, redondeado a
+        2 decimales. Es `null` si el KR no tiene meta.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location --get 'https://clientex.talento-dev.cloud/api/html/okr/chatbot/resultado-clave.json' \
+              --data-urlencode 'kr=Cumplimiento del 100% de tareas del rol en el proyecto' \
+              --data-urlencode 'anio=2026' \
+              --header 'Authorization: Bearer <TU_TOKEN_JWT>'
+      parameters:
+        - name: kr
+          in: query
+          required: true
+          description: >-
+            Nombre del key result o, si es numérico, también su código. Se compara de
+            forma exacta sin distinguir mayúsculas, tildes ni espacios repetidos.
+          schema:
+            type: string
+            example: Cumplimiento del 100% de tareas del rol en el proyecto
+        - name: anio
+          in: query
+          required: false
+          description: >-
+            Año OKR al que pertenece el KR. Si se omite y el KR existe en varios
+            años, se asume el año en curso.
+          schema:
+            type: string
+            example: '2026'
+        - name: objetivo
+          in: query
+          required: false
+          description: >-
+            Nombre del objetivo clave al que pertenece el KR, comparado de forma
+            exacta sin distinguir mayúsculas, tildes ni espacios repetidos.
+          schema:
+            type: string
+            example: Brindar un servicio de valor agregado
+      responses:
+        '200':
+          description: >-
+            Detalle del KR, lista de candidatos si hay ambigüedad, o `success` en
+            `false` si no existe, no le pertenece o no está en el año u objetivo
+            indicado.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/RespuestaResultadoClave'
+              examples:
+                detalle:
+                  summary: KR encontrado
+                  value:
+                    data:
+                      ambiguo: false
+                      resultadoClave:
+                        codigo: 67
+                        nombre: Cumplimiento del 100% de tareas del rol en el proyecto
+                        anio: '2026'
+                        periodo: Q1
+                        objetivo: Brindar un servicio de valor agregado
+                        estadoObjetivo: APROBADO
+                        meta: 100.0
+                        tipoMeta: DIRECTAMENTE_PROPORCIONAL
+                        resultadoAvance: 85.5
+                        valorLogrado: 85.5
+                        valorLogradoColaborador: 90.0
+                        observacionesLider: Buen avance, falta cerrar las tareas de despliegue.
+                        accionesClave:
+                          - descripcion: Planear las tareas del sprint
+                            ejecutado: true
+                            fechaEjecutado: '2026-03-10'
+                          - descripcion: Cerrar las tareas de despliegue
+                            ejecutado: false
+                            fechaEjecutado: null
+                    success: true
+                ambiguo:
+                  summary: Varios KR coinciden
+                  value:
+                    data:
+                      ambiguo: true
+                      totalCandidatos: 2
+                      candidatos:
+                        - codigo: 67
+                          nombre: Cumplimiento del 100% de tareas del rol en el proyecto
+                          anio: '2026'
+                          periodo: Q1
+                          objetivo: Brindar un servicio de valor agregado
+                          estadoObjetivo: PENDIENTE
+                        - codigo: 80
+                          nombre: Cumplimiento del 100% de tareas del rol en el proyecto
+                          anio: '2026'
+                          periodo: Q2
+                          objetivo: Mejorar la calidad de las entregas
+                          estadoObjetivo: APROBADO
+                    message: Encontramos varios key results que coinciden con "Cumplimiento del 100% de tareas del rol en el proyecto". Indica el año, el objetivo o el código del key result que quieres consultar
+                    success: true
+                noExiste:
+                  summary: No existe o no le pertenece
+                  value:
+                    message: 'No encontramos el key result "Reducir costos" entre tus key results: no existe o no te pertenece. Verifica el nombre e inténtalo de nuevo'
+                    success: false
+                noEnAnio:
+                  summary: Existe, pero no en el año indicado
+                  value:
+                    data:
+                      ambiguo: false
+                      totalCandidatos: 1
+                      candidatos:
+                        - codigo: 67
+                          nombre: Cumplimiento del 100% de tareas del rol en el proyecto
+                          anio: '2026'
+                          periodo: Q1
+                          objetivo: Brindar un servicio de valor agregado
+                          estadoObjetivo: APROBADO
+                    message: El key result "Cumplimiento del 100% de tareas del rol en el proyecto" no está registrado en el año 2025, pero sí lo encontramos en otros años. Revisa las opciones disponibles
+                    success: false
+                noEnObjetivo:
+                  summary: Existe, pero no en el objetivo indicado
+                  value:
+                    data:
+                      ambiguo: false
+                      totalCandidatos: 1
+                      candidatos:
+                        - codigo: 67
+                          nombre: Cumplimiento del 100% de tareas del rol en el proyecto
+                          anio: '2026'
+                          periodo: Q1
+                          objetivo: Brindar un servicio de valor agregado
+                          estadoObjetivo: APROBADO
+                    message: El key result "Cumplimiento del 100% de tareas del rol en el proyecto" no está asociado al objetivo "Reducir costos", pero sí lo encontramos en otros objetivos. Revisa las opciones disponibles
+                    success: false
+        '400':
+          description: No se envió `kr` o está vacío.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                krRequerido:
+                  value:
+                    success: false
+                    message: Debes indicar el nombre o el código del key result que quieres consultar
+        '401':
+          $ref: '#/components/responses/SinSesion'
+        '403':
+          description: Cuenta inactiva o licencia de OKR no disponible.
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                cuentaInactiva:
+                  value:
+                    success: false
+                    message: Tu cuenta está inactiva, por lo que no es posible consultar tus key results
+                sinLicencia:
+                  value:
+                    success: false
+                    message: No tienes la licencia de OKR, por lo que no es posible consultar tus key results
+        '405':
+          $ref: '#/components/responses/MetodoNoPermitido'
+        '500':
+          $ref: '#/components/responses/ErrorServidor'
+      deprecated: false
+components:
+  schemas:
+    RespuestaResultadoClave:
+      type: object
+      required:
+        - success
+      properties:
+        data:
+          $ref: '#/components/schemas/DataResultadoClave'
+        message:
+          type: string
+          description: >-
+            Mensaje localizado presente cuando hay ambigüedad, cuando el KR no existe
+            o no le pertenece, o cuando no está en el año u objetivo indicado.
+        success:
+          type: boolean
+          description: >-
+            true si se encontró un KR o hay candidatos ambiguos; false si no existe,
+            no le pertenece o no está en el año u objetivo indicado.
+    DataResultadoClave:
+      type: object
+      description: >-
+        Ausente cuando el KR no existe o no le pertenece. Contiene `resultadoClave`
+        si se identificó un único KR, o `candidatos` en caso contrario.
+      required:
+        - ambiguo
+      properties:
+        ambiguo:
+          type: boolean
+          description: true si varios KR coinciden y se debe precisar la consulta.
+        totalCandidatos:
+          type: integer
+          format: int32
+          description: Número de candidatos devueltos.
+        candidatos:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResultadoClaveBasico'
+        resultadoClave:
+          $ref: '#/components/schemas/ResultadoClaveDetalle'
+    ResultadoClaveBasico:
+      type: object
+      required:
+        - codigo
+        - nombre
+        - anio
+        - periodo
+        - objetivo
+        - estadoObjetivo
+      properties:
+        codigo:
+          type: integer
+          format: int64
+          description: Código del KR; permite consultarlo sin ambigüedad.
+        nombre:
+          type: string
+          description: Nombre (descripción) del KR.
+        anio:
+          type: string
+          nullable: true
+          description: Nombre del año OKR.
+        periodo:
+          type: string
+          nullable: true
+          description: Nombre del periodo OKR dentro del año.
+        objetivo:
+          type: string
+          description: Nombre del objetivo clave al que pertenece.
+        estadoObjetivo:
+          type: string
+          nullable: true
+          enum:
+            - PENDIENTE
+            - APROBADO
+            - RECHAZADO
+          description: Estado de aprobación del objetivo clave.
+    ResultadoClaveDetalle:
+      allOf:
+        - $ref: '#/components/schemas/ResultadoClaveBasico'
+        - type: object
+          required:
+            - accionesClave
+          properties:
+            meta:
+              type: number
+              format: double
+              nullable: true
+              description: Meta del KR.
+            tipoMeta:
+              type: string
+              nullable: true
+              enum:
+                - DIRECTAMENTE_PROPORCIONAL
+                - INVERSAMENTE_PROPORCIONAL
+              description: Tipo de meta.
+            resultadoAvance:
+              type: number
+              format: double
+              nullable: true
+              description: >-
+                Porcentaje de resultado del KR, con el tope OKR_LIMITE_RESULTADO_KR,
+                redondeado a 2 decimales; null si no tiene meta.
+            valorLogrado:
+              type: number
+              format: double
+              nullable: true
+              description: Valor logrado registrado por el líder; es la base de resultadoAvance.
+            valorLogradoColaborador:
+              type: number
+              format: double
+              nullable: true
+              description: Valor logrado registrado por el colaborador.
+            observacionesLider:
+              type: string
+              nullable: true
+              description: Observaciones del líder sobre el KR.
+            accionesClave:
+              type: array
+              items:
+                $ref: '#/components/schemas/AccionClave'
+    AccionClave:
+      type: object
+      required:
+        - descripcion
+        - ejecutado
+      properties:
+        descripcion:
+          type: string
+        ejecutado:
+          type: boolean
+          description: false si la acción no está marcada como ejecutada.
+        fechaEjecutado:
+          type: string
+          format: date
+          nullable: true
+          description: Fecha de ejecución (yyyy-MM-dd), o null.
+    Error:
+      type: object
+      required:
+        - success
+        - message
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          description: Mensaje de error localizado.
+    ErrorMetodo:
+      type: object
+      description: Formato de respuesta del filtro de métodos HTTP del módulo.
+      properties:
+        datos:
+          type: object
+          nullable: true
+          description: Siempre nulo.
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          description: Mensaje localizado.
+        cantidad:
+          type: integer
+          nullable: true
+          description: Siempre nulo.
+        url:
+          type: string
+          nullable: true
+          description: Siempre nulo.
+        error:
+          type: string
+          nullable: true
+          description: Siempre nulo.
+    ErrorAutenticacion:
+      type: object
+      description: Formato JSON usado por los manejadores de autenticación de Spring Security.
+      properties:
+        resp_code:
+          type: string
+          example: '401'
+        error:
+          type: string
+          description: Descripción de la excepción de autenticación, cuando está disponible.
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+  responses:
+    SinSesion:
+      description: >-
+        Sin sesión válida. El cuerpo depende de si la respuesta proviene del
+        controlador o de los filtros de seguridad; algunos filtros pueden usar
+        sendError y generar una respuesta distinta de JSON.
+      content:
+        application/json;charset=UTF-8:
+          schema:
+            anyOf:
+              - $ref: '#/components/schemas/Error'
+              - $ref: '#/components/schemas/ErrorAutenticacion'
+          examples:
+            sinSesion:
+              summary: Respuesta de validación de sesión
+              value:
+                success: false
+                message: No tiene una sesión activa
+            seguridad:
+              summary: Respuesta del filtro de seguridad sin token
+              value:
+                success: false
+                resp_code: '401'
+                error: No se encontró el token de autorización por lo que no podrá acceder este recurso
+                message: No tiene autorización para ver este recurso
+    MetodoNoPermitido:
+      description: >-
+        Verbo HTTP distinto de GET, HEAD u OPTIONS. Lo responde el filtro del módulo
+        antes de llegar al controlador, sin header Allow.
+      content:
+        application/json;charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/ErrorMetodo'
+          examples:
+            metodoNoPermitido:
+              value:
+                datos: null
+                success: false
+                message: Método HTTP no permitido para este recurso
+                cantidad: null
+                url: null
+                error: null
+    ErrorServidor:
+      description: Error inesperado durante la consulta.
+      content:
+        application/json;charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            errorEjecucion:
+              value:
+                success: false
+                message: Error en tiempo de ejecución en el servidor
+            errorInesperado:
+              value:
+                success: false
+                message: Error inesperado en el servidor, comuníquese con el área de soporte
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearer: []
+tags:
+  - name: OKR
+    description: Consultas de OKR para el usuario autenticado.
